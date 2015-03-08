@@ -11,9 +11,9 @@ A repo to test get 3 mesos master and 3 mesos slave on AWS, Rackspace or Google 
 - [Terraform](http://terraform.io)
 - [Terraform Ceph Module] 
 First, you should download the module using terraform get
-```terraform get
+terraform get
 Get: git::https://github.com/riywo/mesos-ceph.git
-```
+
 
 Then, you can check terraform plan. To show resources in module, you have to provide -module-depth option.
 ```terraform plan -module-depth -1```
