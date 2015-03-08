@@ -3,7 +3,7 @@ terraform-mesos-consul-ceph-weave
 
 #WARNING - THIS IS PURELY EXPERIMENTAL AND NOT TESTED FULLY ON ALL PROVIDERS YET
 
-A repo to test 3 mesos master and 3 mesos slave on AWS, Rackspace or Google Compute Engine, with Consul keystore, weave, docker and ceph cluster
+A repo to test get 3 mesos master and 3 mesos slave on AWS, Rackspace or Google Compute Engine, with Consul keystore, weave, docker, ceph cluster and jenkins running.
 
 # Prereqs
 ## Basic stuff
@@ -14,6 +14,7 @@ First, you should download the module using terraform get
 ```terraform get
 Get: git::https://github.com/riywo/mesos-ceph.git
 ```
+
 Then, you can check terraform plan. To show resources in module, you have to provide -module-depth option.
 ```terraform plan -module-depth -1```
 The Terraform execution plan has been generated and is shown below.
