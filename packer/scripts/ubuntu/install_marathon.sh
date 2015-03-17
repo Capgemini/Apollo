@@ -1,5 +1,7 @@
-#!/bin/bash
-sudo apt-get update
+#!/usr/bin/env bash
+set -o errexit -o nounset -o pipefail
+
+sudo apt-get -y update
 sudo apt-get install -y marathon
 
 sudo service marathon stop

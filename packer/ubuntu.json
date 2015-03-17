@@ -51,9 +51,10 @@
     "scripts": [
       "scripts/ubuntu/base.sh",
       "scripts/ubuntu/virtualbox/install-dkms.sh",
-      "scripts/virtualbox/install_vbox_guest_additions.sh",
-      "scripts/virtualbox/sudoers.sh",
-      "scripts/virtualbox/vagrant_ssh.sh",
+      "scripts/common/virtualbox/install_vbox_guest_additions.sh",
+      "scripts/common/virtualbox/sudoers.sh",
+      "scripts/common/virtualbox/vagrant_ssh.sh",
+      "scripts/common/sshd.sh"
       "scripts/ubuntu/install_docker.sh",
       "scripts/ubuntu/install_mesos.sh",
       "scripts/ubuntu/install_marathon.sh",
