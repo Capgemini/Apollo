@@ -63,8 +63,7 @@
     ],
     "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
   }],
-  "post-processors": [
-  {
+  "post-processors": [{
     "type": "vagrant",
     "output": "build/ubuntu-14.04_amd64_{{.Provider}}/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64_{{.Provider}}_{{user `build_version`}}.box",
     "keep_input_artifact": true

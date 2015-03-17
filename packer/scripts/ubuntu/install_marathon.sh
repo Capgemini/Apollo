@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-set -o errexit -o nounset -o pipefail
+#!/bin/bash
 
 sudo apt-get -y update
 sudo apt-get install -y marathon

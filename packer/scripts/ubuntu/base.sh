@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
-set -o errexit -o nounset -o pipefail
+#!/bin/bash
 
 sudo apt-get update -y
 sudo apt-get upgrade -y
+sudo apt-get update -y
 
-sudo apt-get -y install curl libcurl3 default-jre-headless unzip wget python-setuptools python-protobuf
+sudo apt-get -y install git curl libcurl3 default-jre-headless unzip wget python-setuptools python-protobuf

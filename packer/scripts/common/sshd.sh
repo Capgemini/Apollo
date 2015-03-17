@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-set -o errexit -o nounset -o pipefail
+#!/bin/bash
 
 # UseDNS is mostly useless and disabling speeds up logins
 echo "UseDNS no" >> /etc/ssh/sshd_config

@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-set -o errexit -o nounset -o pipefail
+#!/bin/bash
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')

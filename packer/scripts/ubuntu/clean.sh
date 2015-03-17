@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-set -o errexit -o nounset -o pipefail
+#!/bin/bash
 
 apt-get -y autoremove
 apt-get -y clean
