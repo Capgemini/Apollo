@@ -31,7 +31,7 @@ will be destroyed.
 - Check ```variables.tf``` to ensure you are using the proper AMIs. Right now I have it set to Ubuntu Trusty (14.04) with an instance backed store.
 - mesos-master.tf has Availability Zones set to eu-ams-1a, b and c. Please change to meet your needs.
 
-- For our example, we use the Consul demo cluster to both read configuration and store information about a newly created EC2 instance. The size of the EC2 instance will be determined by the "tf_test/size" key in Consul, and will default to "m1.small" if that key does not exist. Once the instance is created the "tf_test/id" and "tf_test/public_dns" keys will be set with the computed values for the instance.
+- For this example, we use the Consul cluster to both read configuration and store information about a newly created EC2 instance. The size of the EC2 instance will be determined by the "tf_test/size" key in Consul, and will default to "m1.small" if that key does not exist. Once the instance is created the "tf_test/id" and "tf_test/public_dns" keys will be set with the computed values for the instance.
 Before we run the example, use the Web UI to set the "tf_test/size" key to "t1.micro". Once that is done, copy the configuration into a configuration file ("consul.tf" works fine). Either provide the AWS credentials as a default value in the configuration or invoke apply with the appropriate variables set.
 Once the apply has completed, we can see the keys in Consul by visiting the Web UI. We can see that the "tf_test/id" and "tf_test/public_dns" values have been set.
 
@@ -80,11 +80,19 @@ terraform apply terraform.tfplan
 ```
 
 # Next steps
+- Packer template for AWS, Rackspace & GCE
 - Consul based backend
-- Ceph Cluster
-- Packer template for AWS and Rackspace
 - Integrate weave
+- Ceph Cluster
 - Setup Jenkins on Slave
-- Setup ASG, lauch configuration and user-data for mesos-slave
+- Setup ASG, launch configuration and user-data for mesos-slave
 - Add the AZs as a variable
 - Security groups for AWS and Rackspace
+- Move to Ansible playbook for install
+
+# Thanks and Contributions
+- https://github.com/riywo/mesos-ceph
+- https://github.com/tonyjchong/terraform-mesos
+- https://github.com/hashicorp/terraform/tree/master/examples/consul
+- https://github.com/hashicorp/consul/blob/master/terraform/
+- https://github.com/hashicorp/consul/blob/master/terraform/aws/scripts/upstart-join.conf
