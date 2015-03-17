@@ -4,3 +4,4 @@
 *.tfstate*
 *.tfvars
 *.tfplan
+packer_cache
