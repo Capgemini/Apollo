@@ -1,24 +1,14 @@
+/* Mesos master instances */
 resource "aws_instance" "mesos-master" {
   instance_type = "${var.instance_type.master}"
   ami = "${atlas_artifact.mesos.metadata_full.region-eu-west-1}"
-  count = 1
+  count = "${var.masters}"
   key_name = "${var.key_name}"
-  security_groups = ["${aws_security_group.mesos-sg.name}"]
-  connection {
-    user = "ubuntu"
-    key_file = "${var.key_file}"
+  source_dest_check = false
+  subnet_id = "${aws_subnet.private.id}"
+  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.master.id}"]
+  user_data = "${file(\"files/setup-master.sh\")}"
+  tags = {
+    Name = "capgemini-mesos-master-${count.index}"
   }
-  provisioner "remote-exec" {
-    scripts = [
-      "../files/setup-master.sh"
-    ]
-  }
-}
-
-resource "aws_route53_record" "mesos-master" {
-   zone_id = "${var.zone_id}"
-   name = "${var.mesos_dns}"
-   type = "A"
-   ttl = "300"
-   records = ["${aws_instance.mesos-master.public_ip}"]
 }

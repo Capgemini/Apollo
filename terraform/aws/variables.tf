@@ -10,8 +10,33 @@ variable "region" {
   default = "eu-west-1"
 }
 
+variable "subnet_availability_zone" {
+  description = "Availability zone for mesos-ceph subnet."
+  default = "eu-west-1b"
+}
+
+variable "vpc_cidr_block" {
+  description = "Cidr block for the VPC."
+  default = "10.0.0.0/16"
+}
+
+variable "private_subnet_cidr_block" {
+  description = "Cidr block for mesos subnet."
+  default = "10.0.1.0/24"
+}
+
+variable "public_subnet_cidr_block" {
+  description = "CIDR for public subnet"
+  default     = "10.0.0.0/24"
+}
+
 variable "slaves" {
   description = "The number of slaves."
+  default = "1"
+}
+
+variable "masters" {
+  description = "The number of masters."
   default = "1"
 }
 
@@ -28,3 +53,12 @@ variable "instance_type" {
     slave  = "m1.medium"
   }
 }
+
+/* Base Ubuntu 14.04 amis by region */
+variable "amis" {
+  description = "Base AMI to launch the instances with"
+  default = {
+    eu-west-1 = "ami-234ecc54"
+  }
+}
+
