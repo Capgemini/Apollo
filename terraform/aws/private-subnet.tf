@@ -1,10 +1,10 @@
 /* Private subnet */
 resource "aws_subnet" "private" {
-  vpc_id            = "${aws_vpc.default.id}"
-  cidr_block        = "${var.private_subnet_cidr_block}"
-  availability_zone = "${var.subnet_availability_zone}"
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "${var.private_subnet_cidr_block}"
+  availability_zone       = "${var.subnet_availability_zone}"
   map_public_ip_on_launch = false
-  depends_on = ["aws_instance.nat"]
+  depends_on              = ["aws_instance.nat"]
   tags {
     Name = "private"
   }

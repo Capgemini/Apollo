@@ -37,7 +37,15 @@ variable "slaves" {
 
 variable "masters" {
   description = "The number of masters."
-  default = "1"
+  default = "3"
+}
+
+variable "master_ips" {
+  default = {
+    master-0 = "10.0.1.11"
+    master-1 = "10.0.1.12"
+    master-2 = "10.0.1.13"
+  }
 }
 
 variable "slave_block_device" {
