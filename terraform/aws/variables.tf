@@ -54,6 +54,13 @@ variable "instance_type" {
   }
 }
 
+variable "atlas_artifact" {
+  default = {
+    master = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
+    slave  = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
+  }
+}
+
 /* Base Ubuntu 14.04 amis by region */
 variable "amis" {
   description = "Base AMI to launch the instances with"
