@@ -32,7 +32,7 @@ variable "public_subnet_cidr_block" {
 
 variable "slaves" {
   description = "The number of slaves."
-  default = "1"
+  default = "3"
 }
 
 variable "masters" {

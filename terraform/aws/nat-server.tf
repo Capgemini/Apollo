@@ -34,15 +34,16 @@ resource "aws_instance" "nat" {
   }
   provisioner "remote-exec" {
     inline = [
+      /* @todo - not sure the routing is working correctly here */
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
-      "sudo echo 1 > /proc/sys/net/ipv4/conf/all/forwarding",
+      "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
       /* Install docker */
-      "curl -sSL https://get.docker.com/ubuntu/ | sudo sh"
+      "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
       /* Initialize open vpn data container */
-      /*"sudo mkdir -p /etc/openvpn"*/
-      /*"sudo docker run --name ovpn-data -v /etc/openvpn busybox",*/
+      "sudo mkdir -p /etc/openvpn",
+      "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
       /* Generate OpenVPN server config */
-      /*"sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${aws_instance.nat.public_ip}"*/
+      "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${aws_instance.nat.public_ip}"
     ]
   }
 }

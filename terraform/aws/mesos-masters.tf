@@ -12,7 +12,7 @@ resource "aws_instance" "mesos-master" {
   key_name          = "${var.key_name}"
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.id}"
-  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.master.id}"]
+  security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.nat", "aws_internet_gateway.public"]
   private_ip        = "${lookup(var.master_ips, concat("master-", count.index))}"
   tags = {
@@ -34,7 +34,7 @@ resource "aws_instance" "mesos-master" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${element(aws_instance.mesos-master.*.public_dns, count.index)} | cat /tmp/${element(aws_instance.mesos-master.*.id, count.index)}-*.sh - | bash"
+      "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${element(aws_instance.mesos-master.*.private_dns, count.index)} | cat /tmp/${element(aws_instance.mesos-master.*.id, count.index)}-*.sh - | bash"
     ]
   }
 }
