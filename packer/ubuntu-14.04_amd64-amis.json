@@ -40,7 +40,7 @@
     "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
   }],
   "push": {
-    "name": "capgemini/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64-build-configuration"
+    "name": "capgemini/mesos-0-21-0-ubuntu-14-04"
   },
   "post-processors": [{
     "type": "atlas",

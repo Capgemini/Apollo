@@ -17,5 +17,3 @@ echo manual | sudo tee /etc/init/mesos-slave.override >/dev/null
 
 echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers >/dev/null
 echo '10mins' | sudo tee /etc/mesos-slave/executor_registration_timeout >/dev/null
-echo '/var/log/mesos' | sudo tee /etc/mesos-slave/log_dir >/dev/null
-echo '/var/log/mesos' | sudo tee /etc/mesos-master/log_dir >/dev/null
