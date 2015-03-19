@@ -61,6 +61,12 @@ set_mesos_master_hostname() {
   ssh "$node" "echo $public_dns | sudo tee /etc/mesos-master/hostname"
 }
 
+set_consul_master() {
+  declare node="$1"
+  ssh "$node" "echo '{\"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
+  register_service $node "consul"
+}
+
 set_mesos_slave_hostname() {
   declare node="$1" public_dns="$2"
   ssh "$node" "echo $public_dns | sudo tee /etc/mesos-slave/hostname"
