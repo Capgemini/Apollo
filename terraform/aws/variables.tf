@@ -17,17 +17,17 @@ variable "subnet_availability_zone" {
 
 variable "vpc_cidr_block" {
   description = "Cidr block for the VPC."
-  default = "10.128.0.0/16"
-}
-
-variable "private_subnet_cidr_block" {
-  description = "Cidr block for mesos subnet."
-  default = "10.128.1.0/24"
+  default = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidr_block" {
   description = "CIDR for public subnet"
-  default     = "10.128.0.0/24"
+  default     = "10.0.0.0/24"
+}
+
+variable "private_subnet_cidr_block" {
+  description = "Cidr block for mesos subnet."
+  default = "10.0.1.0/24"
 }
 
 variable "slaves" {
@@ -42,9 +42,9 @@ variable "masters" {
 
 variable "master_ips" {
   default = {
-    master-0 = "10.128.1.11"
-    master-1 = "10.128.1.12"
-    master-2 = "10.128.1.13"
+    master-0 = "10.0.1.11"
+    master-1 = "10.0.1.12"
+    master-2 = "10.0.1.13"
   }
 }
 
