@@ -10,7 +10,6 @@ main() {
   set_zookeeper_cfg "$node"
   set_mesos_zk "$node"
   set_mesos_master_hostname "$node" "$private_dns"
-  set_consul_master "$node"
   register_service "$node" zookeeper
   register_service "$node" mesos-master
   register_service "$node" marathon
