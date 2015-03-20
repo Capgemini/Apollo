@@ -44,6 +44,11 @@
   }],
   "provisioners": [
     {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart/consul.conf",
+      "destination": "/tmp/consul.conf"
+    },
+    {
       "type": "shell",
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
@@ -63,11 +68,6 @@
         "scripts/common/install_weave.sh"
       ],
       "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
-    },
-    {
-      "type": "file",
-      "source": "scripts/ubuntu/upstart/consul.conf",
-      "destination": "/etc/init/consul.conf"
     }
   ],
   "post-processors": [{
