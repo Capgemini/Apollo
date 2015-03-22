@@ -1,0 +1,72 @@
+{
+  "variables": {
+    "ssh_name": "vagrant",
+    "ssh_pass": "vagrant",
+    "hostname": "ubuntu",
+    "consul_version": "0.5.0",
+    "consul_template_version": "0.7.0",
+    "weave_version": "latest_release",
+    "build_version": "{{ timestamp }}"
+  },
+  "builders": [{
+    "type": "virtualbox-iso",
+    "guest_os_type": "Ubuntu_64",
+    "headless": true,
+    "vm_name": "lb_ubuntu-14.04_amd64_virtualbox_{{user `build_version`}}",
+    "disk_size": 40960,
+    "vboxmanage": [
+      [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+      [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
+    ],
+    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
+    "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
+    "iso_checksum_type": "md5",
+    "http_directory" : "./http/ubuntu-14.04",
+    "http_port_min" : 9001,
+    "http_port_max" : 9001,
+    "boot_command" : [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic ",
+      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{user `hostname`}} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+      "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+    ],
+    "ssh_username": "{{user `ssh_name`}}",
+    "ssh_password": "{{user `ssh_pass`}}",
+    "ssh_wait_timeout": "60m",
+    "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
+    "output_directory": "build/ubuntu-14.04_amd64_virtualbox",
+    "format": "ova"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "environment_vars": [
+      "CONSUL_VERSION={{user `consul_version`}}",
+      "CONSUL_TEMPLATE_VERSION={{user `consul_template_version`}}",
+      "WEAVE_VERSION={{user `weave_version`}}"
+    ],
+    "scripts": [
+      "scripts/ubuntu/base.sh",
+      "scripts/ubuntu/virtualbox/install-dkms.sh",
+      "scripts/common/virtualbox/install_vbox_guest_additions.sh",
+      "scripts/common/virtualbox/sudoers.sh",
+      "scripts/common/virtualbox/vagrant_ssh.sh",
+      "scripts/common/sshd.sh"
+      "scripts/ubuntu/install_docker.sh",
+      "scripts/common/install_consul.sh",
+      "scripts/common/install_consul_template.sh",
+      "scripts/ubuntu/install_haproxy.sh",
+      "scripts/common/install_weave.sh"
+    ],
+    "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "output": "build/ubuntu-14.04_amd64_{{.Provider}}/lb_ubuntu-14.04_amd64_{{.Provider}}_{{user `build_version`}}.box",
+    "keep_input_artifact": true
+  }]
+}
