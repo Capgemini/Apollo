@@ -5,6 +5,11 @@ variable "key_file" {}
 variable "zone_id" {}
 variable "atlas_token" {}
 
+variable "atlas_infrastructure" {
+  description = "The Atlas infrastructure project to join."
+  default = "capgemini/infrastructure"
+}
+
 variable "region" {
   description = "The AWS region to create resources in."
   default = "eu-west-1"
@@ -37,7 +42,7 @@ variable "slaves" {
 
 variable "masters" {
   description = "The number of masters."
-  default = "1"
+  default = "3"
 }
 
 variable "master_ips" {

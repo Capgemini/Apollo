@@ -63,8 +63,17 @@ set_mesos_master_hostname() {
 
 set_consul_master() {
   declare node="$1"
-  ssh "$node" "echo '{\"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
-  register_service $node "consul"
+  local nodes=$(wc -l < /home/ubuntu/masters)
+
+  ssh "$node" "echo '{\"ui_dir\": \"/opt/consul-ui\", \"server\": true, \"bootstrap_expect\": ${nodes}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
+}
+
+set_consul_atlas() {
+  declare node="$1"
+  declare atlas_token="$2"
+  declare atlas_infrastructure="$3"
+
+  ssh "$node" "echo '{\"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
 }
 
 set_mesos_slave_hostname() {
