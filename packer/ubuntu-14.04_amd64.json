@@ -42,27 +42,35 @@
     "output_directory": "build/ubuntu-14.04_amd64_virtualbox",
     "format": "ova"
   }],
-  "provisioners": [{
-    "type": "shell",
-    "environment_vars": [
-      "CONSUL_VERSION={{user `consul_version`}}",
-      "WEAVE_VERSION={{user `weave_version`}}"
-    ],
-    "scripts": [
-      "scripts/ubuntu/base.sh",
-      "scripts/ubuntu/virtualbox/install-dkms.sh",
-      "scripts/common/virtualbox/install_vbox_guest_additions.sh",
-      "scripts/common/virtualbox/sudoers.sh",
-      "scripts/common/virtualbox/vagrant_ssh.sh",
-      "scripts/common/sshd.sh"
-      "scripts/ubuntu/install_docker.sh",
-      "scripts/ubuntu/install_mesos.sh",
-      "scripts/ubuntu/install_marathon.sh",
-      "scripts/common/install_consul.sh",
-      "scripts/common/install_weave.sh"
-    ],
-    "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
-  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart/consul.conf",
+      "destination": "/tmp/consul.conf"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/ubuntu/virtualbox/install-dkms.sh",
+        "scripts/common/virtualbox/install_vbox_guest_additions.sh",
+        "scripts/common/virtualbox/sudoers.sh",
+        "scripts/common/virtualbox/vagrant_ssh.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/ubuntu/install_mesos.sh",
+        "scripts/ubuntu/install_marathon.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/ubuntu/install_dnsmasq.sh",
+        "scripts/common/install_weave.sh"
+      ],
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+    }
+  ],
   "post-processors": [{
     "type": "vagrant",
     "output": "build/ubuntu-14.04_amd64_{{.Provider}}/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64_{{.Provider}}_{{user `build_version`}}.box",

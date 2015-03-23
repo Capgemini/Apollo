@@ -5,3 +5,4 @@
 *.tfvars
 *.tfplan
 packer_cache
+packer/build

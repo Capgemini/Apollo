@@ -10,7 +10,6 @@ resource "aws_instance" "mesos-slave" {
   ami               = "${atlas_artifact.mesos-slave.metadata_full.region-eu-west-1}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
-  key_name          = "${var.key_name}"
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.id}"
   security_groups   = ["${aws_security_group.default.id}"]
@@ -39,7 +38,7 @@ resource "aws_instance" "mesos-slave" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${element(aws_instance.mesos-slave.*.private_ip, count.index)} ${element(aws_instance.mesos-slave.*.private_dns, count.index)} | cat /tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-*.sh - | bash"
+      "echo main ${element(aws_instance.mesos-slave.*.private_ip, count.index)} ${element(aws_instance.mesos-slave.*.private_dns, count.index)} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-*.sh - | bash"
     ]
   }
 }
