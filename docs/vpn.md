@@ -5,7 +5,19 @@ configuration to connect with the OpenVPN client from your workstation.
 This is required if you wish to access the web UI of machines running
 in the private VPC (e.g. consul UI / Mesos / Marathon)
 
+#### Pre-requisites
+
+* Install aws cli to generate key-pair - https://github.com/aws/aws-cli
+* Generate key-pair - http://www.dowdandassociates.com/blog/content/howto-create-an-amazon-ec2-key-pair-using-the-aws-cli/
+* Add the key to your keychain
+
+```
+ssh-add -K <key_file_path>
+```
+
+
 1: Initialize PKI
+
 
 ```
 bin/ovpn-init
