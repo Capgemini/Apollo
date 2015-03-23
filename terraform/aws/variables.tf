@@ -62,8 +62,8 @@ variable "slave_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master = "m1.small"
+    slave  = "m1.small"
   }
 }
 
