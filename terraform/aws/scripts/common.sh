@@ -73,7 +73,7 @@ set_consul_atlas() {
   declare atlas_token="$2"
   declare atlas_infrastructure="$3"
 
-  ssh "$node" "echo '{\"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
+  ssh "$node" "echo '{\"client_addr\": \"0.0.0.0\", \"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
 }
 
 set_mesos_slave_hostname() {
