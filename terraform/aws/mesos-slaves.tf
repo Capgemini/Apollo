@@ -13,7 +13,7 @@ resource "aws_instance" "mesos-slave" {
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.id}"
   security_groups   = ["${aws_security_group.default.id}"]
-  depends_on        = ["aws_instance.nat", "aws_internet_gateway.public"]
+  depends_on        = ["aws_instance.nat", "aws_internet_gateway.public", "aws_instance.mesos-master"]
   tags = {
     Name = "capgemini-mesos-slave-${count.index}"
   }
