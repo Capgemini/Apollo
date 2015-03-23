@@ -41,6 +41,7 @@
         "scripts/ubuntu/install_mesos.sh",
         "scripts/ubuntu/install_marathon.sh",
         "scripts/common/install_consul.sh",
+        "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
       ],
       "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"

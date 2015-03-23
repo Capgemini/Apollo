@@ -18,4 +18,5 @@ main() {
   register_service "$node" mesos-master
   register_service "$node" marathon
   register_service "$node" consul
+  register_service "$node" dnsmasq
 }
