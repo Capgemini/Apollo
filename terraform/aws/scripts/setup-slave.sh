@@ -13,4 +13,5 @@ main() {
   register_service "$node" mesos-slave
   register_service "$node" docker
   register_service "$node" consul
+  register_service "$node" dnsmasq
 }
