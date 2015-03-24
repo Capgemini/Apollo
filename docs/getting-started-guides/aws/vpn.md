@@ -5,7 +5,7 @@ configuration to connect with the OpenVPN client from your workstation.
 This is required if you wish to access the web UI of machines running
 in the private VPC (e.g. consul UI / Mesos / Marathon)
 
-#### Pre-requisites
+### Pre-requisites
 
 * Install aws cli to generate key-pair - https://github.com/aws/aws-cli
 * Generate key-pair - http://www.dowdandassociates.com/blog/content/howto-create-an-amazon-ec2-key-pair-using-the-aws-cli/
@@ -15,6 +15,7 @@ in the private VPC (e.g. consul UI / Mesos / Marathon)
 ssh-add -K <key_file_path>
 ```
 
+### Steps
 
 1: Initialize PKI
 
@@ -63,7 +64,7 @@ $USER-cagpemini-mesos.ovpn file
    with Tunnelblick
 3. Connect to the VPN
 
-Once connected you should be able to access the following - 
+Once connected you should be able to access the following -
 
 * [Mesos Master UI] (http://10.0.1.11:5050)
 * [Marathon UI] (http://10.0.1.11:8080)
