@@ -37,3 +37,8 @@ terraform apply
 NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland). It'll also try to create a mesos slave cluster and a NAT server for accessing via VPN and SSH.
 
 For instructions on how to configure the VPN to access the web interface of the tools see the [vpn guide](../aws/vpn.md).
+
+#### Tearing down the cluster
+```
+terraform destroy
+```
