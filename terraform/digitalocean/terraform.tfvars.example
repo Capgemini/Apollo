@@ -1,0 +1,6 @@
+access_key = "aws_access_key_jfldajlkdfja;ds"
+secret_key = "aws_secret_key_jkfldajskfja;klkfjdsa"
+atlas_token = "atlas_token_v-31xdELrnLSns-HgbmJy1eXztv_z69zMvQ2xyJ8"
+region = "lon1"
+key_name = "your-key-name"
+key_file = "some/path/to/file.pem"
