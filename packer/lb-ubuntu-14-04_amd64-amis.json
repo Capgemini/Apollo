@@ -1,7 +1,7 @@
 {
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": "",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "consul_version": "0.5.0",
     "consul_template_version": "0.7.0",
     "weave_version": "latest_release",
@@ -56,7 +56,7 @@
   },
   "post-processors": [{
     "type": "atlas",
-    "token": "",
+    "token": "{{env `ATLAS_TOKEN`}}",
     "artifact": "capgemini/lb_ubuntu-14.04_amd64",
     "artifact_type": "aws.ami",
     "metadata": {
