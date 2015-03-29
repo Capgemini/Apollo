@@ -8,7 +8,7 @@ sudo service rsyslog restart
 sup cp /ops/templates/haproxy.cfg /etc/haproxy/haproxy.cfg
 
 # eve upstart
-sudo cp /ops/upstart/haproxy.conf /etc/init/haproxy.conf
+sudo cp /tmp/upstart/haproxy.conf /etc/init/haproxy.conf
 
 # consul config
 echo '{"service": {"name": "haproxy", "tags": ["haproxy"]}}' > /etc/consul.d/haproxy.json

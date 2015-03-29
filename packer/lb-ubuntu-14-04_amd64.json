@@ -18,8 +18,8 @@
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
       [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
     ],
-    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
-    "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
+    "iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
+    "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
     "iso_checksum_type": "md5",
     "http_directory" : "./http/ubuntu-14.04",
     "http_port_min" : 9001,
@@ -42,28 +42,35 @@
     "output_directory": "build/ubuntu-14.04_amd64_virtualbox",
     "format": "ova"
   }],
-  "provisioners": [{
-    "type": "shell",
-    "environment_vars": [
-      "CONSUL_VERSION={{user `consul_version`}}",
-      "CONSUL_TEMPLATE_VERSION={{user `consul_template_version`}}",
-      "WEAVE_VERSION={{user `weave_version`}}"
-    ],
-    "scripts": [
-      "scripts/ubuntu/base.sh",
-      "scripts/ubuntu/virtualbox/install-dkms.sh",
-      "scripts/common/virtualbox/install_vbox_guest_additions.sh",
-      "scripts/common/virtualbox/sudoers.sh",
-      "scripts/common/virtualbox/vagrant_ssh.sh",
-      "scripts/common/sshd.sh"
-      "scripts/ubuntu/install_docker.sh",
-      "scripts/common/install_consul.sh",
-      "scripts/common/install_consul_template.sh",
-      "scripts/ubuntu/install_haproxy.sh",
-      "scripts/common/install_weave.sh"
-    ],
-    "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
-  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "CONSUL_TEMPLATE_VERSION={{user `consul_template_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/ubuntu/virtualbox/install-dkms.sh",
+        "scripts/common/virtualbox/install_vbox_guest_additions.sh",
+        "scripts/common/virtualbox/sudoers.sh",
+        "scripts/common/virtualbox/vagrant_ssh.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/common/install_consul_template.sh",
+        "scripts/ubuntu/install_haproxy.sh",
+        "scripts/common/install_weave.sh"
+      ],
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+    }
+  ],
   "post-processors": [{
     "type": "vagrant",
     "output": "build/ubuntu-14.04_amd64_{{.Provider}}/lb_ubuntu-14.04_amd64_{{.Provider}}_{{user `build_version`}}.box",
