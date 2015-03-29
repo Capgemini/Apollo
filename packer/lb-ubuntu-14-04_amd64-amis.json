@@ -24,6 +24,11 @@
   "provisioners": [
     {
       "type": "file",
+      "source": "scripts/common/templates",
+      "destination": "/tmp"
+    },
+    {
+      "type": "file",
       "source": "scripts/ubuntu/upstart",
       "destination": "/tmp"
     },
@@ -37,7 +42,6 @@
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
-        "scripts/ubuntu/aws/install_cgroup_bin.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/common/install_consul.sh",
         "scripts/common/install_consul_template.sh",

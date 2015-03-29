@@ -40,3 +40,20 @@ resource "aws_security_group" "nat" {
     Name = "nat-capgemini-mesos"
   }
 }
+
+resource "aws_security_group" "loadbalancer" {
+  name = "loadbalancer"
+  description = "Allow all inbound traffic"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port = 0
+    to_port = 65535
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "loadbalancer-capgemini-mesos"
+  }
+}

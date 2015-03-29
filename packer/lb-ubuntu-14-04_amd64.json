@@ -45,6 +45,11 @@
   "provisioners": [
     {
       "type": "file",
+      "source": "scripts/common/templates",
+      "destination": "/tmp"
+    },
+    {
+      "type": "file",
       "source": "scripts/ubuntu/upstart",
       "destination": "/tmp"
     },
