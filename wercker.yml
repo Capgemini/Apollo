@@ -5,7 +5,7 @@ build:
   steps:
     - bundle-install
     - install-packages:
-        packages: wget unzip virtualbox@4.3
+        packages: wget unzip
     - script:
         name: install packer
         cwd: packer/
