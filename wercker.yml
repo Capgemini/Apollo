@@ -21,12 +21,10 @@ build:
         cwd: packer/
         name: validate packer template
         code: ./packer validate mesos_ubuntu-14-04_amd64.json | tee $WERCKER_REPORT_MESSAGE_FILE
-    - script: |
-        sudo gem install bundler
-        sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list'
-        wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -
-        sudo apt-get update
-        sudo apt-get install -y dkms virtualbox-4.3
+    - script:
+        name: install prereqs
+        code: |
+          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y dkms virtualbox-4.3
     - script:
         name: build image
         cwd: packer/
