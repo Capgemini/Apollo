@@ -44,6 +44,16 @@
         "scripts/common/install_weave.sh"
       ],
       "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
+      "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
     }
   ],
   "push": {

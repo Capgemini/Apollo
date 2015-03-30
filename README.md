@@ -1,6 +1,11 @@
 Apollo
 =========
 
+[![wercker
+status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/m/master
+"wercker
+status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
+
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
 across multiple hosts, and hooks into other open source products to provide basic
