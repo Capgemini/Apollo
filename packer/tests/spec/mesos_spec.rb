@@ -34,12 +34,12 @@ service_files.each do |file|
   end
 end
 
-descibe file('/etc/mesos-slave/containerizers') do
+describe file('/etc/mesos-slave/containerizers') do
   it { should be_file }
   its(:content) { should match /docker,mesos/ }
 end
 
-descibe file('/etc/mesos-slave/executor_registration_timeout') do
+describe file('/etc/mesos-slave/executor_registration_timeout') do
   it { should be_file }
   its(:content) { should match /10mins/ }
 end

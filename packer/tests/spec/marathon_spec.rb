@@ -13,7 +13,7 @@ describe file('/etc/init/marathon.override') do
   it { should be_file }
 end
 
-descibe file('/etc/marathon/conf/task_launch_timeout') do
+describe file('/etc/marathon/conf/task_launch_timeout') do
   it { should be_file }
   its(:content) { should match /300000/ }
 end
