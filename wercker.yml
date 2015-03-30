@@ -1,6 +1,6 @@
 box: wercker/ruby
 no-response-timeout: 10
-platform: ubuntu@12.04
+platform: ubuntu@14.04
 build:
   steps:
     - bundle-install
@@ -24,7 +24,7 @@ build:
     - script:
         name: install prereqs
         code: |
-          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y dkms virtualbox-4.3 && sudo /etc/init.d/vboxdrv setup
+          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y linux-virtual dkms virtualbox-4.3 && sudo /etc/init.d/vboxdrv setup
     - script:
         name: build image
         cwd: packer/
