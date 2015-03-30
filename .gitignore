@@ -16,4 +16,3 @@ vendor
 inventory/terraform.py
 tests/spec/*/*runtime_spec.rb
 contrib-plugins/*
-
