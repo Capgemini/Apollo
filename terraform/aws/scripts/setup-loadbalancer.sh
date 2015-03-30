@@ -10,5 +10,5 @@ main() {
   set_consul_atlas "$node" "$atlas_token" "$atlas_infrastructure"
   register_service "$node" consul
   register_service "$node" docker
-
+  register_service "$node" haproxy
 }

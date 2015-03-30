@@ -17,8 +17,8 @@ resource "aws_instance" "loadbalancer" {
     Name = "capgemini-mesos-loadbalancer"
   }
   connection {
-    user       = "ubuntu"
-    key_file   = "${var.key_file}"
+    user        = "ubuntu"
+    key_file    = "${var.key_file}"
     host        = "${aws_instance.loadbalancer.public_ip}"
     script_path = "/tmp/${element(aws_instance.loadbalancer.*.id, count.index)}.sh"
   }
@@ -39,5 +39,5 @@ resource "aws_instance" "loadbalancer" {
 
 resource "aws_eip" "loadbalancer" {
   instance = "${aws_instance.loadbalancer.id}"
-  vpc = true
+  vpc      = true
 }

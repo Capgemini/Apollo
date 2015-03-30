@@ -14,5 +14,4 @@ main() {
   register_service "$node" docker
   register_service "$node" consul
   register_service "$node" dnsmasq
-  register_service "$node" haproxy
 }
