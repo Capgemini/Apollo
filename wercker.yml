@@ -24,7 +24,7 @@ build:
     - script:
         name: install prereqs
         code: |
-          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y dkms virtualbox-4.3
+          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian precise contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y dkms virtualbox-4.3 && sudo /etc/init.d/vboxdrv setup
     - script:
         name: build image
         cwd: packer/
