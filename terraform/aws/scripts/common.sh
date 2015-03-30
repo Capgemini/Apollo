@@ -83,7 +83,7 @@ set_mesos_slave_hostname() {
 
 set_weave_bridge() {
   declare node="$1"
-  declare host_index="$5"
+  declare host_index="$2"
   ssh "$node" "echo \"
   auto weave
   iface weave inet manual
@@ -91,7 +91,7 @@ set_weave_bridge() {
           post-up ip addr add dev weave 10.2.0.${host_index}/16
           pre-down ifconfig weave down
           post-down brctl delbr weave
-  \" >> /etc/network/interfaces && DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\" >> /etc/default/docker"
+  \" >> /etc/network/interfaces && echo DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\" >> /etc/default/docker"
   register_service "$node" weave
   restart_service "$node" docker
   restart_service "$node" weave
