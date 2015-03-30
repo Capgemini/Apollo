@@ -17,7 +17,6 @@ services = [
 
 services.each do |service|
   describe service(service) do
-    it { should be_installed }
     it { should_not be_running }
   end
 end
