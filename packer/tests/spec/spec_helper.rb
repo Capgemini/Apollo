@@ -1,7 +1,6 @@
 require 'serverspec'
 
-include SpecInfra::Helper::Exec
-include SpecInfra::Helper::DetectOS
+set :backend, :exec
 
 RSpec.configure do |c|
   if ENV['ASK_SUDO_PASSWORD']
