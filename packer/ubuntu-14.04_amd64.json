@@ -3,7 +3,7 @@
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
     "hostname": "ubuntu",
-    "mesos_version": "0.21.0",
+    "mesos_version": "0.22.0",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
     "build_version": "{{ timestamp }}"
@@ -18,7 +18,7 @@
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
       [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
     ],
-    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
+    "iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
     "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
     "iso_checksum_type": "md5",
     "http_directory" : "./http/ubuntu-14.04",

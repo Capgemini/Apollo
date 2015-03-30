@@ -6,3 +6,4 @@
 *.tfplan
 packer_cache
 packer/build
+packer/*.pem
