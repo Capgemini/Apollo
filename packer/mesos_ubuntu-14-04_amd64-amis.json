@@ -1,7 +1,7 @@
 {
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": "",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "mesos_version": "0.21.0",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
@@ -36,7 +36,6 @@
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
-        "scripts/ubuntu/aws/install_cgroup_bin.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/ubuntu/install_mesos.sh",
         "scripts/ubuntu/install_marathon.sh",
@@ -44,6 +43,16 @@
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
       ],
+      "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
       "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
     }
   ],
