@@ -1,4 +1,7 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -eux
+set -o pipefail
 
 yum -y install wget bzip2 unzip
 

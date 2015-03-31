@@ -1,4 +1,8 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -eux
+set -o pipefail
+
 # Based off the great "Preparing Linux Template VMs"
 # (http://lonesysadmin.net/2013/03/26/preparing-linux-template-vms/) article
 # by Bob Plankers, thanks Bob!

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -eux
+set -o pipefail
+
 yum install -y dnsmasq
 chkconfig dnsmasq on
 

@@ -1,3 +1,8 @@
+#!/bin/bash
+
+set -eux
+set -o pipefail
+
 cat >> /etc/sysctl.conf << EOM
 
 # https://ckon.wordpress.com/2013/03/11/centos-6-4-supports-iw10-tcpip-tuning/

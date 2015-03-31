@@ -70,7 +70,7 @@
         "scripts/common/install_weave.sh",
         "scripts/centos/cleanup.sh"
       ],
-      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     }
   ],
   "post-processors": [

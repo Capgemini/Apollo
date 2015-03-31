@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -eux
+set -o pipefail
+
 # Install Mesos
 sudo rpm -Uvh http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
 
