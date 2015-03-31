@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -e -o pipefail
 
 sudo apt-get upgrade -y
 sudo apt-get update -y
