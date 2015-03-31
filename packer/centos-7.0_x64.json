@@ -1,0 +1,83 @@
+{
+  "variables": {
+    "ssh_name": "vagrant",
+    "ssh_pass": "vagrant",
+    "hostname": "ubuntu",
+    "mesos_version": "0.22.0",
+    "consul_version": "0.5.0",
+    "weave_version": "latest_release",
+    "build_version": "{{ timestamp }}"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "headless": true,
+      "vm_name": "mesos-{{user `mesos_version`}}_centos-7.0_x64_virtualbox_{{user `build_version`}}",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
+      ],
+      "iso_urls": [
+        "CentOS-7.0-1406-x86_64-Minimal.iso",
+        "http://centos.mirrors.hoobly.com/7/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso"
+      ],
+      "iso_checksum_type": "md5",
+      "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+      "http_directory" : "./http/centos-7.0",
+      "http_port_min" : 9001,
+      "http_port_max" : 9001,
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "ssh_username": "{{user `ssh_name`}}",
+      "ssh_password": "{{user `ssh_pass`}}",
+      "ssh_wait_timeout": "20m",
+      "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
+      "output_directory": "build/centos70-x64_virtualbox",
+      "format": "ova",
+      "disk_size": 40960,
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "virtualbox_version_file": ".vbox_version"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/centos/systemd/consul.conf",
+      "destination": "/tmp/consul.conf"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}"
+      ],
+      "scripts": [
+        "scripts/centos/base.sh",
+        "scripts/common/virtualbox/install_vbox_guest_additions.sh",
+        "scripts/common/virtualbox/sudoers.sh",
+        "scripts/common/virtualbox/vagrant_ssh.sh",
+        "scripts/common/sshd.sh",
+        "scripts/centos/kernel-3.x-upgrade.sh",
+        "scripts/centos/kernel-tune.sh",
+        "scripts/centos/install_docker.sh",
+        "scripts/centos/install_mesos_marathon.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/centos/install_dnsmasq.sh",
+        "scripts/common/install_weave.sh",
+        "scripts/centos/cleanup.sh"
+      ],
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "build/centos-7.0_x64_{{.Provider}}/mesos-{{user `mesos_version`}}_centos-7.0_x64_{{.Provider}}_{{user `build_version`}}.box",
+      "keep_input_artifact": true
+    }
+  ]
+}
