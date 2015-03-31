@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -eux
 set -o pipefail
 
 mkdir /home/vagrant/.ssh
