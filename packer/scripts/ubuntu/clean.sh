@@ -1,5 +1,6 @@
-#!/bin/bash
-set -eo pipefail
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
 
 apt-get -y autoremove
 apt-get -y clean
