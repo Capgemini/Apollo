@@ -11,13 +11,13 @@ build:
         code: |
           wget https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
           unzip packer_0.7.5_linux_amd64.zip
-          ./packer version | tee $WERCKER_REPORT_MESSAGE_FILE
+          ./packer version
     - script:
         cwd: packer/
         name: validate packer template
-        code: ./packer validate ubuntu-14.04_amd64-amis.json | tee $WERCKER_REPORT_MESSAGE_FILE
+        code: ./packer validate ubuntu-14.04_amd64-amis.json
     - script:
         name: build image
         cwd: packer/
         code: |
-          ./packer build ubuntu-14.04_amd64-amis.json | tee "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log"
+          ./packer build ubuntu-14.04_amd64-amis.json
