@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')

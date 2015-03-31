@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 sudo apt-get -y update
 curl -sSL https://get.docker.com/ubuntu/ | sudo sh

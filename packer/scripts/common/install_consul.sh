@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 cd /tmp/
 wget https://dl.bintray.com/mitchellh/consul/${CONSUL_VERSION}_linux_amd64.zip -O consul.zip

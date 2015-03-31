@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 apt-get install -y dnsmasq
 
