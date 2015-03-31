@@ -21,4 +21,3 @@ build:
         cwd: packer/
         code: |
           ./packer build ubuntu-14.04_amd64-amis.json | tee "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log"
-          tail -n 1 "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log" | tee $WERCKER_REPORT_MESSAGE_FILE
