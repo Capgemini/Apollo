@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
 
 sudo apt-get -y update
 curl -sSL https://get.docker.com/ubuntu/ | sudo sh

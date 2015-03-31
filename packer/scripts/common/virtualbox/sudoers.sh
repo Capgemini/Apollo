@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
 
 # Setup sudo to allow no-password sudo for "admin"
 groupadd -r admin
