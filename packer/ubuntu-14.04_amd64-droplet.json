@@ -39,7 +39,7 @@
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
       ],
-      "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
     }
   ]
 }

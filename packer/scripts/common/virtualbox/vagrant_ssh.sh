@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eux
+set -o pipefail
 
 mkdir /home/vagrant/.ssh
 sudo wget --no-check-certificate \

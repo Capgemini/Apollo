@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eux
+set -o pipefail
 
 sudo apt-get upgrade -y
 sudo apt-get update -y
