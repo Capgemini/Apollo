@@ -18,8 +18,8 @@
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
       [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
     ],
-    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
-    "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
+    "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
+    "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
     "iso_checksum_type": "md5",
     "http_directory" : "./http/ubuntu-14.04",
     "http_port_min" : 9001,
