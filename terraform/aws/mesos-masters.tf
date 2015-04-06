@@ -21,20 +21,20 @@ resource "aws_instance" "mesos-master" {
   connection {
     user        = "ubuntu"
     key_file    = "${var.key_file}"
-    host        = "${aws_instance.nat.public_ip}"
-    script_path = "/tmp/${element(aws_instance.mesos-master.*.id, count.index)}.sh"
+    host        = "${aws_eip.nat.public_ip}"
+    script_path = "/tmp/${self.id}.sh"
   }
   provisioner "file" {
     source      = "${path.module}/scripts/common.sh"
-    destination = "/tmp/${element(aws_instance.mesos-master.*.id, count.index)}-00common.sh"
+    destination = "/tmp/${self.id}-00common.sh"
   }
   provisioner "file" {
     source      = "${path.module}/scripts/setup-master.sh"
-    destination = "/tmp/${element(aws_instance.mesos-master.*.id, count.index)}-01setup-master.sh"
+    destination = "/tmp/${self.id}-01setup-master.sh"
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${element(aws_instance.mesos-master.*.private_dns, count.index)} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${element(aws_instance.mesos-master.*.id, count.index)}-*.sh - | bash"
+      "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${self.id}-*.sh - | bash"
     ]
   }
 }
