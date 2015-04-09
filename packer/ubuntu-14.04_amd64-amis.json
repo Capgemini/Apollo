@@ -10,7 +10,7 @@
   },
   "builders": [{
     "type": "amazon-ebs",
-    "ami_name": "mesos-{{user `mesos_version`}}-ubuntu-14.04_amd64_{{user `build_version`}}",
+    "ami_name": "mesos-{{user `mesos_version`}}_amd64_{{user `build_version`}}",
     "ami_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
