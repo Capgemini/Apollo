@@ -2,8 +2,8 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
-    "mesos_version": "0.22.0",
-    "marathon_version": "0.8.1",
+    "mesos_version": "0.22.0-1",
+    "marathon_version": "0.8.1-1",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
     "build_version": "{{ timestamp }}"
