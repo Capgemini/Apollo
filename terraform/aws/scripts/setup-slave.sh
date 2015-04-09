@@ -5,7 +5,8 @@ main() {
   local private_dns="$2"
   local atlas_token="$3"
   local atlas_infrastructure="$4"
-  local region="$5"
+  local host_index="$5"
+  local region="$6"
 
   wait_ssh_ready "$node"
 
@@ -16,4 +17,5 @@ main() {
   register_service "$node" docker
   register_service "$node" consul
   register_service "$node" dnsmasq
+  set_weave_bridge "$node" "$host_index"
 }
