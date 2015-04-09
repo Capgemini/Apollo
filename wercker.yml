@@ -16,11 +16,11 @@ build:
     - script:
         cwd: packer/
         name: validate lb packer template
-        code: ./packer validate lb_ubuntu-14-04_amd64.json
+        code: ./packer validate lb_ubuntu-14.04_amd64.json
     - script:
         cwd: packer/
         name: validate mesos packer template
-        code: ./packer validate mesos_ubuntu-14-04_amd64.json
+        code: ./packer validate mesos_ubuntu-14.04_amd64.json
     - script:
         name: build mesos image
         cwd: packer/
