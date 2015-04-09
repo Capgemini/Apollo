@@ -15,6 +15,5 @@ main() {
   register_service "$node" docker
   register_service "$node" consul
   register_service "$node" dnsmasq
-  register_service "$node" weave
   set_weave_bridge "$node" "$host_index"
 }
