@@ -60,7 +60,7 @@
     }
   ],
   "push": {
-    "name": "capgemini/mesos-0-21-0-ubuntu-14-04"
+    "name": "capgemini/mesos-{{user `mesos_version`}}-ubuntu-14-04"
   },
   "post-processors": [{
     "type": "atlas",
