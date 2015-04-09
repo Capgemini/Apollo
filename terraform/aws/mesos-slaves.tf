@@ -38,7 +38,7 @@ resource "aws_instance" "mesos-slave" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${self.private_ip} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${self.id}-*.sh - | bash"
+      "echo main ${self.private_ip} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} ${count.index} | cat /tmp/${self.id}-*.sh - | bash"
     ]
   }
 }
