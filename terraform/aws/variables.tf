@@ -69,8 +69,8 @@ variable "instance_type" {
 
 variable "atlas_artifact" {
   default = {
-    master = "capgemini/mesos-0.22.0-1.0.ubuntu1404_ubuntu-14.04_amd64"
-    slave  = "capgemini/mesos-0.22.0-1.0.ubuntu1404_ubuntu-14.04_amd64"
+    master = "capgemini/mesos-0.22.0-1.0.ubuntu1404_amd64"
+    slave  = "capgemini/mesos-0.22.0-1.0.ubuntu1404_amd64"
   }
 }
 
