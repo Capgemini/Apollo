@@ -3,6 +3,7 @@
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "mesos_version": "0.22.0",
+    "marathon_version": "0.8.1",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
     "build_version": "{{ timestamp }}"
@@ -32,7 +33,8 @@
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
         "WEAVE_VERSION={{user `weave_version`}}",
-        "MESOS_VERSION={{user `mesos_version`}}"
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
