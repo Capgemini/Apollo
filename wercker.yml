@@ -12,28 +12,22 @@ build:
         code: |
           wget https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
           unzip packer_0.7.5_linux_amd64.zip
-          ./packer version | tee $WERCKER_REPORT_MESSAGE_FILE
+          ./packer version
     - script:
         cwd: packer/
-        name: validate packer template
-        code: ./packer validate lb_ubuntu-14-04_amd64.json | tee $WERCKER_REPORT_MESSAGE_FILE
+        name: validate lb packer template
+        code: ./packer validate lb_ubuntu-14-04_amd64.json
     - script:
         cwd: packer/
-        name: validate packer template
-        code: ./packer validate mesos_ubuntu-14-04_amd64.json | tee $WERCKER_REPORT_MESSAGE_FILE
+        name: validate mesos packer template
+        code: ./packer validate mesos_ubuntu-14-04_amd64.json
     - script:
-        name: install prereqs
-        code: |
-          sudo gem install bundler && sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty contrib" >> /etc/apt/sources.list' && wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add - && sudo apt-get update && sudo apt-get install -y linux-headers-$(uname -r) dkms virtualbox-4.3 && sudo /etc/init.d/vboxdrv setup
-    - script:
-        name: build image
+        name: build mesos image
         cwd: packer/
         code: |
-          ./packer build lb_ubuntu-14-04_amd64.json | tee "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log"
-          tail -n 1 "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log" | tee $WERCKER_REPORT_MESSAGE_FILE
+          ./packer build mesos_ubuntu-14.04_amd64-amis.json
     - script:
-        name: build image
+        name: build lb image
         cwd: packer/
         code: |
-          ./packer build mesos_ubuntu-14-04_amd64.json | tee "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log"
-          tail -n 1 "${WERCKER_REPORT_ARTIFACTS_DIR}/packer_build_output.log" | tee $WERCKER_REPORT_MESSAGE_FILE
+          ./packer build lb_ubuntu-14.04_amd64-amis.json
