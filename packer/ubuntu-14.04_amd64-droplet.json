@@ -3,8 +3,8 @@
     "digitalocean_api_token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
     "digitalocean_region": "lon1",
     "digitalocean_size": "512MB",
-    "mesos_version": "0.22.0-1",
-    "marathon_version": "0.8.1-1",
+    "mesos_version": "0.22.0-1.0.ubuntu1404",
+    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
     "build_version": "{{ timestamp }}"
