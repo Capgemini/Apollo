@@ -7,7 +7,7 @@ resource "atlas_artifact" "mesos-slave" {
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
-  ami               = "${atlas_artifact.mesos-slave.metadata_full.region-eu-west-1}"
+  ami               = "${element(atlas_artifact.mesos-slave.metadata_full.*, concat("region-", var.region)) }"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
   source_dest_check = false
@@ -38,7 +38,7 @@ resource "aws_instance" "mesos-slave" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${self.private_ip} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${self.id}-*.sh - | bash"
+      "echo main ${self.private_ip} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} ${var.region} | cat /tmp/${self.id}-*.sh - | bash"
     ]
   }
 }
