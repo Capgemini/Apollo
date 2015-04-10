@@ -63,22 +63,40 @@ set_mesos_master_hostname() {
 
 set_consul_master() {
   declare node="$1"
+  declare region="$2"
   local nodes=$(wc -l < /home/ubuntu/masters)
 
-  ssh "$node" "echo '{\"ui_dir\": \"/opt/consul-ui\", \"server\": true, \"bootstrap_expect\": ${nodes}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
+  ssh "$node" "echo '{\"ui_dir\": \"/opt/consul-ui\", \"datacenter\": \"${region}\", \"server\": true, \"bootstrap_expect\": ${nodes}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
 }
 
 set_consul_atlas() {
   declare node="$1"
   declare atlas_token="$2"
   declare atlas_infrastructure="$3"
+  declare region="$4"
 
-  ssh "$node" "echo '{\"client_addr\": \"0.0.0.0\", \"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
+  ssh "$node" "echo '{\"client_addr\": \"0.0.0.0\", \"datacenter\": \"${region}\", \"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
 }
 
 set_mesos_slave_hostname() {
   declare node="$1" public_dns="$2"
   ssh "$node" "echo $public_dns | sudo tee /etc/mesos-slave/hostname"
+}
+
+set_weave_bridge() {
+  declare node="$1"
+  declare host_index="$2"
+  ssh "$node" "echo \"
+  auto weave
+  iface weave inet manual
+          pre-up /usr/local/bin/weave create-bridge
+          post-up ip addr add dev weave 10.2.0.${host_index}/16
+          pre-down ifconfig weave down
+          post-down brctl delbr weave
+  \" >> /etc/network/interfaces && echo DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\" >> /etc/default/docker"
+  register_service "$node" weave
+  restart_service "$node" docker
+  restart_service "$node" weave
 }
 
 register_service() {
