@@ -8,7 +8,7 @@ CODENAME=$(lsb_release -cs)
 echo "deb http://repos.mesosphere.io/${DISTRO} ${CODENAME} main" | sudo tee /etc/apt/sources.list.d/mesosphere.list >/dev/null
 sudo apt-get -y update
 
-sudo apt-get install -y mesos
+sudo apt-get install -y mesos=${MESOS_VERSION}
 
 sudo service zookeeper stop
 echo manual | sudo tee /etc/init/zookeeper.override >/dev/null
