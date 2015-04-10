@@ -7,7 +7,7 @@ resource "atlas_artifact" "mesos-master" {
 /* Mesos master instances */
 resource "aws_instance" "mesos-master" {
   instance_type     = "${var.instance_type.master}"
-  ami               = "${element(atlas_artifact.mesos-master.metadata_full.*, concat("region-", var.region)) }"
+  ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
   count             = "${var.masters}"
   key_name          = "${var.key_name}"
   source_dest_check = false
