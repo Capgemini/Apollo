@@ -21,4 +21,5 @@ main() {
   register_service "$node" marathon
   register_service "$node" consul
   register_service "$node" dnsmasq
+  run_serverspecs "$node" mesos-master
 }

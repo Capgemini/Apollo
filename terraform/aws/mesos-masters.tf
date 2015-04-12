@@ -32,6 +32,10 @@ resource "aws_instance" "mesos-master" {
     source      = "${path.module}/scripts/setup-master.sh"
     destination = "/tmp/${self.id}-01setup-master.sh"
   }
+  provisioner "file" {
+    source      = "${path.module}/serverspecs"
+    destination = "/tmp/"
+  }
   provisioner "remote-exec" {
     inline = [
       "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} ${var.region} | cat /tmp/${self.id}-*.sh - | bash"

@@ -109,3 +109,13 @@ restart_service() {
   declare node="$1" service="$2"
   ssh "$node" sudo service "$service" restart
 }
+
+run_serverspecs() {
+  declare node="$1"
+  declare specs_suite="$2"
+  declare specs_path=${3:-/tmp/serverspecs}
+  scp -rp ${specs_path} $node:${specs_path}
+  ssh "$node" "echo chmod 755 ${specs_path}/run_serverspecs.sh | bash"
+  ssh "$node" "echo ${specs_path}/run_serverspecs.sh ${specs_suite} | bash"
+}
+
