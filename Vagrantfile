@@ -15,7 +15,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.enable :apt
   end
 
-  config.vm.box = "packer/build/ubuntu-14.04_amd64_virtualbox/mesos-0.21.0_ubuntu-14.04_amd64_virtualbox_1428268628.box"
+  config.vm.box = "packer/build/ubuntu-14.04_amd64_virtualbox/mesos-0.22.0-1.0.ubuntu1404_amd64_virtualbox_1428683322.box"
+  #config.vm.box = "capgemini/mesos"
   #config.vm.box_version = conf['mesos_version']
 
   # Mesos master nodes
@@ -32,10 +33,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   zookeeper = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
   zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join("\n")
-  consul_join = []
-  master_infos.each do |master|
-    consul_join.push(master[:ip])
-  end
+  consul_join = master_infos.map{|master| master[:ip]}.join(" ")
+
   # Mesos slave nodes
   slave_n = conf['slave_n']
   slave_infos = (1..slave_n).map do |i|
@@ -60,13 +59,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         $master = <<SCRIPT
         echo #{node[:zookeeper_id]} | sudo tee /etc/zookeeper/conf/myid
         echo #{node[:quorum]} | sudo tee /etc/mesos-master/quorum
+        echo vagrant | sudo tee /etc/mesos-master/cluster
+        echo #{node[:ip]} | sudo tee /etc/mesos-master/ip
         echo #{zookeeper} | sudo tee /etc/mesos/zk
         echo "#{zookeeper_conf}" | sudo tee -a /etc/zookeeper/conf/zoo.cfg
-        echo '{\"start_join\": #{consul_join}, \"client_addr\": \"0.0.0.0\", \"ui_dir\": \"/opt/consul-ui\", \"datacenter\": \"vagrant\", \"server\": true, \"bootstrap_expect\": #{master_n}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json
+        echo '{\"bind_addr\": \"#{node[:ip]}\", \"advertise_addr\": \"#{node[:ip]}\", \"client_addr\": \"0.0.0.0\", \"ui_dir\": \"/opt/consul-ui\", \"datacenter\": \"vagrant\", \"server\": true, \"bootstrap_expect\": #{master_n}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json
+        echo 'CONSUL_JOIN=\"#{consul_join}\"' > /etc/service/consul-join
         sudo rm -f /etc/init/zookeeper.override
         sudo rm -f /etc/init/mesos-master.override
         sudo rm -f /etc/init/marathon.override
         sudo rm -f /etc/init/consul.override
+        sudo rm -f /etc/init/consul-join.override
         sudo service zookeeper restart
         sudo service mesos-master start
         sudo service marathon restart
@@ -90,12 +93,16 @@ SCRIPT
 
         $slave = <<SCRIPT
         echo #{zookeeper} | sudo tee /etc/mesos/zk
-        echo '{\"start_join\": #{consul_join}, \"datacenter\": \"vagrant\", \"client_addr\": \"0.0.0.0\"} >/etc/consul.d/slave.json
+        echo #{node[:ip]} | sudo tee /etc/mesos-slave/ip
+        echo '{\"bind_addr\": \"#{node[:ip]}\", \"advertise_addr\": \"#{node[:ip]}\", \"datacenter\": \"vagrant\", \"client_addr\": \"0.0.0.0\"}' >/etc/consul.d/slave.json
+        echo 'CONSUL_JOIN=\"#{consul_join}\"' > /etc/service/consul-join
         sudo rm -f /etc/init/mesos-slave.override
         sudo rm -f /etc/init/docker.override
         sudo rm -f /etc/init/consul.override
+        sudo rm -f /etc/init/consul-join.override
         sudo service mesos-slave restart
         sudo service docker restart
+        sudo service consul restart
 SCRIPT
 
         override.vm.provision "shell", inline: $slave

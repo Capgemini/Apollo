@@ -3,17 +3,19 @@
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
     "hostname": "ubuntu",
+    "version": "0.22.1",
     "mesos_version": "0.22.0-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
-    "build_version": "{{ timestamp }}"
+    "build_version": "{{ timestamp }}",
+    "access_token": "{{env `ATLAS_TOKEN`}}"
   },
   "builders": [{
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
     "headless": true,
-    "vm_name": "mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64_virtualbox_{{user `build_version`}}",
+    "vm_name": "mesos-{{user `mesos_version`}}_amd64_virtualbox_{{user `build_version`}}",
     "disk_size": 40960,
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
@@ -46,8 +48,8 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/ubuntu/upstart/consul.conf",
-      "destination": "/tmp/consul.conf"
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
     },
     {
       "type": "shell",
@@ -71,12 +73,21 @@
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
       ],
-      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     }
   ],
-  "post-processors": [{
-    "type": "vagrant",
-    "output": "build/ubuntu-14.04_amd64_{{.Provider}}/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64_{{.Provider}}_{{user `build_version`}}.box",
-    "keep_input_artifact": true
-  }]
+  "post-processors": [
+    [{
+      "type": "vagrant",
+      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/mesos-{{user `mesos_version`}}_amd64_{{.Provider}}_{{user `build_version`}}.box",
+      "keep_input_artifact": true,
+      "compression_level": 9
+    },
+    {
+      "type": "vagrant-cloud",
+      "box_tag": "capgemini/mesos",
+      "access_token": "{{user `access_token`}}",
+      "version": "{{user `version`}}"
+    }]
+  ]
 }
