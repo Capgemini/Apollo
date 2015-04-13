@@ -15,9 +15,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.enable :apt
   end
 
-  config.vm.box = "packer/build/ubuntu-14.04_amd64_virtualbox/mesos-0.22.0-1.0.ubuntu1404_amd64_virtualbox_1428683322.box"
-  #config.vm.box = "capgemini/mesos"
-  #config.vm.box_version = conf['mesos_version']
+  config.vm.box = "capgemini/mesos"
+  config.vm.box_version = conf['mesos_version']
 
   # Mesos master nodes
   master_n = conf['master_n']
