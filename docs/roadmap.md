@@ -32,6 +32,7 @@ Features
 | |_| Easier pluggability for frameworks
 | |_| Monitoring (nodes/services)
 | |_| Logging (nodes/services)
+| |_| Distributed File storage (for nodes/services)
 
 Demonstrators / Examples
 ------------------------
@@ -39,3 +40,9 @@ Demonstrators / Examples
 | |_| Mule ESB
 | |_| Drupal / MySQL
 | |_| Simple NodeJS webservice
+
+Documentation
+-------------
+| |_| Architecture diagram of components
+| |_| Component overview and decision log
+| |_| Getting started guides for supported providers
