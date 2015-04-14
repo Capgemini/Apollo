@@ -18,4 +18,5 @@ main() {
   register_service "$node" consul
   register_service "$node" dnsmasq
   set_weave_bridge "$node" "$host_index"
+  run_serverspecs "$node" mesos-slave
 }

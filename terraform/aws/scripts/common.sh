@@ -85,18 +85,18 @@ set_mesos_slave_hostname() {
 
 set_weave_bridge() {
   declare node="$1"
-  declare host_index="$2"
-  ssh "$node" "echo \"
+  declare host_index=$(($2+1))
+  ssh "$node" "echo '
   auto weave
   iface weave inet manual
           pre-up /usr/local/bin/weave create-bridge
           post-up ip addr add dev weave 10.2.0.${host_index}/16
           pre-down ifconfig weave down
           post-down brctl delbr weave
-  \" >> /etc/network/interfaces && echo DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\" >> /etc/default/docker"
-  register_service "$node" weave
+  ' | sudo tee /etc/network/interfaces.d/weave.cfg"
+  ssh "$node" "echo 'DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\"' | sudo tee -a /etc/default/docker"
+  ssh "$node" sudo ifup weave
   restart_service "$node" docker
-  restart_service "$node" weave
 }
 
 register_service() {
@@ -108,4 +108,13 @@ register_service() {
 restart_service() {
   declare node="$1" service="$2"
   ssh "$node" sudo service "$service" restart
+}
+
+run_serverspecs() {
+  declare node="$1"
+  declare specs_suite="$2"
+  declare specs_path=${3:-'/tmp/serverspecs'}
+  scp -rp ${specs_path} $node:${specs_path}
+  ssh "$node" "echo chmod 755 ${specs_path}/run_serverspecs.sh | bash"
+  ssh "$node" "echo ${specs_path}/run_serverspecs.sh ${specs_suite} | bash"
 }
