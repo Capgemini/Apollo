@@ -5,6 +5,10 @@ Apollo
 status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/m/master
 "wercker
 status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+
+__Bugs and requests__: submit them through the project's issues tracker.
+[![Issues](http://img.shields.io/github/issues/capgemini/apollo.svg)]( https://github.com/capgemini/apollo/issues )
 
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
