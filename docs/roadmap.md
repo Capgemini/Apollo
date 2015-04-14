@@ -30,9 +30,12 @@ Operating Systems
 Features
 --------
 | |_| Easier pluggability for frameworks
-| |_| Monitoring (nodes/services)
+| |_| Monitoring and alerts(nodes/services)
 | |_| Logging (nodes/services)
 | |_| Distributed File storage (for nodes/services)
+| |_| Multi-Datacenter
+| |_| Multi-Cloud
+| |_| Autoscaling of Mesos slave nodes
 
 Demonstrators / Examples
 ------------------------
