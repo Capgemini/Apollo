@@ -42,6 +42,7 @@ Demonstrators / Examples
 | |_| Continous Deployment with Marathon
 | |_| Mule ESB
 | |_| Drupal / MySQL
+| |_| Wordpress / MySQL
 | |_| Simple NodeJS webservice
 
 Documentation
