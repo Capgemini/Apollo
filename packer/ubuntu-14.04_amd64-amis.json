@@ -60,11 +60,11 @@
     }
   ],
   "push": {
-    "name": "capgemini/mesos-{{user `mesos_version`}}"
+    "name": "capgemini/mesos-0-22-1-ubuntu-14-04"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/mesos-{{user `mesos_version`}}_amd64",
+    "artifact": "capgemini/mesos-0.22.1_ubuntu-14.04_amd64",
     "artifact_type": "aws.ami",
     "metadata": {
       "created_at": "{{timestamp}}"
