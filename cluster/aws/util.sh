@@ -18,7 +18,6 @@ apollo_launch() {
   terraform_apply
   ovpn_start
   ovpn_client_config
-  open_urls
 }
 
 apollo_down() {
@@ -53,13 +52,23 @@ ovpn_client_config() {
   pushd $APOLLO_ROOT/terraform/aws
     /bin/sh -x bin/ovpn-new-client $USER
     /bin/sh -x bin/ovpn-client-config $USER
-    # @todo Need to sed the .ovpn file to replace the correct IP address, because we are getting the
-    # instance IP address not the elastic IP address
-    #  /usr/bin/open $USER-capgemini-mesos.ovpn
-    #
-    # @todo Open the $USER-capgemini-mesos.ovpn in a VPN client and connect
-    # we probably need to make the vpn client a pre-requisite in verify-prereqs
-  popd
+
+    # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
+    # instance IP address not the elastic IP address in the downloaded file.
+    nat_ip=$(terraform output nat.ip)
+    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $USER-capgemini-mesos.ovpn
+
+    # Display a prompt to tell the user to open the $USER-capgemini-mesos.ovpn
+    # in their VPN client and connect, and pause/wait for them to connect.
+    while true; do
+    read -p "Double click $USER-capgemini-mesos.ovpn to open the file and connect to the VPN.
+      Once connected hit y to open the web interface or n to exit (y/n)?" yn
+      case $yn in
+          [Yy]* ) popd;open_urls; break;;
+          [Nn]* ) popd;exit;;
+          * ) echo "Please answer y or n.";;
+      esac
+    done
 }
 
 open_urls() {
