@@ -43,19 +43,23 @@ terraform_apply() {
 }
 
 ovpn_start() {
-  /bin/sh -x $APOLLO_ROOT/terraform/aws/bin/ovpn-init
-  /bin/sh -x $APOLLO_ROOT/terraform/aws/bin/ovpn-start
+  pushd $APOLLO_ROOT/terraform/aws
+    /bin/sh -x bin/ovpn-init
+    /bin/sh -x bin/ovpn-start
+  popd
 }
 
 ovpn_client_config() {
-  /bin/sh -x $APOLLO_ROOT/terraform/aws/bin/ovpn-new-client $USER
-  /bin/sh -x $APOLLO_ROOT/terraform/aws/bin/ovpn-client-config $USER
-  # @todo Need to sed the .ovpn file to replace the correct IP address, because we are getting the
-  # instance IP address not the elastic IP address
-  #  /usr/bin/open $USER-capgemini-mesos.ovpn
-  #
-  # @todo Open the $USER-capgemini-mesos.ovpn in a VPN client and connect
-  # we probably need to make the vpn client a pre-requisite in verify-prereqs
+  pushd $APOLLO_ROOT/terraform/aws
+    /bin/sh -x bin/ovpn-new-client $USER
+    /bin/sh -x bin/ovpn-client-config $USER
+    # @todo Need to sed the .ovpn file to replace the correct IP address, because we are getting the
+    # instance IP address not the elastic IP address
+    #  /usr/bin/open $USER-capgemini-mesos.ovpn
+    #
+    # @todo Open the $USER-capgemini-mesos.ovpn in a VPN client and connect
+    # we probably need to make the vpn client a pre-requisite in verify-prereqs
+  popd
 }
 
 open_urls() {
