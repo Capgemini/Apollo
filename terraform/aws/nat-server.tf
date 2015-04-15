@@ -34,7 +34,6 @@ resource "aws_instance" "nat" {
   }
   provisioner "remote-exec" {
     inline = [
-      /* @todo - not sure the routing is working correctly here */
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
       "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
       /* Install docker */

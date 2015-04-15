@@ -9,8 +9,9 @@ status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679
 
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
-across multiple hosts, and hooks into other open source products to provide basic
-mehanisms for deployment, maintenance, and scaling of infrastructure and applications.
+across multiple hosts, and big data type workloads. Apollo leverages other
+open source components to provide basic mehanisms for deployment, maintenance,
+and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
 
@@ -28,7 +29,7 @@ Apollo is:
 
 Apollo can run anywhere!
 
-However, initial development is happening on AWS so our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
+However, initial development is primarily happening on AWS so our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
 
 Apollo is in alpha!
 
@@ -38,3 +39,10 @@ While the concepts and base architectural components of Apollo are not expected 
  - **Getting Started Guides**
     - for people who want to create an Apollo cluster
     - in [docs/getting-started-guides](docs/getting-started-guides)
+ - **Demonstrators and Examples
+    - Coming soon...
+ - **[Roadmap](docs/roadmap)
+ - **Components
+    - for people who want to know more about the individual components and the
+    decisions behind selecting them
+    - in [docs/components](docs/components)
