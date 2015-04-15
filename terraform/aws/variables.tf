@@ -2,7 +2,6 @@ variable "access_key" {}
 variable "secret_key" {}
 variable "key_name" {}
 variable "key_file" {}
-variable "zone_id" {}
 variable "atlas_token" {}
 
 variable "atlas_infrastructure" {
