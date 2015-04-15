@@ -35,6 +35,10 @@ Apollo is in alpha!
 
 While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and API changes as we bring it to a stable, production ready, multi-cloud available product.
 
+## Architecture
+
+![architecture](docs/architecture.png)
+
 ## Documentation
  - **Getting Started Guides**
     - for people who want to create an Apollo cluster
