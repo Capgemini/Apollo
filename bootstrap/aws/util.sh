@@ -33,6 +33,7 @@ terraform_apply() {
       -var "key_file=${AWS_SSH_KEY}" \
       -var "key_name=${AWS_SSH_KEY_NAME}" \
       -var "atlas_token=${ATLAS_TOKEN}" \
+      -var "atlas_infrastructure=${ATLAS_INFRASTRUCTURE}" \
       -var "instance_type.master=${MASTER_SIZE}" \
       -var "instance_type.slave=${SLAVE_SIZE}" \
       -var "slaves=${NUM_SLAVES}" \
