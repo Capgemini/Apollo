@@ -5,8 +5,8 @@ set -o nounset
 set -o pipefail
 
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
-source "${APOLLO_ROOT}/cluster/apollo-env.sh"
-source "${APOLLO_ROOT}/cluster/${APOLLO_PROVIDER}/util.sh"
+source "${APOLLO_ROOT}/bootstrap/apollo-env.sh"
+source "${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/util.sh"
 
 main() {
   echo "Starting cluster using provider: $APOLLO_PROVIDER" >&2
