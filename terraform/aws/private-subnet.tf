@@ -17,6 +17,9 @@ resource "aws_route_table" "private" {
     cidr_block = "0.0.0.0/0"
     instance_id = "${aws_instance.nat.id}"
   }
+  tags {
+    Name = "private"
+  }
 }
 
 /* Associate the routing table to private subnet */
