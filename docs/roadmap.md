@@ -4,49 +4,49 @@ Apollo Roadmap
 Mesos Frameworks
 --------
 - [x] Marathon framework
-- [_] Jenkins framework
-- [_] Aurora framework
-- [_] Chronos framework
-- [_] Kubernetes framework
-- [_] Cassandra framework
-- [_] Spark framework
-- [_] Storm framework
+- [ ] Jenkins framework
+- [ ] Aurora framework
+- [ ] Chronos framework
+- [ ] Kubernetes framework
+- [ ] Cassandra framework
+- [ ] Spark framework
+- [ ] Storm framework
 
 Providers
 ---------
 - [x] Vagrant
 - [x] AWS
-- [_] Digitalocean
-- [_] Openstack
-- [_] Google Cloud
-- [_] Microsoft Azure
+- [ ] Digitalocean
+- [ ] Openstack
+- [ ] Google Cloud
+- [ ] Microsoft Azure
 
 Operating Systems
 -----------------
 - [x] Ubuntu
-- [_] CentOS
-- [_] Fedora
+- [ ] CentOS
+- [ ] Fedora
 
 Features
 --------
-- [_] Easier pluggability for frameworks
-- [_] Monitoring and alerts(nodes/services)
-- [_] Logging (nodes/services)
-- [_] Distributed File storage (for nodes/services)
-- [_] Multi-Datacenter
-- [_] Multi-Cloud
-- [_] Autoscaling of Mesos slave nodes
+- [ ] Easier pluggability for frameworks
+- [ ] Monitoring and alerts(nodes/services)
+- [ ] Logging (nodes/services)
+- [ ] Distributed File storage (for nodes/services)
+- [ ] Multi-Datacenter
+- [ ] Multi-Cloud
+- [ ] Autoscaling of Mesos slave nodes
 
 Demonstrators / Examples
 ------------------------
-- [_] Continous Deployment with Marathon
-- [_] Mule ESB
-- [_] Drupal / MySQL
-- [_] Wordpress / MySQL
-- [_] Simple NodeJS webservice
+- [ ] Continous Deployment with Marathon
+- [ ] Mule ESB
+- [ ] Drupal / MySQL
+- [ ] Wordpress / MySQL
+- [ ] Simple NodeJS webservice
 
 Documentation
 -------------
-- [_] Architecture diagram of components
-- [_] Component overview and decision log
-- [_] Getting started guides for supported providers
+- [ ] Architecture diagram of components
+- [ ] Component overview and decision log
+- [ ] Getting started guides for supported providers
