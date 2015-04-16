@@ -46,7 +46,7 @@ While the concepts and base architectural components of Apollo are not expected 
     - in [docs/getting-started-guides](docs/getting-started-guides)
  - **Demonstrators and Examples**
     - Coming soon...
- - **[Roadmap](docs/roadmap)**
+ - **[Roadmap](docs/roadmap.md)**
  - **Components**
     - for people who want to know more about the individual components and the
     decisions behind selecting them
