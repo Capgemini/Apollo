@@ -44,6 +44,11 @@ variable "masters" {
   default = "3"
 }
 
+variable "loadbalancer" {
+  description = "The number of loadbalancers."
+  default = "1"
+}
+
 variable "master_ips" {
   default = {
     master-0 = "10.0.1.11"
@@ -61,13 +66,15 @@ variable "slave_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master        = "m1.small"
+    slave         = "m1.small"
+    loadbalancer  = "m1.small"
   }
 }
 
 variable "atlas_artifact" {
   default = {
+    loadbalancer = "capgemini/lb_ubuntu-14.04_amd64"
     master = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
     slave  = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
   }

@@ -4,6 +4,10 @@ provider "aws" {
   region = "${var.region}"
 }
 
+provider "atlas" {
+  token = "${var.atlas_token}"
+}
+
 /* Define our vpc */
 resource "aws_vpc" "default" {
   cidr_block           = "${var.vpc_cidr_block}"

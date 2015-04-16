@@ -6,4 +6,5 @@
 *.tfplan
 packer_cache
 packer/build
+*.pem
 .wercker

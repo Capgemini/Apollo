@@ -1,0 +1,46 @@
+global
+    chroot  /var/lib/haproxy
+    daemon
+    group  root
+    log  127.0.0.1 local0
+    maxconn  8000
+    pidfile  /var/run/haproxy.pid
+    stats  socket /var/lib/haproxy/stats
+    user  root
+    # Descrease the size of the rewrite buffer so that
+    # there is more room to handle large (>8K) headers. See the HAProxy
+    # manual around tune.bufsize and tune.maxrewrite.
+    tune.maxrewrite 4096
+
+
+defaults
+    log global
+    retries 2
+    timeout connect 3000
+    timeout server 5000
+    timeout client 5000
+
+defaults
+    log     global
+    maxconn 8000
+    option  redispatch
+    option  http-server-close
+    retries 3
+    stats   enable
+    timeout http-request 10s
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 1m
+    timeout server 1m
+    timeout check 10s
+    option forwardfor except 127.0.0.1
+    mode http
+
+listen stats *:1936
+    mode http
+    stats enable
+    stats uri /haproxy?stats
+    stats hide-version
+
+frontend inbound
+    bind :80 name http
