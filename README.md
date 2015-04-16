@@ -15,21 +15,22 @@ and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
 
-* [Packer](https://packer.io)
-* [Terraform](https://www.terraform.io/)
-* [Apache Mesos](http://mesos.apache.org/)
-* [Consul](http://consul.io)
-* [Docker](http://docker.io)
-* [Weave](https://github.com/zettio/weave)
+* [Packer](https://packer.io) for automating the build of the base images
+* [Terraform](https://www.terraform.io/) for provisioning the infrastructure
+* [Apache Mesos](http://mesos.apache.org/) for cluster management, scheduling and resource isolation
+* [Consul](http://consul.io) for service discovery, DNS
+* [Docker](http://docker.io) for application container runtimes
+* [Weave](https://github.com/zettio/weave) for networking of docker containers
 
 Apollo is:
 
-* **self-healing**: auto-placement, auto-restart, auto-replication
+* **highly-available**: multi-datacenter
+* **fault-tolerant**: Mesos / Consul master quorum with data replication
 * **portable**: public, private, hybrid, multi cloud
 
 Apollo can run anywhere!
 
-However, initial development is primarily happening on AWS so our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
+However, initial development is primarily happening on AWS so most of our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
 
 Apollo is in alpha!
 
