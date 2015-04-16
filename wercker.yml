@@ -1,6 +1,5 @@
 box: wercker/ruby
-no-response-timeout: 10
-platform: ubuntu@14.04
+no-response-timeout: 15
 build:
   steps:
     - bundle-install

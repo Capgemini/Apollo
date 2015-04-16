@@ -2,7 +2,6 @@ variable "access_key" {}
 variable "secret_key" {}
 variable "key_name" {}
 variable "key_file" {}
-variable "zone_id" {}
 variable "atlas_token" {}
 
 variable "atlas_infrastructure" {
@@ -75,9 +74,9 @@ variable "instance_type" {
 
 variable "atlas_artifact" {
   default = {
-    master       = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
-    slave        = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
     loadbalancer = "capgemini/lb_ubuntu-14.04_amd64"
+    master = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
+    slave  = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
   }
 }
 

@@ -5,3 +5,7 @@ output "nat.ip" {
 output "loadbalancer.ip" {
   value = "${aws_eip.loadbalancer.public_ip}"
 }
+
+output "master.0.ip" {
+  value = "${aws_instance.mesos-master.0.private_ip}"
+}

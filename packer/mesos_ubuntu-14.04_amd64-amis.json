@@ -2,14 +2,15 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
-    "mesos_version": "0.21.0",
+    "mesos_version": "0.22.0-1.0.ubuntu1404",
+    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "latest_release",
     "build_version": "{{ timestamp }}"
   },
   "builders": [{
     "type": "amazon-ebs",
-    "ami_name": "mesos-{{user `mesos_version`}}-ubuntu-14.04_amd64_{{user `build_version`}}",
+    "ami_name": "mesos-{{user `mesos_version`}}_amd64_{{user `build_version`}}",
     "ami_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
@@ -31,7 +32,9 @@
       "type": "shell",
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
-        "WEAVE_VERSION={{user `weave_version`}}"
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
@@ -57,11 +60,11 @@
     }
   ],
   "push": {
-    "name": "capgemini/mesos-0-21-0-ubuntu-14-04"
+    "name": "capgemini/mesos-0-22-1-ubuntu-14-04"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64",
+    "artifact": "capgemini/mesos-0.22.1_ubuntu-14.04_amd64",
     "artifact_type": "aws.ami",
     "metadata": {
       "created_at": "{{timestamp}}"

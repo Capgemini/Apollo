@@ -5,6 +5,7 @@ Apollo
 status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/m/master
 "wercker
 status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications

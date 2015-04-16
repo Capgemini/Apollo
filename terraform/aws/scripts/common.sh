@@ -63,22 +63,40 @@ set_mesos_master_hostname() {
 
 set_consul_master() {
   declare node="$1"
+  declare region="$2"
   local nodes=$(wc -l < /home/ubuntu/masters)
 
-  ssh "$node" "echo '{\"ui_dir\": \"/opt/consul-ui\", \"server\": true, \"bootstrap_expect\": ${nodes}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
+  ssh "$node" "echo '{\"ui_dir\": \"/opt/consul-ui\", \"datacenter\": \"${region}\", \"server\": true, \"bootstrap_expect\": ${nodes}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json"
 }
 
 set_consul_atlas() {
   declare node="$1"
   declare atlas_token="$2"
   declare atlas_infrastructure="$3"
+  declare region="$4"
 
-  ssh "$node" "echo '{\"client_addr\": \"0.0.0.0\", \"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
+  ssh "$node" "echo '{\"client_addr\": \"0.0.0.0\", \"datacenter\": \"${region}\", \"atlas_join\": true, \"atlas_token\": \"${atlas_token}\", \"atlas_infrastructure\": \"${atlas_infrastructure}\" }' >/etc/consul.d/atlas.json"
 }
 
 set_mesos_slave_hostname() {
   declare node="$1" public_dns="$2"
   ssh "$node" "echo $public_dns | sudo tee /etc/mesos-slave/hostname"
+}
+
+set_weave_bridge() {
+  declare node="$1"
+  declare host_index=$(($2+1))
+  ssh "$node" "echo '
+  auto weave
+  iface weave inet manual
+          pre-up /usr/local/bin/weave create-bridge
+          post-up ip addr add dev weave 10.2.0.${host_index}/16
+          pre-down ifconfig weave down
+          post-down brctl delbr weave
+  ' | sudo tee /etc/network/interfaces.d/weave.cfg"
+  ssh "$node" "echo 'DOCKER_OPTS=\"--bridge=weave --fixed-cidr=10.2.${host_index}.0/24\"' | sudo tee -a /etc/default/docker"
+  ssh "$node" sudo ifup weave
+  restart_service "$node" docker
 }
 
 register_service() {
@@ -90,4 +108,13 @@ register_service() {
 restart_service() {
   declare node="$1" service="$2"
   ssh "$node" sudo service "$service" restart
+}
+
+run_serverspecs() {
+  declare node="$1"
+  declare specs_suite="$2"
+  declare specs_path=${3:-'/tmp/serverspecs'}
+  scp -rp ${specs_path} $node:${specs_path}
+  ssh "$node" "echo chmod 755 ${specs_path}/run_serverspecs.sh | bash"
+  ssh "$node" "echo ${specs_path}/run_serverspecs.sh ${specs_suite} | bash"
 }
