@@ -44,10 +44,10 @@ While the concepts and base architectural components of Apollo are not expected 
  - **Getting Started Guides**
     - for people who want to create an Apollo cluster
     - in [docs/getting-started-guides](docs/getting-started-guides)
- - **Demonstrators and Examples
+ - **Demonstrators and Examples**
     - Coming soon...
- - **[Roadmap](docs/roadmap)
- - **Components
+ - **[Roadmap](docs/roadmap)**
+ - **Components**
     - for people who want to know more about the individual components and the
     decisions behind selecting them
     - in [docs/components](docs/components)
