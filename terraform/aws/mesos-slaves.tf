@@ -7,7 +7,7 @@ resource "atlas_artifact" "mesos-slave" {
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
-  ami               = "${atlas_artifact.mesos-slave.metadata_full.region-eu-west-1}"
+  ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
   source_dest_check = false
@@ -17,7 +17,7 @@ resource "aws_instance" "mesos-slave" {
   tags = {
     Name = "capgemini-mesos-slave-${count.index}"
   }
-  block_device {
+  ebs_block_device {
     device_name           = "/dev/sdb"
     volume_size           = "${var.slave_block_device.volume_size}"
     delete_on_termination = true
@@ -25,20 +25,20 @@ resource "aws_instance" "mesos-slave" {
   connection {
     user        = "ubuntu"
     key_file    = "${var.key_file}"
-    host        = "${aws_instance.nat.public_ip}"
-    script_path = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}.sh"
+    host        = "${aws_eip.nat.public_ip}"
+    script_path = "/tmp/${self.id}.sh"
   }
   provisioner "file" {
     source      = "${path.module}/scripts/common.sh"
-    destination = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-00common.sh"
+    destination = "/tmp/${self.id}-00common.sh"
   }
   provisioner "file" {
     source      = "${path.module}/scripts/setup-slave.sh"
-    destination = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-01setup-slave.sh"
+    destination = "/tmp/${self.id}-01setup-slave.sh"
   }
   provisioner "remote-exec" {
     inline = [
-      "echo main ${element(aws_instance.mesos-slave.*.private_ip, count.index)} ${element(aws_instance.mesos-slave.*.private_dns, count.index)} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-*.sh - | bash"
+      "echo main ${self.private_ip} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} ${count.index} ${var.region}  | cat /tmp/${self.id}-*.sh - | bash"
     ]
   }
 }

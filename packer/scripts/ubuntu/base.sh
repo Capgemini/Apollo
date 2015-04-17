@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eux
+set -o pipefail
 
-sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get update -y
 
-sudo apt-get -y install git curl libcurl3 default-jre-headless unzip wget python-setuptools python-protobuf
+sudo apt-get -y install git curl libcurl3 bridge-utils bundler default-jre-headless unzip wget python-setuptools python-protobuf cgroup-bin ruby1.9.1
