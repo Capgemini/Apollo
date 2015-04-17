@@ -1,0 +1,9 @@
+---
+# handlers file for consul
+- name: Restart consul
+  shell: restart consul
+  sudo: yes
+
+- name: Start consul
+  shell: start consul
+  sudo: yes

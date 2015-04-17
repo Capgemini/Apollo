@@ -1,0 +1,18 @@
+{
+  "datacenter": "{{ consul_dc }}",
+  "advertise_addr": "{{ consul_advertise }}",
+  "node_name": "{{ inventory_hostname }}",
+  "rejoin_after_leave": true,
+  "bind_addr": "{{ consul_bind_addr }}",
+  "client_addr": "{{ consul_client_addr }}",
+{% if consul_is_server %}
+  "server": true,
+  "bootstrap_expect": {{ consul_bootstrap_expect }},
+{% endif %}
+  "data_dir": "/var/lib/consul",
+  "ui_dir": "/opt/consul-ui",
+  "service": {
+    "name": "consul",
+    "tags": ["consul"]
+  }
+}

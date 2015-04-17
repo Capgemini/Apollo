@@ -1,0 +1,23 @@
+---
+# tasks file for consul
+- name: remove consul override
+  command: /bin/rm -f /etc/init/consul.override
+
+- name: remove consul-join override
+  command: /bin/rm -f /etc/init/consul-join.override
+
+- name: configure consul
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode | default('u=rw,g=r,o=r') }}"
+  with_items:
+    - src: consul.json.j2
+      dest: /etc/consul.d/consul.json
+    - src: consul-join.j2
+      dest: /etc/service/consul-join
+  notify:
+    - Restart consul
+  tags:
+    - consul

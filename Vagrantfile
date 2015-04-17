@@ -18,6 +18,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "capgemini/mesos"
   config.vm.box_version = conf['mesos_version']
 
+  ansible_groups = {
+    "mesos-masters" => ["master1", "master2", "master3"],
+    "mesos-slaves" => ["slave1"],
+    "all:children" => ["mesos-masters", "mesos-slaves"]
+  }
+
   # Mesos master nodes
   master_n = conf['master_n']
   master_infos = (1..master_n).map do |i|
@@ -30,7 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       :cpus            => conf['master_cpus'],
     }
   end
-  zookeeper = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
+  zookeeper_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")
   zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join("\n")
   consul_join = master_infos.map{|master| master[:ip]}.join(" ")
 
@@ -55,27 +61,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
-        $master = <<SCRIPT
-        echo #{node[:zookeeper_id]} | sudo tee /etc/zookeeper/conf/myid
-        echo #{node[:quorum]} | sudo tee /etc/mesos-master/quorum
-        echo vagrant | sudo tee /etc/mesos-master/cluster
-        echo #{node[:ip]} | sudo tee /etc/mesos-master/ip
-        echo #{zookeeper} | sudo tee /etc/mesos/zk
-        echo "#{zookeeper_conf}" | sudo tee -a /etc/zookeeper/conf/zoo.cfg
-        echo '{\"bind_addr\": \"#{node[:ip]}\", \"advertise_addr\": \"#{node[:ip]}\", \"client_addr\": \"0.0.0.0\", \"ui_dir\": \"/opt/consul-ui\", \"datacenter\": \"vagrant\", \"server\": true, \"bootstrap_expect\": #{master_n}, \"service\": {\"name\": \"consul\", \"tags\": [\"consul\", \"bootstrap\"]}}' >/etc/consul.d/bootstrap.json
-        echo 'CONSUL_JOIN=\"#{consul_join}\"' > /etc/service/consul-join
-        sudo rm -f /etc/init/zookeeper.override
-        sudo rm -f /etc/init/mesos-master.override
-        sudo rm -f /etc/init/marathon.override
-        sudo rm -f /etc/init/consul.override
-        sudo rm -f /etc/init/consul-join.override
-        sudo service zookeeper restart
-        sudo service mesos-master start
-        sudo service marathon restart
-        sudo service consul restart
-SCRIPT
-
-        override.vm.provision "shell", inline: $master
+        override.vm.provision "ansible" do |ansible|
+          ansible.playbook = "site.yml"
+          ansible.sudo = true
+          ansible.extra_vars = {
+            zookeeper_id: node[:zookeeper_id],
+            zookeeper_conf: zookeeper_conf,
+            zookeeper_url: zookeeper_url,
+            mesos_quorum: node[:quorum],
+            consul_join: consul_join,
+            consul_advertise: node[:ip],
+            consul_bootstrap_expect: master_n,
+            mesos_local_address: node[:ip],
+            consul_bind_addr: node[:ip]
+          }
+          ansible.groups = ansible_groups
+        end
       end
     end
   end
@@ -90,21 +91,21 @@ SCRIPT
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
-        $slave = <<SCRIPT
-        echo #{zookeeper} | sudo tee /etc/mesos/zk
-        echo #{node[:ip]} | sudo tee /etc/mesos-slave/ip
-        echo '{\"bind_addr\": \"#{node[:ip]}\", \"advertise_addr\": \"#{node[:ip]}\", \"datacenter\": \"vagrant\", \"client_addr\": \"0.0.0.0\"}' >/etc/consul.d/slave.json
-        echo 'CONSUL_JOIN=\"#{consul_join}\"' > /etc/service/consul-join
-        sudo rm -f /etc/init/mesos-slave.override
-        sudo rm -f /etc/init/docker.override
-        sudo rm -f /etc/init/consul.override
-        sudo rm -f /etc/init/consul-join.override
-        sudo service mesos-slave restart
-        sudo service docker restart
-        sudo service consul restart
-SCRIPT
-
-        override.vm.provision "shell", inline: $slave
+        override.vm.provision "ansible" do |ansible|
+          ansible.playbook = "site.yml"
+          ansible.sudo = true
+          ansible.extra_vars = {
+            zookeeper_url: zookeeper_url,
+            mesos_quorum: node[:quorum],
+            consul_join: consul_join,
+            consul_advertise: node[:ip],
+            consul_is_server: false,
+            consul_bootstrap_expect: master_n,
+            mesos_local_address: node[:ip],
+            consul_bind_addr: node[:ip]
+          }
+          ansible.groups = ansible_groups
+        end
       end
     end
   end

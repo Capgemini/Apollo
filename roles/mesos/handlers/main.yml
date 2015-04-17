@@ -1,0 +1,9 @@
+---
+# handlers file for mesos
+- name: Start mesos-master
+  shell: start mesos-master
+  sudo: yes
+
+- name: Start mesos-slave
+  shell: start mesos-slave
+  sudo: yes

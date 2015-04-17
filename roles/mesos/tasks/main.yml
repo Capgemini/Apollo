@@ -1,0 +1,73 @@
+# used for leader election amongst masters
+- name: Set ZooKeeper URL
+  copy:
+    content: "{{zookeeper_url}}/mesos"
+    dest: /etc/mesos/zk
+    mode: 0644
+  sudo: yes
+
+# Tasks for Master nodes
+- name: Set Mesos Master ip
+  copy:
+    content: "{{mesos_local_address}}"
+    dest: /etc/mesos-master/ip
+    mode: 0644
+  sudo: yes
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master hostname
+  copy:
+    content: "{{mesos_local_address}}"
+    dest: /etc/mesos-master/hostname
+    mode: 0644
+  sudo: yes
+  when: mesos_install_mode == "master"
+
+  # The Mesos quorum value is based on the number of Mesos Masters. Take the
+  # number of masters, divide by 2, and round-up to nearest integer. For example,
+  # if there are 1 or 2 masters the quorum count is 1. If there are 3 or 4
+  # masters then the quorum count is 2. For 5 or 6 masters it's 3 and so on.
+- name: Set Mesos Master quorum count
+  copy:
+    content: "{{mesos_quorum}}"
+    dest: /etc/mesos-master/quorum
+    mode: 0644
+  sudo: yes
+  when: mesos_install_mode == "master"
+
+- name: remove mesos-master override
+  command: /bin/rm -f /etc/init/mesos-master.override
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master Cluster name
+  copy:
+    content: "{{mesos_cluster_name}}"
+    dest: /etc/mesos-master/cluster
+    mode: 0644
+  sudo: yes
+  notify:
+    - Start mesos-master
+  when: mesos_install_mode == "master"
+
+# Tasks for Slave nodes
+- name: Set Mesos Slave hostname
+  copy:
+    content: "{{mesos_local_address}}"
+    dest: /etc/mesos-slave/hostname
+    mode: 0644
+  sudo: yes
+  when: mesos_install_mode == "slave"
+
+- name: remove mesos-slave override
+  command: /bin/rm -f /etc/init/mesos-slave.override
+  when: mesos_install_mode == "slave"
+
+- name: Set Mesos Slave ip
+  copy:
+    content: "{{mesos_local_address}}"
+    dest: /etc/mesos-slave/ip
+    mode: 0644
+  sudo: yes
+  notify:
+    - Start mesos-slave
+  when: mesos_install_mode == "slave"

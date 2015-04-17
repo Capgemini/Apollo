@@ -1,0 +1,16 @@
+---
+- hosts: all
+  roles:
+    - dnsmasq
+    - consul
+
+- hosts: mesos-masters
+  roles:
+    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
+    - zookeeper
+    - marathon
+
+- hosts: mesos-slaves
+  roles:
+    - docker
+    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
