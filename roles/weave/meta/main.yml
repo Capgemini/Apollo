@@ -2,10 +2,10 @@
 galaxy_info:
   author: Graham Taylor
   description:
-  company: Capgemini (optional)
+  company: Capgemini
   # Some suggested licenses:
   # - BSD (default)
-  # - MIT
+   - MIT
   # - GPLv2
   # - GPLv3
   # - Apache
@@ -70,7 +70,7 @@ galaxy_info:
   #  - 9.1
   #  - 9.2
   - name: Ubuntu
-    versions:
+  #  versions:
   #  - all
   #  - lucid
   #  - maverick
@@ -116,7 +116,7 @@ galaxy_info:
   #- database:sql
   #- development
   #- monitoring
-  #- networking
+  - networking
   #- packaging
   - system
   #- web
@@ -125,4 +125,3 @@ dependencies: []
   # dependencies available via galaxy should be listed here.
   # Be sure to remove the '[]' above if you add dependencies
   # to this list.
-
