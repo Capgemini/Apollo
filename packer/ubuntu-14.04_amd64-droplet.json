@@ -11,7 +11,7 @@
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "mesos-{{user `mesos_version`}}-ubuntu-14.04_amd64_{{user `build_version`}}",
+    "snapshot_name": "mesos-{{user `mesos_version`}}-_amd64_{{user `build_version`}}",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "ubuntu-14-04-x64",
     "region": "{{user `digitalocean_region`}}",
@@ -21,8 +21,8 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/ubuntu/upstart/consul.conf",
-      "destination": "/tmp/consul.conf"
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
     },
     {
       "type": "shell",
@@ -42,7 +42,7 @@
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
       ],
-      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+      "execute_command": "{{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     }
   ]
 }

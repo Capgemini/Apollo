@@ -1,0 +1,9 @@
+---
+# handlers file for zookeeper
+- name: Restart zookeeper
+  shell: restart zookeeper
+  sudo: yes
+
+- name: Start zookeeper
+  shell: start zookeeper
+  sudo: yes
