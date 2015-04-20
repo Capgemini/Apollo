@@ -1,0 +1,6 @@
+---
+# handlers file for dnsmasq
+# Restart service dnsmasq, in all cases
+- name: Restart dnsmasq
+  service: name=dnsmasq state=restarted
+  sudo: yes
