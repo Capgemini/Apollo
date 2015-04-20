@@ -1,5 +1,11 @@
 ---
 # tasks file for weave
+- name: include all interfaces.d
+  sudo: yes
+  lineinfile: "dest=/etc/network/interfaces state=present line='source /etc/network/interfaces.d/*.cfg'"
+  notify:
+    - Restart networking
+
 - name: configure weave
   sudo: yes
   template: src=interfaces.j2 dest=/etc/network/interfaces.d/weave.cfg owner=root group=root mode=0644
@@ -13,11 +19,6 @@
   lineinfile: "dest=/etc/default/docker state=present regexp=^DOCKER_OPTS= line='DOCKER_OPTS=\"--bridge=weave --fixed-cidr={{ weave_docker_subnet }}\"'"
   notify:
     - Restart docker
-  tags:
-    - weave
-
-- name: weave launch
-  command: /usr/local/bin/weave launch
-  sudo: yes
+    - Weave launch
   tags:
     - weave

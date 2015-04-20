@@ -7,3 +7,13 @@
 - name: Down weave interface
   shell: ifdown weave
   sudo: yes
+
+- name: Restart networking
+  service: name=networking state=restarted
+  sudo: yes
+
+- name: Weave launch
+  command: /usr/local/bin/weave launch
+  sudo: yes
+  tags:
+    - weave
