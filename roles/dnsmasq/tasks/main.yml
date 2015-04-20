@@ -1,6 +1,6 @@
 ---
 # tasks file for dnsmasq
-- name: remove consul override
+- name: remove dnsmasq override
   command: /bin/rm -f /etc/init/dnsmasq.override
 
 - name: ensure dnsmasq is running (and enable it at boot)

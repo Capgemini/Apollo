@@ -1,2 +1,9 @@
 ---
 # handlers file for weave
+- name: Up weave interface
+  shell: ifup weave
+  sudo: yes
+
+- name: Down weave interface
+  shell: ifdown weave
+  sudo: yes

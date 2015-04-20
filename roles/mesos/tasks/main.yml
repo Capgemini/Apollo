@@ -46,7 +46,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Start mesos-master
+    - Start mesos master
   when: mesos_install_mode == "master"
 
 # Tasks for Slave nodes
@@ -69,5 +69,5 @@
     mode: 0644
   sudo: yes
   notify:
-    - Start mesos-slave
+    - Start mesos slave
   when: mesos_install_mode == "slave"

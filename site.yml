@@ -12,5 +12,6 @@
 
 - hosts: mesos-slaves
   roles:
-    - docker
     - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
+    - docker
+    - weave

@@ -18,6 +18,6 @@
     - src: consul-join.j2
       dest: /etc/service/consul-join
   notify:
-    - Restart consul
+    - Start consul
   tags:
     - consul

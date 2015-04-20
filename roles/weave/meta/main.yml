@@ -5,12 +5,12 @@ galaxy_info:
   company: Capgemini
   # Some suggested licenses:
   # - BSD (default)
-   - MIT
+  # - MIT
   # - GPLv2
   # - GPLv3
   # - Apache
   # - CC-BY
-  license: license (GPLv2, CC-BY, etc)
+  license: license (MIT)
   min_ansible_version: 1.2
   #
   # Below are all platforms currently available. Just uncomment
@@ -70,7 +70,7 @@ galaxy_info:
   #  - 9.1
   #  - 9.2
   - name: Ubuntu
-  #  versions:
+    versions:
   #  - all
   #  - lucid
   #  - maverick
@@ -80,7 +80,7 @@ galaxy_info:
   #  - quantal
   #  - raring
   #  - saucy
-    - trusty
+     - trusty
   #- name: SLES
   #  versions:
   #  - all
@@ -116,7 +116,7 @@ galaxy_info:
   #- database:sql
   #- development
   #- monitoring
-  - networking
+  #- networking
   #- packaging
   - system
   #- web
