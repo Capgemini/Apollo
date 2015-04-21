@@ -10,12 +10,23 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
+  if [[ "$(which ansible-playbook)" == "" ]]; then
+    echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
 }
 
 apollo_launch() {
   terraform_apply
-  # @todo - hook into ansible here to run ansible playbook
-  # ansible-playbook --user=root --connection=ssh --inventory-file=do_inventory_file --sudo site.yml
+  ansible_playbook_run
+  open_urls
+}
+
+ansible_playbook_run() {
+  pushd $APOLLO_ROOT
+    # @todo - replace with proper inventory file (dynamically generated)
+    ansible-playbook --user=root --inventory-file=do_inventory --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" site.yml
+  popd
 }
 
 apollo_down() {

@@ -11,6 +11,15 @@
   tags:
     - consul
 
+- name: configure atlas for consul
+  sudo: yes
+  template: src=atlas.json.j2 dest=/etc/consul.d/atlas.json owner=root group=root mode=0644
+  when: consul_atlas_join
+  notify:
+    - Restart consul
+  tags:
+    - consul
+
 - name: start consul
   service: name=consul state=started
 
