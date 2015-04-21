@@ -3,21 +3,26 @@
 - name: remove consul override
   command: /bin/rm -f /etc/init/consul.override
 
-- name: remove consul-join override
-  command: /bin/rm -f /etc/init/consul-join.override
-
 - name: configure consul
   sudo: yes
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode | default('u=rw,g=r,o=r') }}"
-  with_items:
-    - src: consul.json.j2
-      dest: /etc/consul.d/consul.json
-    - src: consul-join.j2
-      dest: /etc/service/consul-join
+  template: src=consul.json.j2 dest=/etc/consul.d/consul.json owner=root group=root mode=0644
   notify:
-    - Start consul
+    - Restart consul
+  tags:
+    - consul
+
+- name: start consul
+  service: name=consul state=started
+
+- name: remove consul-join override
+  command: /bin/rm -f /etc/init/consul-join.override
+  when: consul_join is defined
+
+- name: configure consul-join
+  sudo: yes
+  template: src=consul-join.j2 dest=/etc/service/consul-join owner=root group=root mode=0644
+  notify:
+    - Restart consul
+  when: consul_join is defined
   tags:
     - consul

@@ -10,7 +10,7 @@ variable "region" {
 
 variable "masters" {
   description = "The number of masters."
-  default = "1"
+  default = "3"
 }
 
 variable "slaves" {
