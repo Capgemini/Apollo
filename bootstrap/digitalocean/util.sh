@@ -24,8 +24,7 @@ apollo_launch() {
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    # @todo - replace with proper inventory file (dynamically generated)
-    ansible-playbook --user=root --inventory-file=do_inventory --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" site.yml
+    DO_CLIENT_ID=$DO_CLIENT_ID DO_API_KEY=$DO_API_KEY ansible-playbook --user=root --inventory-file=$APOLLO_ROOT/inventory/digitalocean --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" site.yml
   popd
 }
 
@@ -34,8 +33,6 @@ apollo_down() {
     terraform destroy -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
       -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
-      -var "atlas_token=${ATLAS_TOKEN}" \
-      -var "atlas_infrastructure=${ATLAS_INFRASTRUCTURE}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
       -var "slaves=${NUM_SLAVES}" \
@@ -48,8 +45,6 @@ terraform_apply() {
     terraform apply -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
       -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
-      -var "atlas_token=${ATLAS_TOKEN}" \
-      -var "atlas_infrastructure=${ATLAS_INFRASTRUCTURE}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
       -var "slaves=${NUM_SLAVES}" \
@@ -59,8 +54,8 @@ terraform_apply() {
 
 open_urls() {
   pushd $APOLLO_ROOT/terraform/digitalocean
-    /usr/bin/open "http://$(terraform output master.0.ip):5050"
-    /usr/bin/open "http://$(terraform output master.0.ip):8080"
-    /usr/bin/open "http://$(terraform output master.0.ip):8500"
+    /usr/bin/open "http://$(terraform output master.1.ip):5050"
+    /usr/bin/open "http://$(terraform output master.1.ip):8080"
+    /usr/bin/open "http://$(terraform output master.1.ip):8500"
   popd
 }
