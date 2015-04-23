@@ -7,3 +7,5 @@
 packer_cache
 packer/build
 .wercker
+*.cache
+ssh.config

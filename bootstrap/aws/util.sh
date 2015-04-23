@@ -12,12 +12,51 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
+  if [[ "$(which ansible-playbook)" == "" ]]; then
+    echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
 }
 
 apollo_launch() {
   terraform_apply
+  ansible_ssh_config
+  ansible_playbook_run
   ovpn_start
   ovpn_client_config
+}
+
+ansible_ssh_config() {
+  pushd $APOLLO_ROOT/terraform/aws
+    NAT_IP=$(terraform output nat.ip)
+    cat <<EOF > ssh.config
+  Host nat
+    User                   ubuntu
+    HostName               $NAT_IP
+    ProxyCommand           none
+    IdentityFile           $AWS_SSH_KEY
+    BatchMode              yes
+    PasswordAuthentication no
+
+  Host *
+    StrictHostKeyChecking  no
+    ServerAliveInterval    60
+    TCPKeepAlive           yes
+    ProxyCommand           ssh -q -A ubuntu@$NAT_IP nc %h %p
+    ControlMaster          auto
+    ControlPath            ~/.ssh/mux-%r@%h:%p
+    ControlPersist         8h
+    User                   ubuntu
+    IdentityFile           $AWS_SSH_KEY
+EOF
+  popd
+}
+
+ansible_playbook_run() {
+  pushd $APOLLO_ROOT
+    ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
+    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" --sudo site.yml
+  popd
 }
 
 apollo_down() {
