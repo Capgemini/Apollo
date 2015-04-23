@@ -11,3 +11,6 @@ mesos_masters
 
 [consul_servers:children]
 mesos_masters
+
+[weave_servers:children]
+mesos_slaves

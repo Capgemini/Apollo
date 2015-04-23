@@ -33,9 +33,6 @@ apollo_down() {
     terraform destroy -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
       -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
-      -var "instance_size.master=${MASTER_SIZE}" \
-      -var "instance_size.slave=${SLAVE_SIZE}" \
-      -var "slaves=${NUM_SLAVES}" \
       -var "region=${DIGITALOCEAN_REGION}"
   popd
 }
@@ -47,6 +44,8 @@ terraform_apply() {
       -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
+      -var "image.master=${MASTER_IMAGE}" \
+      -var "image.slave=${SLAVE_IMAGE}" \
       -var "slaves=${NUM_SLAVES}" \
       -var "region=${DIGITALOCEAN_REGION}"
   popd

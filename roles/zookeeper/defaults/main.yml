@@ -11,3 +11,4 @@ zookeeper_id: "
       {%- endif -%}
     {%- endfor -%}
 "
+consul_dir: /etc/consul.d

@@ -43,6 +43,15 @@
     - Start mesos master
   when: mesos_install_mode == "master"
 
+- name: Set Mesos Master consul service definition
+  sudo: yes
+  template:
+    src: mesos-master-consul.j2
+    dest: "{{ consul_dir }}/mesos-master.json"
+  notify:
+    - Restart consul
+  when: mesos_install_mode == "master"
+
 # Tasks for Slave nodes
 - name: Set Mesos Slave hostname
   copy:
