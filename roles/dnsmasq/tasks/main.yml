@@ -5,3 +5,11 @@
 
 - name: ensure dnsmasq is running (and enable it at boot)
   service: name=dnsmasq state=started enabled=yes
+
+- name: configure dnsmasq
+  sudo: yes
+  template: src=10-consul.j2 dest=/etc/dnsmasq.d/10-consul owner=root group=root mode=0644
+  notify:
+    - Restart dnsmasq
+  tags:
+    - dnsmasq

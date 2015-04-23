@@ -73,7 +73,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             consul_join: consul_join,
             consul_advertise: node[:ip],
             mesos_local_address: node[:ip],
-            consul_bind_addr: node[:ip]
+            consul_bind_addr: node[:ip],
+            consul_dc: "vagrant",
           }
           ansible.groups = ansible_groups
         end
@@ -100,7 +101,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             consul_advertise: node[:ip],
             consul_is_server: false,
             mesos_local_address: node[:ip],
-            consul_bind_addr: node[:ip]
+            consul_bind_addr: node[:ip],
+            consul_dc: "vagrant",
           }
           ansible.groups = ansible_groups
         end
