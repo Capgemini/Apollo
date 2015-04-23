@@ -16,8 +16,8 @@ resource "aws_instance" "mesos-master" {
   depends_on        = ["aws_instance.nat", "aws_internet_gateway.public"]
   private_ip        = "${lookup(var.master_ips, concat("master-", count.index))}"
   tags = {
-    Name  = "apollo-mesos-master-${count.index}"
-    Group = "mesos_masters"
+    Name = "apollo-mesos-master-${count.index}"
+    role = "mesos_masters"
   }
   connection {
     user        = "ubuntu"
