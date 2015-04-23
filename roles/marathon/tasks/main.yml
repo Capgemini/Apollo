@@ -1,5 +1,12 @@
 ---
 # tasks file for marathon
+- name: Set Marathon hostname
+  copy:
+    content: "{{marathon_local_address}}"
+    dest: /etc/marathon/conf/hostname
+    mode: 0644
+  sudo: yes
+
 - name: remove marathon override
   command: /bin/rm -f /etc/init/marathon.override
 
