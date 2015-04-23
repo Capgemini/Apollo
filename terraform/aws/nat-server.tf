@@ -8,7 +8,8 @@ resource "aws_instance" "nat" {
   key_name          = "${var.key_name}"
   source_dest_check = false
   tags = {
-    Name = "capgemini-mesos-nat"
+    Name  = "apollo-mesos-nat"
+    Group = "nat"
   }
   connection {
     user       = "ubuntu"

@@ -15,7 +15,8 @@ resource "aws_instance" "mesos-slave" {
   security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.nat", "aws_internet_gateway.public", "aws_instance.mesos-master"]
   tags = {
-    Name = "capgemini-mesos-slave-${count.index}"
+    Name  = "apollo-mesos-slave-${count.index}"
+    Group = "mesos_slaves"
   }
   ebs_block_device {
     device_name           = "/dev/sdb"
