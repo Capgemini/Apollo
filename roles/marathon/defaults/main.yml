@@ -1,2 +1,4 @@
 ---
 # defaults file for marathon
+marathon_port: 8080
+consul_dir: /etc/consul.d

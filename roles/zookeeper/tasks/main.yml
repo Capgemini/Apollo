@@ -10,3 +10,11 @@
   sudo: yes
   notify:
     - Start zookeeper
+
+- name: Set Zookeeper consul service definition
+  sudo: yes
+  template:
+    src: zookeeper-consul.j2
+    dest: "{{ consul_dir }}/zookeeper.json"
+  notify:
+    - Restart consul
