@@ -28,6 +28,16 @@ Apollo is:
 * **fault-tolerant**: Mesos / Consul master quorum with data replication
 * **portable**: public, private, hybrid, multi cloud
 
+Apollo Use Cases:
+
+* Build your own PAAS
+* Large scale CI (using the Jenkins framework)
+* Docker container management and orchestration (Marathon framework)
+* Hadoop / Big data platform (Storm framework + others)
+
+For available Mesos frameworks see [https://docs.mesosphere.com/frameworks/](https://docs.mesosphere.com/frameworks/). If you get one of these working on Apollo, please do contribute the setup
+back!
+
 Apollo can run anywhere!
 
 However, initial development is primarily happening on AWS so most of our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
