@@ -19,9 +19,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_version = conf['mesos_version']
 
   ansible_groups = {
-    "mesos-masters" => ["master1", "master2", "master3"],
-    "mesos-slaves" => ["slave1"],
-    "all:children" => ["mesos-masters", "mesos-slaves"]
+    "mesos_masters" => ["master1", "master2", "master3"],
+    "mesos_slaves" => ["slave1"],
+    "all:children" => ["mesos_masters", "mesos_slaves"],
+    "zookeeper_servers:children" => ["mesos_masters"],
+    "consul_servers:children" => ["mesos_masters"],
+    "weave_servers:children" => ["mesos_slaves"],
   }
 
   # Mesos master nodes
@@ -29,14 +32,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   master_infos = (1..master_n).map do |i|
     node = {
       :zookeeper_id    => i,
-      :quorum          => (master_n.to_f/2).ceil,
       :hostname        => "master#{i}",
       :ip              => conf['master_ipbase'] + "#{10+i}",
       :mem             => conf['master_mem'],
       :cpus            => conf['master_cpus'],
     }
   end
-  zookeeper_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")
+  mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
   zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join("\n")
   consul_join = master_infos.map{|master| master[:ip]}.join(" ")
 
@@ -67,11 +69,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.extra_vars = {
             zookeeper_id: node[:zookeeper_id],
             zookeeper_conf: zookeeper_conf,
-            zookeeper_url: zookeeper_url,
-            mesos_quorum: node[:quorum],
+            mesos_zk_url: mesos_zk_url,
             consul_join: consul_join,
             consul_advertise: node[:ip],
-            consul_bootstrap_expect: master_n,
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip]
           }
@@ -95,12 +95,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.playbook = "site.yml"
           ansible.sudo = true
           ansible.extra_vars = {
-            zookeeper_url: zookeeper_url,
-            mesos_quorum: node[:quorum],
+            mesos_zk_url: mesos_zk_url,
             consul_join: consul_join,
             consul_advertise: node[:ip],
             consul_is_server: false,
-            consul_bootstrap_expect: master_n,
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip]
           }

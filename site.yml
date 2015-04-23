@@ -4,13 +4,13 @@
     - dnsmasq
     - consul
 
-- hosts: mesos-masters
+- hosts: mesos_masters
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
     - marathon
 
-- hosts: mesos-slaves
+- hosts: mesos_slaves
   roles:
     - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
     - docker

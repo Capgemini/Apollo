@@ -1,9 +1,6 @@
 # used for leader election amongst masters
 - name: Set ZooKeeper URL
-  copy:
-    content: "{{zookeeper_url}}/mesos"
-    dest: /etc/mesos/zk
-    mode: 0644
+  template: src=zk.j2 dest=/etc/mesos/zk mode=0644
   sudo: yes
 
 # Tasks for Master nodes
@@ -28,10 +25,7 @@
   # if there are 1 or 2 masters the quorum count is 1. If there are 3 or 4
   # masters then the quorum count is 2. For 5 or 6 masters it's 3 and so on.
 - name: Set Mesos Master quorum count
-  copy:
-    content: "{{mesos_quorum}}"
-    dest: /etc/mesos-master/quorum
-    mode: 0644
+  template: src=quorum.j2 dest=/etc/mesos-master/quorum mode=0644
   sudo: yes
   when: mesos_install_mode == "master"
 
@@ -47,6 +41,15 @@
   sudo: yes
   notify:
     - Start mesos master
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master consul service definition
+  sudo: yes
+  template:
+    src: mesos-master-consul.j2
+    dest: "{{ consul_dir }}/mesos-master.json"
+  notify:
+    - Restart consul
   when: mesos_install_mode == "master"
 
 # Tasks for Slave nodes
