@@ -1,0 +1,16 @@
+[mesos_masters]
+
+[mesos_slaves]
+
+[all:children]
+mesos_masters
+mesos_slaves
+
+[zookeeper_servers:children]
+mesos_masters
+
+[consul_servers:children]
+mesos_masters
+
+[weave_servers:children]
+mesos_slaves

@@ -5,3 +5,11 @@
 
 - name: ensure marathon is running (and enable it at boot)
   service: name=marathon state=started enabled=yes
+
+- name: Set Marathon consul service definition
+  sudo: yes
+  template:
+    src: marathon-consul.j2
+    dest: "{{ consul_dir }}/marathon.json"
+  notify:
+    - Restart consul
