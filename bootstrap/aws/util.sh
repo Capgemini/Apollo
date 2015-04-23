@@ -59,9 +59,9 @@ ovpn_client_config() {
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     nat_ip=$(terraform output nat.ip)
-    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $USER-capgemini-mesos.ovpn
+    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $USER-apollo-mesos.ovpn
 
-    /usr/bin/open $USER-capgemini-mesos.ovpn
+    /usr/bin/open $USER-apollo-mesos.ovpn
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
     while true; do
@@ -77,8 +77,8 @@ ovpn_client_config() {
 
 open_urls() {
   pushd $APOLLO_ROOT/terraform/aws
-    /usr/bin/open "http://$(terraform output master.0.ip):5050"
-    /usr/bin/open "http://$(terraform output master.0.ip):8080"
-    /usr/bin/open "http://$(terraform output master.0.ip):8500"
+    /usr/bin/open "http://$(terraform output master.1.ip):5050"
+    /usr/bin/open "http://$(terraform output master.1.ip):8080"
+    /usr/bin/open "http://$(terraform output master.1.ip):8500"
   popd
 }
