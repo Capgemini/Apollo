@@ -2,6 +2,7 @@
   "datacenter": "{{ consul_dc }}",
   "advertise_addr": "{{ consul_advertise }}",
   "node_name": "{{ inventory_hostname }}",
+  "domain": "{{ consul_domain }}",
   "rejoin_after_leave": true,
   "bind_addr": "{{ consul_bind_addr }}",
   "client_addr": "{{ consul_client_addr }}",
