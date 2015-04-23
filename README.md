@@ -40,6 +40,8 @@ While the concepts and base architectural components of Apollo are not expected 
 
 ![architecture](docs/architecture.png)
 
+The above architecture is representative of Apollo cluster on AWS VPC.
+
 ## Documentation
  - **Getting Started Guides**
     - for people who want to create an Apollo cluster
