@@ -32,7 +32,7 @@ Apollo Use Cases:
 
 * Build your own PAAS
 * Large scale CI (using the Jenkins framework)
-* Docker container management and orchestration (Marathon framework)
+* Docker container management and orchestration (Marathon framework, Kubernetes)
 * Hadoop / Big data platform (Storm framework + others)
 
 For available Mesos frameworks see [https://docs.mesosphere.com/frameworks/](https://docs.mesosphere.com/frameworks/). If you get one of these working on Apollo, please do contribute the setup

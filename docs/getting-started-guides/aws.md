@@ -29,7 +29,7 @@ As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=aws
-AWS_ACCESS_KEY_ID -
+AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 AWS_SSH_KEY
 AWS_SSH_KEY_NAME

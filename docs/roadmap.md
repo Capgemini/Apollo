@@ -16,7 +16,7 @@ Providers
 ---------
 - [x] Vagrant
 - [x] AWS
-- [ ] Digitalocean
+- [x] Digitalocean
 - [ ] Openstack
 - [ ] Google Cloud
 - [ ] Microsoft Azure
