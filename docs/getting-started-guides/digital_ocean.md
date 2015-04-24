@@ -7,7 +7,7 @@
 3. You need to have installed and configured Terraform. Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You need to have [Packer](https://www.packer.io) installed.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
-6. You need to have ansible [Ansible](http://www.ansible.com/home) installed.
+6. The latest version of Ansible (for provisioning) installed (>= 1.9.0) [http://docs.ansible.com/intro_installation.html](http://docs.ansible.com/intro_installation.html) to get started
 7. You need to have [dopy](https://github.com/devo-ps/dopy) installed.
 
 ### Cluster Turnup
@@ -28,7 +28,7 @@ As a minimum you will need to set these environment variables -
 ```
 DIGITALOCEAN_API_TOKEN=
 
-# setup DO API credentials against v1 API as needed by ansible dynamic invetory.
+# setup DO API credentials against v1 API as needed by ansible dynamic inventory.
 APOLLO_PROVIDER=digitalocean
 DO_CLIENT_ID=
 DO_API_KEY=
@@ -41,7 +41,7 @@ ATLAS_TOKEN=
 ATLAS_INFRASTRUCTURE=
 ```
 
-By default Apollo will set the master/slave id to the latest version of your apollo image from your digital ocean account.
+By default Apollo will set the master/slave id to the latest version of your apollo image from your Digitalocean account.
 Otherwise you can set the id specifically as follows:
 ```
 MASTER_IMAGE=
@@ -53,7 +53,7 @@ SLAVE_IMAGE=
 cd packer
 packer build ubuntu-14.04_amd64-droplet.json 
 ```
-This will build and upload and image into your Digital Ocean account.
+This will build and upload and image into your Digitalocean account.
 
 #### Turn up the cluster
 ```
