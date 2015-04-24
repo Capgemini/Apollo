@@ -5,10 +5,10 @@
 1. You need an Digital Ocean account. Visit [https://cloud.digitalocean.com/registrations/new](https://cloud.digitalocean.com/registrations/new) to get started
 2. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
 3. You need to have installed and configured Terraform. Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
-4. You need to have installed [https://www.packer.io/](packer) for building a new base image.
+4. You need to have [packer](https://www.packer.io) installed.
 5. You need to have Python <= 2.7.5 installed.
-6. You need to have ansible [http://www.ansible.com/home](ansible) installed.
-7. You need to have [https://github.com/devo-ps/dopy](dopy) installed.
+6. You need to have ansible [ansible](http://www.ansible.com/home) installed.
+7. You need to have [dopy](https://github.com/devo-ps/dopy) installed.
 
 ### Cluster Turnup
 
@@ -41,9 +41,8 @@ ATLAS_TOKEN=
 ATLAS_INFRASTRUCTURE=
 ```
 
-By default Apollo will set the master/slave id to the latest version of an image named like apollo* from your digital ocean account.
-Otherwise you can set the id specifically.
-
+By default Apollo will set the master/slave id to the latest version of your apollo image from your digital ocean account.
+Otherwise you can set the id specifically as follows:
 ```
 MASTER_IMAGE=
 SLAVE_IMAGE=
@@ -55,7 +54,7 @@ cd packer
 packer build ubuntu-14.04_amd64-droplet.json 
 ```
 This will build and upload and image into your Digital Ocean account.
- 
+
 #### Turn up the cluster
 ```
 sh bootstrap/apollo-launch.sh
