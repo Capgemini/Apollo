@@ -21,7 +21,7 @@
 #### Set config
 
 Configuration can be set via environment variables. For a full list of available config
-options for Digital Ocean see ```bootstrap/digital_ocean/config-default.sh```
+options for Digital Ocean see ```bootstrap/digitalocean/config-default.sh```
 
 As a minimum you will need to set these environment variables -
 
