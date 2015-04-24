@@ -16,29 +16,7 @@ resource "aws_instance" "mesos-master" {
   depends_on        = ["aws_instance.nat", "aws_internet_gateway.public"]
   private_ip        = "${lookup(var.master_ips, concat("master-", count.index))}"
   tags = {
-    Name = "capgemini-mesos-master-${count.index}"
-  }
-  connection {
-    user        = "ubuntu"
-    key_file    = "${var.key_file}"
-    host        = "${aws_eip.nat.public_ip}"
-    script_path = "/tmp/${self.id}.sh"
-  }
-  provisioner "file" {
-    source      = "${path.module}/scripts/common.sh"
-    destination = "/tmp/${self.id}-00common.sh"
-  }
-  provisioner "file" {
-    source      = "${path.module}/scripts/setup-master.sh"
-    destination = "/tmp/${self.id}-01setup-master.sh"
-  }
-  provisioner "file" {
-    source      = "${path.module}/serverspecs"
-    destination = "/tmp/"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "echo main ${lookup(var.master_ips, concat("master-", count.index))} ${self.private_dns} ${var.atlas_token} ${var.atlas_infrastructure} ${var.region} | cat /tmp/${self.id}-*.sh - | bash"
-    ]
+    Name = "apollo-mesos-master-${count.index}"
+    role = "mesos_masters"
   }
 }

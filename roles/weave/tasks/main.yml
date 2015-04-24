@@ -5,12 +5,23 @@
   lineinfile: "dest=/etc/network/interfaces state=present line='source /etc/network/interfaces.d/*.cfg'"
   notify:
     - Restart networking
+  tags:
+    - weave
+
+- name: Start up docker
+  service: name=docker state=started
+  tags:
+    - weave
 
 - name: configure weave
   sudo: yes
   template: src=interfaces.j2 dest=/etc/network/interfaces.d/weave.cfg owner=root group=root mode=0644
-  notify:
-    - Up weave interface
+  tags:
+    - weave
+
+- name: bring up weave bridge
+  shell: ifup weave
+  sudo: yes
   tags:
     - weave
 

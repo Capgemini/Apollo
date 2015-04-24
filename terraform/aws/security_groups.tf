@@ -1,6 +1,6 @@
 /* Default security group */
 resource "aws_security_group" "default" {
-  name = "default-capgemini-mesos"
+  name = "default-apollo-mesos"
   description = "Default security group that allows inbound and outbound traffic from all instances in the VPC"
   vpc_id = "${aws_vpc.default.id}"
 
@@ -12,13 +12,13 @@ resource "aws_security_group" "default" {
   }
 
   tags {
-    Name = "capgemini-mesos-default-vpc"
+    Name = "apollo-mesos-default-vpc"
   }
 }
 
 /* Security group for the nat server */
 resource "aws_security_group" "nat" {
-  name = "nat-capgemini-mesos"
+  name = "nat-apollo-mesos"
   description = "Security group for nat instances that allows SSH and VPN traffic from internet"
   vpc_id = "${aws_vpc.default.id}"
 
@@ -37,6 +37,6 @@ resource "aws_security_group" "nat" {
   }
 
   tags {
-    Name = "nat-capgemini-mesos"
+    Name = "nat-apollo-mesos"
   }
 }
