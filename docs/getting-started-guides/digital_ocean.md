@@ -5,9 +5,9 @@
 1. You need an Digital Ocean account. Visit [https://cloud.digitalocean.com/registrations/new](https://cloud.digitalocean.com/registrations/new) to get started
 2. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
 3. You need to have installed and configured Terraform. Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
-4. You need to have [packer](https://www.packer.io) installed.
-5. You need to have Python <= 2.7.5 installed.
-6. You need to have ansible [ansible](http://www.ansible.com/home) installed.
+4. You need to have [Packer](https://www.packer.io) installed.
+5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
+6. You need to have ansible [Ansible](http://www.ansible.com/home) installed.
 7. You need to have [dopy](https://github.com/devo-ps/dopy) installed.
 
 ### Cluster Turnup
