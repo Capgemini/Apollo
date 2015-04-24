@@ -16,6 +16,14 @@ verify_prereqs() {
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
+  if [[ "$(which python)" == "" ]]; then
+    echo -e "${color_red}Can't find python in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
+  if [[ "$(pip list | grep boto)" == "" ]]; then
+    echo -e "${color_red}Can't find Boto. Please install it via pip install boto.${color_norm}"
+    exit 1
+  fi
 }
 
 apollo_launch() {
@@ -68,7 +76,7 @@ apollo_down() {
 terraform_apply() {
   pushd $APOLLO_ROOT/terraform/aws
     terraform apply -var "access_key=${AWS_ACCESS_KEY_ID}" \
-      -var "secret_key=${AWS_ACCESS_KEY}" \
+      -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
       -var "key_file=${AWS_SSH_KEY}" \
       -var "key_name=${AWS_SSH_KEY_NAME}" \
       -var "atlas_token=${ATLAS_TOKEN}" \

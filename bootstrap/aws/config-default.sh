@@ -2,7 +2,7 @@
 
 USER=${USER:?"Need to set User non-empty"}
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?"Need to set AWS_ACCESS_KEY_ID non-empty"}
-AWS_ACCESS_KEY=${AWS_ACCESS_KEY:?"Need to set AWS_ACCESS_KEY non-empty"}
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?"Need to set AWS_SECRET_ACCESS_KEY non-empty"}
 AWS_SSH_KEY=${AWS_SSH_KEY:-$HOME/.ssh/apollo_aws_rsa}
 AWS_SSH_KEY_NAME=${AWS_SSH_KEY_NAME:-apollo}
 ATLAS_TOKEN=${ATLAS_TOKEN:?"Need to set ATLAS_TOKEN non-empty"}

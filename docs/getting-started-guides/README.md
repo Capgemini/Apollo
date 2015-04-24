@@ -1,7 +1,9 @@
 IaaS Provider  | Config. Mgmt | OS     | Networking  | Docs                                                   | Support Level                | Notes
 -------------- | ------------ | ------ | ----------  | ----------------------------------------------------   | ---------------------------- | -----
-AWS            | Custom       | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/aws.md)       | Project                      |
-Vagrant        | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)   | Project                      |
+AWS            | Ansible       | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/aws.md)       | Project                      |
+Vagrant        | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)    | Project                      |
+Digitalocean   | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/digitalocean.md)   | Project                      |
+
 
 Definition of columns:
 
