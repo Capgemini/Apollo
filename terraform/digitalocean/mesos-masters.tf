@@ -14,6 +14,6 @@ resource "digitalocean_droplet" "mesos-master" {
   depends_on         = ["digitalocean_ssh_key.default"]
   private_networking = true
   ssh_keys = [
-	"${digitalocean_ssh_key.default.id}"
+    "${digitalocean_ssh_key.default.id}"
   ]
 }
