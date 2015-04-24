@@ -1,0 +1,17 @@
+---
+
+# Install (docker-py) python package as is a docker module dependency.
+- pip: name=docker-py
+
+# tasks file for docker registrator
+- name: registrator
+  docker:
+    name: registrator
+    image: "{{ registrator_image }}"
+    state: started
+    command: "-internal {{ registry_ip }}:{{ registry_port }}"
+    hostname: "{{ hostname }}"
+    volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock"
+
+- debug: msg="Lume System {{ inventory_hostname }} has uuid {{ ansible_product_uuid }}"
