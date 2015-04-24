@@ -11,7 +11,7 @@
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "mesos-{{user `mesos_version`}}-_amd64_{{user `build_version`}}",
+    "snapshot_name": "apollo-mesos-{{user `mesos_version`}}-_amd64_{{user `build_version`}}",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "ubuntu-14-04-x64",
     "region": "{{user `digitalocean_region`}}",

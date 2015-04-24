@@ -32,7 +32,6 @@ apollo_down() {
   pushd $APOLLO_ROOT/terraform/digitalocean
     terraform destroy -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
-      -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
       -var "region=${DIGITALOCEAN_REGION}"
   popd
 }
@@ -41,7 +40,6 @@ terraform_apply() {
   pushd $APOLLO_ROOT/terraform/digitalocean
     terraform apply -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
-      -var "ssh_fingerprint=${DIGITALOCEAN_SSH_FINGERPRINT}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
       -var "image.master=${MASTER_IMAGE}" \

@@ -1,6 +1,5 @@
 variable "do_token" {}
 variable "key_file" {}
-variable "ssh_fingerprint" {}
 
 variable "region" {
   description = "The Digital Ocean region to create resources in."

@@ -8,6 +8,6 @@ resource "digitalocean_droplet" "mesos-slave" {
   depends_on         = ["digitalocean_droplet.mesos-master"]
   private_networking = true
   ssh_keys = [
-    "${var.ssh_fingerprint}"
+    "${digitalocean_ssh_key.default.id}"
   ]
 }
