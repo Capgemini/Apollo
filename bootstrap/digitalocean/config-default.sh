@@ -16,7 +16,7 @@ get_lastest_apollo_image_id() {
     return_ids_column | awk 'END{print}'
   }
   echo $(return_lastest_row)
-} 
+}
 
 DIGITALOCEAN_REGION=${DIGITALOCEAN_REGION:-lon1}
 DIGITALOCEAN_SSH_PUB_KEY=${DIGITALOCEAN_SSH_KEY:?"Need to set DIGITALOCEAN_SSH_KEY non-empty"}
@@ -31,3 +31,6 @@ SLAVE_SIZE=${SLAVE_SIZE:-512mb}
 NUM_SLAVES=${NUM_SLAVES:-1}
 MASTER_IMAGE=${MASTER_IMAGE:-$(get_lastest_apollo_image_id)}
 SLAVE_IMAGE=${SLAVE_IMAGE:-$(get_lastest_apollo_image_id)}
+
+CONSUL_DC=${CONSUL_DC:-$DIGITALOCEAN_REGION}
+MESOS_CLUSTER_NAME=${MESOS_CLUSTER_NAME:-$DIGITALOCEAN_REGION}
