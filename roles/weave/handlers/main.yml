@@ -13,7 +13,7 @@
   sudo: yes
 
 - name: Weave launch
-  command: /usr/local/bin/weave launch
+  command: /usr/local/bin/weave launch {{ weave_launch_peers }}
   sudo: yes
   tags:
     - weave

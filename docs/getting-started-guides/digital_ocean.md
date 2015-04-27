@@ -9,6 +9,9 @@
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
 6. The latest version of Ansible (for provisioning) installed (>= 1.9.0) [http://docs.ansible.com/intro_installation.html](http://docs.ansible.com/intro_installation.html) to get started.
 7. You need to have [dopy](https://github.com/devo-ps/dopy) installed.
+8. You will need to have created an SSH RSA key pair for accessing your Digitalocean
+droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
+
 
 ### Cluster Turnup
 
@@ -26,14 +29,24 @@ options for Digital Ocean see ```bootstrap/digitalocean/config-default.sh```
 As a minimum you will need to set these environment variables -
 
 ```
+# v2 API token
 DIGITALOCEAN_API_TOKEN=
+```
 
-# setup DO API credentials against v1 API as needed by ansible dynamic inventory.
-APOLLO_PROVIDER=digitalocean
+To generate a v2 API token see [https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocea n-api-v2](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2)
+
+```
+# v1 API credentials as needed by ansible dynamic inventory.
 DO_CLIENT_ID=
 DO_API_KEY=
+```
 
-# path to your public ssh key.
+To generate a v1 API credentials see [https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-deprecated](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-deprecated)
+
+```
+APOLLO_PROVIDER=digitalocean
+
+# Path to your public ssh key (created in step 8 above).
 DIGITALOCEAN_SSH_KEY=
 
 # Atlas variables.
@@ -41,8 +54,9 @@ ATLAS_TOKEN=
 ATLAS_INFRASTRUCTURE=
 ```
 
-By default Apollo will set the master/slave id to the latest version of your apollo image from your Digitalocean account.
-Otherwise you can set the id specifically as follows:
+By default Apollo will try to set the master/slave id to the latest version of your Apollo image from your Digitalocean account.
+Otherwise you can set the ID specifically as follows:
+
 ```
 MASTER_IMAGE=
 SLAVE_IMAGE=
@@ -51,16 +65,16 @@ SLAVE_IMAGE=
 #### Build the base image
 ```
 cd packer
-packer build ubuntu-14.04_amd64-droplet.json 
+packer build ubuntu-14.04_amd64-droplet.json
 ```
-This will build and upload and image into your Digitalocean account.
+This will build and upload the image into your Digitalocean account.
 
 #### Turn up the cluster
 ```
 sh bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK). It will also create a mesos slave cluster and a ssh key so you can access to the droplets.
+NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK). It will also create a mesos slave cluster and a SSH key so you can access the droplets.
 
 
 #### Tearing down the cluster
