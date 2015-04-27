@@ -1,6 +1,6 @@
 ## Consul
 
-Consul is used for service discovery of node and services in the cluster.
+Consul is used for service discovery of nodes and services in the cluster.
 
 It has a number of key features -
 
