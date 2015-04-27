@@ -1,0 +1,7 @@
+---
+# defaults file for registrator
+registrator_image: "gliderlabs/registrator:master"
+registry_ip: "127.0.0.1"
+registry_port: 8500
+hostname: "{{ ansible_all_ipv4_addresses }}"
+
