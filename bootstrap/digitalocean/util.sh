@@ -24,7 +24,14 @@ apollo_launch() {
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    DO_CLIENT_ID=$DO_CLIENT_ID DO_API_KEY=$DO_API_KEY ansible-playbook --user=root --inventory-file=$APOLLO_ROOT/inventory/digitalocean --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" site.yml
+    DO_CLIENT_ID=$DO_CLIENT_ID DO_API_KEY=$DO_API_KEY ansible-playbook --user=root \
+    --inventory-file=$APOLLO_ROOT/inventory/digitalocean \
+    --extra-vars "mesos_cluster_name=${MESOS_CLUSTER_NAME} \
+      consul_dc=${CONSUL_DC} \
+      consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+      consul_atlas_join=true \
+      consul_atlas_token=${ATLAS_TOKEN}" \
+    site.yml
   popd
 }
 

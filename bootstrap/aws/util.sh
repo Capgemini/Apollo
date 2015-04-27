@@ -4,8 +4,6 @@
 # config-default.sh.
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/../..
 source "${APOLLO_ROOT}/bootstrap/aws/${APOLLO_CONFIG_FILE-"config-default.sh"}"
-# This removes the final character in bash (somehow)
-AWS_REGION=${ZONE%?}
 
 verify_prereqs() {
   if [[ "$(which terraform)" == "" ]]; then
@@ -62,8 +60,15 @@ EOF
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
-    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} consul_atlas_join=true consul_atlas_token=${ATLAS_TOKEN}" --sudo site.yml
+    ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o \
+    ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
+    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
+    --extra-vars "mesos_cluster_name=${MESOS_CLUSTER_NAME} \
+      consul_dc=${CONSUL_DC} \
+      consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+      consul_atlas_join=true \
+      consul_atlas_token=${ATLAS_TOKEN}" \
+      --sudo site.yml
   popd
 }
 
