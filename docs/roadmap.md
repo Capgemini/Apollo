@@ -30,6 +30,7 @@ Operating Systems
 Features
 --------
 - [ ] Easier pluggability for frameworks
+- [ ] Move all services to Docker containers
 - [ ] Monitoring and alerts(nodes/services)
 - [ ] Logging (nodes/services)
 - [ ] Distributed File storage (for nodes/services)
