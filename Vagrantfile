@@ -75,6 +75,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
+            mesos_local_address: node[:ip],
+            marathon_local_address: node[:ip],
           }
           ansible.groups = ansible_groups
         end

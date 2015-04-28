@@ -9,7 +9,8 @@
     name: registrator
     image: "{{ registrator_image }}"
     state: started
-    command: "-internal {{ registry_ip }}:{{ registry_port }}"
+    net: host
+    command: "-internal {{ registrator_uri }}"
     hostname: "{{ hostname }}"
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
