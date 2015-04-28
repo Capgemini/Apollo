@@ -7,7 +7,7 @@
     - { path: 'templates' }
 
 - name: upload template config files
-  template: src=consul.cfg.j2} dest="{{ consul_template_dir }}/config/consul.cfg" mode=0644
+  template: src=consul.cfg.j2 dest="{{ consul_template_dir }}/config/consul.cfg" mode=0644
   sudo: yes
 
 - name: upload static config files
@@ -23,6 +23,7 @@
     image: "{{ haproxy_image }}"
     state: started
     net: host
+    restart_policy: always
     env:
       HAPROXY_DOMAIN: "{{ haproxy_domain }}"
       CONSUL_CONFIG: "/config"

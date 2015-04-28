@@ -2,9 +2,12 @@
 
 [mesos_slaves]
 
+[load_balancers]
+
 [all:children]
 mesos_masters
 mesos_slaves
+load_balancers
 
 [zookeeper_servers:children]
 mesos_masters
@@ -14,3 +17,4 @@ mesos_masters
 
 [weave_servers:children]
 mesos_slaves
+load_balancers

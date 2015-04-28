@@ -19,12 +19,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_version = conf['mesos_version']
 
   ansible_groups = {
-    "mesos_masters" => ["master1", "master2", "master3"],
-    "mesos_slaves" => ["slave1"],
-    "all:children" => ["mesos_masters", "mesos_slaves"],
+    "mesos_masters"              => ["master1", "master2", "master3"],
+    "mesos_slaves"               => ["slave1"],
+    "load_balancers"             => ["proxy1"],
+    "all:children"               => ["mesos_masters", "mesos_slaves", "load_balancers"],
     "zookeeper_servers:children" => ["mesos_masters"],
-    "consul_servers:children" => ["mesos_masters"],
-    "weave_servers:children" => ["mesos_slaves"],
+    "consul_servers:children"    => ["mesos_masters"],
+    "weave_servers:children"     => ["mesos_slaves", "load_balancers"],
   }
 
   # Mesos master nodes
@@ -101,8 +102,42 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_zk_url: mesos_zk_url,
             consul_join: consul_join,
             consul_advertise: node[:ip],
-            consul_is_server: false,
             mesos_local_address: node[:ip],
+            consul_bind_addr: node[:ip],
+            consul_dc: "vagrant",
+          }
+          ansible.groups = ansible_groups
+        end
+      end
+    end
+  end
+
+  # Frontend loadbalancer running haproxy container
+  proxy_n = conf['proxy_n']
+  proxy_infos = (1..proxy_n).map do |i|
+    node = {
+      :hostname        => "proxy#{i}",
+      :ip              => conf['proxy_ipbase'] + "#{10+i}",
+      :mem             => conf['proxy_mem'],
+      :cpus            => conf['proxy_cpus'],
+    }
+  end
+  proxy_infos.flatten.each_with_index do |node|
+    config.vm.define node[:hostname] do |cfg|
+      cfg.vm.provider :virtualbox do |vb, override|
+        override.vm.hostname = node[:hostname]
+        override.vm.network :private_network, :ip => node[:ip]
+        override.vm.provision :hosts
+
+        vb.name = 'vagrant-mesos-' + node[:hostname]
+        vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
+
+        override.vm.provision "ansible" do |ansible|
+          ansible.playbook = "site.yml"
+          ansible.sudo = true
+          ansible.extra_vars = {
+            consul_join: consul_join,
+            consul_advertise: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
           }

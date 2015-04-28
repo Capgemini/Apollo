@@ -60,6 +60,7 @@ Otherwise you can set the ID specifically as follows:
 ```
 MASTER_IMAGE=
 SLAVE_IMAGE=
+LB_IMAGE=
 ```
 
 #### Build the base image
