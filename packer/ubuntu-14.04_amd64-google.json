@@ -10,6 +10,7 @@
   },
   "builders": [{
     "type": "googlecompute",
+    "image_name": "apollo-ubuntu-14-04-x64-{{user `build_version`}}",
     "image_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "ssh_username": "ubuntu",
     "ssh_timeout": "10m",
@@ -54,16 +55,5 @@
       "script": "scripts/common/serverspec.sh",
       "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
     }
-  ],
-  "push": {
-    "name": "capgemini/mesos-0-22-1-ubuntu-14-04"
-  },
-  "post-processors": [{
-    "type": "atlas",
-    "artifact": "apollo/mesos-0.22.1_ubuntu-14.04_amd64",
-    "artifact_type": "gce.image",
-    "metadata": {
-      "created_at": "{{timestamp}}"
-    }
-  }]
+  ]
 }
