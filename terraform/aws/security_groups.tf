@@ -40,3 +40,21 @@ resource "aws_security_group" "nat" {
     Name = "nat-apollo-mesos"
   }
 }
+
+/* Security group for web traffic */
+resource "aws_security_group" "web" {
+  name = "web-apollo-mesos"
+  description = "Security group that allows web traffic from the internet"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "web-apollo-mesos"
+  }
+}

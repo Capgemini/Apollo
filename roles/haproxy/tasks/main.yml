@@ -26,9 +26,10 @@
     restart_policy: always
     env:
       HAPROXY_DOMAIN: "{{ haproxy_domain }}"
-      CONSUL_CONFIG: "/config"
+      CONSUL_TEMPLATE_VERSION: "{{ consul_template_version }}"
       CONSUL_LOGLEVEL: "{{ consul_template_loglevel }}"
       CONSUL_CONNECT: "{{ consul_backend }}"
+      CONSUL_CONFIG: "/config"
     volumes:
     - "{{ consul_template_dir }}/config:/config"
     - "{{ consul_template_dir }}/templates:/templates"

@@ -7,3 +7,6 @@ output "master.1.ip" {
 output "slave_ips" {
    value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
 }
+output "elb.hostname" {
+  value = "${aws_elb.app.dns_name}"
+}

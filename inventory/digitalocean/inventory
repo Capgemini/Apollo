@@ -2,7 +2,8 @@
 
 [mesos_slaves]
 
-[load_balancers]
+[load_balancers:children]
+mesos_slaves
 
 [all:children]
 mesos_masters

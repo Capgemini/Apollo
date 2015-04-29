@@ -2,13 +2,14 @@
 
 [tag_role_mesos_slaves]
 
-[tag_role_load_balancers]
-
 [mesos_masters:children]
 tag_role_mesos_masters
 
 [mesos_slaves:children]
 tag_role_mesos_slaves
+
+[load_balancers:children]
+mesos_slaves
 
 [all:children]
 mesos_masters

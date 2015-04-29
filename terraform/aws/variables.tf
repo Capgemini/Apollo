@@ -15,7 +15,7 @@ variable "region" {
 }
 
 variable "subnet_availability_zone" {
-  description = "Availability zone for mesos-ceph subnet."
+  description = "Availability zone for Apollo subnet."
   default = "eu-west-1b"
 }
 
@@ -30,7 +30,7 @@ variable "public_subnet_cidr_block" {
 }
 
 variable "private_subnet_cidr_block" {
-  description = "Cidr block for mesos subnet."
+  description = "Cidr block for private Mesos subnet."
   default = "10.0.1.0/24"
 }
 

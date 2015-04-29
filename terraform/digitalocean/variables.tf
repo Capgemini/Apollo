@@ -20,7 +20,6 @@ variable "instance_size" {
   default = {
     master = "512mb"
     slave  = "512mb"
-    lb     = "512mb"
   }
 }
 
@@ -29,7 +28,6 @@ variable "image" {
   default = {
     master = "11147507"
     slave  = "11147507"
-    lb     = "11147507"
   }
 }
 

@@ -49,10 +49,8 @@ terraform_apply() {
       -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
-      -var "instance_size.lb=${LB_SIZE}" \
       -var "image.master=${MASTER_IMAGE}" \
       -var "image.slave=${SLAVE_IMAGE}" \
-      -var "image.lb=${LB_IMAGE}" \
       -var "slaves=${NUM_SLAVES}" \
       -var "region=${DIGITALOCEAN_REGION}"
   popd
