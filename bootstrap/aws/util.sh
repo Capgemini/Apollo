@@ -28,8 +28,15 @@ apollo_launch() {
   terraform_apply
   ansible_ssh_config
   ansible_playbook_run
-  ovpn_start
-  ovpn_client_config
+
+  while true; do
+  read -p "Do you want to start the VPN and setup a connection now (y/n)?" yn
+    case $yn in
+        [Yy]* ) ovpn_start;ovpn_client_config; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer y or n.";;
+    esac
+  done
 }
 
 ansible_ssh_config() {

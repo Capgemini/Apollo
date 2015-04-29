@@ -373,6 +373,8 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
             if "mesos-slave-" in droplet['name']:
                 self.push(self.inventory, 'mesos_slaves', dest)
 
+            if "load-balancer-" in droplet['name']:
+                self.push(self.inventory, 'load_balancers', dest)
 
 
     def load_droplet_variables_for_host(self):

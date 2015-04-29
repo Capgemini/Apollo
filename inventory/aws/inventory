@@ -8,9 +8,13 @@ tag_role_mesos_masters
 [mesos_slaves:children]
 tag_role_mesos_slaves
 
+[load_balancers:children]
+mesos_slaves
+
 [all:children]
 mesos_masters
 mesos_slaves
+load_balancers
 
 [zookeeper_servers:children]
 mesos_masters
@@ -20,3 +24,4 @@ mesos_masters
 
 [weave_servers:children]
 mesos_slaves
+load_balancers

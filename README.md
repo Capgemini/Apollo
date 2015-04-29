@@ -1,10 +1,7 @@
 Apollo
 =========
 
-[![wercker
-status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/m/master
-"wercker
-status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
+[![wercker status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/s/master "wercker status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 Apollo is an open source project to aid with building and deploying IAAS and
@@ -21,6 +18,7 @@ Apollo is built on top of the following components:
 * [Consul](http://consul.io) for service discovery, DNS
 * [Docker](http://docker.io) for application container runtimes
 * [Weave](https://github.com/zettio/weave) for networking of docker containers
+* [HAProxy](http://www.haproxy.org) for application container load balancing
 
 Apollo is:
 
@@ -31,7 +29,7 @@ Apollo is:
 Apollo Use Cases:
 
 * Build your own PAAS
-* Large scale CI (using the Jenkins framework)
+* Large scale CI (using the Jenkins Mesos framework)
 * Docker container management and orchestration (Marathon framework, Kubernetes)
 * Hadoop / Big data platform (Storm framework + others)
 
@@ -40,7 +38,8 @@ back!
 
 Apollo can run anywhere!
 
-However, initial development is primarily happening on AWS so most of our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code.
+However, the majority of initial development is happening on AWS so most of our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code. For more info on cloud
+support see our [roadmap](docs/roadmap.md).
 
 Apollo is in alpha!
 

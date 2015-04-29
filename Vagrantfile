@@ -19,12 +19,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_version = conf['mesos_version']
 
   ansible_groups = {
-    "mesos_masters" => ["master1", "master2", "master3"],
-    "mesos_slaves" => ["slave1"],
-    "all:children" => ["mesos_masters", "mesos_slaves"],
+    "mesos_masters"              => ["master1", "master2", "master3"],
+    "mesos_slaves"               => ["slave1"],
+    "all:children"               => ["mesos_masters", "mesos_slaves", "load_balancers"],
+    "load_balancers:children"    => ["mesos_slaves"],
     "zookeeper_servers:children" => ["mesos_masters"],
-    "consul_servers:children" => ["mesos_masters"],
-    "weave_servers:children" => ["mesos_slaves"],
+    "consul_servers:children"    => ["mesos_masters"],
+    "weave_servers:children"     => ["mesos_slaves", "load_balancers"],
   }
 
   # Mesos master nodes
@@ -75,6 +76,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
+            mesos_local_address: node[:ip],
+            marathon_local_address: node[:ip],
           }
           ansible.groups = ansible_groups
         end
@@ -99,7 +102,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_zk_url: mesos_zk_url,
             consul_join: consul_join,
             consul_advertise: node[:ip],
-            consul_is_server: false,
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
