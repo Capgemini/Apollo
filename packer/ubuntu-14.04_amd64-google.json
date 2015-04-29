@@ -10,7 +10,7 @@
   },
   "builders": [{
     "type": "googlecompute",
-    "image_name": "apollo-ubuntu-14-04-x64-{{user `build_version`}}",
+    "image_name": "apollo-ubuntu-mesos-14-04-x64-{{user `build_version`}}",
     "image_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "ssh_username": "ubuntu",
     "ssh_timeout": "10m",
