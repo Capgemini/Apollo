@@ -44,6 +44,7 @@ ansible_ssh_config() {
     NAT_IP=$(terraform output nat.ip)
     cat <<EOF > ssh.config
   Host nat
+    StrictHostKeyChecking  no
     User                   ubuntu
     HostName               $NAT_IP
     ProxyCommand           none
