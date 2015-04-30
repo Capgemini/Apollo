@@ -1,0 +1,7 @@
+---
+# defaults file for mesos
+mesos_zk_port: 2181
+mesos_zookeeper_group: zookeeper_servers
+mesos_master_port: 5050
+consul_dir: /etc/consul.d
+mesos_local_address: "{{ ansible_default_ipv4.address }}"

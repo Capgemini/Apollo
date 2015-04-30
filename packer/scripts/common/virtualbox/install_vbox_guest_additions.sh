@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -eu
-set -o pipefail
 
 VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
 mkdir /tmp/isomount

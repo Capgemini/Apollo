@@ -1,0 +1,37 @@
+---
+# tasks file for consul
+- name: remove consul override
+  command: /bin/rm -f /etc/init/consul.override
+
+- name: configure consul
+  sudo: yes
+  template: src=consul.json.j2 dest=/etc/consul.d/consul.json owner=root group=root mode=0644
+  notify:
+    - Restart consul
+  tags:
+    - consul
+
+- name: configure atlas for consul
+  sudo: yes
+  template: src=atlas.json.j2 dest=/etc/consul.d/atlas.json owner=root group=root mode=0644
+  when: consul_atlas_join
+  notify:
+    - Restart consul
+  tags:
+    - consul
+
+- name: start consul
+  service: name=consul state=started
+
+- name: remove consul-join override
+  command: /bin/rm -f /etc/init/consul-join.override
+  when: consul_join is defined
+
+- name: configure consul-join
+  sudo: yes
+  template: src=consul-join.j2 dest=/etc/service/consul-join owner=root group=root mode=0644
+  notify:
+    - Restart consul
+  when: consul_join is defined
+  tags:
+    - consul

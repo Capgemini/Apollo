@@ -2,7 +2,6 @@ variable "access_key" {}
 variable "secret_key" {}
 variable "key_name" {}
 variable "key_file" {}
-variable "zone_id" {}
 variable "atlas_token" {}
 
 variable "atlas_infrastructure" {
@@ -16,7 +15,7 @@ variable "region" {
 }
 
 variable "subnet_availability_zone" {
-  description = "Availability zone for mesos-ceph subnet."
+  description = "Availability zone for Apollo subnet."
   default = "eu-west-1b"
 }
 
@@ -31,7 +30,7 @@ variable "public_subnet_cidr_block" {
 }
 
 variable "private_subnet_cidr_block" {
-  description = "Cidr block for mesos subnet."
+  description = "Cidr block for private Mesos subnet."
   default = "10.0.1.0/24"
 }
 
@@ -69,8 +68,8 @@ variable "instance_type" {
 
 variable "atlas_artifact" {
   default = {
-    master = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
-    slave  = "capgemini/mesos-0.21.0_ubuntu-14.04_amd64"
+    master = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
+    slave  = "capgemini/mesos-0.22.1_ubuntu-14.04_amd64"
   }
 }
 

@@ -8,7 +8,8 @@ resource "aws_instance" "nat" {
   key_name          = "${var.key_name}"
   source_dest_check = false
   tags = {
-    Name = "capgemini-mesos-nat"
+    Name = "apollo-mesos-nat"
+    role = "nat"
   }
   connection {
     user       = "ubuntu"
@@ -26,15 +27,10 @@ resource "aws_instance" "nat" {
       "echo \"    StrictHostKeyChecking no\"                   >> /home/ubuntu/.ssh/config",
       "echo \"    UserKnownHostsFile=/dev/null\"               >> /home/ubuntu/.ssh/config",
       "echo \"    LogLevel ERROR\"                             >> /home/ubuntu/.ssh/config",
-      /* @todo - look this up a bit more dynamically */
-      "echo ${var.master_ips.master-0} >> /home/ubuntu/masters",
-      "echo ${var.master_ips.master-1} >> /home/ubuntu/masters",
-      "echo ${var.master_ips.master-2} >> /home/ubuntu/masters"
     ]
   }
   provisioner "remote-exec" {
     inline = [
-      /* @todo - not sure the routing is working correctly here */
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
       "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
       /* Install docker */
@@ -48,6 +44,7 @@ resource "aws_instance" "nat" {
   }
 }
 
+/* NAT elastic IP */
 resource "aws_eip" "nat" {
   instance = "${aws_instance.nat.id}"
   vpc = true

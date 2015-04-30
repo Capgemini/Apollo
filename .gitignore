@@ -8,3 +8,5 @@ packer_cache
 packer/build
 *.pem
 .wercker
+*.cache
+ssh.config
