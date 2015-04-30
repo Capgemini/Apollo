@@ -15,6 +15,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.enable :apt
   end
 
+  # throw error if vagrant-hosts not installed
+  unless Vagrant.has_plugin?("vagrant-hosts")
+    raise "vagrant-hosts plugin not installed"
+  end
+
   config.vm.box = "capgemini/mesos"
   config.vm.box_version = conf['mesos_version']
 
@@ -59,7 +64,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
@@ -90,7 +94,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
