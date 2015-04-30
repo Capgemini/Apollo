@@ -4,7 +4,7 @@
 
 1. You need an Digital Ocean account. Visit [https://cloud.digitalocean.com/registrations/new](https://cloud.digitalocean.com/registrations/new) to get started
 2. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
-3. You need to have installed and configured Terraform. Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
+4. You need to have installed and configured Terraform (>= 0.4.2 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You need to have [Packer](https://www.packer.io) installed.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
 6. The latest version of Ansible (for provisioning) installed (>= 1.9.0) [http://docs.ansible.com/intro_installation.html](http://docs.ansible.com/intro_installation.html) to get started. Do not install 1.9.1 [https://github.com/ansible/ansible-modules-core/issues/1170](https://github.com/ansible/ansible-modules-core/issues/1170)
