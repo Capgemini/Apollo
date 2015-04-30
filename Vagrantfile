@@ -15,6 +15,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.enable :apt
   end
 
+  # throw error if vagrant-hosts not installed
+  unless Vagrant.has_plugin?("vagrant-hosts")
+    raise "vagrant-hosts plugin not installed"
+  end
+
   config.vm.box = "capgemini/mesos"
   config.vm.box_version = conf['mesos_version']
 
