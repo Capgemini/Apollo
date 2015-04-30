@@ -4,9 +4,15 @@ resource "digitalocean_ssh_key" "default" {
     public_key = "${file(var.key_file)}"
 }
 
+/* Base packer build we use for provisioning master instances */
+resource "atlas_artifact" "mesos-master" {
+  name = "${var.atlas_artifact.master}"
+  type = "digitalocean.image"
+}
+
 /* Mesos master instances */
 resource "digitalocean_droplet" "mesos-master" {
-  image              = "${var.image.master}"
+  image              = "${atlas_artifact.mesos-master.id}"
   region             = "${var.region}"
   count              = "${var.masters}"
   name               = "apollo-mesos-master-${count.index}"

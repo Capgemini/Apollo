@@ -7,11 +7,11 @@
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "build_version": "{{ timestamp }}"
+    "version": "0.22.1"
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "apollo-mesos-{{user `mesos_version`}}-_amd64_{{user `build_version`}}",
+    "snapshot_name": "apollo-mesos-ubuntu-14.04-amd64",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "ubuntu-14-04-x64",
     "region": "{{user `digitalocean_region`}}",
@@ -43,6 +43,28 @@
         "scripts/common/install_weave.sh"
       ],
       "execute_command": "{{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
     }
-  ]
+  ],
+  "push": {
+    "name": "capgemini/apollo-mesos-ubuntu-14-04-amd64"
+  },
+  "post-processors": [{
+    "type": "atlas",
+    "artifact": "capgemini/apollo-mesos-ubuntu-14.04-amd64",
+    "artifact_type": "digitalocean.image",
+    "metadata": {
+      "created_at": "{{timestamp}}",
+      "version": "{{user `version`}}"
+    }
+  }]
 }
