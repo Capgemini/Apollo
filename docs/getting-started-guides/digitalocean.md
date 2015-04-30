@@ -21,6 +21,18 @@ droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 1. ```git clone https://github.com/Capgemini/apollo.git```
 2. ```cd apollo```
 
+#### Build the base image in Atlas
+```
+cd packer
+packer build ubuntu-14.04_amd64-droplet.json
+```
+
+We are using [Atlas](https://atlas.hashicorp.com) to store artifacts (images) for
+builds.
+
+You will need to push and build your Atlas artifact (via Packer in the Atlas cloud) in order to
+provision your nodes via terraform. See the [guide on how to build artifacts in Atlas](../../docs/atlas.md)
+
 #### Set config
 
 Configuration can be set via environment variables. For a full list of available config
@@ -52,6 +64,8 @@ DIGITALOCEAN_SSH_KEY=
 # Atlas variables.
 ATLAS_TOKEN=
 ATLAS_INFRASTRUCTURE=
+ATLAS_ARTIFACT_MASTER=
+ATLAS_ARTIFACT_SLAVE=
 ```
 
 By default Apollo will try to set the master/slave id to the latest version of your Apollo image from your Digitalocean account.
@@ -61,13 +75,6 @@ Otherwise you can set the ID specifically as follows:
 MASTER_IMAGE=
 SLAVE_IMAGE=
 ```
-
-#### Build the base image
-```
-cd packer
-packer build ubuntu-14.04_amd64-droplet.json
-```
-This will build and upload the image into your Digitalocean account.
 
 #### Turn up the cluster
 ```

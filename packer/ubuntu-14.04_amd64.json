@@ -8,14 +8,13 @@
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "build_version": "{{ timestamp }}",
     "access_token": "{{env `ATLAS_TOKEN`}}"
   },
   "builders": [{
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
     "headless": true,
-    "vm_name": "mesos-{{user `mesos_version`}}_amd64_virtualbox_{{user `build_version`}}",
+    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-virtualbox",
     "disk_size": 40960,
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
@@ -79,13 +78,13 @@
   "post-processors": [
     [{
       "type": "vagrant",
-      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/mesos-{{user `mesos_version`}}_amd64_{{.Provider}}_{{user `build_version`}}.box",
+      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-mesos-{{user `mesos_version`}}_amd64_{{.Provider}}.box",
       "keep_input_artifact": true,
       "compression_level": 9
     },
     {
       "type": "vagrant-cloud",
-      "box_tag": "capgemini/mesos",
+      "box_tag": "capgemini/apollo-mesos",
       "access_token": "{{user `access_token`}}",
       "version": "{{user `version`}}"
     }]

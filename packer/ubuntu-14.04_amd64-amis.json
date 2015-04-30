@@ -6,11 +6,11 @@
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "build_version": "{{ timestamp }}"
+    "version": "0.22.1"
   },
   "builders": [{
     "type": "amazon-ebs",
-    "ami_name": "mesos-{{user `mesos_version`}}_amd64_{{user `build_version`}}",
+    "ami_name": "apollo-mesos-ubuntu-14.04-amd64",
     "ami_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
@@ -60,14 +60,15 @@
     }
   ],
   "push": {
-    "name": "capgemini/mesos-0-22-1-ubuntu-14-04"
+    "name": "capgemini/apollo-mesos-ubuntu-14-04-amd64"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/mesos-0.22.1_ubuntu-14.04_amd64",
+    "artifact": "capgemini/apollo-mesos-ubuntu-14.04-amd64",
     "artifact_type": "aws.ami",
     "metadata": {
-      "created_at": "{{timestamp}}"
+      "created_at": "{{timestamp}}",
+      "version": "{{user `version`}}"
     }
   }]
 }

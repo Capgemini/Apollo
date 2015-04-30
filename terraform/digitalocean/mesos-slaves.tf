@@ -1,6 +1,12 @@
+/* Base packer build we use for provisioning master instances */
+resource "atlas_artifact" "mesos-slave" {
+  name = "${var.atlas_artifact.slave}"
+  type = "digitalocean.image"
+}
+
 /* Mesos slave instances */
 resource "digitalocean_droplet" "mesos-slave" {
-  image              = "${var.image.slave}"
+  image              = "${atlas_artifact.mesos-slave.id}"
   region             = "${var.region}"
   count              = "${var.slaves}"
   name               = "apollo-mesos-slave-${count.index}"

@@ -23,11 +23,9 @@ variable "instance_size" {
   }
 }
 
-variable "image" {
-  description = "Base Image to launch the droplets with"
+variable "atlas_artifact" {
   default = {
-    master = "11147507"
-    slave  = "11147507"
+    master = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
+    slave  = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
   }
 }
-
