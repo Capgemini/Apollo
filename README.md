@@ -43,7 +43,7 @@ support see our [roadmap](docs/roadmap.md).
 
 Apollo is in alpha!
 
-While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and API changes as we bring it to a stable, production ready, multi-cloud available product.
+While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and feature changes as we bring it to a stable, production ready, multi-cloud available thing!
 
 ## Architecture
 
