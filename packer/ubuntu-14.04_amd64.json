@@ -78,7 +78,7 @@
   "post-processors": [
     [{
       "type": "vagrant",
-      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-mesos-{{user `mesos_version`}}_amd64_{{.Provider}}.box",
+      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-mesos-ubuntu-14.04-amd64-{{.Provider}}.box",
       "keep_input_artifact": true,
       "compression_level": 9
     },
