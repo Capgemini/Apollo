@@ -21,6 +21,10 @@ the push and post-processor config. At the moment there is a bug in packer which
 
 ```
 cd packer/
+packer push -token=$ATLAS_TOKEN -create ubuntu-14.04_amd64-droplet.json
+```
+or:
+```
 packer push -token=$ATLAS_TOKEN -m="Optional message here" ubuntu-14.04_amd64-droplet.json
 ```
 
