@@ -44,3 +44,14 @@ sh bootstrap/apollo-down.sh
 #### Interacting with your Apollo cluster with Vagrant
 
 You can interact with your Apollo cluster via the normal vagrant commands - ```vagrant up``` ```vagrant halt``` ```vagrant destroy``` etc...
+
+#### Adding more slave machines
+
+Edit ``vagrant.yml```
+
+Change ```slave_n:``` to the desired number of slave machines.
+
+Add a ```slave2_ip:``` replacing 2 with the slave number.
+
+In the ```Vagrantfile``` update the ```ansible_groups``` to reference the new
+slave hostnames added (will be in the format slave2, slave3, etc...)

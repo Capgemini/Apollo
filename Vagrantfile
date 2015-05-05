@@ -35,11 +35,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Mesos master nodes
   master_n = conf['master_n']
-  master_infos = (1..master_n).map do |i|
+  master_infos = (1..3).map do |i|
     node = {
       :zookeeper_id    => i,
       :hostname        => "master#{i}",
-      :ip              => conf['master_ipbase'] + "#{10+i}",
+      :ip              => conf["master#{i}_ip"],
       :mem             => conf['master_mem'],
       :cpus            => conf['master_cpus'],
     }
@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   slave_infos = (1..slave_n).map do |i|
     node = {
       :hostname => "slave#{i}",
-      :ip => conf['slave_ipbase'] + "#{10+i}",
+      :ip => conf["slave#{i}_ip"],
       :mem => conf['slave_mem'],
       :cpus => conf['slave_cpus'],
     }

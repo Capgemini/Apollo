@@ -6,7 +6,7 @@
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "version": "0.22.1"
+    "version": "0.22.0"
   },
   "builders": [{
     "type": "amazon-ebs",
