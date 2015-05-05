@@ -23,9 +23,6 @@ droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 
 #### Build the base image in Atlas
 ```
-cd packer
-packer build ubuntu-14.04_amd64-droplet.json
-```
 
 We are using [Atlas](https://atlas.hashicorp.com) to store artifacts (images) for
 builds.
@@ -66,14 +63,6 @@ ATLAS_TOKEN=
 ATLAS_INFRASTRUCTURE=
 ATLAS_ARTIFACT_MASTER=
 ATLAS_ARTIFACT_SLAVE=
-```
-
-By default Apollo will try to set the master/slave id to the latest version of your Apollo image from your Digitalocean account.
-Otherwise you can set the ID specifically as follows:
-
-```
-MASTER_IMAGE=
-SLAVE_IMAGE=
 ```
 
 #### Turn up the cluster
