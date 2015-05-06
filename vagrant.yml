@@ -18,4 +18,4 @@ master3_ip: "172.31.1.13"
 
 # Slave IPs - must be in the same private address range as the master instances
 # See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
-slave1_ip: "172.31.1.101"
+slave1_ip: "172.31.1.14"

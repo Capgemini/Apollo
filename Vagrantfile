@@ -110,6 +110,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
+            registrator_uri: "consul://#{node[:ip]}:8500"
           }
           ansible.groups = ansible_groups
         end
