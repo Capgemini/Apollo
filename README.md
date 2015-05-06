@@ -58,7 +58,7 @@ The above architecture is representative of Apollo cluster on AWS VPC.
     - for people who want to create an Apollo cluster
     - in [docs/getting-started-guides](docs/getting-started-guides)
  - **Demonstrators and Examples**
-    - Coming soon...
+    - [Drupal/MySQL on Marathon](examples/drupal-mysql)
  - **[Roadmap](docs/roadmap.md)**
  - **Components**
     - for people who want to know more about the individual components and the
