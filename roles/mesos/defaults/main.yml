@@ -5,3 +5,7 @@ mesos_zookeeper_group: zookeeper_servers
 mesos_master_port: 5050
 consul_dir: /etc/consul.d
 mesos_local_address: "{{ ansible_default_ipv4.address }}"
+mesos_executor_registration_timeout: 10mins
+mesos_cluster_name: "Cluster01"
+mesos_containerizers: "docker,mesos"
+mesos_resources: "ports(*):[31000-32000]"

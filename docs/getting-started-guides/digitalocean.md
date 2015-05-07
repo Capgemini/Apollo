@@ -13,7 +13,7 @@
 droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 
 
-### Cluster Turnup
+### Cluster Startup
 
 #### Download Apollo
 
@@ -22,7 +22,6 @@ droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 2. ```cd apollo```
 
 #### Build the base image in Atlas
-```
 
 We are using [Atlas](https://atlas.hashicorp.com) to store artifacts (images) for
 builds.
@@ -55,7 +54,7 @@ To generate a v1 API credentials see [https://www.digitalocean.com/community/tut
 ```
 APOLLO_PROVIDER=digitalocean
 
-# Path to your public ssh key (created in step 8 above).
+# Path to your public ssh key (created in prerequisite step 8 above).
 DIGITALOCEAN_SSH_KEY=
 
 # Atlas variables.
@@ -65,7 +64,7 @@ ATLAS_ARTIFACT_MASTER=
 ATLAS_ARTIFACT_SLAVE=
 ```
 
-#### Turn up the cluster
+#### Start up the cluster
 ```
 sh bootstrap/apollo-launch.sh
 ```
