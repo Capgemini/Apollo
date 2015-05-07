@@ -1,8 +1,7 @@
-mesos_version: "0.22.1"
+mesos_version: "0.22.0"
 
 # The numbers of servers
 #########################
-master_n: 3      # hostname will be master1,master2,…
 slave_n: 1       # hostname will be slave1,slave2,…
 
 # Memory and Cpus setting
@@ -12,5 +11,11 @@ master_cpus: 1
 slave_mem  : 1024
 slave_cpus : 2
 
-master_ipbase: "172.31.1."
-slave_ipbase : "172.31.2."
+# Master IPs
+master1_ip: "172.31.1.11"
+master2_ip: "172.31.1.12"
+master3_ip: "172.31.1.13"
+
+# Slave IPs - must be in the same private address range as the master instances
+# See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+slave1_ip: "172.31.1.14"

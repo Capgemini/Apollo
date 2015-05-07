@@ -1,6 +1,8 @@
 Apollo
 =========
 
+[![Join the chat at https://gitter.im/Capgemini/Apollo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![wercker status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/s/master "wercker status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
@@ -43,7 +45,7 @@ support see our [roadmap](docs/roadmap.md).
 
 Apollo is in alpha!
 
-While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and API changes as we bring it to a stable, production ready, multi-cloud available product.
+While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and feature changes as we bring it to a stable, production ready, multi-cloud available thing!
 
 ## Architecture
 

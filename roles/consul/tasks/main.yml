@@ -3,6 +3,9 @@
 - name: remove consul override
   command: /bin/rm -f /etc/init/consul.override
 
+- name: start consul
+  service: name=consul state=started
+
 - name: configure consul
   sudo: yes
   template: src=consul.json.j2 dest=/etc/consul.d/consul.json owner=root group=root mode=0644
@@ -19,9 +22,6 @@
     - Restart consul
   tags:
     - consul
-
-- name: start consul
-  service: name=consul state=started
 
 - name: remove consul-join override
   command: /bin/rm -f /etc/init/consul-join.override

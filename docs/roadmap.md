@@ -11,6 +11,8 @@ Mesos Frameworks
 - [ ] Cassandra framework
 - [ ] Spark framework
 - [ ] Storm framework
+- [ ] Mysos framework
+- [ ] Elastiseach framework
 
 Providers
 ---------
