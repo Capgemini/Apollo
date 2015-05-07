@@ -16,6 +16,3 @@ sudo service mesos-master stop || true
 echo manual | sudo tee /etc/init/mesos-master.override >/dev/null
 sudo service mesos-slave stop || true
 echo manual | sudo tee /etc/init/mesos-slave.override >/dev/null
-
-echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers >/dev/null
-echo '10mins' | sudo tee /etc/mesos-slave/executor_registration_timeout >/dev/null

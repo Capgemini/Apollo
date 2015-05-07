@@ -18,3 +18,4 @@ weave_launch_peers: "
   {%- endfor -%}
   {{ weave_peers|join(' ') }}
 "
+weave_docker_opts: "--bridge=weave --fixed-cidr={{ weave_docker_subnet }} --dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }}"
