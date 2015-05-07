@@ -6,6 +6,7 @@
 *.tfplan
 packer_cache
 packer/build
+packer/*.pem
 .wercker
 *.cache
 ssh.config
