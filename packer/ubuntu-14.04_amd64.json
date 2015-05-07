@@ -84,7 +84,7 @@
     },
     {
       "type": "vagrant-cloud",
-      "box_tag": "capgemini/apollo-mesos",
+      "box_tag": "capgemini/apollo-mesos-ubuntu",
       "access_token": "{{user `access_token`}}",
       "version": "{{user `version`}}"
     }]
