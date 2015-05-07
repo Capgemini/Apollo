@@ -65,6 +65,27 @@
   command: /bin/rm -f /etc/init/mesos-slave.override
   when: mesos_install_mode == "slave"
 
+- name: set executor registration timeout
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/executor_registration_timeout
+    content: "{{ mesos_executor_registration_timeout }}"
+  when: mesos_install_mode == "slave"
+
+- name: set containerizers
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/containerizers
+    content: "{{ mesos_containerizers }}"
+  when: mesos_install_mode == "slave"
+
+- name: set slave resources
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/resources
+    content: "{{ mesos_resources }}"
+  when: mesos_install_mode == "slave"
+
 - name: Set Mesos Slave ip
   copy:
     content: "{{mesos_local_address}}"
