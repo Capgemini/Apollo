@@ -7,11 +7,8 @@
 4. You need to have installed and configured Terraform (>= 0.4.2 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You need to have [Packer](https://www.packer.io) installed.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
-6. The latest version of Ansible (for provisioning) installed (>= 1.9.0) [http://docs.ansible.com/intro_installation.html](http://docs.ansible.com/intro_installation.html) to get started. Do not install 1.9.1 [https://github.com/ansible/ansible-modules-core/issues/1170](https://github.com/ansible/ansible-modules-core/issues/1170)
-7. You need to have [dopy](https://github.com/devo-ps/dopy) installed.
-8. You will need to have created an SSH RSA key pair for accessing your Digitalocean
+6. You will need to have created an SSH RSA key pair for accessing your Digitalocean
 droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
-
 
 ### Cluster Startup
 
@@ -20,6 +17,7 @@ droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 ##### Install from source at head
 1. ```git clone https://github.com/Capgemini/apollo.git```
 2. ```cd apollo```
+3. ```pip install -r requirements.txt```
 
 #### Build the base image in Atlas
 
