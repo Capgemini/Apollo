@@ -6,7 +6,7 @@
 2. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
 4. You need to have installed and configured Terraform (>= 0.4.2 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You need to have [Packer](https://www.packer.io) installed.
-5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
+5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 6. You will need to have created an SSH RSA key pair for accessing your Digitalocean
 droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
 

@@ -7,6 +7,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 1. The latest version of vagrant installed (>= 1.7.2) [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html) to get started
 2. Install vagrant-hosts plugin ```vagrant plugin install vagrant-hosts```
 3. The latest version of Virtualbox from [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
+4. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 
 ### Cluster Turnup
 
