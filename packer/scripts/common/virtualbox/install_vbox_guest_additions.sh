@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
+VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
 mkdir /tmp/isomount
-mount -t iso9660 -o loop /home/vagrant/VBoxGuestAdditions.iso /tmp/isomount
+mount -o loop /home/vagrant/VBoxGuestAdditions_$VBOX_VERSION.iso /tmp/isomount
 /tmp/isomount/VBoxLinuxAdditions.run install
 umount /tmp/isomount
 rm -rf /tmp/isomount
 
 # mountpoint for vagrant
 sudo mkdir -p /vagrant
+
+# Will return 0 if running or 1 if not
+service vboxadd-service status | grep -v not

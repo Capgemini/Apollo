@@ -14,8 +14,12 @@ build:
           ./packer version
     - script:
         cwd: packer/
-        name: validate packer template
+        name: validate packer template ubuntu
         code: ./packer validate ubuntu-14.04_amd64-amis.json
+    - script:
+        cwd: packer/
+        name: validate packer template centos
+        code: ./packer validate centos-7.0_x64.json
     - script:
         name: build image
         cwd: packer/
