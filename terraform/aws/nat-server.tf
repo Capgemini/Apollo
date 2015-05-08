@@ -1,7 +1,13 @@
+/* Base packer build we use for provisioning slave instances */
+resource "atlas_artifact" "nat" {
+  name = "${var.atlas_artifact.nat}"
+  type = "aws.ami"
+}
+
 /* NAT/VPN server */
 resource "aws_instance" "nat" {
-  ami               = "${lookup(var.amis, var.region)}"
-  instance_type     = "t2.micro"
+  ami               = "${replace(atlas_artifact.nat.id, concat(var.region, ":"), "")}"
+  instance_type     = "${var.instance_type.nat}"
   subnet_id         = "${aws_subnet.public.id}"
   security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.nat.id}"]
   depends_on        = ["aws_internet_gateway.public"]
@@ -19,8 +25,9 @@ resource "aws_instance" "nat" {
     inline = [
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
       "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
-      /* Install docker */
-      "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
+      /* Enable docker */
+      "sudo rm -f /etc/init/docker.override",
+      "sudo service docker start",
       /* Initialize open vpn data container */
       "sudo mkdir -p /etc/openvpn",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
