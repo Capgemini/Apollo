@@ -29,3 +29,10 @@ variable "atlas_artifact" {
     slave  = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
   }
 }
+
+variable "atlas_artifact_version" {
+  default = {
+    master = "1"
+    slave  = "1"
+  }
+}
