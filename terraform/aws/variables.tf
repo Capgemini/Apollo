@@ -63,6 +63,7 @@ variable "instance_type" {
   default = {
     master = "m1.medium"
     slave  = "m1.medium"
+    nat    = "m1.medium"
   }
 }
 
@@ -70,6 +71,7 @@ variable "atlas_artifact" {
   default = {
     master = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
     slave  = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
+    nat    = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
   }
 }
 

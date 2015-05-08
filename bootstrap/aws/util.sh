@@ -99,6 +99,7 @@ terraform_apply() {
       -var "instance_type.slave=${SLAVE_SIZE}" \
       -var "atlas_artifact.master=${ATLAS_ARTIFACT_MASTER}" \
       -var "atlas_artifact.slave=${ATLAS_ARTIFACT_SLAVE}" \
+      -var "atlas_artifact.nat=${ATLAS_ARTIFACT_NAT}" \
       -var "slaves=${NUM_SLAVES}" \
       -var "subnet_availability_zone=${ZONE}" \
       -var "region=${AWS_REGION}"

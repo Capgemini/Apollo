@@ -9,6 +9,7 @@ ATLAS_TOKEN=${ATLAS_TOKEN:?"Need to set ATLAS_TOKEN non-empty"}
 ATLAS_INFRASTRUCTURE=${ATLAS_INFRASTRUCTURE:-capgemini/apollo}
 ATLAS_ARTIFACT_MASTER=${ATLAS_ARTIFACT_MASTER:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
 ATLAS_ARTIFACT_SLAVE=${ATLAS_ARTIFACT_SLAVE:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
+ATLAS_ARTIFACT_NAT=${ATLAS_ARTIFACT_NAT:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
 ZONE=${APOLLO_AWS_ZONE:-eu-west-1b}
 MASTER_SIZE=${MASTER_SIZE:-m1.medium}
 SLAVE_SIZE=${SLAVE_SIZE:-m1.medium}
