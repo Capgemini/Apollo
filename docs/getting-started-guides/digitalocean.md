@@ -7,11 +7,8 @@
 4. You need to have installed and configured Terraform (>= 0.4.2 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You need to have [Packer](https://www.packer.io) installed.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed.
-6. The latest version of Ansible (for provisioning) installed (>= 1.9.0). Installed via ```pip install -r requirements.txt``` (see below).
-7. You need to have [dopy](https://github.com/devo-ps/dopy) installed. Installed via ```pip install -r requirements.txt``` (see below).
-8. You will need to have created an SSH RSA key pair for accessing your Digitalocean
+6. You will need to have created an SSH RSA key pair for accessing your Digitalocean
 droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
-
 
 ### Cluster Startup
 
