@@ -8,7 +8,7 @@
   sudo: yes
 
 - name: remove marathon override
-  command: /bin/rm -f /etc/init/marathon.override
+  file: path=/etc/init/marathon.override state=absent
 
 - name: ensure marathon is running (and enable it at boot)
   service: name=marathon state=started enabled=yes
