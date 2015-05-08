@@ -1,0 +1,5 @@
+ansible==1.9.0.1
+wget
+ansible-lint
+dopy
+boto
