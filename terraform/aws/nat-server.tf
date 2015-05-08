@@ -15,20 +15,6 @@ resource "aws_instance" "nat" {
     user       = "ubuntu"
     key_file   = "${var.key_file}"
   }
-  provisioner "file" {
-    source      = "${var.key_file}"
-    destination = "/home/ubuntu/.ssh/ec2-key.pem"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "chmod 600 /home/ubuntu/.ssh/ec2-key.pem",
-      "echo \"Host ip-*\"                                      >> /home/ubuntu/.ssh/config",
-      "echo \"    IdentityFile /home/ubuntu/.ssh/ec2-key.pem\" >> /home/ubuntu/.ssh/config",
-      "echo \"    StrictHostKeyChecking no\"                   >> /home/ubuntu/.ssh/config",
-      "echo \"    UserKnownHostsFile=/dev/null\"               >> /home/ubuntu/.ssh/config",
-      "echo \"    LogLevel ERROR\"                             >> /home/ubuntu/.ssh/config",
-    ]
-  }
   provisioner "remote-exec" {
     inline = [
       "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
