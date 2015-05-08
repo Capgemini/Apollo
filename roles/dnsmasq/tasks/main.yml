@@ -1,7 +1,7 @@
 ---
 # tasks file for dnsmasq
 - name: remove dnsmasq override
-  command: /bin/rm -f /etc/init/dnsmasq.override
+  file: path=/etc/init/dnsmasq.override state=absent
 
 - name: ensure dnsmasq is running (and enable it at boot)
   service: name=dnsmasq state=started enabled=yes

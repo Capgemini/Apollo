@@ -1,7 +1,7 @@
 ---
 # tasks file for consul
 - name: remove consul override
-  command: /bin/rm -f /etc/init/consul.override
+  file: path=/etc/init/consul.override state=absent
 
 - name: start consul
   service: name=consul state=started
@@ -24,7 +24,7 @@
     - consul
 
 - name: remove consul-join override
-  command: /bin/rm -f /etc/init/consul-join.override
+  file: path=/etc/init/consul-join.override state=absent
   when: consul_join is defined
 
 - name: configure consul-join

@@ -30,7 +30,7 @@
   when: mesos_install_mode == "master"
 
 - name: remove mesos-master override
-  command: /bin/rm -f /etc/init/mesos-master.override
+  file: path=/etc/init/mesos-master.override state=absent
   when: mesos_install_mode == "master"
 
 - name: Set Mesos Master Cluster name
@@ -62,7 +62,7 @@
   when: mesos_install_mode == "slave"
 
 - name: remove mesos-slave override
-  command: /bin/rm -f /etc/init/mesos-slave.override
+  file: path=/etc/init/mesos-slave.override state=absent
   when: mesos_install_mode == "slave"
 
 - name: set executor registration timeout

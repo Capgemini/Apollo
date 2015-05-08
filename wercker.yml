@@ -29,4 +29,5 @@ build:
         name: validate packer template for Google
         code: ./packer validate ubuntu-14.04_amd64-google.json
     - capgemini/ansible-lint:
+        name: run ansible-lint against the site.yml playbook
         playbook: site.yml
