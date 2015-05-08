@@ -8,3 +8,4 @@ consul_bind_addr: "{{ ansible_default_ipv4.address }}"
 consul_bootstrap_expect: "{{ groups[consul_servers_group] | length }}"
 consul_client_addr: "0.0.0.0"
 consul_atlas_join: false
+consul_node_name: "{{ ansible_hostname }}"
