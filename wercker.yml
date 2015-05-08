@@ -4,7 +4,7 @@ build:
   steps:
     - install-packages:
         packages: wget unzip
-    - pip-install
+    - pip-install:
         requirements_file: "requirements-test.txt"
     - script:
         name: install packer
