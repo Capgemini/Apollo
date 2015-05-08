@@ -1,7 +1,7 @@
 ---
 # tasks file for docker
 - name: remove docker override
-  command: /bin/rm -f /etc/init/docker.override
+  file: path=/etc/init/docker.override state=absent
 
 - name: ensure docker is running (and enable it at boot)
   service: name=docker state=started enabled=yes

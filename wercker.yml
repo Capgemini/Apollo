@@ -1,10 +1,10 @@
-box: wercker/ruby
+box: wercker/python
 no-response-timeout: 15
 build:
   steps:
-    - bundle-install
     - install-packages:
         packages: wget unzip
+    - pip-install
     - script:
         name: install packer
         cwd: packer/
@@ -14,10 +14,20 @@ build:
           ./packer version
     - script:
         cwd: packer/
-        name: validate packer template
+        name: validate packer template for AMI
         code: ./packer validate ubuntu-14.04_amd64-amis.json
     - script:
-        name: build image
         cwd: packer/
-        code: |
-          ./packer build ubuntu-14.04_amd64-amis.json
+        name: validate packer template for Digitalocean
+        code: ./packer validate ubuntu-14.04_amd64-droplet.json
+    - script:
+        cwd: packer/
+        name: validate packer template for Vagrant
+        code: ./packer validate ubuntu-14.04_amd64.json
+    - script:
+        cwd: packer/
+        name: validate packer template for Google
+        code: ./packer validate ubuntu-14.04_amd64-google.json
+    - capgemini/ansible-lint:
+        name: run ansible-lint against the site.yml playbook
+        playbook: site.yml
