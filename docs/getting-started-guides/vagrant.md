@@ -7,7 +7,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 1. The latest version of vagrant installed (>= 1.7.2) [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html) to get started
 2. Install vagrant-hosts plugin ```vagrant plugin install vagrant-hosts```
 3. The latest version of Virtualbox from [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
-4. The latest version of Ansible (for provisioning) installed (>= 1.9.0) [http://docs.ansible.com/intro_installation.html](http://docs.ansible.com/intro_installation.html) to get started. Do not install 1.9.1 [https://github.com/ansible/ansible-modules-core/issues/1170](https://github.com/ansible/ansible-modules-core/issues/1170)
+4. The latest version of Ansible (for provisioning) installed (>= 1.9.0), Installed via ```pip install -r requirements.txt``` (see below).
 
 ### Cluster Turnup
 
@@ -16,6 +16,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 ##### Install from source at head
 1. ```git clone https://github.com/Capgemini/apollo.git```
 2. ```cd apollo```
+3. ```pip install -r requirements.txt```
 
 #### Turn up the cluster
 ```
