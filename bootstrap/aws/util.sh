@@ -72,6 +72,7 @@ ansible_playbook_run() {
     ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
     --extra-vars "mesos_cluster_name=${MESOS_CLUSTER_NAME} \
+      mesos_slave_work_dir=${SLAVE_WORK_DIR} \
       consul_dc=${CONSUL_DC} \
       consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \

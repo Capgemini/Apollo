@@ -9,3 +9,4 @@ mesos_executor_registration_timeout: 10mins
 mesos_cluster_name: "Cluster01"
 mesos_containerizers: "docker,mesos"
 mesos_resources: "ports(*):[31000-32000]"
+mesos_slave_work_dir: "/tmp/mesos"

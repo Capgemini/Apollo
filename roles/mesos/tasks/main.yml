@@ -95,3 +95,21 @@
   notify:
     - Start mesos slave
   when: mesos_install_mode == "slave"
+
+- name: Create Mesos Slave work area
+  file:
+    dest: "{{mesos_slave_work_dir}}"
+    mode: 0755
+    state: directory
+  sudo: yes
+  when: mesos_install_mode == "slave"
+
+- name: Set Mesos Slave work area
+  copy:
+    content: "{{mesos_slave_work_dir}}"
+    dest: /etc/mesos-slave/work_dir
+    mode: 0644
+  sudo: yes
+  notify:
+    - Start mesos slave
+  when: mesos_install_mode == "slave"
