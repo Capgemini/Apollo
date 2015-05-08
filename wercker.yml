@@ -2,6 +2,8 @@ box: wercker/python
 no-response-timeout: 15
 build:
   steps:
+    - install-packages:
+        packages: wget unzip
     - pip-install
     - script:
         name: install packer
