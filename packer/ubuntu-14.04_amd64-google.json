@@ -19,7 +19,7 @@
     "account_file": "{{user `account_file`}}",
     "project_id": "{{user `project_id`}}",
     "source_image": "{{user `source_image`}}",
-    "zone": "{{user `zone`}}",
+    "zone": "{{user `zone`}}"
   }],
   "provisioners": [
     {
