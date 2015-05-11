@@ -35,5 +35,5 @@ build:
     - script:
         name: syntax-check ansible playbook
         code: |
-          echo localhost > inventory
-          ansible-playbook -i inventory --syntax-check site.yml
+          echo localhost > wercker_inventory
+          ansible-playbook -i wercker_inventory --syntax-check site.yml
