@@ -13,6 +13,7 @@ ZONE=${APOLLO_AWS_ZONE:-eu-west-1b}
 MASTER_SIZE=${MASTER_SIZE:-m1.medium}
 SLAVE_SIZE=${SLAVE_SIZE:-m1.medium}
 NUM_SLAVES=${NUM_SLAVES:-1}
+SLAVE_WORK_DIR=${SLAVE_WORK_DIR:-/mnt/mesos}
 
 # This removes the final character in bash (somehow)
 AWS_REGION=${ZONE%?}
