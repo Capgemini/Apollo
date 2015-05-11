@@ -32,3 +32,8 @@ build:
     - capgemini/ansible-lint:
         name: run ansible-lint against the site.yml playbook
         playbook: site.yml
+    - script:
+        name: syntax-check ansible playbook
+        code: |
+          echo localhost > wercker_inventory
+          ansible-playbook -i wercker_inventory --syntax-check site.yml
