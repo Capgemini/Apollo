@@ -26,7 +26,7 @@ then and command-line arguments.
 
 Most notably, the DigitalOcean Client ID and API Key must be specified.  They
 can be specified in the INI file or with the following environment variables:
-    export DO_CLIENT_ID='DO123' DO_API_KEY='abc123'
+    export DO_API_TOKEN='abc123'
 
 Alternatively, they can be passed on the command-line with --client-id and
 --api-key.
@@ -70,8 +70,8 @@ usage: digital_ocean.py [-h] [--list] [--host HOST] [--all]
                                  [--ssh-keys] [--domains] [--pretty]
                                  [--cache-path CACHE_PATH]
                                  [--cache-max_age CACHE_MAX_AGE]
-                                 [--refresh-cache] [--client-id CLIENT_ID]
-                                 [--api-key API_KEY]
+                                 [--refresh-cache]
+                                 [--api-token API_TOKEN]
 
 Produce an Ansible Inventory file based on DigitalOcean credentials
 
@@ -95,10 +95,8 @@ optional arguments:
                         Maximum age of the cached items (default: 0)
   --refresh-cache       Force refresh of cache by making API requests to
                         DigitalOcean (default: False - use cache files)
-  --client-id CLIENT_ID, -c CLIENT_ID
-                        DigitalOcean Client ID
-  --api-key API_KEY, -a API_KEY
-                        DigitalOcean API Key
+  --api-token API_TOKEN, -a API_TOKEN
+                        DigitalOcean API Token (v2 API)
 ```
 
 '''
@@ -169,15 +167,15 @@ class DigitalOceanInventory(object):
         self.read_cli_args()
 
         # Verify credentials were set
-        if not hasattr(self, 'client_id') or not hasattr(self, 'api_key'):
-            print '''Could not find values for DigitalOcean client_id and api_key.
-They must be specified via either ini file, command line argument (--client-id and --api-key),
-or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
+        if not hasattr(self, 'api_token'):
+            print '''Could not find value for DigitalOcean api_token.
+This must be specified via either ini file, command line argument (--api-token),
+or environment variable DO_API_TOKEN'''
             sys.exit(-1)
 
         # env command, show DigitalOcean credentials
         if self.args.env:
-            print "DO_CLIENT_ID=%s DO_API_KEY=%s" % (self.client_id, self.api_key)
+            print "DO_API_TOKEN=%s" % (self.api_token)
             sys.exit(0)
 
         # Manage cache
@@ -230,10 +228,8 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
         config.read(os.path.dirname(os.path.realpath(__file__)) + '/digital_ocean.ini')
 
         # Credentials
-        if config.has_option('digital_ocean', 'client_id'):
-            self.client_id = config.get('digital_ocean', 'client_id')
-        if config.has_option('digital_ocean', 'api_key'):
-            self.api_key = config.get('digital_ocean', 'api_key')
+        if config.has_option('digital_ocean', 'api_token'):
+            self.api_token = config.get('digital_ocean', 'api_token')
 
         # Cache related
         if config.has_option('digital_ocean', 'cache_path'):
@@ -245,8 +241,7 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
     def read_environment(self):
         ''' Reads the settings from environment variables '''
         # Setup credentials
-        if os.getenv("DO_CLIENT_ID"): self.client_id = os.getenv("DO_CLIENT_ID")
-        if os.getenv("DO_API_KEY"):   self.api_key = os.getenv("DO_API_KEY")
+        if os.getenv("DO_API_TOKEN"):   self.api_token = os.getenv("DO_API_TOKEN")
 
 
     def read_cli_args(self):
@@ -271,14 +266,12 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
         parser.add_argument('--force-cache', action='store_true', default=False, help='Only use data from the cache')
         parser.add_argument('--refresh-cache','-r', action='store_true', default=False, help='Force refresh of cache by making API requests to DigitalOcean (default: False - use cache files)')
 
-        parser.add_argument('--env','-e', action='store_true', help='Display DO_CLIENT_ID and DO_API_KEY')
-        parser.add_argument('--client-id','-c', action='store', help='DigitalOcean Client ID')
-        parser.add_argument('--api-key','-a', action='store', help='DigitalOcean API Key')
+        parser.add_argument('--env','-e', action='store_true', help='Display DO_API_TOKEN')
+        parser.add_argument('--api-token','-a', action='store', help='DigitalOcean API Token')
 
         self.args = parser.parse_args()
 
-        if self.args.client_id: self.client_id = self.args.client_id
-        if self.args.api_key: self.api_key = self.args.api_key
+        if self.args.api_token: self.api_token = self.args.api_token
         if self.args.cache_path: self.cache_path = self.args.cache_path
         if self.args.cache_max_age: self.cache_max_age = self.args.cache_max_age
 
@@ -295,19 +288,19 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
 
     def load_all_data_from_digital_ocean(self):
         ''' Use dopy to get all the information from DigitalOcean and save data in cache files '''
-        manager  = DoManager(self.client_id, self.api_key)
+        manager = DoManager(None, self.api_token, api_version=2)
 
         self.data = {}
-        self.data['droplets'] = self.sanitize_list(manager.all_active_droplets())
-        self.data['regions']  = self.sanitize_list(manager.all_regions())
-        self.data['images']   = self.sanitize_list(manager.all_images(filter=None))
-        self.data['sizes']    = self.sanitize_list(manager.sizes())
-        self.data['ssh_keys'] = self.sanitize_list(manager.all_ssh_keys())
-        self.data['domains']  = self.sanitize_list(manager.all_domains())
+        self.data['droplets'] = manager.all_active_droplets()
+        self.data['regions']  = manager.all_regions()
+        self.data['images']   = manager.all_images(filter=None)
+        self.data['sizes']    = manager.sizes()
+        self.data['ssh_keys'] = manager.all_ssh_keys()
+        self.data['domains']  = manager.all_domains()
 
         self.index = {}
-        self.index['region_to_name']  = self.build_index(self.data['regions'], 'id', 'name')
-        self.index['size_to_name']    = self.build_index(self.data['sizes'], 'id', 'name')
+        self.index['region_to_name']  = self.build_index(self.data['regions'], 'slug', 'slug')
+        self.index['size_to_name']    = self.build_index(self.data['sizes'], 'slug', 'slug')
         self.index['image_to_name']   = self.build_index(self.data['images'], 'id', 'name')
         self.index['image_to_distro'] = self.build_index(self.data['images'], 'id', 'distribution')
         self.index['host_to_droplet'] = self.build_index(self.data['droplets'], 'ip_address', 'id', False)
@@ -319,8 +312,8 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
 
     def load_droplets_from_digital_ocean(self):
         ''' Use dopy to get droplet information from DigitalOcean and save data in cache files '''
-        manager  = DoManager(self.client_id, self.api_key)
-        self.data['droplets'] = self.sanitize_list(manager.all_active_droplets())
+        manager = DoManager(None, self.api_token, api_version=2)
+        self.data['droplets'] = manager.all_active_droplets()
         self.index['host_to_droplet'] = self.build_index(self.data['droplets'], 'ip_address', 'id', False)
         self.build_inventory()
         self.write_to_cache()
@@ -341,30 +334,35 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
 
         # add all droplets by id and name
         for droplet in self.data['droplets']:
-            dest = droplet['ip_address']
 
-            self.inventory[droplet['id']] = [dest]
-            self.push(self.inventory, droplet['name'], dest)
-            self.push(self.inventory, 'region_'+droplet['region_id'], dest)
-            self.push(self.inventory, 'image_' +droplet['image_id'], dest)
-            self.push(self.inventory, 'size_'  +droplet['size_id'], dest)
-            self.push(self.inventory, 'status_'+droplet['status'], dest)
+            networks = droplet['networks']['v4']
+            for network in networks:
+                if network['type'] == "public":
+                    dest = network['ip_address']
 
-            region_name = self.index['region_to_name'].get(droplet['region_id'])
-            if region_name:
-                self.push(self.inventory, 'region_'+region_name, dest)
+            #self.inventory[droplet['id']] = [dest]
+            #self.push(self.inventory, droplet['name'], dest)
+            #self.push(self.inventory, 'region_'+droplet['region']['slug'], dest)
+            #self.push(self.inventory, 'image_' +str(droplet['image']['id']), dest)
+            #self.push(self.inventory, 'size_'  +droplet['size']['slug'], dest)
+            #self.push(self.inventory, 'status_'+droplet['status'], dest)
 
-            size_name = self.index['size_to_name'].get(droplet['size_id'])
-            if size_name:
-                self.push(self.inventory, 'size_'+size_name, dest)
+            #region_name = self.index['region_to_name'].get(droplet['region']['slug'])
+            #if region_name:
+            #    self.push(self.inventory, 'region_'+region_name, dest)
 
-            image_name = self.index['image_to_name'].get(droplet['image_id'])
-            if image_name:
-                self.push(self.inventory, 'image_'+image_name, dest)
+            #size_name = self.index['size_to_name'].get(droplet['size']['slug'])
+            #if size_name:
+            #    self.push(self.inventory, 'size_'+size_name, dest)
 
-            distro_name = self.index['image_to_distro'].get(droplet['image_id'])
-            if distro_name:
-                self.push(self.inventory, 'distro_'+distro_name, dest)
+            #image_name = self.index['image_to_name'].get(droplet['image']['id'])
+            #if image_name:
+            #    self.push(self.inventory, 'image_'+image_name, dest)
+
+            #distro_name = self.index['image_to_distro'].get(droplet['image']['id'])
+            #if distro_name:
+            #    self.push(self.inventory, 'distro_'+distro_name, dest)
+            #print json.dumps(droplet, sort_keys=True, indent=2)
 
             # We add this to catch master/slave groups
             if "mesos-master-" in droplet['name']:
@@ -375,7 +373,6 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
 
             if "load-balancer-" in droplet['name']:
                 self.push(self.inventory, 'load_balancers', dest)
-
 
     def load_droplet_variables_for_host(self):
         '''Generate a JSON response to a --host call'''
@@ -397,7 +394,7 @@ or environment variables (DO_CLIENT_ID and DO_API_KEY)'''
                     break
         else:
             # Cache wasn't refreshed this run, so hit DigitalOcean API
-            manager = DoManager(self.client_id, self.api_key)
+            manager = DoManager(None, self.api_token, api_version=2)
             droplet_id = self.index['host_to_droplet'][host]
             droplet = self.sanitize_dict(manager.show_droplet(droplet_id))
 
