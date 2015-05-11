@@ -1,19 +1,20 @@
 {
   "variables": {
     "digitalocean_api_token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
-    "digitalocean_region": "lon1",
-    "digitalocean_size": "512MB",
-    "mesos_version": "0.22.0-1.0.ubuntu1404",
+    "digitalocean_region": "{{env `DIGITALOCEAN_REGION`}}",
+    "digitalocean_size": "{{env `DIGITALOCEAN_SIZE`}}",
+    "digitalocean_image": "{{env `DIGITALOCEAN_IMAGE`}}",
+    "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "version": "0.22.0"
+    "version": "0.2.0"
   },
   "builders": [{
     "type": "digitalocean",
     "snapshot_name": "apollo-mesos-ubuntu-14.04-amd64",
     "api_token": "{{user `digitalocean_api_token`}}",
-    "image": "ubuntu-14-04-x64",
+    "image": "{{user `digitalocean_image`}}",
     "region": "{{user `digitalocean_region`}}",
     "size": "{{user `digitalocean_size`}}",
     "ssh_timeout": "10m"
@@ -64,7 +65,7 @@
     "artifact_type": "digitalocean.image",
     "metadata": {
       "created_at": "{{timestamp}}",
-      "version": "{{user `version`}}"
+      "version": "{{user `version`}}+{{timestamp}}"
     }
   }]
 }

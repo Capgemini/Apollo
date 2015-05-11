@@ -21,7 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.box = "capgemini/apollo-mesos"
-  config.vm.box_version = conf['mesos_version']
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],
