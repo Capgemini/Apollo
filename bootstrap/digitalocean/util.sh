@@ -51,6 +51,8 @@ terraform_apply() {
       -var "instance_size.slave=${SLAVE_SIZE}" \
       -var "atlas_artifact.master=${ATLAS_ARTIFACT_MASTER}" \
       -var "atlas_artifact.slave=${ATLAS_ARTIFACT_SLAVE}" \
+      -var "atlas_artifact_version.master=${ATLAS_ARTIFACT_VERSION_MASTER}" \
+      -var "atlas_artifact_version.slave=${ATLAS_ARTIFACT_VERSION_SLAVE}" \
       -var "slaves=${NUM_SLAVES}" \
       -var "region=${DO_REGION}"
   popd
