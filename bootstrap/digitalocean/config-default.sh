@@ -8,8 +8,8 @@ TF_VAR_region=${TF_VAR_region:-lon1}
 TF_VAR_key_file=${TF_VAR_key_file:?"Need to set TF_VAR_key_file non-empty"}
 TF_VAR_do_token=${TF_VAR_do_token:?"Need to set TF_VAR_do_token non-empty"}
 
-TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-enxebre/apollo-mesos-ubuntu-14.04-amd64}
-TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-enxebre/apollo-mesos-ubuntu-14.04-amd64}
+TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
+TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
 TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-1}
 TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-1}
 
