@@ -37,22 +37,24 @@ ansible_playbook_run() {
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/digitalocean
-    terraform destroy -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
-      -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
-      -var "region=${DIGITALOCEAN_REGION}"
+    terraform destroy -var "do_token=${DO_API_TOKEN}" \
+      -var "key_file=${DO_SSH_KEY}" \
+      -var "region=${DO_REGION}"
   popd
 }
 
 terraform_apply() {
   pushd $APOLLO_ROOT/terraform/digitalocean
-    terraform apply -var "do_token=${DIGITALOCEAN_API_TOKEN}" \
-      -var "key_file=${DIGITALOCEAN_SSH_KEY}" \
+    terraform apply -var "do_token=${DO_API_TOKEN}" \
+      -var "key_file=${DO_SSH_KEY}" \
       -var "instance_size.master=${MASTER_SIZE}" \
       -var "instance_size.slave=${SLAVE_SIZE}" \
       -var "atlas_artifact.master=${ATLAS_ARTIFACT_MASTER}" \
       -var "atlas_artifact.slave=${ATLAS_ARTIFACT_SLAVE}" \
+      -var "atlas_artifact_version.master=${ATLAS_ARTIFACT_VERSION_MASTER}" \
+      -var "atlas_artifact_version.slave=${ATLAS_ARTIFACT_VERSION_SLAVE}" \
       -var "slaves=${NUM_SLAVES}" \
-      -var "region=${DIGITALOCEAN_REGION}"
+      -var "region=${DO_REGION}"
   popd
 }
 
