@@ -1,8 +1,22 @@
-variable "access_key" {}
-variable "secret_key" {}
-variable "key_name" {}
-variable "key_file" {}
-variable "atlas_token" {}
+variable "access_key" {
+  description = "The aws access key."
+  default = ""
+}
+
+variable "secret_key" {
+  description = "The aws secret key."
+  default = ""
+}
+
+variable "key_name" {
+  description = "The aws ssh key name."
+  default = "Apollo"
+}
+
+variable "key_file" {
+  description = "The ssh public key for using with the cloud provider."
+  default = ""
+}
 
 variable "atlas_infrastructure" {
   description = "The Atlas infrastructure project to join."
