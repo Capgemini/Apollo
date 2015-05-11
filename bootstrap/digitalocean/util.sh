@@ -10,6 +10,10 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
+  if [[ $(check_terraform_version) == "-1" ]]; then
+    echo -e "${color_red}Terraform >= v0.5.0 is required, please fix and retry.${color_norm}"
+    exit 1
+  fi
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1
@@ -24,37 +28,33 @@ apollo_launch() {
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    DO_CLIENT_ID=$DO_CLIENT_ID DO_API_KEY=$DO_API_KEY ansible-playbook --user=root \
+    DO_API_TOKEN=$TF_VAR_do_token ansible-playbook --user=root \
     --inventory-file=$APOLLO_ROOT/inventory/digitalocean \
-    --extra-vars "mesos_cluster_name=${MESOS_CLUSTER_NAME} \
-      consul_dc=${CONSUL_DC} \
-      consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+    --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
-      consul_atlas_token=${ATLAS_TOKEN}" \
+      consul_atlas_token=${ATLAS_TOKEN} \
+      $(get_apollo_variables)" \
     site.yml
   popd
 }
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/digitalocean
-    terraform destroy -var "do_token=${DO_API_TOKEN}" \
-      -var "key_file=${DO_SSH_KEY}" \
-      -var "region=${DO_REGION}"
+    terraform destroy -var "do_token=${TF_VAR_do_token}" \
+      -var "key_file=${TF_VAR_key_file}" \
+      -var "region=${TF_VAR_region}"
   popd
 }
 
 terraform_apply() {
   pushd $APOLLO_ROOT/terraform/digitalocean
-    terraform apply -var "do_token=${DO_API_TOKEN}" \
-      -var "key_file=${DO_SSH_KEY}" \
-      -var "instance_size.master=${MASTER_SIZE}" \
-      -var "instance_size.slave=${SLAVE_SIZE}" \
-      -var "atlas_artifact.master=${ATLAS_ARTIFACT_MASTER}" \
-      -var "atlas_artifact.slave=${ATLAS_ARTIFACT_SLAVE}" \
-      -var "atlas_artifact_version.master=${ATLAS_ARTIFACT_VERSION_MASTER}" \
-      -var "atlas_artifact_version.slave=${ATLAS_ARTIFACT_VERSION_SLAVE}" \
-      -var "slaves=${NUM_SLAVES}" \
-      -var "region=${DO_REGION}"
+    # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
+    terraform apply -var "instance_size.master=${TF_VAR_master_size}" \
+      -var "instance_size.slave=${TF_VAR_slave_size}" \
+      -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
+      -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
+      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
+      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
   popd
 }
 

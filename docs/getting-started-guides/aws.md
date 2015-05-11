@@ -5,7 +5,7 @@
 1. You need an AWS account. Visit [http://aws.amazon.com](http://aws.amazon.com) to get started
 2. You need an AWS [instance profile and role](http://docs.aws.amazon.com/IAM/latest/UserGuide/instance-profiles.html) with EC2 full access.
 3. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
-4. You need to have installed and configured Terraform (>= 0.4.2 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
+4. You need to have installed and configured Terraform (>= 0.5.0 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 5. You will need a VPN client if you want to access the web interfaces for Mesos, Consul and Marathon. We recommend using Tunnelblick. Visit [https://code.google.com/p/tunnelblick/](https://code.google.com/p/tunnelblick/) to download and install.
 6. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 
@@ -20,17 +20,22 @@
 
 #### Set config
 
-Configuration can be set via environment variables. For a full list of available config
-options for AWS see ```bootstrap/aws/config-default.sh```
+Configuration can be set via environment variables.
+
+All variables following the pattern "TF_VAR_" will be available for Apollo in terraform, see [https://github.com/hashicorp/terraform/pull/1621#issuecomment-100825568](https://github.com/hashicorp/terraform/pull/1621#issuecomment-100825568)
+
+All variables following pattern "APOLLO_" will be available for Apollo in ansible.
+
+For a full list of default config options for AWS see ```bootstrap/aws/config-default.sh```
 
 As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=aws
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_SSH_KEY
-AWS_SSH_KEY_NAME
+TF_VAR_aws_access_key
+TF_VAR_secret_key
+TF_VAR_key_file
+TF_VAR_key_file
 ATLAS_TOKEN
 ```
 

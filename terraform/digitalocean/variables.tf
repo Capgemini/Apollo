@@ -1,5 +1,13 @@
-variable "do_token" {}
-variable "key_file" {}
+
+variable "key_file" {
+  description = "The ssh public key for using with the cloud provider."
+  default = ""
+}
+
+variable "do_token" {
+  description = "The Digital Ocean token."
+  default = ""
+}
 
 variable "region" {
   description = "The Digital Ocean region to create resources in."
