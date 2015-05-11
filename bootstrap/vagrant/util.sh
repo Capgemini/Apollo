@@ -13,7 +13,7 @@ verify_prereqs() {
 }
 
 apollo_launch() {
-  vagrant up
+  vagrant up --provision
 }
 
 apollo_down() {
