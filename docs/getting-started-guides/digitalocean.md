@@ -36,24 +36,16 @@ As a minimum you will need to set these environment variables -
 
 ```
 # v2 API token
-DIGITALOCEAN_API_TOKEN=
+DO_API_TOKEN=
 ```
 
 To generate a v2 API token see [https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocea n-api-v2](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2)
 
 ```
-# v1 API credentials as needed by ansible dynamic inventory.
-DO_CLIENT_ID=
-DO_API_KEY=
-```
-
-To generate a v1 API credentials see [https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-deprecated](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-deprecated)
-
-```
 APOLLO_PROVIDER=digitalocean
 
 # Path to your public ssh key (created in prerequisite step 8 above).
-DIGITALOCEAN_SSH_KEY=
+DIGITALOCEAN_SSH_KEY=~/.ssh/id_rsa.pub
 
 # Atlas variables.
 ATLAS_TOKEN=
@@ -67,7 +59,7 @@ ATLAS_ARTIFACT_SLAVE=
 sh bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK). It will also create a mesos slave cluster and a SSH key so you can access the droplets.
+NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK) by default. It will also create a mesos slave cluster and a SSH key so you can access the droplets.
 
 
 #### Tearing down the cluster

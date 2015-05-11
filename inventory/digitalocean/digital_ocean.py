@@ -83,11 +83,6 @@ optional arguments:
                         Droplet
   --all                 List all DigitalOcean information as JSON
   --droplets            List Droplets as JSON
-  --regions             List Regions as JSON
-  --images              List Images as JSON
-  --sizes               List Sizes as JSON
-  --ssh-keys            List SSH keys as JSON
-  --domains             List Domains as JSON
   --pretty, -p          Pretty-print results
   --cache-path CACHE_PATH
                         Path to the cache files (default: .)
@@ -200,11 +195,6 @@ or environment variable DO_API_TOKEN'''
 
         # Pick the json_data to print based on the CLI command
         if self.args.droplets:   json_data = { 'droplets': self.data['droplets'] }
-        elif self.args.regions:  json_data = { 'regions':  self.data['regions'] }
-        elif self.args.images:   json_data = { 'images':   self.data['images'] }
-        elif self.args.sizes:    json_data = { 'sizes':    self.data['sizes'] }
-        elif self.args.ssh_keys: json_data = { 'ssh_keys': self.data['ssh_keys'] }
-        elif self.args.domains:  json_data = { 'domains':  self.data['domains'] }
         elif self.args.all:      json_data = self.data
 
         elif self.args.host:     json_data = self.load_droplet_variables_for_host()
@@ -253,11 +243,6 @@ or environment variable DO_API_TOKEN'''
 
         parser.add_argument('--all', action='store_true', help='List all DigitalOcean information as JSON')
         parser.add_argument('--droplets','-d', action='store_true', help='List Droplets as JSON')
-        parser.add_argument('--regions', action='store_true', help='List Regions as JSON')
-        parser.add_argument('--images', action='store_true', help='List Images as JSON')
-        parser.add_argument('--sizes', action='store_true', help='List Sizes as JSON')
-        parser.add_argument('--ssh-keys', action='store_true', help='List SSH keys as JSON')
-        parser.add_argument('--domains', action='store_true',help='List Domains as JSON')
 
         parser.add_argument('--pretty','-p', action='store_true', help='Pretty-print results')
 
@@ -276,9 +261,7 @@ or environment variable DO_API_TOKEN'''
         if self.args.cache_max_age: self.cache_max_age = self.args.cache_max_age
 
         # Make --list default if none of the other commands are specified
-        if (not self.args.droplets and not self.args.regions and not self.args.images and
-            not self.args.sizes and not self.args.ssh_keys and not self.args.domains and
-            not self.args.all and not self.args.host):
+        if (not self.args.droplets and not self.args.all and not self.args.host):
                 self.args.list = True
 
 
@@ -292,17 +275,8 @@ or environment variable DO_API_TOKEN'''
 
         self.data = {}
         self.data['droplets'] = manager.all_active_droplets()
-        self.data['regions']  = manager.all_regions()
-        self.data['images']   = manager.all_images(filter=None)
-        self.data['sizes']    = manager.sizes()
-        self.data['ssh_keys'] = manager.all_ssh_keys()
-        self.data['domains']  = manager.all_domains()
 
         self.index = {}
-        self.index['region_to_name']  = self.build_index(self.data['regions'], 'slug', 'slug')
-        self.index['size_to_name']    = self.build_index(self.data['sizes'], 'slug', 'slug')
-        self.index['image_to_name']   = self.build_index(self.data['images'], 'id', 'name')
-        self.index['image_to_distro'] = self.build_index(self.data['images'], 'id', 'distribution')
         self.index['host_to_droplet'] = self.build_index(self.data['droplets'], 'ip_address', 'id', False)
 
         self.build_inventory()
@@ -339,30 +313,6 @@ or environment variable DO_API_TOKEN'''
             for network in networks:
                 if network['type'] == "public":
                     dest = network['ip_address']
-
-            #self.inventory[droplet['id']] = [dest]
-            #self.push(self.inventory, droplet['name'], dest)
-            #self.push(self.inventory, 'region_'+droplet['region']['slug'], dest)
-            #self.push(self.inventory, 'image_' +str(droplet['image']['id']), dest)
-            #self.push(self.inventory, 'size_'  +droplet['size']['slug'], dest)
-            #self.push(self.inventory, 'status_'+droplet['status'], dest)
-
-            #region_name = self.index['region_to_name'].get(droplet['region']['slug'])
-            #if region_name:
-            #    self.push(self.inventory, 'region_'+region_name, dest)
-
-            #size_name = self.index['size_to_name'].get(droplet['size']['slug'])
-            #if size_name:
-            #    self.push(self.inventory, 'size_'+size_name, dest)
-
-            #image_name = self.index['image_to_name'].get(droplet['image']['id'])
-            #if image_name:
-            #    self.push(self.inventory, 'image_'+image_name, dest)
-
-            #distro_name = self.index['image_to_distro'].get(droplet['image']['id'])
-            #if distro_name:
-            #    self.push(self.inventory, 'distro_'+distro_name, dest)
-            #print json.dumps(droplet, sort_keys=True, indent=2)
 
             # We add this to catch master/slave groups
             if "mesos-master-" in droplet['name']:
@@ -405,15 +355,6 @@ or environment variable DO_API_TOKEN'''
         info = {}
         for k, v in droplet.items():
             info['do_'+k] = v
-
-        # Generate user-friendly variables (i.e. not the ID's)
-        if droplet.has_key('region_id'):
-            info['do_region'] = self.index['region_to_name'].get(droplet['region_id'])
-        if droplet.has_key('size_id'):
-            info['do_size'] = self.index['size_to_name'].get(droplet['size_id'])
-        if droplet.has_key('image_id'):
-            info['do_image']  = self.index['image_to_name'].get(droplet['image_id'])
-            info['do_distro'] = self.index['image_to_distro'].get(droplet['image_id'])
 
         return info
 
