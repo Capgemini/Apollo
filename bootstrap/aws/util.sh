@@ -10,6 +10,10 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
+  if [[ $(check_terraform_version) == "-1" ]]; then
+    echo -e "${color_red}${color_red}Terraform >= v0.5.0 is requried, please fix and retry.${color_norm}, please fix and retry.${color_norm}"
+    exit 1
+  fi
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1
@@ -71,12 +75,10 @@ ansible_playbook_run() {
     ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o \
     ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
-    ${ANSIBLE_LOG} \
-    --extra-vars "mesos_cluster_name=${MESOS_CLUSTER_NAME} \
-      consul_dc=${CONSUL_DC} \
-      consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+    ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
-      consul_atlas_token=${ATLAS_TOKEN}" \
+      consul_atlas_token=${ATLAS_TOKEN} \
+      $(get_apollo_variables)" \
       --sudo site.yml
   popd
 }
@@ -89,19 +91,10 @@ apollo_down() {
 
 terraform_apply() {
   pushd $APOLLO_ROOT/terraform/aws
-    terraform apply -var "access_key=${AWS_ACCESS_KEY_ID}" \
-      -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
-      -var "key_file=${AWS_SSH_KEY}" \
-      -var "key_name=${AWS_SSH_KEY_NAME}" \
-      -var "atlas_token=${ATLAS_TOKEN}" \
-      -var "atlas_infrastructure=${ATLAS_INFRASTRUCTURE}" \
-      -var "instance_type.master=${MASTER_SIZE}" \
-      -var "instance_type.slave=${SLAVE_SIZE}" \
-      -var "atlas_artifact.master=${ATLAS_ARTIFACT_MASTER}" \
-      -var "atlas_artifact.slave=${ATLAS_ARTIFACT_SLAVE}" \
-      -var "slaves=${NUM_SLAVES}" \
-      -var "subnet_availability_zone=${ZONE}" \
-      -var "region=${AWS_REGION}"
+    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
+      -var "instance_type.slave=${TF_VAR_slave_size}" \
+      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
+      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
   popd
 }
 
@@ -116,15 +109,15 @@ ovpn_start() {
 ovpn_client_config() {
   pushd $APOLLO_ROOT/terraform/aws
     echo "... creating VPN client configuration" >&2
-    /bin/sh -x bin/ovpn-new-client $USER
-    /bin/sh -x bin/ovpn-client-config $USER
+    /bin/sh -x bin/ovpn-new-client $TF_VAR_user
+    /bin/sh -x bin/ovpn-client-config $TF_VAR_user
 
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     nat_ip=$(terraform output nat.ip)
-    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $USER-apollo-mesos.ovpn
+    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo-mesos.ovpn
 
-    /usr/bin/open $USER-apollo-mesos.ovpn
+    /usr/bin/open $TF_VAR_user-apollo-mesos.ovpn
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
     while true; do
