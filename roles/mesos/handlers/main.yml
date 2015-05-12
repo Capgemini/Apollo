@@ -7,3 +7,11 @@
 - name: Start mesos slave
   shell: start mesos-slave
   sudo: yes
+
+- name: Restart mesos master
+  shell: restart mesos-master
+  sudo: yes
+
+- name: Restart mesos slave
+  shell: restart mesos-slave
+  sudo: yes

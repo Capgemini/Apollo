@@ -1,6 +1,11 @@
+- name: ensure zookeeper is running (and enable it at boot)
+  service: name=zookeeper state=started enabled=yes
+
 - name: Create zookeeper config file
   template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
   sudo: yes
+  notify:
+    - Restart zookeeper
 
 - name: Create zookeeper myid file
   copy:
@@ -9,7 +14,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Start zookeeper
+    - Restart zookeeper
 
 - name: Set Zookeeper consul service definition
   sudo: yes

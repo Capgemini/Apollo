@@ -9,3 +9,6 @@ packer/build
 .wercker
 *.cache
 ssh.config
+vendor
+.bundle
+.kitchen

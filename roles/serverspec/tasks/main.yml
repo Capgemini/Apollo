@@ -1,0 +1,26 @@
+---
+# tasks file for serverspec
+- name: install bundler
+  command: gem install bundler --no-ri --no-rdoc
+  args:
+    creates: /usr/local/bin/bundler
+  when: serverspec_run_tests and serverspec_install_bundler
+  tags:
+    - serverspec
+
+- name: install bundle files
+  command: bundle install --path vendor
+  args:
+    chdir: "{{ serverspec_tests_path }}"
+    creates: "{{ serverspec_tests_path }}/vendor"
+  when: serverspec_run_tests
+  tags:
+    - serverspec
+
+- name: run serverspec tests
+  command: "bundle exec rake serverspec:{{ test_role }}"
+  args:
+    chdir: "{{ serverspec_tests_path }}"
+  when: test_role is defined and serverspec_run_tests
+  tags:
+    - serverspec
