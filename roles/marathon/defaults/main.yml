@@ -1,5 +1,0 @@
----
-# defaults file for marathon
-marathon_port: 8080
-consul_dir: /etc/consul.d
-marathon_local_address: "{{ansible_eth0.ipv4.address}}"

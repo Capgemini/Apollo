@@ -31,7 +31,7 @@
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
-    - marathon
+    - { role: '../plugins/marathon' }
 
 - hosts: mesos_slaves
   roles:

@@ -3,7 +3,6 @@
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.1",
     "weave_version": "v0.10.0",
     "version": "{{env `APOLLO_VERSION`}}",
@@ -14,7 +13,7 @@
   "builders": [{
     "type": "amazon-ebs",
     "ami_name": "apollo-ubuntu-14.04-amd64 {{timestamp}}",
-    "ami_description": "Ubuntu 14.04 LTS, Mesos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
+    "ami_description": "Ubuntu 14.04 LTS, Mesos {{user `mesos_version`}}, Docker, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
     "region": "{{user `aws_region`}}",
@@ -35,15 +34,13 @@
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
         "WEAVE_VERSION={{user `weave_version`}}",
-        "MESOS_VERSION={{user `mesos_version`}}",
-        "MARATHON_VERSION={{user `marathon_version`}}"
+        "MESOS_VERSION={{user `mesos_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/ubuntu/install_mesos.sh",
-        "scripts/ubuntu/install_marathon.sh",
         "scripts/common/install_consul.sh",
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"
