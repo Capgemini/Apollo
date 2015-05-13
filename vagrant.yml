@@ -1,5 +1,3 @@
-mesos_version: "0.22.0"
-
 # The numbers of servers
 #########################
 slave_n: 1       # hostname will be slave1,slave2,…

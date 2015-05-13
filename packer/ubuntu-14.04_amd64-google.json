@@ -2,10 +2,13 @@
   "variables": {
     "account_file": "{{env `GCS_ACCOUNT_FILE`}}",
     "project_id": "{{env `GCS_PROJECT_ID`}}",
-    "mesos_version": "0.22.0-1.0.ubuntu1404",
+    "source_image": "{{env `GCS_SOURCE_IMAGE`}}",
+    "zone": "{{env `GCS_ZONE`}}",
+    "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
-    "weave_version": "v0.10.0"
+    "weave_version": "v0.10.0",
+    "version": "0.2.0"
   },
   "builders": [{
     "type": "googlecompute",
@@ -15,8 +18,8 @@
     "ssh_timeout": "10m",
     "account_file": "{{user `account_file`}}",
     "project_id": "{{user `project_id`}}",
-    "source_image": "ubuntu-1404-trusty-v20150316",
-    "zone": "europe-west1-b"
+    "source_image": "{{user `source_image`}}",
+    "zone": "{{user `zone`}}"
   }],
   "provisioners": [
     {
@@ -64,7 +67,7 @@
     "artifact_type": "googlecompute.image",
     "metadata": {
       "created_at": "{{timestamp}}",
-      "version": "{{user `version`}}"
+      "version": "{{user `version`}}+{{timestamp}}"
     }
   }]
 }
