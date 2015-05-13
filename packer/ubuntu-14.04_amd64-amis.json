@@ -4,7 +4,7 @@
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.0",
+    "consul_version": "0.5.1",
     "weave_version": "v0.10.0",
     "version": "0.2.0",
     "aws_region": "{{env `AWS_REGION`}}",
