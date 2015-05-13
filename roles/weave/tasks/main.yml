@@ -9,13 +9,20 @@
     - weave
 
 - name: Start up docker
-  service: name=docker state=started
+  service:
+    name: docker
+    state: started
   tags:
     - weave
 
 - name: configure weave
   sudo: yes
-  template: src=interfaces.j2 dest=/etc/network/interfaces.d/weave.cfg owner=root group=root mode=0644
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces.d/weave.cfg
+    owner: root
+    group: root
+    mode: 0644
   tags:
     - weave
 

@@ -1,21 +1,35 @@
 ---
 # tasks file for haproxy
-- name: assures {{ consul_template_dir }} dirs exists
-  file: path={{ consul_template_dir }}/{{ item.path }} state=directory
+- name: "assures {{ consul_template_dir }} dirs exists"
+  file:
+    path: "{{ consul_template_dir }}/{{ item.path }}"
+    state: directory
   with_items:
     - { path: 'config' }
     - { path: 'templates' }
+  tags:
+    - haproxy
 
 - name: upload template config files
-  template: src=consul.cfg.j2 dest="{{ consul_template_dir }}/config/consul.cfg" mode=0644
+  template:
+    src: consul.cfg.j2
+    dest: "{{ consul_template_dir }}/config/consul.cfg"
+    mode: 0644
   sudo: yes
+  tags:
+    - haproxy
 
 - name: upload static config files
-  copy: src={{ item.src }} dest="{{ consul_template_dir }}/{{ item.dst }}" mode=0644
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ consul_template_dir }}/{{ item.dst }}"
+    mode: 0644
   sudo: yes
   with_items:
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
+  tags:
+    - haproxy
 
 - name: run haproxy container
   docker:
@@ -36,3 +50,5 @@
     volumes:
     - "{{ consul_template_dir }}/config:/config"
     - "{{ consul_template_dir }}/templates:/templates"
+  tags:
+    - haproxy

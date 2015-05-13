@@ -2,10 +2,14 @@
   service: name=zookeeper state=started enabled=yes
 
 - name: Create zookeeper config file
-  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  template:
+    src: zoo.cfg.j2
+    dest: /etc/zookeeper/conf/zoo.cfg
   sudo: yes
   notify:
     - Restart zookeeper
+  tags:
+    - zookeeper
 
 - name: Create zookeeper myid file
   copy:
@@ -15,6 +19,8 @@
   sudo: yes
   notify:
     - Restart zookeeper
+  tags:
+    - zookeeper
 
 - name: Set Zookeeper consul service definition
   sudo: yes
@@ -23,3 +29,5 @@
     dest: "{{ consul_dir }}/zookeeper.json"
   notify:
     - Restart consul
+  tags:
+    - zookeeper

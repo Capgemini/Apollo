@@ -1,7 +1,11 @@
 ---
 
 # Install (docker-py) python package as is a docker module dependency.
-- pip: name=docker-py version=1.1.0
+- pip:
+    name: docker-py
+    version: 1.1.0
+  tags:
+    - registrator
 
 # tasks file for docker registrator
 - name: run registrator container
@@ -15,3 +19,5 @@
     hostname: "{{ hostname }}"
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
+  tags:
+    - registrator
