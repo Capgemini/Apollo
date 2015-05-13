@@ -10,3 +10,6 @@ packer/*.pem
 .wercker
 *.cache
 ssh.config
+vendor
+.bundle
+.kitchen

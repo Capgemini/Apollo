@@ -1,0 +1,15 @@
+mesos_masters:
+  :roles:
+    - dnsmasq
+    - mesos_master
+    - marathon
+    - zookeeper
+mesos_slaves:
+  :roles:
+    - dnsmasq
+    - mesos_slave
+    - weave
+    - docker
+load_balancers:
+  :roles:
+    - haproxy
