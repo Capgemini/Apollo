@@ -2,5 +2,5 @@
 # handlers file for marathon
 # Restart service marathon, in all cases
 - name: Restart marathon
-  service: name=marathon state=restarted
   sudo: yes
+  shell: /sbin/restart marathon
