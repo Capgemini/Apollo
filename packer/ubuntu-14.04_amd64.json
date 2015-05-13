@@ -16,7 +16,7 @@
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
     "headless": true,
-    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-virtualbox",
+    "vm_name": "apollo-ubuntu-14.04-amd64-virtualbox",
     "disk_size": 40960,
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
@@ -50,7 +50,7 @@
     "type": "vmware-iso",
     "guest_os_type": "linux",
     "headless": true,
-    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-vmware",
+    "vm_name": "apollo-ubuntu-14.04-amd64-vmware",
     "disk_size": 40960,
     "vmx_data": {
       "memsize": "2048",
@@ -119,7 +119,7 @@
     },
     {
       "type": "vagrant-cloud",
-      "box_tag": "capgemini/apollo-mesos",
+      "box_tag": "capgemini/apollo",
       "access_token": "{{user `access_token`}}",
       "version": "{{user `version`}}+{{timestamp}}"
     }]

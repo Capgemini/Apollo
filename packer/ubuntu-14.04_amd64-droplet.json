@@ -12,7 +12,7 @@
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "apollo-mesos-ubuntu-14.04-amd64",
+    "snapshot_name": "apollo-ubuntu-14.04-amd64",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "{{user `digitalocean_image`}}",
     "region": "{{user `digitalocean_region`}}",
@@ -57,11 +57,11 @@
     }
   ],
   "push": {
-    "name": "capgemini/apollo-mesos-ubuntu-14-04-amd64"
+    "name": "capgemini/apollo-ubuntu-14-04-amd64"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/apollo-mesos-ubuntu-14.04-amd64",
+    "artifact": "capgemini/apollo-ubuntu-14.04-amd64",
     "artifact_type": "digitalocean.image",
     "metadata": {
       "created_at": "{{timestamp}}",

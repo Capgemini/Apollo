@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     raise "vagrant-hosts plugin not installed"
   end
 
-  config.vm.box = "capgemini/apollo-mesos"
+  config.vm.box = "capgemini/apollo"
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],
