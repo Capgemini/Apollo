@@ -8,7 +8,9 @@
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.0",
     "weave_version": "v0.10.0",
-    "access_token": "{{env `ATLAS_TOKEN`}}"
+    "access_token": "{{env `ATLAS_TOKEN`}}",
+    "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
+    "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195"
   },
   "builders": [{
     "type": "virtualbox-iso",
@@ -20,8 +22,8 @@
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
       [ "modifyvm", "{{.Name}}", "--cpus",   "2"    ]
     ],
-    "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
-    "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "md5",
     "http_directory" : "./http/ubuntu-14.04",
     "http_port_min" : 9001,
@@ -43,6 +45,39 @@
     "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
     "output_directory": "build/ubuntu-14.04_amd64_virtualbox",
     "format": "ova"
+  },
+  {
+    "type": "vmware-iso",
+    "guest_os_type": "linux",
+    "headless": true,
+    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-vmware",
+    "disk_size": 40960,
+    "vmx_data": {
+      "memsize": "2048",
+      "numvcpus": "2"
+    },
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "iso_checksum_type": "md5",
+    "http_directory" : "./http/ubuntu-14.04",
+    "http_port_min" : 9001,
+    "http_port_max" : 9001,
+    "boot_command" : [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic ",
+      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{user `hostname`}} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+      "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+    ],
+    "ssh_username": "{{user `ssh_name`}}",
+    "ssh_password": "{{user `ssh_pass`}}",
+    "ssh_wait_timeout": "60m",
+    "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
+    "output_directory": "build/ubuntu-14.04_amd64_vmware"
   }],
   "provisioners": [
     {
