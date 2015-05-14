@@ -136,3 +136,5 @@
 
 - name: start mesos-slave (and enable it at boot)
   service: name=mesos-slave state=started enabled=yes
+  when: mesos_install_mode == "slave"
+
