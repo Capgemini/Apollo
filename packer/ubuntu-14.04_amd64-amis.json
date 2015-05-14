@@ -62,7 +62,7 @@
     }
   ],
   "push": {
-    "name": "capgemini/apollo-ubuntu-14-04-amd64"
+    "name": "capgemini/apollo"
   },
   "post-processors": [{
     "type": "atlas",

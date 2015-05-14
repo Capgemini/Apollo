@@ -110,10 +110,13 @@
       "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     }
   ],
+  "push": {
+    "name": "capgemini/apollo"
+  },
   "post-processors": [
     [{
       "type": "vagrant",
-      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-mesos-ubuntu-14.04-amd64-{{.Provider}}.box",
+      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-ubuntu-14.04-amd64-{{.Provider}}.box",
       "keep_input_artifact": true,
       "compression_level": 9
     },
