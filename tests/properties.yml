@@ -1,6 +1,7 @@
 mesos_masters:
   :roles:
     - dnsmasq
+    - consul
     - mesos_master
     - marathon
     - zookeeper
@@ -9,6 +10,7 @@ mesos_masters:
 mesos_slaves:
   :roles:
     - dnsmasq
+    - consul
     - mesos_slave
     - weave
     - docker
