@@ -31,3 +31,9 @@ describe "mesos slave" do
     it { should be_directory }
   end
 end
+
+describe "mesos master" do
+  describe service('mesos-master') do
+    it { should_not be_running }
+  end
+end
