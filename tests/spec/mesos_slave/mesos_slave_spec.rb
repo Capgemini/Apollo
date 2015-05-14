@@ -24,16 +24,11 @@ describe "mesos slave" do
   end
   describe file('/etc/mesos-slave/work_dir') do
     it            { should be_file }
-    its(:content) { should contain '/tmp/mesos' }
-  end
-
-  describe file('/tmp/mesos') do
-    it { should be_directory }
   end
 end
 
 describe "mesos master" do
   describe service('mesos-master') do
-    it { should_not be_running }
+    it { should_notiti be_running }
   end
 end
