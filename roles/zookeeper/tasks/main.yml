@@ -1,5 +1,11 @@
 - name: ensure zookeeper is running (and enable it at boot)
-  service: name=zookeeper state=started enabled=yes
+  sudo: yes
+  service:
+    name: zookeeper
+    state: started
+    enabled: yes
+  tags:
+    - zookeeper
 
 - name: Create zookeeper config file
   template:
