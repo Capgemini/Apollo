@@ -26,3 +26,7 @@ describe file('/etc/zookeeper/conf/zoo.cfg') do
   its(:content) { should match /syncLimit=2/ }
   its(:content) { should match /^server.[1-5]=.*:2888:3888/ }
 end
+
+describe command('echo ruok | nc 127.0.0.1 2181') do
+  its(:stdout) { should match /imok/ }
+end
