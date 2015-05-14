@@ -1,1 +1,5 @@
+{% if mesos_master_quorum is defined %}
+{{ mesos_master_quorum }}
+{% else %}
 {{ ( groups.mesos_masters|count / 2) | round(0, 'ceil') | int }}
+{%- endif -%}

@@ -33,7 +33,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   }
 
   # Mesos master nodes
-  master_n = conf['master_n']
   master_infos = (1..3).map do |i|
     node = {
       :zookeeper_id    => i,
@@ -74,14 +73,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.extra_vars = {
             zookeeper_id: node[:zookeeper_id],
             zookeeper_conf: zookeeper_conf,
+            mesos_master_quorum: 2,
             mesos_zk_url: mesos_zk_url,
-            consul_join: consul_join,
-            consul_advertise: node[:ip],
-            mesos_local_address: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
             mesos_local_address: node[:ip],
             marathon_local_address: node[:ip],
+            consul_join: consul_join,
+            consul_advertise: node[:ip],
+            consul_bind_addr: node[:ip],
+            consul_dc: "vagrant",
           }
           ansible.groups = ansible_groups
         end
@@ -104,9 +103,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.sudo = true
           ansible.extra_vars = {
             mesos_zk_url: mesos_zk_url,
+            mesos_local_address: node[:ip],
             consul_join: consul_join,
             consul_advertise: node[:ip],
-            mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
             registrator_uri: "consul://#{node[:ip]}:8500"
