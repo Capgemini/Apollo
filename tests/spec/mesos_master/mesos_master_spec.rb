@@ -21,7 +21,6 @@ describe "mesos master" do
 
     describe file('/etc/mesos-master/ip') do
       it { should be_file }
-      its(:content) { should match /^172.31.1.1[123]/ }
     end
 
     describe file('/etc/mesos-master/quorum') do
@@ -32,7 +31,7 @@ describe "mesos master" do
 
   describe file('/etc/mesos/zk') do
     it            { should be_file }
-    its(:content) { should contain('zk://172.31.1.1[123]:2181') }
+    its(:content) { should contain(':2181/mesos') }
   end
 
   describe file('/etc/default/mesos') do
