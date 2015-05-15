@@ -80,6 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             zookeeper_conf: zookeeper_conf,
             mesos_master_quorum: 2,
             mesos_zk_url: mesos_zk_url,
+            mesos_local_address: node[:ip],
             marathon_zk_url: marathon_zk_url,
             marathon_hostname: node[:ip],
             consul_join: consul_join,
