@@ -1,0 +1,20 @@
+description "Weave Scope Docker Service"
+
+start on started docker
+stop on stopping docker
+
+env WEAVESCOPE="{{ weave_scope_dest }}"
+
+pre-start exec ${WEAVESCOPE} stop
+
+script
+ [ -e /etc/default/weavescope ] && . /etc/default/weavescope
+ ${WEAVESCOPE} launch
+ exec /usr/bin/docker logs -f weavescope
+end script
+
+pre-stop exec ${WEAVESCOPE} stop
+
+respawn
+respawn limit 10 10
+kill timeout 10
