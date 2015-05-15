@@ -10,6 +10,7 @@ mesos_slaves:
     - mesos_slave
     - weave
     - docker
+    - registrator
 load_balancers:
   :roles:
     - haproxy
