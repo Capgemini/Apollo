@@ -51,7 +51,7 @@ To generate a v2 API token see [https://www.digitalocean.com/community/tutorials
 ```
 APOLLO_PROVIDER=digitalocean
 
-# Path to your public ssh key (created in prerequisite step 8 above).
+# Path to your public ssh key (created in prerequisite step 6 above).
 TF_VAR_key_file=
 
 # Atlas variables.
