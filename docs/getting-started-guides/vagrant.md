@@ -24,6 +24,8 @@ export APOLLO_PROVIDER=vagrant
 sh bootstrap/apollo-launch.sh
 ```
 
+Note: You will either have to run the above command as sudo or have your hosts file writeable for the user running the command
+
 Vagrant will set up a 3 node mesos-master cluster and 1 mesos-slave. By default the master nodes will each take up 256MB and 1 CPU. The slave will take 1024MB and 2 CPUs.
 
 By default the web interfaces should be available on -
