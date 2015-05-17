@@ -7,6 +7,7 @@ conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.7.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # if you want to use vagrant-cachier,
@@ -62,7 +63,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
+
+        if Vagrant.has_plugin?("vagrant-hosts")
+          override.vm.provision :hosts
+        end
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
@@ -93,7 +97,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
+        
+        if Vagrant.has_plugin?("vagrant-hosts")
+          override.vm.provision :hosts
+        end
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
