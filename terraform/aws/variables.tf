@@ -43,9 +43,19 @@ variable "public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
-variable "private_subnet_cidr_block" {
+variable "az1_subnet_cidr_block" {
   description = "Cidr block for private Mesos subnet."
   default = "10.0.1.0/24"
+}
+
+variable "az2_subnet_cidr_block" {
+  description = "Cidr block for private Mesos subnet."
+  default = "10.0.2.0/24"
+}
+
+variable "az3_subnet_cidr_block" {
+  description = "Cidr block for private Mesos subnet."
+  default = "10.0.3.0/24"
 }
 
 variable "slaves" {
@@ -61,8 +71,8 @@ variable "masters" {
 variable "master_ips" {
   default = {
     master-0 = "10.0.1.11"
-    master-1 = "10.0.1.12"
-    master-2 = "10.0.1.13"
+    master-1 = "10.0.2.12"
+    master-2 = "10.0.3.13"
   }
 }
 
@@ -82,8 +92,8 @@ variable "instance_type" {
 
 variable "atlas_artifact" {
   default = {
-    master = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
-    slave  = "capgemini/apollo-mesos-ubuntu-14.04-amd64"
+    master = "capgemini/apollo"
+    slave  = "capgemini/apollo"
   }
 }
 
