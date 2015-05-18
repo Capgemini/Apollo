@@ -27,6 +27,14 @@ builds.
 You will need to push and build your Atlas artifact (via Packer in the Atlas cloud) in order to
 provision your nodes via terraform. See the [guide on how to build artifacts in Atlas](../../docs/atlas.md)
 
+When using ```atlas_artifact``` in Terraform, Terraform is looking up the Atlas artifact to retrieve the Digitalocean image ID to replace it in the ```image``` field. If you need to debug to see which images are available under your Digitalocean account you can run the following from your terminal -
+
+```
+curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer $DIGITALOCEAN_API_TOKEN' "https://api.digitalocean.com/v2/images?page=1&per_page=1&private=true"
+```
+
+replacing ```$DIGITALOCEAN_API_TOKEN``` with your v2 API token.
+
 #### Set config
 
 Configuration can be set via environment variables.
