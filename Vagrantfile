@@ -72,8 +72,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         override.vm.provision "ansible" do |ansible|
           ansible.playbook = "site.yml"
           ansible.sudo = true
-          unless ENV['ANSIBLE_LOG'].nil?
-            ansible.verbose = "#{ENV['ANSIBLE_LOG']}"
+          unless ENV['ANSIBLE_LOG_LEVEL'].nil?
+            ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
           end
           ansible.extra_vars = {
             zookeeper_id: node[:zookeeper_id],
@@ -107,7 +107,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.playbook = "site.yml"
           ansible.sudo = true
           unless ENV['ANSIBLE_LOG'].nil?
-            ansible.verbose = "#{ENV['ANSIBLE_LOG']}"
+            ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
           end
           ansible.extra_vars = {
             mesos_zk_url: mesos_zk_url,
