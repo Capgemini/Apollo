@@ -4,12 +4,15 @@ mesos_masters:
     - mesos_master
     - marathon
     - zookeeper
+    - weave
+    - docker
 mesos_slaves:
   :roles:
     - dnsmasq
     - mesos_slave
     - weave
     - docker
+    - registrator
 load_balancers:
   :roles:
     - haproxy
