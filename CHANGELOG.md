@@ -1,10 +1,14 @@
 # Change Log
 
-## [Unreleased](https://github.com/Capgemini/Apollo/tree/HEAD)
+## [Unreleased](https://github.com/capgemini/Apollo/tree/HEAD)
 
-[Full Changelog](https://github.com/Capgemini/Apollo/compare/0.1...HEAD)
+[Full Changelog](https://github.com/capgemini/Apollo/compare/0.1...HEAD)
 
 **Implemented enhancements:**
+
+- Tag all tasks in ansible roles [\#175](https://github.com/Capgemini/Apollo/issues/175)
+
+- Bootstrap script to rerun ansible playbooks only [\#174](https://github.com/Capgemini/Apollo/issues/174)
 
 - Change terraform environment variables to use TF\_VAR... rather than pass -var on the command line [\#141](https://github.com/Capgemini/Apollo/issues/141)
 
@@ -14,17 +18,63 @@
 
 - Move digitalocean dynamic inventory to use API version 2 [\#103](https://github.com/Capgemini/Apollo/issues/103)
 
+- Move serverspec testing to be via ansible [\#101](https://github.com/Capgemini/Apollo/issues/101)
+
 **Fixed bugs:**
+
+- Slave machine not coming up correctly sometimes in the vagrant machine [\#172](https://github.com/Capgemini/Apollo/issues/172)
+
+- Occassionally mesos isnt able to send registration acknowledgement to marathon [\#167](https://github.com/Capgemini/Apollo/issues/167)
 
 - Transient AWS build failures [\#85](https://github.com/Capgemini/Apollo/issues/85)
 
 **Closed issues:**
+
+- Support vmware-iso for packer vagrant box [\#161](https://github.com/Capgemini/Apollo/issues/161)
 
 - Not really best practice to write ssh key to bastion/nat instance [\#144](https://github.com/Capgemini/Apollo/issues/144)
 
 - Allow override of mesos task port range [\#133](https://github.com/Capgemini/Apollo/issues/133)
 
 **Merged pull requests:**
+
+- Make version an ENV var so we dont accidentally push over existing ve… [\#207](https://github.com/Capgemini/Apollo/pull/207) ([tayzlor](https://github.com/tayzlor))
+
+- pipelining=True timeout = 15 ins ansible.cfg for performance improvement. [\#206](https://github.com/Capgemini/Apollo/pull/206) ([enxebre](https://github.com/enxebre))
+
+- Add docs around looking up DO images manually [\#204](https://github.com/Capgemini/Apollo/pull/204) ([tayzlor](https://github.com/tayzlor))
+
+- Capture only first row of terraform --version output [\#203](https://github.com/Capgemini/Apollo/pull/203) ([enxebre](https://github.com/enxebre))
+
+- Add note in vagrant docs about sudo [\#202](https://github.com/Capgemini/Apollo/pull/202) ([wallies](https://github.com/wallies))
+
+- Exporing TF vars in script by default. [\#201](https://github.com/Capgemini/Apollo/pull/201) ([enxebre](https://github.com/enxebre))
+
+- Update digitalocean.md [\#199](https://github.com/Capgemini/Apollo/pull/199) ([haf](https://github.com/haf))
+
+- Add spec for registrator [\#196](https://github.com/Capgemini/Apollo/pull/196) ([tayzlor](https://github.com/tayzlor))
+
+- add mesos client tests \#182 [\#194](https://github.com/Capgemini/Apollo/pull/194) ([asnaedae](https://github.com/asnaedae))
+
+- Docker spec tests [\#193](https://github.com/Capgemini/Apollo/pull/193) ([tayzlor](https://github.com/tayzlor))
+
+- \#181 - zookeeper spec tests [\#192](https://github.com/Capgemini/Apollo/pull/192) ([tayzlor](https://github.com/tayzlor))
+
+- Fix the fact mesos spec tests were showing 1 as the quorum count instead of 2 [\#191](https://github.com/Capgemini/Apollo/pull/191) ([tayzlor](https://github.com/tayzlor))
+
+- increase quality of mesos master tests for issue \#182 [\#189](https://github.com/Capgemini/Apollo/pull/189) ([asnaedae](https://github.com/asnaedae))
+
+- only start slave mesos   when: mesos\_install\_mode == slave [\#187](https://github.com/Capgemini/Apollo/pull/187) ([enxebre](https://github.com/enxebre))
+
+- Deploy docker/weave/registrator to all hosts [\#186](https://github.com/Capgemini/Apollo/pull/186) ([tayzlor](https://github.com/tayzlor))
+
+- Rename packer / artifacts to just apollo, rather than apollo-mesos [\#185](https://github.com/Capgemini/Apollo/pull/185) ([tayzlor](https://github.com/tayzlor))
+
+- Fix \#175 - add tags for roles, and some slight refactoring / style fixes [\#184](https://github.com/Capgemini/Apollo/pull/184) ([tayzlor](https://github.com/tayzlor))
+
+- \#161 add builder for vmware images [\#173](https://github.com/Capgemini/Apollo/pull/173) ([asnaedae](https://github.com/asnaedae))
+
+- Initial commit of serverspec test harness [\#169](https://github.com/Capgemini/Apollo/pull/169) ([tayzlor](https://github.com/tayzlor))
 
 - artifact name [\#168](https://github.com/Capgemini/Apollo/pull/168) ([enxebre](https://github.com/enxebre))
 
@@ -33,6 +83,8 @@
 - Fix aws docs [\#165](https://github.com/Capgemini/Apollo/pull/165) ([wallies](https://github.com/wallies))
 
 - revert artifact names to be under capgemini namespace [\#164](https://github.com/Capgemini/Apollo/pull/164) ([tayzlor](https://github.com/tayzlor))
+
+- Fix \#159 - Packer box versioning [\#162](https://github.com/Capgemini/Apollo/pull/162) ([tayzlor](https://github.com/tayzlor))
 
 - 152 dynamic vars [\#158](https://github.com/Capgemini/Apollo/pull/158) ([enxebre](https://github.com/enxebre))
 
@@ -62,7 +114,7 @@
 
 - centos box [\#43](https://github.com/Capgemini/Apollo/pull/43) ([wallies](https://github.com/wallies))
 
-## [0.1](https://github.com/Capgemini/Apollo/tree/0.1) (2015-05-05)
+## [0.1](https://github.com/capgemini/Apollo/tree/0.1) (2015-05-05)
 
 **Implemented enhancements:**
 
