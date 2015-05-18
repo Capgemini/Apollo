@@ -36,7 +36,7 @@ If you don't want to upload to Atlas you can remove the following block:
 ```
 {
   "type": "vagrant-cloud",
-  "box_tag": "capgemini/apollo-mesos",
+  "box_tag": "capgemini/apollo",
   "access_token": "{{user `access_token`}}",
   "version": "{{user `version`}}"
 }
