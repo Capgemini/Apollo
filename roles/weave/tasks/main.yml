@@ -2,7 +2,10 @@
 # tasks file for weave
 - name: include all interfaces.d
   sudo: yes
-  lineinfile: "dest=/etc/network/interfaces state=present line='source /etc/network/interfaces.d/*.cfg'"
+  lineinfile:
+    dest: /etc/network/interfaces
+    state: present
+    line: 'source /etc/network/interfaces.d/*.cfg'
   notify:
     - Restart networking
   tags:
@@ -27,14 +30,18 @@
     - weave
 
 - name: bring up weave bridge
-  shell: ifup weave
+  command: ifup weave
   sudo: yes
   tags:
     - weave
 
 - name: configure weave bridge for docker
   sudo: yes
-  lineinfile: "dest=/etc/default/docker state=present regexp=^DOCKER_OPTS= line='DOCKER_OPTS=\"{{ weave_docker_opts }}\"'"
+  lineinfile:
+   dest: /etc/default/docker
+   state: present
+   regexp: ^DOCKER_OPTS=
+   line: DOCKER_OPTS=\"{{ weave_docker_opts }}\"
   notify:
     - Restart docker
     - Weave launch

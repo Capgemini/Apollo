@@ -29,6 +29,6 @@ end
 
 describe "mesos master" do
   describe service('mesos-master') do
-    it { should_notiti be_running }
+    it { should_not be_running }
   end
 end
