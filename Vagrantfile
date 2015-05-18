@@ -7,6 +7,7 @@ conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.7.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # if you want to use vagrant-cachier,
