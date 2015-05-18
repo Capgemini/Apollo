@@ -21,3 +21,8 @@ end
 describe docker_container('weave') do
   it { should be_running }
 end
+
+describe file('/etc/default/docker') do
+  it            { should be_file }
+  its(:content) { should match /--bridge=weave/ }
+end
