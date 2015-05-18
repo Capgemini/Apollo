@@ -124,7 +124,7 @@
       "type": "vagrant-cloud",
       "box_tag": "capgemini/apollo",
       "access_token": "{{user `access_token`}}",
-      "version": "{{user `version`}}+{{timestamp}}"
+      "version": "{{user `version`}}"
     }]
   ]
 }
