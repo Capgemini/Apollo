@@ -30,6 +30,11 @@ describe 'consul' do
   describe port(8600) do
     it { should be_listening }
   end
+  describe command('dig @localhost -p 8600 +noadditional +nocomments +nostats consul.service.consul') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout)      { should contain 'consul.service.consul.	0	IN	A' }
+
+  end
 
   describe file('/etc/consul.d/consul.json') do
     it { should be_file }
