@@ -54,25 +54,26 @@ ansible_ssh_config() {
     IdentityFile           $AWS_SSH_KEY
     BatchMode              yes
     PasswordAuthentication no
+    UserKnownHostsFile     /dev/null
 
   Host *
     StrictHostKeyChecking  no
-    ServerAliveInterval    60
+    ServerAliveInterval    120
     TCPKeepAlive           yes
     ProxyCommand           ssh -q -A ubuntu@$NAT_IP nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
-    ControlPersist         8h
+    ControlPersist         30m
     User                   ubuntu
     IdentityFile           $AWS_SSH_KEY
+    UserKnownHostsFile     /dev/null
 EOF
   popd
 }
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o \
-    ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
+    ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
