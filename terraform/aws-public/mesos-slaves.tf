@@ -11,7 +11,7 @@ resource "aws_instance" "mesos-slave" {
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
   source_dest_check = false
-  security_groups   = ["${aws_security_group.default.id}"]
+  security_groups   = ["${aws_security_group.default.name}"]
   depends_on        = ["aws_instance.mesos-master"]
   tags = {
     Name = "apollo-mesos-slave-${count.index}"

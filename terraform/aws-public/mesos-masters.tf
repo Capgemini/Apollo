@@ -11,7 +11,7 @@ resource "aws_instance" "mesos-master" {
   count             = "${var.masters}"
   key_name          = "${var.key_name}"
   source_dest_check = false
-  security_groups   = ["${aws_security_group.default.id}"]
+  security_groups   = ["${aws_security_group.default.name}"]
   tags = {
     Name = "apollo-mesos-master-${count.index}"
     role = "mesos_masters"
