@@ -5,5 +5,5 @@ output "slave_ips" {
    value = "${join(",", aws_instance.mesos-slave.*.public_ip)}"
 }
 output "elb.hostname" {
-  value = "${aws_elb.app.dns_name}"
+  value = "${aws_elb.web.dns_name}"
 }
