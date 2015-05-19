@@ -6,11 +6,10 @@
     dest: /etc/network/interfaces
     state: present
     line: 'source /etc/network/interfaces.d/*.cfg'
-  notify:
-    - Restart networking
   tags:
     - weave
 
+# Start docker as it is a requirement for weave create-bridge.
 - name: Start up docker
   service:
     name: docker
@@ -18,7 +17,7 @@
   tags:
     - weave
 
-- name: configure weave
+- name: configure weave interface
   sudo: yes
   template:
     src: interfaces.j2
@@ -29,21 +28,29 @@
   tags:
     - weave
 
+# Create weave bridge.
 - name: bring up weave bridge
   command: ifup weave
+  sudo: yes
+
+- name: upload weave template service
+  template:
+    src: weave.conf.j2
+    dest: "/etc/init/weave.conf"
+    mode: 0755
   sudo: yes
   tags:
     - weave
 
+# Restart docker with weave bridge available and triggers weave service.
 - name: configure weave bridge for docker
   sudo: yes
   lineinfile:
-   dest: /etc/default/docker
-   state: present
-   regexp: ^DOCKER_OPTS=
-   line: DOCKER_OPTS=\"{{ weave_docker_opts }}\"
+    dest: /etc/default/docker
+    state: present
+    regexp: ^DOCKER_OPTS=
+    line: 'DOCKER_OPTS=\"{{ weave_docker_opts }}\"'
   notify:
     - Restart docker
-    - Weave launch
   tags:
     - weave
