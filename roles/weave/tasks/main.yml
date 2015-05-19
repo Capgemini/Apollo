@@ -10,9 +10,12 @@
     - weave
 
 # Start docker as it is a requirement for weave create-bridge.
-- service:
-  name: docker
-  state: started
+- name: Start up docker
+  service:
+    name: docker
+    state: started
+  tags:
+    - weave
 
 - name: configure weave interface
   sudo: yes
@@ -32,7 +35,7 @@
 
 - name: upload weave template service
   template:
-    src: weave.conf.j2git
+    src: weave.conf.j2
     dest: "/etc/init/weave.conf"
     mode: 0755
   sudo: yes
