@@ -3,10 +3,19 @@ resource "aws_security_group" "default" {
   name = "default-apollo-mesos"
   description = "Default security group that allows all traffic"
 
+  # HTTP access from anywhere
   ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # SSH access from anywhere
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

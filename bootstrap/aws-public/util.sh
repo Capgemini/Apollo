@@ -33,9 +33,26 @@ apollo_launch() {
   open_urls
 }
 
+ansible_ssh_config() {
+  pushd $APOLLO_ROOT/terraform/aws-public
+    cat <<EOF > ssh.config
+  Host *
+    StrictHostKeyChecking  no
+    ServerAliveInterval    120
+    ControlMaster          auto
+    ControlPath            ~/.ssh/mux-%r@%h:%p
+    ControlPersist         30m
+    User                   ubuntu
+    IdentityFile           $AWS_SSH_KEY
+    UserKnownHostsFile     /dev/null
+EOF
+  popd
+}
+
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
+    ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws-public/ssh.config -q" \
+    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws-public -vvvv\
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
