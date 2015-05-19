@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'consul' do
 
-
   describe service('consul') do
     it { should be_running }
   end
@@ -21,6 +20,7 @@ describe 'consul' do
   describe port(8500) do
     it { should be_listening }
   end
+
   describe command('curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://127.0.0.1:8500/v1/catalog/service/consul') do
     its(:exit_status) { should eq 0 }
     its(:stdout)      { should contain 'HTTP/1.1 200 OK' }
@@ -30,10 +30,10 @@ describe 'consul' do
   describe port(8600) do
     it { should be_listening }
   end
+
   describe command('dig @localhost -p 8600 +noadditional +nocomments +nostats consul.service.consul') do
     its(:exit_status) { should eq 0 }
     its(:stdout)      { should contain 'consul.service.consul.	0	IN	A' }
-
   end
 
   describe file('/etc/consul.d/consul.json') do
