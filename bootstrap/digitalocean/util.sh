@@ -10,10 +10,9 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
-  if [[ $(check_terraform_version) == "-1" ]]; then
-    echo -e "${color_red}Terraform >= v0.5.0 is required, please fix and retry.${color_norm}"
-    exit 1
-  fi
+
+  check_terraform_version
+
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1

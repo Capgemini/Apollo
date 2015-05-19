@@ -38,6 +38,8 @@
     name: consul
     enabled: yes
     state: started
+  tags:
+    - consul
 
 # Give some time for leader election to occur
 - name: wait for leader
@@ -45,12 +47,16 @@
     host: "{{ consul_bind_addr }}"
     port: 8301
     delay: 10
+  tags:
+    - consul
 
 - name: remove consul-join override
   file:
     path: /etc/init/consul-join.override
     state: absent
   when: consul_join is defined
+  tags:
+    - consul
 
 - name: configure consul-join
   sudo: yes
@@ -72,9 +78,13 @@
 - name: force reload consul
   sudo: yes
   command: /sbin/restart consul
+  tags:
+    - consul
 
 - name: force wait for leader
   wait_for:
     host: "{{ consul_bind_addr }}"
     port: 8301
     delay: 10
+  tags:
+    - consul

@@ -10,10 +10,9 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
-  if [[ $(check_terraform_version) == "-1" ]]; then
-    echo -e "${color_red}${color_red}Terraform >= v0.5.0 is requried, please fix and retry.${color_norm}, please fix and retry.${color_norm}"
-    exit 1
-  fi
+
+  check_terraform_version
+
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1
@@ -115,9 +114,9 @@ ovpn_client_config() {
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     nat_ip=$(terraform output nat.ip)
-    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo-mesos.ovpn
+    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo.ovpn
 
-    /usr/bin/open $TF_VAR_user-apollo-mesos.ovpn
+    /usr/bin/open $TF_VAR_user-apollo.ovpn
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
     while true; do

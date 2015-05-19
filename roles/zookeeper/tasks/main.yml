@@ -1,6 +1,21 @@
-- name: Create zookeeper config file
-  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+- name: ensure zookeeper is running (and enable it at boot)
   sudo: yes
+  service:
+    name: zookeeper
+    state: started
+    enabled: yes
+  tags:
+    - zookeeper
+
+- name: Create zookeeper config file
+  template:
+    src: zoo.cfg.j2
+    dest: /etc/zookeeper/conf/zoo.cfg
+  sudo: yes
+  notify:
+    - Restart zookeeper
+  tags:
+    - zookeeper
 
 - name: Create zookeeper myid file
   copy:
@@ -9,7 +24,9 @@
     mode: 0644
   sudo: yes
   notify:
-    - Start zookeeper
+    - Restart zookeeper
+  tags:
+    - zookeeper
 
 - name: Set Zookeeper consul service definition
   sudo: yes
@@ -18,3 +35,5 @@
     dest: "{{ consul_dir }}/zookeeper.json"
   notify:
     - Restart consul
+  tags:
+    - zookeeper

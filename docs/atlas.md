@@ -32,10 +32,10 @@ replacing $ATLAS_TOKEN with your Atlas API token.
 
 This should create a build configuration under -
 
-https://atlas.hashicorp.com/YOUR_OGRANISATION/build-configurations/apollo-mesos-ubuntu-14-04-amd64
+https://atlas.hashicorp.com/YOUR_OGRANISATION/build-configurations/apollo-ubuntu-14-04-amd64
 
-The build will probably fail first time, this will be due to Atlas not having your API token. You will need to add the DIGITALOCEAN_API_TOKEN as a variable under https://atlas.hashicorp.com/YOUR_ORGANISATION/build-configurations/apollo-mesos-ubuntu-14-04-amd64/variables.
+The build will probably fail first time, this will be due to Atlas not having your API token. You will need to add the DIGITALOCEAN_API_TOKEN as a variable under https://atlas.hashicorp.com/YOUR_ORGANISATION/build-configurations/apollo-ubuntu-14-04-amd64/variables.
 
-Once your build is completed there should be a new artifact under https://atlas.hashicorp.com/YOUR_ORGANISATION/artifacts/apollo-mesos-ubuntu-14.04-amd64
+Once your build is completed there should be a new artifact under https://atlas.hashicorp.com/YOUR_ORGANISATION/artifacts/apollo-ubuntu-14.04-amd64
 
 The same steps apply if you want to create your own build configuration / artifacts for AWS/Google.

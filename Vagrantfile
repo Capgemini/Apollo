@@ -7,6 +7,7 @@ conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.7.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # if you want to use vagrant-cachier,
@@ -20,8 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     raise "vagrant-hosts plugin not installed"
   end
 
-  config.vm.box = "capgemini/apollo-mesos"
-  config.vm.box_version = conf['mesos_version']
+  config.vm.box = "capgemini/apollo"
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],
@@ -34,7 +34,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   }
 
   # Mesos master nodes
-  master_n = conf['master_n']
   master_infos = (1..3).map do |i|
     node = {
       :zookeeper_id    => i,
@@ -78,14 +77,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.extra_vars = {
             zookeeper_id: node[:zookeeper_id],
             zookeeper_conf: zookeeper_conf,
+            mesos_master_quorum: 2,
             mesos_zk_url: mesos_zk_url,
-            consul_join: consul_join,
-            consul_advertise: node[:ip],
-            mesos_local_address: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
             mesos_local_address: node[:ip],
             marathon_local_address: node[:ip],
+            consul_join: consul_join,
+            consul_advertise: node[:ip],
+            consul_bind_addr: node[:ip],
+            consul_dc: "vagrant",
           }
           ansible.groups = ansible_groups
         end
@@ -111,9 +110,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           end
           ansible.extra_vars = {
             mesos_zk_url: mesos_zk_url,
+            mesos_local_address: node[:ip],
             consul_join: consul_join,
             consul_advertise: node[:ip],
-            mesos_local_address: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
             registrator_uri: "consul://#{node[:ip]}:8500"

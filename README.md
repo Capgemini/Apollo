@@ -19,7 +19,7 @@ Apollo is built on top of the following components:
 * [Apache Mesos](http://mesos.apache.org/) for cluster management, scheduling and resource isolation
 * [Consul](http://consul.io) for service discovery, DNS
 * [Docker](http://docker.io) for application container runtimes
-* [Weave](https://github.com/zettio/weave) for networking of docker containers
+* [Weave](https://github.com/weaveworks/weave) for networking of docker containers
 * [HAProxy](http://www.haproxy.org) for application container load balancing
 
 Apollo is:
