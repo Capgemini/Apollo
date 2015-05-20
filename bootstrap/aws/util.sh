@@ -51,7 +51,7 @@ ansible_ssh_config() {
     User                   ubuntu
     HostName               $NAT_IP
     ProxyCommand           none
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
     BatchMode              yes
     PasswordAuthentication no
     UserKnownHostsFile     /dev/null
@@ -65,7 +65,7 @@ ansible_ssh_config() {
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
     UserKnownHostsFile     /dev/null
 EOF
   popd
@@ -73,7 +73,7 @@ EOF
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
+    AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
@@ -85,7 +85,9 @@ ansible_playbook_run() {
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/aws
-    terraform destroy
+    terraform destroy -var "access_key=${TF_VAR_access_key}" \
+      -var "key_file=${TF_VAR_key_file}" \
+      -var "region=${TF_VAR_region}"
   popd
 }
 
