@@ -46,7 +46,7 @@ ansible_ssh_config() {
   pushd $APOLLO_ROOT/terraform/aws
     NAT_IP=$(terraform output nat.ip)
     cat <<EOF > ssh.config
-  Host nat
+  Host nat $NAT_IP
     StrictHostKeyChecking  no
     User                   ubuntu
     HostName               $NAT_IP
@@ -56,11 +56,11 @@ ansible_ssh_config() {
     PasswordAuthentication no
     UserKnownHostsFile     /dev/null
 
-  Host *
+  Host 10.*
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A ubuntu@$NAT_IP nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$NAT_IP nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
