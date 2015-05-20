@@ -19,7 +19,7 @@ export TF_VAR_region=${TF_VAR_region:-eu-west-1}
 export TF_VAR_master_size=${TF_VAR_master_size:-m1.medium}
 export TF_VAR_slave_size=${TF_VAR_slave_size:-m1.medium}
 export TF_VAR_slaves=${TF_VAR_slaves:-1}
-export TF_VAR_subnet_availability_zone=${TF_VAR_subnet_availability_zone:-eu-west-1b}
+export TF_VAR_subnet_availability_zone=${TF_VAR_subnet_availability_zone:-eu-west-1a}
 
 export APOLLO_consul_dc=${APOLLO_consul_dc:-$TF_VAR_region}
 export APOLLO_mesos_cluster_name=${APOLLO_mesos_cluster_name:-$TF_VAR_region}
