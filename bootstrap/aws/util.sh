@@ -117,7 +117,7 @@ ovpn_client_config() {
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     nat_ip=$(terraform output nat.ip)
-    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo.ovpn
+    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo.ovpn
 
     /usr/bin/open $TF_VAR_user-apollo.ovpn
     # Display a prompt to tell the user to connect in their VPN client,
