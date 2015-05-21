@@ -16,7 +16,6 @@
     restart_policy: always
     net: host
     command: "-internal {{ registrator_uri }}"
-    hostname: "{{ hostname }}"
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
   tags:
