@@ -7,6 +7,21 @@
   tags:
     - docker
 
+- name: configure docker graph directory
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    regexp: ^DOCKER_OPTS=.*--graph.*
+    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --graph={{ docker_graph_dir }}\"'
+
+- name: configure docker temporary directory
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
+
 - name: ensure docker is running (and enable it at boot)
   service:
     name: docker
