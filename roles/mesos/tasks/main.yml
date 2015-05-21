@@ -65,6 +65,10 @@
     - Restart consul
   when: mesos_install_mode == "master"
 
+- name: start mesos-master (and enable it at boot)
+  service: name=mesos-master state=started enabled=yes
+  when: mesos_install_mode == "master"
+
 # Tasks for Slave nodes
 - name: remove mesos-slave override
   file: path=/etc/init/mesos-slave.override state=absent
