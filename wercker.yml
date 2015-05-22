@@ -37,3 +37,19 @@ build:
         code: |
           echo localhost > wercker_inventory
           ansible-playbook -i wercker_inventory --syntax-check site.yml
+deploy:
+    steps:
+    - install-packages:
+        packages: wget unzip
+    - pip-install:
+        requirements_file: "requirements.txt"
+    - enxebre/apollo-deploy:
+        cloud: digitalocean
+        artifact_name: enxebre/apollo-ubuntu-14.04-amd64
+        artifact_version: 2
+        terraform_version: 0.5.0
+    after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL
+            channel: apollo
+            username: wercker-bot
