@@ -43,7 +43,7 @@ ansible_ssh_config() {
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
     UserKnownHostsFile     /dev/null
 EOF
   popd
@@ -63,7 +63,9 @@ ansible_playbook_run() {
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/aws_public
-    terraform destroy
+    terraform destroy -var "access_key=${TF_VAR_access_key}" \
+      -var "key_file=${TF_VAR_key_file}" \
+      -var "region=${TF_VAR_region}"
   popd
 }
 
