@@ -29,6 +29,7 @@ verify_prereqs() {
 
 apollo_launch() {
   terraform_apply
+  ansible_ssh_config
   ansible_playbook_run
   open_urls
 }
@@ -43,7 +44,7 @@ ansible_ssh_config() {
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
     UserKnownHostsFile     /dev/null
 EOF
   popd
