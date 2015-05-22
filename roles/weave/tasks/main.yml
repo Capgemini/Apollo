@@ -48,8 +48,8 @@
   lineinfile:
     dest: /etc/default/docker
     state: present
-    regexp: ^DOCKER_OPTS=
-    line: 'DOCKER_OPTS=\"{{ weave_docker_opts }}\"'
+    regexp: ^DOCKER_OPTS=.*--bridge=weave.*
+    line: 'DOCKER_OPTS=\"$DOCKER_OPTS {{ weave_docker_opts }}\"'
   notify:
     - Restart docker
   tags:
