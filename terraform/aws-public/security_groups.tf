@@ -1,15 +1,15 @@
 /* Default security group */
 resource "aws_security_group" "default" {
-  name = "default-apollo-mesos"
+  Name        = "default-apollo-mesos"
   description = "Default security group that allows all traffic"
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.default.id}"
 
   # Allows inbound and outbound traffic from all instances in the VPC.
   ingress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+    self      = true
   }
 
   # Allows all inbound traffic from the internet.
@@ -22,9 +22,9 @@ resource "aws_security_group" "default" {
 
   # Allows all outbound traffic.
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags {
