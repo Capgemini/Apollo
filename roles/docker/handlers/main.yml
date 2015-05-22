@@ -1,5 +1,7 @@
 ---
 # handlers file for docker
 - name: Restart docker
-  service: name=docker state=restarted
+  service:
+   name: docker
+   state: restarted
   sudo: yes

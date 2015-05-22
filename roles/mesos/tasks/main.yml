@@ -1,15 +1,23 @@
 # used for leader election amongst masters
 - name: Set ZooKeeper URL
-  template: src=zk.j2 dest=/etc/mesos/zk mode=0644
+  template:
+    src: zk.j2
+    dest: /etc/mesos/zk
+    mode: 0644
   sudo: yes
 
 # Tasks for Master nodes
 - name: remove mesos-master override
-  file: path=/etc/init/mesos-master.override state=absent
+  file:
+    path: /etc/init/mesos-master.override
+    state: absent
   when: mesos_install_mode == "master"
 
 - name: start mesos-master (and enable it at boot)
-  service: name=mesos-master state=started enabled=yes
+  service:
+    name: mesos-master
+    state: started
+    enabled: yes
   when: mesos_install_mode == "master"
 
 - name: Set Mesos Master ip
@@ -66,12 +74,17 @@
   when: mesos_install_mode == "master"
 
 - name: start mesos-master (and enable it at boot)
-  service: name=mesos-master state=started enabled=yes
+  service:
+    name: mesos-master
+    state: started
+    enabled: yes
   when: mesos_install_mode == "master"
 
 # Tasks for Slave nodes
 - name: remove mesos-slave override
-  file: path=/etc/init/mesos-slave.override state=absent
+  file:
+    path: /etc/init/mesos-slave.override
+    state: absent
   when: mesos_install_mode == "slave"
 
 - name: Set Mesos Slave hostname
@@ -142,6 +155,9 @@
   when: mesos_install_mode == "slave"
 
 - name: start mesos-slave (and enable it at boot)
-  service: name=mesos-slave state=started enabled=yes
+  service:
+    name: mesos-slave
+    state: started
+    enabled: yes
   when: mesos_install_mode == "slave"
 
