@@ -48,8 +48,10 @@ deploy:
         artifact_name: enxebre/apollo-ubuntu-14.04-amd64
         artifact_version: 2
         terraform_version: 0.5.0
+        run_tests: true
     after-steps:
         - wantedly/pretty-slack-notify:
             webhook_url: $SLACK_WEBHOOK_URL
             channel: apollo
             username: wercker-bot
+
