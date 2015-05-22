@@ -31,7 +31,7 @@ For a full list of default config options for AWS see ```bootstrap/aws/config-de
 As a minimum you will need to set these environment variables -
 
 ```
-APOLLO_PROVIDER=aws
+APOLLO_PROVIDER=aws or APOLLO_PROVIDER=aws-public
 TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
@@ -45,7 +45,10 @@ ATLAS_TOKEN
 sh bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland). It will also create a mesos slave cluster and a NAT server for accessing the VPC via VPN and SSH.
+NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
+If you choose APOLLO_PROVIDER=aws-public:
+
+It will also create a mesos slave cluster and a NAT server for accessing the VPC via VPN and SSH.
 
 It will then generate a local SSH config for the NAT server and the private instances, and run an
 Ansible playbook to provision the cluster.
