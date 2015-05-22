@@ -40,7 +40,7 @@ check_terraform_version() {
 }
 
 open_urls() {
-  pushd $APOLLO_ROOT/terraform/${APOLLO_PTOVIDER}
+  pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
     if [ -a /usr/bin/open ]; then
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
       /usr/bin/open "http://$(terraform output master.1.ip):8080"
