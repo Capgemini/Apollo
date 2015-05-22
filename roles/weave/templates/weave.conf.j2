@@ -1,0 +1,21 @@
+description "Weave Docker Network Service"
+
+start on started docker
+stop on stopping docker
+
+env PEERS="{{ weave_launch_peers }}"
+env WEAVE='/usr/local/bin/weave'
+
+pre-start exec ${WEAVE} stop
+
+script
+ [ -e /etc/default/weave ] && . /etc/default/weave
+ ${WEAVE} launch ${PEERS}
+ exec /usr/bin/docker logs -f weave
+end script
+
+pre-stop exec ${WEAVE} stop
+
+respawn
+respawn limit 10 10
+kill timeout 10

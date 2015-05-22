@@ -10,10 +10,9 @@ verify_prereqs() {
     echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
-  if [[ $(check_terraform_version) == "-1" ]]; then
-    echo -e "${color_red}${color_red}Terraform >= v0.5.0 is requried, please fix and retry.${color_norm}, please fix and retry.${color_norm}"
-    exit 1
-  fi
+
+  check_terraform_version
+
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
     exit 1
@@ -47,33 +46,34 @@ ansible_ssh_config() {
   pushd $APOLLO_ROOT/terraform/aws
     NAT_IP=$(terraform output nat.ip)
     cat <<EOF > ssh.config
-  Host nat
+  Host nat $NAT_IP
     StrictHostKeyChecking  no
     User                   ubuntu
     HostName               $NAT_IP
     ProxyCommand           none
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
     BatchMode              yes
     PasswordAuthentication no
+    UserKnownHostsFile     /dev/null
 
-  Host *
+  Host 10.*
     StrictHostKeyChecking  no
-    ServerAliveInterval    60
+    ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A ubuntu@$NAT_IP nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$NAT_IP nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
-    ControlPersist         8h
+    ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $AWS_SSH_KEY
+    IdentityFile           $TF_VAR_key_file
+    UserKnownHostsFile     /dev/null
 EOF
   popd
 }
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
-    ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o \
-    ControlPersist=60s -F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
+    AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
@@ -85,7 +85,9 @@ ansible_playbook_run() {
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/aws
-    terraform destroy
+    terraform destroy -var "access_key=${TF_VAR_access_key}" \
+      -var "key_file=${TF_VAR_key_file}" \
+      -var "region=${TF_VAR_region}"
   popd
 }
 
@@ -115,9 +117,9 @@ ovpn_client_config() {
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     nat_ip=$(terraform output nat.ip)
-    /usr/bin/sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo-mesos.ovpn
+    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo.ovpn
 
-    /usr/bin/open $TF_VAR_user-apollo-mesos.ovpn
+    /usr/bin/open $TF_VAR_user-apollo.ovpn
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
     while true; do
@@ -132,9 +134,11 @@ ovpn_client_config() {
 }
 
 open_urls() {
-  pushd $APOLLO_ROOT/terraform/aws
-    /usr/bin/open "http://$(terraform output master.1.ip):5050"
-    /usr/bin/open "http://$(terraform output master.1.ip):8080"
-    /usr/bin/open "http://$(terraform output master.1.ip):8500"
+  pushd $APOLLO_ROOT/terraform/digitalocean
+    if [ -a /usr/bin/open ]; then
+      /usr/bin/open "http://$(terraform output master.1.ip):5050"
+      /usr/bin/open "http://$(terraform output master.1.ip):8080"
+      /usr/bin/open "http://$(terraform output master.1.ip):8500"
+    fi
   popd
 }

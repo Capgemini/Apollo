@@ -7,6 +7,7 @@ conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.7.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # if you want to use vagrant-cachier,
@@ -20,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     raise "vagrant-hosts plugin not installed"
   end
 
-  config.vm.box = "capgemini/apollo-mesos"
+  config.vm.box = "capgemini/apollo"
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],

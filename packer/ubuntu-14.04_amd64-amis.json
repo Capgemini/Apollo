@@ -4,16 +4,16 @@
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.0",
+    "consul_version": "0.5.1",
     "weave_version": "v0.10.0",
-    "version": "0.2.0",
+    "version": "{{env `APOLLO_VERSION`}}",
     "aws_region": "{{env `AWS_REGION`}}",
     "aws_source_ami": "{{env `AWS_SOURCE_AMI`}}",
     "aws_instance_type": "{{env `AWS_INSTANCE_TYPE`}}"
   },
   "builders": [{
     "type": "amazon-ebs",
-    "ami_name": "apollo-mesos-ubuntu-14.04-amd64 {{timestamp}}",
+    "ami_name": "apollo-ubuntu-14.04-amd64 {{timestamp}}",
     "ami_description": "Ubuntu 14.04 LTS, Mesos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
@@ -62,11 +62,11 @@
     }
   ],
   "push": {
-    "name": "capgemini/apollo-mesos-ubuntu-14-04-amd64"
+    "name": "capgemini/apollo"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/apollo-mesos-ubuntu-14.04-amd64",
+    "artifact": "capgemini/apollo-ubuntu-14.04-amd64",
     "artifact_type": "aws.ami",
     "metadata": {
       "created_at": "{{timestamp}}",

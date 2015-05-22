@@ -1,19 +1,1 @@
----
-# handlers file for weave
-- name: Up weave interface
-  shell: ifup weave
-  sudo: yes
 
-- name: Down weave interface
-  shell: ifdown weave
-  sudo: yes
-
-- name: Restart networking
-  service: name=networking state=restarted
-  sudo: yes
-
-- name: Weave launch
-  command: /usr/local/bin/weave launch {{ weave_launch_peers }}
-  sudo: yes
-  tags:
-    - weave

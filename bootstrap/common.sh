@@ -16,17 +16,25 @@ get_apollo_variables() {
 check_terraform_version() {
 
   local IFS='.'
-  local version_string=`terraform --version | awk '{print $2}'`
-  local -a current_version=( ${version_string#'v'} )
-  local -a version_requirement=( ${1:-0.5.0} )
+  local current_version_string=`terraform --version | awk 'NR==1 {print $2}'`
+  local requirement_version_string=${1:-0.5.0}
+  local -a current_version=( ${current_version_string#'v'} )
+  local -a requirement_version=( ${requirement_version_string} )
   local n diff
+  local result=0
+  echo "You are running Terraform ${current_version_string}..."
 
-  for (( n=0; n<${#version_requirement[@]}; n+=1 )); do
-    diff=$((current_version[n]-version_requirement[n]))
+  for (( n=0; n<${#requirement_version[@]}; n+=1 )); do
+    diff=$((current_version[n]-requirement_version[n]))
     if [ $diff -ne 0 ] ; then
-      [ $diff -le 0 ] && echo -1 || echo 0
-      return
+      [ $diff -le 0 ] && result=1 || result=0
+      break
     fi
+
   done
-  echo 0
+
+  if [ $result -eq 1 ]; then
+    echo -e "${color_red}Terraform >= ${requirement_version_string} is required, please fix and retry.${color_norm}"
+    exit 1
+  fi
 }

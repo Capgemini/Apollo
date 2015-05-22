@@ -3,10 +3,10 @@
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
     "hostname": "ubuntu",
-    "version": "0.2.0",
+    "version": "{{env `APOLLO_VERSION`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.0",
+    "consul_version": "0.5.1",
     "weave_version": "v0.10.0",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
@@ -16,7 +16,7 @@
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
     "headless": true,
-    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-virtualbox",
+    "vm_name": "apollo-ubuntu-14.04-amd64-virtualbox",
     "disk_size": 40960,
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
@@ -50,7 +50,7 @@
     "type": "vmware-iso",
     "guest_os_type": "linux",
     "headless": true,
-    "vm_name": "apollo-mesos-ubuntu-14.04-amd64-vmware",
+    "vm_name": "apollo-ubuntu-14.04-amd64-vmware",
     "disk_size": 40960,
     "vmx_data": {
       "memsize": "2048",
@@ -110,18 +110,21 @@
       "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     }
   ],
+  "push": {
+    "name": "capgemini/apollo"
+  },
   "post-processors": [
     [{
       "type": "vagrant",
-      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-mesos-ubuntu-14.04-amd64-{{.Provider}}.box",
+      "output": "build/ubuntu-14.04_amd64_{{.Provider}}/apollo-ubuntu-14.04-amd64-{{.Provider}}.box",
       "keep_input_artifact": true,
       "compression_level": 9
     },
     {
       "type": "vagrant-cloud",
-      "box_tag": "capgemini/apollo-mesos",
+      "box_tag": "capgemini/apollo",
       "access_token": "{{user `access_token`}}",
-      "version": "{{user `version`}}+{{timestamp}}"
+      "version": "{{user `version`}}"
     }]
   ]
 }

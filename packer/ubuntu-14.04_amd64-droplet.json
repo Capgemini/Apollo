@@ -6,13 +6,13 @@
     "digitalocean_image": "{{env `DIGITALOCEAN_IMAGE`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.0",
+    "consul_version": "0.5.1",
     "weave_version": "v0.10.0",
-    "version": "0.2.0"
+    "version": "{{env `APOLLO_VERSION`}}"
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "apollo-mesos-ubuntu-14.04-amd64",
+    "snapshot_name": "apollo-ubuntu-14.04-amd64",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "{{user `digitalocean_image`}}",
     "region": "{{user `digitalocean_region`}}",
@@ -57,11 +57,11 @@
     }
   ],
   "push": {
-    "name": "capgemini/apollo-mesos-ubuntu-14-04-amd64"
+    "name": "capgemini/apollo"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/apollo-mesos-ubuntu-14.04-amd64",
+    "artifact": "capgemini/apollo-ubuntu-14.04-amd64",
     "artifact_type": "digitalocean.image",
     "metadata": {
       "created_at": "{{timestamp}}",

@@ -10,8 +10,8 @@ export TF_VAR_do_token=${TF_VAR_do_token:?"Need to set TF_VAR_do_token non-empty
 
 # Terraform mappings needs to be statically passed as -var parameters
 # so no really needed to export them. Exporting for consitency.
-export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
-export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-mesos-ubuntu-14.04-amd64}
+export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-ubuntu-14.04-amd64}
+export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-ubuntu-14.04-amd64}
 export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-1}
 export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-1}
 
