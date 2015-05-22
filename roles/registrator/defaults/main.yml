@@ -2,5 +2,4 @@
 # defaults file for registrator
 registrator_image: "gliderlabs/registrator:master"
 registrator_uri: "consul://{{ ansible_default_ipv4.address }}:8500"
-hostname: "{{ ansible_all_ipv4_addresses }}"
 
