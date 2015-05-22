@@ -1,7 +1,7 @@
 resource "aws_elb" "web" {
   name = "apollo-elb"
 
-  availability_zones = ["${var.availability_zone}"]
+  subnets            = ["${aws_subnet.public.id}"]
 
   listener {
     instance_port = 80
