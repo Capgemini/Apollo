@@ -81,9 +81,11 @@ terraform_apply() {
 }
 
 open_urls() {
+  pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
     if [ -a /usr/bin/open ]; then
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
       /usr/bin/open "http://$(terraform output master.1.ip):8080"
       /usr/bin/open "http://$(terraform output master.1.ip):8500"
     fi
+  popd
 }
