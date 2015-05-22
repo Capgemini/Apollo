@@ -54,7 +54,7 @@ ansible_playbook_run() {
   pushd $APOLLO_ROOT
     AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} \
     ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}/ssh.config -q" \
-    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/${APOLLO_PROVIDER} -vvvv\
+    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/${APOLLO_PROVIDER} \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
@@ -65,7 +65,9 @@ ansible_playbook_run() {
 
 apollo_down() {
   pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
-    terraform destroy
+    terraform destroy -var "access_key=${TF_VAR_access_key}" \
+      -var "key_file=${TF_VAR_key_file}" \
+      -var "region=${TF_VAR_region}"
   popd
 }
 
