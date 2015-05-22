@@ -10,8 +10,9 @@ resource "aws_instance" "mesos-slave" {
   ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
+  subnet_id         = "${aws_subnet.public.id}"
   source_dest_check = false
-  security_groups   = ["${aws_security_group.default.name}"]
+  security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.mesos-master"]
   tags = {
     Name = "apollo-mesos-slave-${count.index}"
