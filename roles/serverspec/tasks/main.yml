@@ -1,5 +1,16 @@
 ---
 # tasks file for serverspec
+
+- name: upload serverspecs
+  synchronize:
+    src: ../../../tests
+    dest: "{{ serverspec_tests_path }}"
+    recursive: yes
+    delete: yes
+  when: serverspec_run_tests and serverspec_install_bundler and serverspec_upload_folder
+  tags:
+    - serverspec
+
 - name: install bundler
   command: gem install bundler --no-ri --no-rdoc
   args:
@@ -11,8 +22,8 @@
 - name: install bundle files
   command: bundle install --path vendor
   args:
-    chdir: "{{ serverspec_tests_path }}"
-    creates: "{{ serverspec_tests_path }}/vendor"
+    chdir: "{{ serverspec_tests_path }}/tests"
+    creates: "{{ serverspec_tests_path }}/tests/vendor"
   when: serverspec_run_tests
   tags:
     - serverspec
@@ -21,7 +32,7 @@
   sudo: yes
   command: "bundle exec rake serverspec:{{ test_role }}"
   args:
-    chdir: "{{ serverspec_tests_path }}"
+    chdir: "{{ serverspec_tests_path }}/tests"
   when: test_role is defined and serverspec_run_tests
   tags:
     - serverspec
