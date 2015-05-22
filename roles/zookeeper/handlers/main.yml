@@ -1,9 +1,9 @@
 ---
 # handlers file for zookeeper
 - name: Restart zookeeper
-  shell: restart zookeeper
+  service: name=zookeeper state=restarted
   sudo: yes
 
 - name: Start zookeeper
-  shell: start zookeeper
+  service: name=zookeeper state=started
   sudo: yes
