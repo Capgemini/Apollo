@@ -56,13 +56,3 @@ terraform_apply() {
       -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
   popd
 }
-
-open_urls() {
-  pushd $APOLLO_ROOT/terraform/digitalocean
-    if [ -a /usr/bin/open ]; then
-      /usr/bin/open "http://$(terraform output master.1.ip):5050"
-      /usr/bin/open "http://$(terraform output master.1.ip):8080"
-      /usr/bin/open "http://$(terraform output master.1.ip):8500"
-    fi
-  popd
-}
