@@ -28,7 +28,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_main_route_table_association" "public" {
-    vpc_id = "${aws_vpc.default.id}"
+    vpc_id         = "${aws_vpc.default.id}"
     route_table_id = "${aws_route_table.public.id}"
 }
 
