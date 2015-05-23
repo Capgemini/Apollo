@@ -1,6 +1,6 @@
 /* Default security group */
 resource "aws_security_group" "default" {
-  Name        = "default-apollo-mesos"
+  name        = "default-apollo-mesos"
   description = "Default security group that allows all traffic"
   vpc_id      = "${aws_vpc.default.id}"
 
