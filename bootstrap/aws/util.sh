@@ -29,6 +29,7 @@ verify_prereqs() {
 
 apollo_launch() {
   terraform_apply
+  terraform_to_ansible
   ansible_ssh_config
   ansible_playbook_run
 
@@ -133,12 +134,3 @@ ovpn_client_config() {
     done
 }
 
-open_urls() {
-  pushd $APOLLO_ROOT/terraform/digitalocean
-    if [ -a /usr/bin/open ]; then
-      /usr/bin/open "http://$(terraform output master.1.ip):5050"
-      /usr/bin/open "http://$(terraform output master.1.ip):8080"
-      /usr/bin/open "http://$(terraform output master.1.ip):8500"
-    fi
-  popd
-}

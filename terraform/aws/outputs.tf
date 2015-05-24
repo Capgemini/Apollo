@@ -4,6 +4,9 @@ output "nat.ip" {
 output "master.1.ip" {
   value = "${aws_instance.mesos-master.0.private_ip}"
 }
+output "master_ips" {
+   value = "${join(",", aws_instance.mesos-master.*.private_ip)}"
+}
 output "slave_ips" {
    value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
 }

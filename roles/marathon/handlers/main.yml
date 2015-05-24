@@ -3,4 +3,6 @@
 # Restart service marathon, in all cases
 - name: Restart marathon
   sudo: yes
-  service: name=marathon state=restarted
+  service:
+    name: marathon
+    state: restarted
