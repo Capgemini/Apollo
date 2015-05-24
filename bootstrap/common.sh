@@ -62,7 +62,7 @@ mesos_zk_url_terraform_to_ansible() {
   local number_of_servers=${#ips[@]}
   local last_server=$(( number_of_servers-1 ))
   local IFS=''
-  local mesos_zk_url
+  local mesos_zk_url=''
 
   for (( n=0; n<$number_of_servers; n+=1 )); do
     mesos_zk_url="${mesos_zk_url}${ips[n]}:2181"
