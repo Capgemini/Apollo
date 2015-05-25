@@ -7,7 +7,7 @@ resource "atlas_artifact" "mesos-master" {
 /* Mesos master instances */
 resource "aws_instance" "mesos-master" {
   instance_type     = "${var.instance_type.master}"
-  ami               = "${concat(atlas_artifact.mesos-master.metadata_full.region-, var.region)}"
+  ami               = "${atlas_artifact.mesos-master.metadata_full.region-eu-west-1}"
   availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
   count             = "${var.masters}"
   key_name          = "${var.key_name}"
