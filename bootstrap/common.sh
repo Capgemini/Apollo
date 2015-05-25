@@ -109,7 +109,7 @@ check_ssh_availability() {
         echo -n .
         sleep 1
         ((count++))
-        if [ ${count} -ge 10 ]; then
+        if [ ${count} -ge 15 ]; then
           echo "Unable to connect to ${host_list[n]}"
           break
         fi
