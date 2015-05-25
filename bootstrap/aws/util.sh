@@ -30,6 +30,7 @@ verify_prereqs() {
 apollo_launch() {
   terraform_apply
   terraform_to_ansible
+  check_ssh_availability
   ansible_ssh_config
   ansible_playbook_run
 
