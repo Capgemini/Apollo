@@ -6,7 +6,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 
 1. The latest version of vagrant installed (>= 1.7.2) [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html) to get started
 2. Install vagrant-hosts plugin ```vagrant plugin install vagrant-hosts```
-3. The latest version of Virtualbox from [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
+3. The latest version of Virtualbox from [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wikiDownloads)
 4. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 
 ### Cluster Turnup
@@ -14,9 +14,11 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 #### Download Apollo
 
 ##### Install from source at head
-1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo```
+1. ```git clone https://github.com/Capgemini/Apollo.git```
+2. ```cd Apollo```
 3. ```pip install -r requirements.txt```
+
+_Note: you need to run the pip command with root priviledges (e.g. sudo)_
 
 #### Turn up the cluster
 ```
