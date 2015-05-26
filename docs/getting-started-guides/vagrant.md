@@ -18,13 +18,18 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 2. ```cd apollo```
 3. ```pip install -r requirements.txt```
 
-#### Turn up the cluster
+##### Configure it
 ```
 export APOLLO_PROVIDER=vagrant
+```
+
+#### Turn on the cluster
+```
 sh bootstrap/apollo-launch.sh
 ```
 
-Note: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command
+_Note: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command_
+_Note: When running the above command as sudo, your environment variable won't be brought across. In this case you need to: ```sudo -E bash 'sh bootstrap/apollo-launch.sh'```
 
 Vagrant will set up a 3 node mesos-master cluster and 1 mesos-slave. By default the master nodes will each take up 256MB and 1 CPU. The slave will take 1024MB and 2 CPUs.
 
