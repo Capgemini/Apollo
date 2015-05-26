@@ -8,7 +8,7 @@ resource "atlas_artifact" "mesos-slave" {
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
   ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
-  availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
+  availability_zone = "${lookup(var.zones, concat("zone-", count.index))}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
   source_dest_check = false

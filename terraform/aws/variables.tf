@@ -45,17 +45,17 @@ variable "public_subnet_cidr_block" {
 
 variable "zones" {
     default = {
-        zone0 = "eu-west-1a"
-        zone1 = "eu-west-1b"
-        zone2 = "eu-west-1c"
+        zone-0 = "eu-west-1a"
+        zone-1 = "eu-west-1b"
+        zone-2 = "eu-west-1c"
     }
 }
 
 variable "cidr_blocks" {
     default = {
-        zone0 = "10.0.1.0/24"
-        zone1 = "10.0.2.0/24"
-        zone2 = "10.0.3.0/24"
+        zone-0 = "10.0.1.0/24"
+        zone-1 = "10.0.2.0/24"
+        zone-2 = "10.0.3.0/24"
     }
 }
 

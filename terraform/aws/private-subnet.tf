@@ -1,8 +1,8 @@
 /* Private subnet */
 resource "aws_subnet" "private" {
   vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "${lookup(var.cidr_blocks, concat("zone", count.index))}"
-  availability_zone       = "${lookup(var.zones, concat("zone", count.index))}"
+  cidr_block              = "${lookup(var.cidr_blocks, concat("zone-", count.index))}"
+  availability_zone       = "${lookup(var.zones, concat("zone-", count.index))}"
   count                   = "${var.masters}"
   map_public_ip_on_launch = false
   depends_on              = ["aws_instance.nat"]
