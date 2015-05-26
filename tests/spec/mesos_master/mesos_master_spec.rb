@@ -45,7 +45,7 @@ describe "mesos master" do
     it { should be_listening }
   end
 
-  describe command("curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://#{host_inventory['hostname']}:5050/master/health") do
+  describe command("curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://mesos-master.service.consul:5050/master/health") do
     its(:stdout)  { should match /HTTP\/1.1 200 OK/ }
   end
 
