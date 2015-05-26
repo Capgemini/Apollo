@@ -5,10 +5,18 @@ zookeeper_leader_connect_port: 2888
 zookeeper_leader_election_port: 3888
 zookeeper_server_group: zookeeper_servers
 zookeeper_id: "
-    {%- for host in groups[zookeeper_server_group] -%}
-      {%- if host == 'default' or host == inventory_hostname or host == ansible_fqdn or host in ansible_all_ipv4_addresses -%}
-        {{ loop.index }}
-      {%- endif -%}
-    {%- endfor -%}
+	{%- if zookeeper_host_list is defined -%}
+		{%- for host in zookeeper_host_list.split() -%}
+			{%- if host == ansible_eth0.ipv4.address -%}
+	        	{{ loop.index }}
+			{%- endif -%}
+		{%- endfor -%}
+	{%- else -%}
+    	{%- for host in groups[zookeeper_server_group] -%}
+      		{%- if host == 'default' or host == inventory_hostname or host == ansible_fqdn or host in ansible_all_ipv4_addresses -%}
+        		{{ loop.index }}
+  			{%- endif -%}
+    	{%- endfor -%}
+    {%- endif -%}
 "
 consul_dir: /etc/consul.d
