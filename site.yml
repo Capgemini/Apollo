@@ -4,7 +4,7 @@
   tasks:
     - name: Wait for port 22 to become available.
       local_action: "wait_for port=22 host={{ inventory_hostname }} delay=10 timeout=60"
-      sudo: false
+      sudo: False
 - hosts: all
   roles:
     - dnsmasq

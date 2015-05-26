@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
   end
   mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
-  zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join("\n")
+  zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
   consul_join = master_infos.map{|master| master[:ip]}.join(" ")
   consul_retry_join = master_infos.map{|master| master[:ip]}.join(", ")
 
