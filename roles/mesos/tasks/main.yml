@@ -7,19 +7,6 @@
   sudo: yes
 
 # Tasks for Master nodes
-- name: remove mesos-master override
-  file:
-    path: /etc/init/mesos-master.override
-    state: absent
-  when: mesos_install_mode == "master"
-
-- name: start mesos-master (and enable it at boot)
-  service:
-    name: mesos-master
-    state: started
-    enabled: yes
-  when: mesos_install_mode == "master"
-
 - name: Set Mesos Master ip
   copy:
     content: "{{mesos_local_address}}"
@@ -27,7 +14,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos master
+    - restart mesos master
   when: mesos_install_mode == "master"
 
 - name: Set Mesos Master hostname
@@ -37,7 +24,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos master
+    - restart mesos master
   when: mesos_install_mode == "master"
 
   # The Mesos quorum value is based on the number of Mesos Masters. Take the
@@ -51,7 +38,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos master
+    - restart mesos master
   when: mesos_install_mode == "master"
 
 - name: Set Mesos Master Cluster name
@@ -61,7 +48,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos master
+    - restart mesos master
   when: mesos_install_mode == "master"
 
 - name: Set Mesos Master consul service definition
@@ -71,6 +58,14 @@
     dest: "{{ consul_dir }}/mesos-master.json"
   notify:
     - Restart consul
+  when: mesos_install_mode == "master"
+
+- name: remove mesos-master override
+  file:
+    path: /etc/init/mesos-master.override
+    state: absent
+  notify:
+    - restart mesos master
   when: mesos_install_mode == "master"
 
 - name: start mesos-master (and enable it at boot)
@@ -85,6 +80,8 @@
   file:
     path: /etc/init/mesos-slave.override
     state: absent
+  notify:
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: Set Mesos Slave hostname
@@ -94,7 +91,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: set executor registration timeout
@@ -103,7 +100,7 @@
     dest: /etc/mesos-slave/executor_registration_timeout
     content: "{{ mesos_executor_registration_timeout }}"
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: set containerizers
@@ -112,7 +109,7 @@
     dest: /etc/mesos-slave/containerizers
     content: "{{ mesos_containerizers }}"
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: set slave resources
@@ -121,7 +118,7 @@
     dest: /etc/mesos-slave/resources
     content: "{{ mesos_resources }}"
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: Set Mesos Slave ip
@@ -131,7 +128,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: Create Mesos Slave work area
@@ -141,7 +138,7 @@
     state: directory
   sudo: yes
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: Set Mesos Slave work area
@@ -151,7 +148,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart mesos slave
+    - restart mesos slave
   when: mesos_install_mode == "slave"
 
 - name: start mesos-slave (and enable it at boot)
