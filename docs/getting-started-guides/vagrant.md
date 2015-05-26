@@ -14,9 +14,11 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 #### Download Apollo
 
 ##### Install from source at head
-1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo```
+1. ```git clone https://github.com/Capgemini/Apollo.git```
+2. ```cd Apollo```
 3. ```pip install -r requirements.txt```
+
+_Note: you may need to run the pip command with Admin priviledges (e.g. sudo ... if you're on a *nix machine)._
 
 #### Turn up the cluster
 ```

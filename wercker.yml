@@ -48,7 +48,7 @@ deploy:
         packages: wget unzip
     - pip-install:
         requirements_file: "requirements.txt"
-    - enxebre/apollo-deploy:
+    - capgemini/apollo-deploy:
         cloud: digitalocean
         artifact_name: enxebre/apollo-ubuntu-14.04-amd64
         artifact_version: 2

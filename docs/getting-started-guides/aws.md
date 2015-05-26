@@ -40,6 +40,8 @@ TF_VAR_key_name
 ATLAS_TOKEN
 ```
 
+_NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with your [Atlas Account](https://atlas.hashicorp.com/settings/tokens).
+
 #### Turn up the cluster
 ```
 sh bootstrap/apollo-launch.sh
