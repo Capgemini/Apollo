@@ -89,31 +89,3 @@ terraform_to_ansible() {
   export APOLLO_weave_launch_peers="$( weave_peers_terraform_to_ansible ${ips} )"
   popd
 }
-
-# Loops over a list of hosts checking ssh availability.
-check_ssh_availability() {
-  pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
-  local master_ips_string=${1:-$( terraform output master_ips )}
-  local slave_ips_string=${2:-$( terraform output slave_ips )}
-  local IFS=','
-  local host_list=( ${master_ips_string} )
-  host_list+=( ${slave_ips_string} )
-  local number_of_servers=${#host_list[@]}
-  local port=22
-  local count=0
-
-  for (( n=0; n<${number_of_servers}; n+=1 )); do
-      echo "Connecting to ${host_list[n]}..."
-      while ! nc -w 1 ${host_list[n]} ${port} >/dev/null
-      do
-        echo -n .
-        sleep 1
-        ((count++))
-        if [ ${count} -ge 15 ]; then
-          echo "Unable to connect to ${host_list[n]}"
-          break
-        fi
-      done
-  done
-  popd
-}

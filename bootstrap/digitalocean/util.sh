@@ -22,7 +22,6 @@ verify_prereqs() {
 apollo_launch() {
   terraform_apply
   terraform_to_ansible
-  check_ssh_availability
   ansible_playbook_run
   open_urls
 }
