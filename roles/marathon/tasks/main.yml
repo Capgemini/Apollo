@@ -3,7 +3,7 @@
 - name: Set Marathon hostname
   sudo: yes
   copy:
-    content: "{{marathon_local_address}}"
+    content: "{{ marathon_hostname }}"
     dest: /etc/marathon/conf/hostname
     mode: 0644
   notify:
