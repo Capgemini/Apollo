@@ -13,7 +13,7 @@ resource "aws_instance" "mesos-master" {
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.id}"
   security_groups   = ["${aws_security_group.default.id}"]
-  depends_on        = ["aws_instance.nat", "aws_internet_gateway.public"]
+  depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public"]
   private_ip        = "${lookup(var.master_ips, concat("master-", count.index))}"
   tags = {
     Name = "apollo-mesos-master-${count.index}"
