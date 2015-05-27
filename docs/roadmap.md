@@ -51,5 +51,5 @@ Demonstrators / Examples
 Documentation
 -------------
 - [ ] Architecture diagram of components
-- [ ] Component overview and decision log
+- [x] Component overview and decision log
 - [ ] Getting started guides for supported providers
