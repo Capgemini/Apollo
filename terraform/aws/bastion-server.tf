@@ -1,15 +1,15 @@
 /* NAT/VPN server */
-resource "aws_instance" "nat" {
+resource "aws_instance" "bastion" {
   ami               = "${lookup(var.amis, var.region)}"
   instance_type     = "t2.micro"
   subnet_id         = "${aws_subnet.public.id}"
-  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.nat.id}"]
+  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
   depends_on        = ["aws_internet_gateway.public"]
   key_name          = "${var.key_name}"
   source_dest_check = false
   tags = {
-    Name = "apollo-mesos-nat"
-    role = "nat"
+    Name = "apollo-mesos-bastion"
+    role = "bastion"
   }
   connection {
     user       = "ubuntu"
@@ -25,13 +25,13 @@ resource "aws_instance" "nat" {
       "sudo mkdir -p /etc/openvpn",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
       /* Generate OpenVPN server config */
-      "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${aws_instance.nat.public_ip}"
+      "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${aws_instance.bastion.public_ip}"
     ]
   }
 }
 
 /* NAT elastic IP */
-resource "aws_eip" "nat" {
-  instance = "${aws_instance.nat.id}"
+resource "aws_eip" "bastion" {
+  instance = "${aws_instance.bastion.id}"
   vpc = true
 }
