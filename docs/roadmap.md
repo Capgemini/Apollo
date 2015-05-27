@@ -13,11 +13,14 @@ Mesos Frameworks
 - [ ] Storm framework
 - [ ] Mysos framework
 - [ ] Elastiseach framework
+- [ ] Myriad (YARN) framework
+- [ ] Docker Swarm framework
 
 Providers
 ---------
 - [x] Vagrant
 - [x] AWS
+- [x] AWS VPC
 - [x] Digitalocean
 - [ ] Openstack
 - [ ] Google Cloud
