@@ -51,6 +51,6 @@
     regexp: ^DOCKER_OPTS=.*--bridge=weave.*
     line: 'DOCKER_OPTS=\"$DOCKER_OPTS {{ weave_docker_opts }}\"'
   notify:
-    - Restart docker
+    - restart docker
   tags:
     - weave

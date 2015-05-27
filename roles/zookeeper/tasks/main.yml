@@ -13,7 +13,7 @@
     dest: /etc/zookeeper/conf/zoo.cfg
   sudo: yes
   notify:
-    - Restart zookeeper
+    - restart zookeeper
   tags:
     - zookeeper
 
@@ -24,7 +24,7 @@
     mode: 0644
   sudo: yes
   notify:
-    - Restart zookeeper
+    - restart zookeeper
   tags:
     - zookeeper
 
@@ -34,6 +34,6 @@
     src: zookeeper-consul.j2
     dest: "{{ consul_dir }}/zookeeper.json"
   notify:
-    - Restart consul
+    - restart consul
   tags:
     - zookeeper

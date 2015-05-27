@@ -4,6 +4,8 @@
   file:
     path: /etc/init/dnsmasq.override
     state: absent
+  notify:
+    - restart dnsmasq
   tags:
     - dnsmasq
 
@@ -24,6 +26,6 @@
     group: root
     mode: 0644
   notify:
-    - Restart dnsmasq
+    - restart dnsmasq
   tags:
     - dnsmasq
