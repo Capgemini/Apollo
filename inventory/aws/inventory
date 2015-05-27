@@ -26,3 +26,8 @@ mesos_masters
 mesos_masters
 mesos_slaves
 load_balancers
+
+[dc1:children]
+mesos_masters
+mesos_slaves
+load_balancers
