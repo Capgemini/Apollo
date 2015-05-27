@@ -4,7 +4,9 @@ clientPort={{ zookeeper_client_port }}
 initLimit=5
 syncLimit=2
 {% if zookeeper_conf is defined %}
-{{ zookeeper_conf }}
+{% for host in zookeeper_conf.split() %}
+{{ host }}
+{% endfor %}
 {% else %}
 {% for host in groups[zookeeper_server_group] %}
 server.{{loop.index}}={{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}:{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_election_port }}
