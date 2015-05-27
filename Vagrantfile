@@ -46,6 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
   zookeeper_conf = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
   consul_join = master_infos.map{|master| master[:ip]}.join(" ")
+  consul_retry_join = master_infos.map{|master| master[:ip]}.join(", ")
 
   # Mesos slave nodes
   slave_n = conf['slave_n']
@@ -79,6 +80,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_local_address: node[:ip],
             marathon_local_address: node[:ip],
             consul_join: consul_join,
+            consul_retry_join: [consul_retry_join],
+            consul_bootstrap_expect: 1,
             consul_advertise: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
@@ -106,6 +109,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             mesos_zk_url: mesos_zk_url,
             mesos_local_address: node[:ip],
             consul_join: consul_join,
+            consul_retry_join: [consul_retry_join],
+            consul_bootstrap_expect: 1,
             consul_advertise: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
