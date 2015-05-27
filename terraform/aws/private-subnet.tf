@@ -5,7 +5,7 @@ resource "aws_subnet" "private" {
   availability_zone       = "${lookup(var.zones, concat("zone-", count.index))}"
   count                   = "${var.masters}"
   map_public_ip_on_launch = false
-  depends_on              = ["aws_instance.nat"]
+  depends_on              = ["aws_instance.bastion"]
   tags {
     Name = "private"
   }
@@ -15,8 +15,8 @@ resource "aws_subnet" "private" {
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
   route {
-    cidr_block  = "0.0.0.0/0"
-    instance_id = "${aws_instance.nat.id}"
+    cidr_block = "0.0.0.0/0"
+    instance_id = "${aws_instance.bastion.id}"
   }
   tags {
     Name = "private"

@@ -45,12 +45,12 @@ apollo_launch() {
 
 ansible_ssh_config() {
   pushd $APOLLO_ROOT/terraform/aws
-    NAT_IP=$(terraform output nat.ip)
+    BASTION_IP=$(terraform output bastion.ip)
     cat <<EOF > ssh.config
-  Host nat $NAT_IP
+  Host bastion $BASTION_IP
     StrictHostKeyChecking  no
     User                   ubuntu
-    HostName               $NAT_IP
+    HostName               $BASTION_IP
     ProxyCommand           none
     IdentityFile           $TF_VAR_key_file
     BatchMode              yes
@@ -61,7 +61,7 @@ ansible_ssh_config() {
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$NAT_IP nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$BASTION_IP nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
@@ -74,7 +74,7 @@ EOF
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT/terraform/aws
-    export APOLLO_nat_ip=$(terraform output nat.ip)
+    export APOLLO_bastion_ip=$(terraform output bastion.ip)
   popd
   pushd $APOLLO_ROOT
     AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
@@ -120,8 +120,8 @@ ovpn_client_config() {
 
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
-    nat_ip=$(terraform output nat.ip)
-    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${nat_ip}/g" $TF_VAR_user-apollo.ovpn
+    bastion_ip=$(terraform output bastion.ip)
+    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${bastion_ip}/g" $TF_VAR_user-apollo.ovpn
 
     /usr/bin/open $TF_VAR_user-apollo.ovpn
     # Display a prompt to tell the user to connect in their VPN client,

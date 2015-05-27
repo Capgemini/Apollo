@@ -7,7 +7,8 @@
     dest: "{{ serverspec_tests_path }}"
     recursive: yes
     delete: yes
-  when: serverspec_run_tests and serverspec_install_bundler and serverspec_upload_folder
+  delegate_to: "{{ nat_ip }}"
+  when: serverspec_run_tests and serverspec_install_bundler and serverspec_upload_folder and (PROVIDER == 'aws' or PROVIDER == 'AWS')
   tags:
     - serverspec
 

@@ -8,9 +8,9 @@
         host: "{{ inventory_hostname }}"
         delay: 10
         timeout: 60
-      delegate_to: "{{ nat_ip }}"
+      delegate_to: "{{ bastion_ip }}"
       sudo: False
-      when: PROVIDER == 'aws' or PROVIDER == 'AWS'
+      when: bastion_ip is defined
 
     - name: Wait for port 22 to become available from local server.
       local_action:
@@ -20,7 +20,7 @@
         delay: 10
         timeout: 60
       sudo: False
-      when: PROVIDER != 'aws' and PROVIDER != 'AWS'
+      when: bastion_ip is not defined
 
 - hosts: all
   roles:
