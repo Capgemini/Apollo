@@ -13,11 +13,11 @@
       when: PROVIDER == 'aws' or PROVIDER == 'AWS'
 
     - name: Wait for port 22 to become available from local server.
-      local_action: 
-        module: wait_for 
-        port: 22 
-        host: "{{ inventory_hostname }}" 
-        delay: 10 
+      local_action:
+        module: wait_for
+        port: 22
+        host: "{{ inventory_hostname }}"
+        delay: 10
         timeout: 60
       sudo: False
       when: PROVIDER != 'aws' and PROVIDER != 'AWS'
