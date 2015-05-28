@@ -5,7 +5,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 ### Prerequisites
 
 1. The latest version of vagrant installed (>= 1.7.2) [http://www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html) to get started
-2. Install vagrant-hosts plugin ```vagrant plugin install vagrant-hosts```
+2. Install vagrant-hostmanager plugin ```vagrant plugin install vagrant-hostmanager```
 3. The latest version of Virtualbox from [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
 4. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 
@@ -32,9 +32,9 @@ Vagrant will set up a 3 node mesos-master cluster and 1 mesos-slave. By default 
 
 By default the web interfaces should be available on -
 
-- [http://172.31.1.11:5050](http://172.31.1.11:5050) (Mesos)
-- [http://172.31.1.11:8080](http://172.31.1.11:8080) (Marathon)
-- [http://172.31.1.11:8500](http://172.31.1.11:8500) (Consul)
+- [http://master1:5050](http://master1:5050) (Mesos)
+- [http://master1:8080](http://master1:8080) (Marathon)
+- [http://master1:8500](http://master1:8500) (Consul)
 
 Mesos / Marathon should handle redirection the the leader node automatically via Zookeeper.
 

@@ -17,7 +17,7 @@
     src: marathon-consul.j2
     dest: "{{ consul_dir }}/marathon.json"
   notify:
-    - Restart consul
+    - restart consul
   tags:
     - marathon
 

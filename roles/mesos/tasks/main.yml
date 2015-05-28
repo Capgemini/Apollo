@@ -57,7 +57,7 @@
     src: mesos-master-consul.j2
     dest: "{{ consul_dir }}/mesos-master.json"
   notify:
-    - Restart consul
+    - restart consul
   when: mesos_install_mode == "master"
 
 - name: remove mesos-master override
