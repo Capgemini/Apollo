@@ -16,12 +16,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.enable :apt
   end
 
-  # throw error if vagrant-hosts not installed
-  unless Vagrant.has_plugin?("vagrant-hosts")
-    raise "vagrant-hosts plugin not installed"
+  # throw error if vagrant-hostmanager not installed
+  unless Vagrant.has_plugin?("vagrant-hostmanager")
+    raise "vagrant-hostmanager plugin not installed"
   end
 
   config.vm.box = "capgemini/apollo"
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.include_offline = true
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],
@@ -64,7 +67,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
@@ -97,7 +99,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         override.vm.hostname = node[:hostname]
         override.vm.network :private_network, :ip => node[:ip]
-        override.vm.provision :hosts
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
