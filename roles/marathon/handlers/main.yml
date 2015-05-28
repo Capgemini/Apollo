@@ -6,3 +6,13 @@
   service:
     name: marathon
     state: restarted
+  notify:
+    - wait for marathon to listen
+
+- name: wait for marathon to listen
+  sudo: yes
+  command: "curl -s http://localhost:{{ marathon_port }}/ping"
+  register: log_output
+  until: log_output.stdout.find("pong") > -1
+  retries: 10
+  delay: 3
