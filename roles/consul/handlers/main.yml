@@ -1,7 +1,9 @@
 ---
 # handlers file for consul
-- name: Restart consul
-  command: /sbin/restart consul
+- name: restart consul
+  service:
+    name: consul
+    state: restarted
   sudo: yes
   notify:
     - wait for consul to listen
