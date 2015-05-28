@@ -14,7 +14,7 @@
     group: root
     mode: 0644
   notify:
-    - Restart consul
+    - restart consul
   tags:
     - consul
 
@@ -28,7 +28,7 @@
     mode: 0644
   when: consul_atlas_join
   notify:
-    - Restart consul
+    - restart consul
   tags:
     - consul
 
@@ -67,7 +67,7 @@
     group: root
     mode: 0644
   notify:
-    - Restart consul
+    - restart consul
   when: consul_join is defined
   tags:
     - consul
