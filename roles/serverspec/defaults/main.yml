@@ -1,5 +1,6 @@
 ---
 # defaults file for serverspec
 serverspec_run_tests: false
-serverspec_tests_path: /vagrant/tests
+serverspec_upload_folder: false
+serverspec_tests_path: /vagrant
 serverspec_install_bundler: true

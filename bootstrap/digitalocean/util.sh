@@ -21,6 +21,7 @@ verify_prereqs() {
 
 apollo_launch() {
   terraform_apply
+  terraform_to_ansible
   ansible_playbook_run
   open_urls
 }
@@ -54,13 +55,5 @@ terraform_apply() {
       -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
       -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
       -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
-  popd
-}
-
-open_urls() {
-  pushd $APOLLO_ROOT/terraform/digitalocean
-    /usr/bin/open "http://$(terraform output master.1.ip):5050"
-    /usr/bin/open "http://$(terraform output master.1.ip):8080"
-    /usr/bin/open "http://$(terraform output master.1.ip):8500"
   popd
 }

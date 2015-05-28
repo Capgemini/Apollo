@@ -23,10 +23,10 @@ resource "aws_security_group" "default" {
   }
 }
 
-/* Security group for the nat server */
-resource "aws_security_group" "nat" {
-  name = "nat-apollo-mesos"
-  description = "Security group for nat instances that allows SSH and VPN traffic from internet"
+/* Security group for the bastion server */
+resource "aws_security_group" "bastion" {
+  name = "bastion-apollo-mesos"
+  description = "Security group for bastion instances that allows SSH and VPN traffic from internet"
   vpc_id = "${aws_vpc.default.id}"
 
   ingress {
@@ -58,7 +58,7 @@ resource "aws_security_group" "nat" {
   }
 
   tags {
-    Name = "nat-apollo-mesos"
+    Name = "bastion-apollo-mesos"
   }
 }
 
