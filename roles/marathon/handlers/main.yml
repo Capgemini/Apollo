@@ -6,3 +6,15 @@
   service:
     name: marathon
     state: restarted
+  notify:
+    - wait for marathon to listen
+
+- name: wait for marathon to listen
+  sudo: yes
+  get_url:
+    url: "http://{{ marathon_local_address }}:{{ marathon_port }}/ping"
+    dest: "/tmp/"
+  register: get_url_result
+  until: "'pong' in get_url_result.msg"
+  retries: 10
+  delay: 3

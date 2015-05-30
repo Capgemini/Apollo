@@ -87,6 +87,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             consul_advertise: node[:ip],
             consul_bind_addr: node[:ip],
             consul_dc: "vagrant",
+            proxy_env: {
+              http_proxy: "http://10.23.12.100:8080",
+              https_proxy: "http://10.23.12.100:8080",
+              HTTP_PROXY: "http://10.23.12.100:8080",
+              HTTPS_PROXY: "http://10.23.12.100:8080"
+            }
           }
           ansible.groups = ansible_groups
         end
