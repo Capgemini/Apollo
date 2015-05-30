@@ -21,7 +21,7 @@
     dest: /etc/default/docker
     state: present
     regexp: ^http_proxy=
-    line: 'export http_proxy=http://10.23.12.100:8080'
+    line: 'export http_proxy='
   when: proxy_env is defined
 
 - name: configure docker proxy
