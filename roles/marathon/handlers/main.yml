@@ -1,13 +1,8 @@
 ---
 # handlers file for marathon
-- name: restart marathon
+# Restart service marathon, in all cases
+- name: Restart marathon
   sudo: yes
   service:
     name: marathon
     state: restarted
-  sudo: yes
-  notify:
-    - wait for marathon to listen
-
-- name: wait for marathon to listen
-  command: /usr/local/bin/marathon-wait-for-listen.sh
