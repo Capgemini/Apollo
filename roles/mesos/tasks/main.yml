@@ -158,3 +158,4 @@
     enabled: yes
   when: mesos_install_mode == "slave"
 
+- meta: flush_handlers
