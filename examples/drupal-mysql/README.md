@@ -55,3 +55,11 @@ By default the database will not be pre-populated. To install the site either:
   - Login to the container: ```docker exec -it $CONTAINER_ID /bin/bash```
   - Install the site:
   ```drush site-install commerce_kickstart --site-name=default --acount-pass=changeme -y```
+
+### Removing the apps
+
+You can remove the applications straight from the command line by running -
+
+```
+curl -XDELETE http://$MARATHON_IP:8080/v2/groups/drupal-mysql-example
+```
