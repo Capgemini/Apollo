@@ -5,8 +5,9 @@
     "hostname": "ubuntu",
     "version": "{{env `APOLLO_VERSION`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
+    "marathon_version": "v0.8.1",
     "consul_version": "0.5.1",
-    "weave_version": "v0.10.0",
+    "weave_version": "0.10.0",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
     "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195"
@@ -89,7 +90,8 @@
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
         "WEAVE_VERSION={{user `weave_version`}}",
-        "MESOS_VERSION={{user `mesos_version`}}"
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
