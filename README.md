@@ -70,4 +70,4 @@ The above architecture is representative of Apollo cluster on AWS VPC.
 If you're interested in helping out we've [tagged issues specifically for new contributors](https://github.com/Capgemini/Apollo/labels/new%20contributor)
 to help you get familiar with the codebase.
 
-If you need any help/mentoring be sure to drop by our Gitter channel!
+If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
