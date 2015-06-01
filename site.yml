@@ -19,8 +19,8 @@
 
 - hosts: all
   roles:
-    - dnsmasq
     - consul
+    - dnsmasq
     - docker
     - weave
     - registrator
