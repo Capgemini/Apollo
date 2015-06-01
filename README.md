@@ -64,3 +64,10 @@ The above architecture is representative of Apollo cluster on AWS VPC.
     - for people who want to know more about the individual components and the
     decisions behind selecting them
     - in [docs/components](docs/components)
+
+## Contributing
+
+If you're interested in helping out we've [tagged issues specifically for new contributors](https://github.com/Capgemini/Apollo/labels/new%20contributor)
+to help you get familiar with the codebase.
+
+If you need any help/mentoring be sure to drop by our Gitter channel!
