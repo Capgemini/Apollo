@@ -72,6 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
+
       end
     end
   end
