@@ -25,6 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = true
   config.hostmanager.include_offline = true
+  config.ssh.insert_key = false
 
   ansible_groups = {
     "mesos_masters"              => ["master1", "master2", "master3"],
@@ -33,7 +34,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     "load_balancers:children"    => ["mesos_slaves"],
     "zookeeper_servers:children" => ["mesos_masters"],
     "consul_servers:children"    => ["mesos_masters"],
-    "weave_servers:children"     => ["mesos_slaves", "load_balancers"],
+    "weave_servers:children"     => ["mesos_masters", "mesos_slaves", "load_balancers"],
+    "vagrant:children"           => ["mesos_masters", "mesos_slaves", "load_balancers"],
   }
 
   # Mesos master nodes
@@ -64,67 +66,41 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   master_infos.flatten.each_with_index do |node|
     config.vm.define node[:hostname] do |cfg|
-      cfg.vm.provider :virtualbox do |vb, override|
-        override.vm.hostname = node[:hostname]
-        override.vm.network :private_network, :ip => node[:ip]
+      cfg.vm.provider :virtualbox do |vb, machine|
+        machine.vm.hostname = node[:hostname]
+        machine.vm.network :private_network, :ip => node[:ip]
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
-        override.vm.provision "ansible" do |ansible|
-          ansible.playbook = "site.yml"
-          ansible.sudo = true
-          ansible.extra_vars = {
-            zookeeper_id: node[:zookeeper_id],
-            zookeeper_conf: zookeeper_conf,
-            mesos_master_quorum: 2,
-            mesos_zk_url: mesos_zk_url,
-            mesos_local_address: node[:ip],
-            marathon_local_address: node[:ip],
-            consul_join: consul_join,
-            consul_retry_join: [consul_retry_join],
-            consul_bootstrap_expect: 1,
-            consul_advertise: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
-            proxy_env: {
-              http_proxy: "http://10.23.12.100:8080",
-              https_proxy: "http://10.23.12.100:8080",
-              HTTP_PROXY: "http://10.23.12.100:8080",
-              HTTPS_PROXY: "http://10.23.12.100:8080"
-            },
-            http_proxy: "http://10.23.12.100:8080"
-          }
-          ansible.groups = ansible_groups
-        end
       end
     end
   end
 
   slave_infos.flatten.each_with_index do |node|
     config.vm.define node[:hostname] do |cfg|
-      cfg.vm.provider :virtualbox do |vb, override|
-        override.vm.hostname = node[:hostname]
-        override.vm.network :private_network, :ip => node[:ip]
+      cfg.vm.provider :virtualbox do |vb, machine|
+        machine.vm.hostname = node[:hostname]
+        machine.vm.network :private_network, :ip => node[:ip]
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
-        override.vm.provision "ansible" do |ansible|
-          ansible.playbook = "site.yml"
-          ansible.sudo = true
-          ansible.extra_vars = {
-            mesos_zk_url: mesos_zk_url,
-            mesos_local_address: node[:ip],
-            consul_join: consul_join,
-            consul_retry_join: [consul_retry_join],
-            consul_bootstrap_expect: 1,
-            consul_advertise: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
-            registrator_uri: "consul://#{node[:ip]}:8500"
-          }
-          ansible.groups = ansible_groups
+        # We invoke ansible on the last slave with ansible.limit = 'all'
+        # this runs the provisioning across all masters and slaves in parallel.
+        if node[:hostname] == "slave#{slave_n}"
+          machine.vm.provision :ansible do |ansible|
+            ansible.playbook = "site.yml"
+            ansible.sudo = true
+            ansible.groups = ansible_groups
+            ansible.limit = 'all'
+            ansible.extra_vars = {
+              mesos_zk_url: mesos_zk_url,
+              zookeeper_conf: zookeeper_conf,
+              consul_join: consul_join,
+              consul_retry_join: consul_retry_join
+            }
+          end
         end
       end
     end
