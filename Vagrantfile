@@ -92,7 +92,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               https_proxy: "http://10.23.12.100:8080",
               HTTP_PROXY: "http://10.23.12.100:8080",
               HTTPS_PROXY: "http://10.23.12.100:8080"
-            }
+            },
+            http_proxy: "http://10.23.12.100:8080"
           }
           ansible.groups = ansible_groups
         end
