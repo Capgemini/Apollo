@@ -19,7 +19,7 @@ frontend haproxy_status
     monitor fail if backend_dead
 
 frontend www
-    bind *:80 accept-proxy
+    bind *:80
 
     # Generated automatically by consul-template
 {{ range services }}
