@@ -20,16 +20,15 @@
   lineinfile:
     dest: /etc/default/docker
     state: present
-    regexp: ^http_proxy=
-    line: 'export http_proxy='
-  when: proxy_env is defined
+    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
 
 - name: configure docker proxy
   sudo: yes
   lineinfile:
     dest: /etc/default/docker
     state: present
-    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
+    line: 'export http_proxy=\"{{ http_proxy }}\"'
+  when: http_proxy is defined
 
 - name: ensure docker is running (and enable it at boot)
   service:
