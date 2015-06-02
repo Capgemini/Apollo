@@ -4,7 +4,7 @@
     "port": {{ zookeeper_client_port }},
     "tags": [ "zookeeper" ],
     "check": {
-      "script": "echo ruok | nc 127.0.0.1 {{ zookeeper_client_port }} | grep imok",
+      "script": "echo ruok | nc {{ inventory_hostname }} {{ zookeeper_client_port }} | grep imok",
       "interval": "10s"
     }
   }

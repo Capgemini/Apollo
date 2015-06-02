@@ -4,7 +4,7 @@
     "port": {{ mesos_master_port }},
     "tags": [ "mesos" ],
     "check": {
-      "script": "curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://{{ mesos_local_address }}:{{ mesos_master_port }}/master/health",
+      "script": "curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://{{ mesos_hostname }}:{{ mesos_master_port }}/master/health",
       "interval": "10s"
     }
   }

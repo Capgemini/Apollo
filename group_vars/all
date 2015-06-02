@@ -1,5 +1,4 @@
 mesos_cluster_name: "Cluster01"
 zookeeper_client_port: "2181"
 zookeeper_url: "zk://{{ groups.mesos-masters | join(':' + zookeeper_client_port + ',') }}:{{ zookeeper_client_port }}"
-mesos_local_address: "{{ansible_eth0.ipv4.address}}"
 consul_domain: consul
