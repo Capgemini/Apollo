@@ -79,7 +79,7 @@ ansible_playbook_run() {
   pushd $APOLLO_ROOT
     AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
-    --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+    ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
       $(get_apollo_variables)" \

@@ -29,7 +29,6 @@
     - serverspec
 
 - name: run serverspec tests
-  sudo: yes
   command: "bundle exec rake serverspec:{{ test_role }}"
   args:
     chdir: "{{ serverspec_tests_path }}/tests"
