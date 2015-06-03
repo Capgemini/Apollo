@@ -34,7 +34,7 @@
     dest: /etc/default/docker
     state: present
     line: 'export http_proxy=\"{{ http_proxy }}\"'
-  when: http_proxy is defined
+  when: http_proxy is defined and http_proxy != ''
 
 - name: ensure docker is running (and enable it at boot)
   service:
