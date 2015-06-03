@@ -19,7 +19,6 @@ export TF_VAR_region=${TF_VAR_region:-eu-west-1}
 export TF_VAR_master_size=${TF_VAR_master_size:-m1.medium}
 export TF_VAR_slave_size=${TF_VAR_slave_size:-m1.medium}
 export TF_VAR_slaves=${TF_VAR_slaves:-1}
-export TF_VAR_subnet_availability_zone=${TF_VAR_subnet_availability_zone:-eu-west-1a}
 export TF_VAR_zones.zone-0=${TF_VAR_zones.zone-0:-eu-west-1a}
 export TF_VAR_zones.zone-1=${TF_VAR_zones.zone-1:-eu-west-1b}
 export TF_VAR_zones.zone-2=${TF_VAR_zones.zone-2:-eu-west-1c}

@@ -6,8 +6,9 @@ resource "aws_internet_gateway" "public" {
 /* Public subnet */
 resource "aws_subnet" "public" {
   vpc_id                  = "${aws_vpc.default.id}"
-  availability_zone       = "${var.subnet_availability_zone}"
-  cidr_block              = "${var.public_subnet_cidr_block}"
+  availability_zone       = "${lookup(var.zones, concat("zone-", count.index))}"
+  cidr_block              = "${lookup(var.cidr_blocks, concat("zone-", count.index))}"
+  count                   = "${var.masters}"
   map_public_ip_on_launch = true
   depends_on              = ["aws_internet_gateway.public"]
   tags {
@@ -34,6 +35,7 @@ resource "aws_main_route_table_association" "public" {
 
 /* Associate the routing table to public subnet */
 resource "aws_route_table_association" "public" {
-  subnet_id      = "${aws_subnet.public.id}"
+  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
+  count          = "${var.masters}"
 }

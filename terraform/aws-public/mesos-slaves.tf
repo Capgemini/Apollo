@@ -8,9 +8,10 @@ resource "atlas_artifact" "mesos-slave" {
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
   ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
+  availability_zone = "${lookup(var.zones, concat("zone-", count.index))}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
-  subnet_id         = "${aws_subnet.public.id}"
+  subnet_id         = "${element(aws_subnet.public.*.id, count.index)}"
   source_dest_check = false
   security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.mesos-master"]

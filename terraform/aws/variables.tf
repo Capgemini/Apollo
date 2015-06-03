@@ -28,11 +28,6 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "subnet_availability_zone" {
-  description = "Availability zone for Apollo subnet."
-  default = "eu-west-1b"
-}
-
 variable "vpc_cidr_block" {
   description = "Cidr block for the VPC."
   default = "10.0.0.0/16"
@@ -44,19 +39,19 @@ variable "public_subnet_cidr_block" {
 }
 
 variable "zones" {
-    default = {
-        zone-0 = "eu-west-1a"
-        zone-1 = "eu-west-1b"
-        zone-2 = "eu-west-1c"
-    }
+  default = {
+    zone-0 = "eu-west-1a"
+    zone-1 = "eu-west-1b"
+    zone-2 = "eu-west-1c"
+  }
 }
 
 variable "cidr_blocks" {
-    default = {
-        zone-0 = "10.0.1.0/24"
-        zone-1 = "10.0.2.0/24"
-        zone-2 = "10.0.3.0/24"
-    }
+  default = {
+    zone-0 = "10.0.1.0/24"
+    zone-1 = "10.0.2.0/24"
+    zone-2 = "10.0.3.0/24"
+  }
 }
 
 variable "slaves" {
