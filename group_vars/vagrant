@@ -16,10 +16,9 @@ weave_launch_peers: "
   {%- endfor -%}
   {{ weave_peers|join(' ') }}
 "
-proxy_env: {
-  http_proxy: "",
-  https_proxy: "",
-  HTTP_PROXY: "",
-  HTTPS_PROXY: ""
-}
-http_proxy: ""
+proxy_env:
+  http_proxy: ''
+  https_proxy: ''
+  HTTP_PROXY: ''
+  HTTPS_PROXY: ''
+http_proxy: ''
