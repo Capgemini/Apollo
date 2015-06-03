@@ -63,6 +63,6 @@ slave hostnames added (will be in the format slave2, slave3, etc...)
 
 #### Using Apollo Behind a Firewall
 
-Edit ``groups_vars/vagrant```
+Edit ``groups_vars/all```
 
 Change all the ```proxy_env``` variables to the proxy hostname e.g. http://10.99.11.11:9090

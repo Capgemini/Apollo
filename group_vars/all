@@ -2,3 +2,9 @@ mesos_cluster_name: "Cluster01"
 zookeeper_client_port: "2181"
 zookeeper_url: "zk://{{ groups.mesos-masters | join(':' + zookeeper_client_port + ',') }}:{{ zookeeper_client_port }}"
 consul_domain: consul
+proxy_env:
+  http_proxy: ''
+  https_proxy: ''
+  HTTP_PROXY: ''
+  HTTPS_PROXY: ''
+http_proxy: ''
