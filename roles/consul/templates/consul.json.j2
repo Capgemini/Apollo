@@ -9,7 +9,7 @@
 {% if consul_bootstrap_expect > 1 %}
   "retry_join": [ "{{ consul_retry_join }}" ],
 {% endif %}
-{% if consul_is_server %}
+{% if inventory_hostname in groups[consul_servers_group] %}
   "server": true,
   "bootstrap_expect": {{ consul_bootstrap_expect }},
 {% endif %}
