@@ -1,6 +1,12 @@
-[mesos_masters]
+[role=mesos-masters]
 
-[mesos_slaves]
+[role=mesos-slaves]
+
+[mesos_masters:children]
+role=mesos-masters
+
+[mesos_slaves:children]
+role=mesos-slaves
 
 [load_balancers:children]
 mesos_slaves

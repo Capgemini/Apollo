@@ -29,7 +29,7 @@ apollo_launch() {
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
     DO_API_TOKEN=$TF_VAR_do_token ansible-playbook --user=root \
-    --inventory-file=$APOLLO_ROOT/inventory/digitalocean \
+    --inventory-file=$APOLLO_ROOT/inventory \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
