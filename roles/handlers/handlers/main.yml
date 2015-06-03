@@ -8,7 +8,6 @@
 
 - name: wait for consul to listen
   wait_for:
-    host: localhost
     port: 8500
 
 - name: restart docker
