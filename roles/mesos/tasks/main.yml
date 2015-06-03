@@ -9,7 +9,7 @@
 # Tasks for Master nodes
 - name: Set Mesos Master ip
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ mesos_ip }}"
     dest: /etc/mesos-master/ip
     mode: 0644
   sudo: yes
@@ -19,7 +19,7 @@
 
 - name: Set Mesos Master hostname
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ mesos_hostname }}"
     dest: /etc/mesos-master/hostname
     mode: 0644
   sudo: yes
@@ -86,7 +86,7 @@
 
 - name: Set Mesos Slave hostname
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ mesos_hostname }}"
     dest: /etc/mesos-slave/hostname
     mode: 0644
   sudo: yes
@@ -123,7 +123,7 @@
 
 - name: Set Mesos Slave ip
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ mesos_ip }}"
     dest: /etc/mesos-slave/ip
     mode: 0644
   sudo: yes
@@ -158,3 +158,4 @@
     enabled: yes
   when: mesos_install_mode == "slave"
 
+- meta: flush_handlers

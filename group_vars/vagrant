@@ -1,0 +1,24 @@
+mesos_cluster_name: "Vagrant"
+consul_dc: vagrant
+mesos_ip: "{{ ansible_eth1.ipv4.address }}"
+marathon_local_address: "{{ ansible_eth1.ipv4.address }}"
+consul_advertise: "{{ ansible_eth1.ipv4.address }}"
+consul_bind_addr: "{{ ansible_eth1.ipv4.address }}"
+mesos_master_quorum: 2
+consul_bootstrap_expect: 3
+registrator_uri: "consul://{{ ansible_eth1.ipv4.address }}:8500"
+weave_launch_peers: "
+  {%- set weave_peers = [] -%}
+  {%- for host in groups[weave_server_group] -%}
+    {%- if host != inventory_hostname and host not in weave_peers -%}
+      {% do weave_peers.append(hostvars[host]['ansible_eth1']['ipv4']['address']) %}
+    {%- endif -%}
+  {%- endfor -%}
+  {{ weave_peers|join(' ') }}
+"
+proxy_env:
+  http_proxy: ''
+  https_proxy: ''
+  HTTP_PROXY: ''
+  HTTPS_PROXY: ''
+http_proxy: ''
