@@ -4,6 +4,8 @@
   file:
     path: /etc/init/docker.override
     state: absent
+  notify:
+    - restart docker
   tags:
     - docker
 
@@ -14,6 +16,8 @@
     state: present
     regexp: ^DOCKER_OPTS=.*--graph.*
     line: 'DOCKER_OPTS=\"$DOCKER_OPTS --graph={{ docker_graph_dir }}\"'
+  notify:
+    - restart docker
 
 - name: configure docker temporary directory
   sudo: yes
@@ -21,6 +25,8 @@
     dest: /etc/default/docker
     state: present
     line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
+  notify:
+    - restart docker
 
 - name: ensure docker is running (and enable it at boot)
   service:

@@ -1,0 +1,18 @@
+- name: restart consul
+  service:
+    name: consul
+    state: restarted
+  sudo: yes
+  notify:
+    - wait for consul to listen
+
+- name: wait for consul to listen
+  wait_for:
+    host: localhost
+    port: 8500
+
+- name: restart docker
+  service:
+   name: docker
+   state: restarted
+  sudo: yes
