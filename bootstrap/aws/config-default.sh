@@ -18,6 +18,8 @@ export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/aws"
 # so no really needed to export them. Exporting for consitency.
 export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-ubuntu-14.04-amd64}
 export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-ubuntu-14.04-amd64}
+export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-1}
+export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-1}
 
 export TF_VAR_region=${TF_VAR_region:-eu-west-1}
 export TF_VAR_master_size=${TF_VAR_master_size:-m1.medium}

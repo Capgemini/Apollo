@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+
 source ../common.sh
 
 RED='\033[0;31m'
@@ -11,7 +11,7 @@ test() {
   input="$3"
 
   result=$( "${function}" "${input}" )
-  [ $? -eq 0 ] || echo "Script failed."
+  [ $? -eq 0 ] || echo "Function ${function} returned exit code 0."
 
   if [ "${result}" == "${expected}" ]; then
     echo "Pass. Function ${function}. Expected: ${expected}, Got: ${result}"
@@ -20,26 +20,13 @@ test() {
   fi	
 }
 
-function="mesos_zk_url_terraform_to_ansible"
-expected="zk://1.1.1.1:2181,2.2.2.2:2181,3.3.3.3:2181/mesos"
-input="1.1.1.1,2.2.2.2,3.3.3.3"
+function="check_terraform_version"
+expected="You are running Terraform v0.5.0..."
+input="0.5.0"
 test "${function}" "${expected}" "${input}"
 
-function="weave_peers_terraform_to_ansible"
-expected="1.1.1.1 2.2.2.2 3.3.3.3"
-input="1.1.1.1,2.2.2.2,3.3.3.3"
-test "${function}" "${expected}" "${input}"
-
-export TESTSUITE_var1="Galicia"
-export TESTSUITE_var2="Drupal"
-export TESTSUITE_var3="ip1 ip2 ip3"
-export TESTSUITE_var4="property=val property=val property=val"
-function="get_apollo_variables"
-input="TESTSUITE_"
-expected="var4='property=val property=val property=val' var2='Drupal' var3='ip1 ip2 ip3' var1='Galicia'"
-test "${function}" "${expected}" "${input}"
-
-function="zookeeper_conf_terraform_to_ansible"
-input="1.1.1.1,2.2.2.2,3.3.3.3"
-expected="server.1=1.1.1.1:2888:3888 server.2=2.2.2.2:2888:3888 server.3=3.3.3.3:2888:3888"
+function="check_terraform_version"
+expected="You are running Terraform v0.5.0...
+-e Terraform >= 0.7.0 is required, please fix and retry."
+input="0.7.0"
 test "${function}" "${expected}" "${input}"
