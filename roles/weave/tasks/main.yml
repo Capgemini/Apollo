@@ -60,6 +60,7 @@
     url: "{{ weave_scope_url }}"
     dest: "{{ weave_scope_dest }}"
     mode: 0755
+  environment: proxy_env
   tags:
     - weave
 

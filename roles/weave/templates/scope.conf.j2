@@ -9,7 +9,7 @@ pre-start exec ${WEAVESCOPE} stop
 
 script
  [ -e /etc/default/weavescope ] && . /etc/default/weavescope
- ${WEAVESCOPE} launch
+ ${WEAVESCOPE} launch {{ weave_launch_peers }}
  exec /usr/bin/docker logs -f weavescope
 end script
 
