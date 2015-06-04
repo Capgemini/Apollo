@@ -1,0 +1,83 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+    "mesos_version": "0.22.1-1.0.ubuntu1404",
+    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
+    "consul_version": "0.5.1",
+    "weave_version": "v0.11.0",
+    "version": "{{env `APOLLO_VERSION`}}",
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_source_ami": "{{env `AWS_SOURCE_AMI`}}",
+    "aws_instance_type": "{{env `AWS_INSTANCE_TYPE`}}",
+    "timestamp": "{{isotime \"20060102150405\"}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "ami_name": "udacity-mesos.{{user `mesos_version`}}.{{user `timestamp`}}",
+    "ami_description": "Ubuntu 14.04 LTS, Mesos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami": "{{user `aws_source_ami`}}",
+    "instance_type": "{{user `aws_instance_type`}}",
+    "ami_groups": "all",
+    "ssh_username": "ubuntu",
+    "ssh_timeout": "10m",
+    "ami_regions": [],
+    "tags": {
+      "owner": "udacity",
+      "application": "mesos-host",
+      "version": "{{user `version`}}.{{user `timestamp`}}"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/ubuntu/install_mesos.sh",
+        "scripts/ubuntu/install_marathon.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/ubuntu/install_dnsmasq.sh",
+        "scripts/common/install_weave.sh"
+      ],
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    }
+  ],
+  "push": {
+    "name": "udacity/mesos-ubuntu-14-04-amd64"
+  },
+  "post-processors": [{
+    "type": "atlas",
+    "artifact": "udacity/mesos-ubuntu-14.04-amd64",
+    "artifact_type": "aws.ami",
+    "metadata": {
+      "created_at": "{{user `timestamp`}}",
+      "version": "{{user `version`}}.{{user `timestamp`}}"
+    }
+  }]
+}
