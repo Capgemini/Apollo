@@ -4,10 +4,10 @@
 {%- set mesos_zk_url = '' -%}
 {%- for host in groups[mesos_zookeeper_group] -%}
   {%- if not loop.last -%}
-    {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['ansible_eth0']['ipv4']['address'] + ':2181,' -%}
+    {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['inventory_hostname'] + ':2181,' -%}
   {%- endif -%}
 {%- if loop.last -%}
-  {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['ansible_eth0']['ipv4']['address'] + ':2181/mesos' -%}
+  {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['inventory_hostname'] + ':2181/mesos' -%}
 zk://{{ mesos_zk_url }}
   {%- endif -%}
 {%- endfor -%}
