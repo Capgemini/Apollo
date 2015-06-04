@@ -18,11 +18,11 @@ resource "aws_instance" "mesos-slave" {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
   }
-  ebs_block_device {
-    device_name           = "/dev/sdb"
-    volume_size           = "${var.slave_block_device.volume_size}"
-    delete_on_termination = true
-  }
+#  ebs_block_device {
+#    device_name           = "/dev/sdb"
+#    volume_size           = "${var.slave_block_device.volume_size}"
+#    delete_on_termination = true
+#  }
 }
 
 /* Load balancer */
