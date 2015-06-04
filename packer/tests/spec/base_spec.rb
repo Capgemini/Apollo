@@ -4,7 +4,7 @@ packages = [
   'git',
   'curl',
   'libcurl3',
-  'default-jre-headless',
+  'oracle-java8-installer',
   'unzip',
   'wget',
   'python-setuptools',
