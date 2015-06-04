@@ -4,6 +4,10 @@ describe package('lxc-docker') do
   it { should be_installed }
 end
 
+describe package("linux-image-extra-#{`uname -r`.strip}") do
+  it { should be_installed }
+end
+
 describe service('docker') do
   it { should_not be_running }
 end
