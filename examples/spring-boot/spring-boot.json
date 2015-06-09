@@ -26,6 +26,6 @@
     "SERVICE_NAME": "springboot"
   },
   "cpus": 1,
-  "mem": 128.0,
+  "mem": 256.0,
   "instances": 1
 }
