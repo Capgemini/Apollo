@@ -1,0 +1,31 @@
+{
+  "id": "/spring-boot",
+  "container": {
+    "docker": {
+      "type": "DOCKER",
+      "image": "capgemini/apollo-spring-boot:1.0.0",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8080, 
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "TCP",
+    "gracePeriodSeconds": 300,
+    "intervalSeconds": 60,
+    "portIndex": 0,
+    "timeoutSeconds": 15,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "SERVICE_NAME": "spring-boot"
+  },
+  "cpus": 1,
+  "mem": 128.0,
+  "instances": 1
+}
