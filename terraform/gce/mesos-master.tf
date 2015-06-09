@@ -19,7 +19,7 @@ resource "google_compute_instance" "mesos-master" {
 
     # declare metadata for configuration of the node
     metadata {
-      role = "mesos-masters"
+      role = "mesos_masters"
     }
     
     network_interface {
@@ -28,4 +28,25 @@ resource "google_compute_instance" "mesos-master" {
             // Ephemeral IP
         }
     }   
+}
+
+resource "google_compute_firewall" "default" {
+    name    = "default-allow-all"
+    network = "default"
+
+    allow {
+        protocol = "icmp"
+    }
+
+    allow {
+        protocol = "tcp"
+        ports    = ["1-65535"]
+    }
+
+    allow {
+        protocol = "udp"
+        ports    = ["1-65535"]
+    }
+
+    source_ranges = ["0.0.0.0/0"]
 }

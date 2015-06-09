@@ -17,7 +17,7 @@ resource "google_compute_instance" "mesos-slave" {
     }
     
     metadata {
-      role = "meso-masters"
+      role = "mesos_slaves"
     }
 
     network_interface {

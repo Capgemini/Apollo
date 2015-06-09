@@ -2,7 +2,7 @@
 # defaults file for consul
 consul_dc: dc1
 consul_servers_group: consul_servers
-consul_advertise: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+consul_advertise: "{{ ansible_ssh_host }}"
 consul_bind_addr: "{{ ansible_default_ipv4.address }}"
 consul_retry_join: "{% for host in groups[consul_servers_group] %}\"{{ hostvars[host].ansible_default_ipv4.address }}\"{% if not loop.last %}, {% endif %}{% endfor %}"
 consul_bootstrap_expect: "{{ groups[consul_servers_group] | length }}"
