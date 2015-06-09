@@ -23,7 +23,7 @@
     "maxConsecutiveFailures": 3
   }],
   "env": {
-    "SERVICE_NAME": "spring-boot"
+    "SERVICE_NAME": "springboot"
   },
   "cpus": 1,
   "mem": 128.0,
