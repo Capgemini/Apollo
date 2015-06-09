@@ -219,6 +219,7 @@ def aws_host(resource, tfvars=None):
                                              'vpc_security_group_ids'),
         # ansible-specific
         'ansible_ssh_port': 22,
+        'ansible_ssh_user': 'ubuntu',
         'ansible_ssh_host': raw_attrs['public_ip'],
     }
     if 'tags.sshUser' in raw_attrs:
@@ -316,6 +317,43 @@ def gce_host(resource, tfvars=None):
 
     return name, attrs, groups
 
+@parses('digitalocean_droplet')
+@calculate_mi_vars
+def digitalocean_host(resource, tfvars=None):
+    id = resource['primary']['id']
+    raw_attrs = resource['primary']['attributes']
+    groups = []
+
+    # general attrs
+    attrs = {
+        'name': raw_attrs['name'],
+        'metadata': parse_dict(raw_attrs, 'metadata'),
+        'region': raw_attrs['region'],
+        # ansible
+        'ansible_ssh_port': 22,
+        # Could be passed from the command line via environment variable
+        'ansible_ssh_user': 'root',
+        'ansible_ssh_host': raw_attrs['ipv4_address'],
+    }
+
+    # attrs specific to microservices-infrastructure
+    attrs.update({
+        'consul_dc': _clean_dc(attrs['metadata'].get('dc', attrs['region'])),
+        'role': attrs['metadata'].get('role', 'none')
+    })
+
+    # groups specific to microservices-infrastructure
+    name = attrs.get('name')
+    if "apollo-mesos-master" in name:
+        role = "mesos_masters"
+    if "apollo-mesos-slave" in name:
+        role = "mesos_slaves"
+
+    groups.append('region=' + attrs['region'])
+    groups.append('role=' + role)
+    groups.append('dc=' + attrs['consul_dc'])
+
+    return name, attrs, groups
 
 ## QUERY TYPES
 def query_host(hosts, target):
