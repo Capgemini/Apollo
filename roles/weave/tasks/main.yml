@@ -54,3 +54,21 @@
     - restart docker
   tags:
     - weave
+
+- name: download weave scope
+  get_url:
+    url: "{{ weave_scope_url }}"
+    dest: "{{ weave_scope_dest }}"
+    mode: 0755
+  environment: proxy_env
+  tags:
+    - weave
+
+- name: upload weave scope template service
+  template:
+    src: scope.conf.j2
+    dest: "/etc/init/weavescope.conf"
+    mode: 0755
+  sudo: yes
+  tags:
+    - weave
