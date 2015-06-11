@@ -51,6 +51,7 @@ EOF
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
+    get_ansible_inventory
     ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}/ssh.config -q"
     ansible-playbook --inventory-file=$APOLLO_ROOT/inventory \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \

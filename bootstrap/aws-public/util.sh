@@ -2,7 +2,7 @@
 
 # Use the config file specified in $APOLLO_CONFIG_FILE, or default to
 # config-default.sh.
-APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/../..
+export APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/../..
 source "${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/${APOLLO_CONFIG_FILE-"config-default.sh"}"
 
 verify_prereqs() {
@@ -51,6 +51,7 @@ EOF
 
 ansible_playbook_run() {
   pushd $APOLLO_ROOT
+    get_ansible_inventory
     AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} \
     ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}/ssh.config -q" \
     ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory \

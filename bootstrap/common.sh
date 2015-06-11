@@ -121,3 +121,12 @@ terraform_to_ansible() {
   export APOLLO_zookeeper_host_list="$( zookeeper_host_list_terraform_to_ansible ${ips} )"
   popd
 }
+
+get_ansible_inventory() {
+    pushd $APOLLO_ROOT
+    if [ ! -f inventory/terraform.py ]; then
+      curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
+      chmod 755 inventory/terraform.py
+    fi
+    popd
+}
