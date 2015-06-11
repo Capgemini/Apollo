@@ -1,5 +1,5 @@
 {
-  "id": "/spring-boot",
+  "id": "/springboot",
   "container": {
     "docker": {
       "type": "DOCKER",

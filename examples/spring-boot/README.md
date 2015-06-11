@@ -23,18 +23,18 @@ The service will be accessible through the HAProxy container (on port 80) at ```
 
 ### For cloud instances
 
-To access the Spring Boot application, go to the Marathon dashboard at ```http://$MARATHON_IP:8080/#apps``` and click on ```/spring-boot```. You should see an IP address and Port in the service definition, if you click on it you should be redirected to the spring boot application.
+To access the Spring Boot application, go to the Marathon dashboard at ```http://$MARATHON_IP:8080/#apps``` and click on ```/springboot```. You should see an IP address and Port in the service definition, if you click on it you should be redirected to the spring boot application.
 
 ### For Vagrant only
 
 If you are deploying this example in the Vagrant environment, simply add the following entry to your host machine in ```/etc/hosts```
 
 ```
-172.31.1.14 spring.example.com
+172.31.1.14 springboot.example.com
 ```
 
 Where ```172.31.1.14``` is the Slave IP address configured in ```vagrant.yml```
-If you access ```drupal.example.com``` through your browser that will hit the Haproxy container
+If you access ```springboot.example.com``` through your browser that will hit the Haproxy container
 running on the slave machine which will forward the traffic to the Drupal docker container.
 
 ### Removing the apps
@@ -42,5 +42,5 @@ running on the slave machine which will forward the traffic to the Drupal docker
 You can remove the applications straight from the command line by running -
 
 ```
-curl -XDELETE http://$MARATHON_IP:8080/v2/apps/spring-boot
+curl -XDELETE http://$MARATHON_IP:8080/v2/apps/springboot
 ```
