@@ -40,6 +40,7 @@
     restart_policy: always
     ports:
       - "80:80"
+      - "34180:34180"
     env:
       HAPROXY_DOMAIN: "{{ haproxy_domain }}"
       CONSUL_TEMPLATE_VERSION: "{{ consul_template_version }}"
