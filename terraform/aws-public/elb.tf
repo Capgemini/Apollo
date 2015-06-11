@@ -5,9 +5,9 @@ resource "aws_elb" "web" {
 
   listener {
     instance_port     = 80
-    instance_protocol = "tcp"
+    instance_protocol = "http"
     lb_port           = 80
-    lb_protocol       = "tcp"
+    lb_protocol       = "http"
   }
 
   health_check {
