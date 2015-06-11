@@ -21,10 +21,6 @@ verify_prereqs() {
     echo -e "${color_red}Can't find python in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
-  if [[ "$(pip list | grep boto)" == "" ]]; then
-    echo -e "${color_red}Can't find Boto. Please install it via pip install boto.${color_norm}"
-    exit 1
-  fi
 }
 
 apollo_launch() {
