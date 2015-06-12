@@ -6,7 +6,7 @@ sudo apt-get -y update
 curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 
 # Download docker containers to the machine to save download time on
-# provisioning
+# provisioning later
 docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
