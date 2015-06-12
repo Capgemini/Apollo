@@ -19,15 +19,13 @@
 
 - hosts: all
   roles:
-    - dnsmasq
     - consul
+    - dnsmasq
     - docker
     - weave
     - registrator
 
 - hosts: mesos_masters
-  vars:
-    consul_is_server: true
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper

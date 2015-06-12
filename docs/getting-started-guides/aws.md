@@ -47,7 +47,9 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 sh bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland). It will also create a mesos slave cluster and a Bastion server for accessing the VPC via VPN and SSH.
+NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
+
+It will also create a mesos slave cluster and a Bastion server for accessing the VPC via VPN and SSH.
 
 It will then generate a local SSH config for the Bastion server and the private instances, and run an
 Ansible playbook to provision the cluster.

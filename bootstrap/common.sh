@@ -54,6 +54,7 @@ open_urls() {
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
       /usr/bin/open "http://$(terraform output master.1.ip):8080"
       /usr/bin/open "http://$(terraform output master.1.ip):8500"
+      /usr/bin/open "http://$(terraform output master.1.ip):4040"
     fi
   popd
 }

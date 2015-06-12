@@ -60,3 +60,9 @@ Add a ```slave2_ip:``` replacing 2 with the slave number.
 
 In the ```Vagrantfile``` update the ```ansible_groups``` to reference the new
 slave hostnames added (will be in the format slave2, slave3, etc...)
+
+#### Using Apollo Behind a Firewall
+
+Edit ``groups_vars/all```
+
+Change all the ```proxy_env``` variables to the proxy hostname e.g. http://10.99.11.11:9090
