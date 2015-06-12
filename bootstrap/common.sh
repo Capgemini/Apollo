@@ -50,6 +50,7 @@ open_urls() {
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
       /usr/bin/open "http://$(terraform output master.1.ip):8080"
       /usr/bin/open "http://$(terraform output master.1.ip):8500"
+      /usr/bin/open "http://$(terraform output master.1.ip):4040"
     fi
   popd
 }
@@ -119,4 +120,13 @@ terraform_to_ansible() {
   export APOLLO_zookeeper_conf="$( zookeeper_conf_terraform_to_ansible ${ips} )"
   export APOLLO_zookeeper_host_list="$( zookeeper_host_list_terraform_to_ansible ${ips} )"
   popd
+}
+
+get_ansible_inventory() {
+    pushd $APOLLO_ROOT
+    if [ ! -f inventory/terraform.py ]; then
+      curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
+      chmod 755 inventory/terraform.py
+    fi
+    popd
 }

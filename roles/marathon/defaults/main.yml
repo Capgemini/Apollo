@@ -2,4 +2,4 @@
 # defaults file for marathon
 marathon_port: 8080
 consul_dir: /etc/consul.d
-marathon_hostname: "{{ inventory_hostname }}"
+marathon_hostname: "{{ ansible_ssh_host }}"

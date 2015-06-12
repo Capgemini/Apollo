@@ -21,10 +21,6 @@ verify_prereqs() {
     echo -e "${color_red}Can't find python in PATH, please fix and retry.${color_norm}"
     exit 1
   fi
-  if [[ "$(pip list | grep boto)" == "" ]]; then
-    echo -e "${color_red}Can't find Boto. Please install it via pip install boto.${color_norm}"
-    exit 1
-  fi
 }
 
 apollo_launch() {
@@ -77,8 +73,9 @@ ansible_playbook_run() {
     export APOLLO_bastion_ip=$(terraform output bastion.ip)
   popd
   pushd $APOLLO_ROOT
+    get_ansible_inventory
     AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
-    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory/aws \
+    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \

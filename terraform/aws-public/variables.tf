@@ -10,7 +10,7 @@ variable "secret_key" {
 
 variable "key_name" {
   description = "The aws ssh key name."
-  default = "Apollo"
+  default = "deployer"
 }
 
 variable "key_file" {
