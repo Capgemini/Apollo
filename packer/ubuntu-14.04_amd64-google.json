@@ -7,7 +7,7 @@
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.1",
-    "weave_version": "v0.10.0",
+    "weave_version": "v0.11.2",
     "version": "{{env `APOLLO_VERSION`}}"
   },
   "builders": [{
