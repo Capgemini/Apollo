@@ -1,0 +1,4 @@
+# Apollo core plugins.
+- src: https://github.com/Capgemini/apollo-core-plugin-marathon.git
+  path: ./plugins
+  name: marathon

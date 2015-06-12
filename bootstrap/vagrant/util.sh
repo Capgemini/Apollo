@@ -13,6 +13,7 @@ verify_prereqs() {
 }
 
 apollo_launch() {
+  get_ansible_requirements
   vagrant up --provision
 }
 

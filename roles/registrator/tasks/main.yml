@@ -1,13 +1,4 @@
 ---
-
-# Install (docker-py) python package as is a docker module dependency.
-- pip:
-    name: docker-py
-    version: 1.1.0
-  environment: proxy_env
-  tags:
-    - registrator
-
 # tasks file for docker registrator
 - name: run registrator container
   docker:

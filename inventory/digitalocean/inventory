@@ -13,6 +13,9 @@ load_balancers
 [zookeeper_servers:children]
 mesos_masters
 
+[marathon_servers:children]
+mesos_masters
+
 [consul_servers:children]
 mesos_masters
 
