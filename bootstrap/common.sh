@@ -123,7 +123,7 @@ terraform_apply() {
       -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}" \
       -var "zones.zone-0=${TF_VAR_zone-0}" \
       -var "zones.zone-1=${TF_VAR_zone-1}" \
-      -var "zones.zone-2=${TF_VAR_zone-2}" \
+      -var "zones.zone-2=${TF_VAR_zone-2}"
   popd
 }
 
