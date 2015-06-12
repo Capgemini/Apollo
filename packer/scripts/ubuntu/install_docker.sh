@@ -10,8 +10,6 @@ curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
-docker pull mysql:5.5
-docker pull capgemini/apollo-commerce-kickstart:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 
 sudo service docker stop
