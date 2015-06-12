@@ -94,8 +94,7 @@ open_urls() {
 ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
-    ansible-playbook --user=root \
-    --inventory-file="${APOLLO_ROOT}/inventory" \
+    ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \

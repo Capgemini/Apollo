@@ -13,6 +13,7 @@ export TF_VAR_key_name=${TF_VAR_key_name:-apollo}
 # Overrides default folder in Terraform.py inventory.
 export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/aws"
 
+export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -q"
 
 # Terraform mappings needs to be statically passed as -var parameters
 # so no really needed to export them. Exporting for consitency.
