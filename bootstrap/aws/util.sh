@@ -2,33 +2,7 @@
 
 # Use the config file specified in $APOLLO_CONFIG_FILE, or default to
 # config-default.sh.
-APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/../..
-source "${APOLLO_ROOT}/bootstrap/aws/${APOLLO_CONFIG_FILE-"config-default.sh"}"
-
-verify_prereqs() {
-  if [[ "$(which terraform)" == "" ]]; then
-    echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
-    exit 1
-  fi
-
-  check_terraform_version
-
-  if [[ "$(which ansible-playbook)" == "" ]]; then
-    echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
-    exit 1
-  fi
-  if [[ "$(which python)" == "" ]]; then
-    echo -e "${color_red}Can't find python in PATH, please fix and retry.${color_norm}"
-    exit 1
-  fi
-}
-
-apollo_launch() {
-  terraform_apply
-  terraform_to_ansible
-  ansible_ssh_config
-  ansible_playbook_run
-
+function set_vpn() {
   while true; do
   read -p "Do you want to start the VPN and setup a connection now (y/n)?" yn
     case $yn in
@@ -40,13 +14,14 @@ apollo_launch() {
 }
 
 ansible_ssh_config() {
-  pushd $APOLLO_ROOT/terraform/aws
-    BASTION_IP=$(terraform output bastion.ip)
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    export APOLLO_bastion_ip=$(terraform output bastion.ip)
+
     cat <<EOF > ssh.config
-  Host bastion $BASTION_IP
+  Host bastion $APOLLO_bastion_ip
     StrictHostKeyChecking  no
     User                   ubuntu
-    HostName               $BASTION_IP
+    HostName               $APOLLO_bastion_ip
     ProxyCommand           none
     IdentityFile           $TF_VAR_key_file
     BatchMode              yes
@@ -57,7 +32,7 @@ ansible_ssh_config() {
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$BASTION_IP nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$APOLLO_bastion_ip nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
@@ -68,44 +43,16 @@ EOF
   popd
 }
 
-ansible_playbook_run() {
-  pushd $APOLLO_ROOT/terraform/aws
-    export APOLLO_bastion_ip=$(terraform output bastion.ip)
-  popd
-  pushd $APOLLO_ROOT
-    get_ansible_inventory
-    AWS_ACCESS_KEY_ID=${TF_VAR_access_key} AWS_SECRET_ACCESS_KEY=${TF_VAR_secret_key} ANSIBLE_SSH_ARGS="-F $APOLLO_ROOT/terraform/aws/ssh.config -q" \
-    ansible-playbook --user=ubuntu --inventory-file=$APOLLO_ROOT/inventory \
-    --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
-      consul_atlas_join=true \
-      consul_atlas_token=${ATLAS_TOKEN} \
-      $(get_apollo_variables)" \
-      --sudo site.yml
-  popd
-}
-
 apollo_down() {
-  pushd $APOLLO_ROOT/terraform/aws
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     terraform destroy -var "access_key=${TF_VAR_access_key}" \
       -var "key_file=${TF_VAR_key_file}" \
       -var "region=${TF_VAR_region}"
   popd
 }
 
-terraform_apply() {
-  pushd $APOLLO_ROOT/terraform/aws
-    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
-      -var "instance_type.slave=${TF_VAR_slave_size}" \
-      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
-      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}" \
-      -var "zones.zone-0=${TF_VAR_zone-0}" \
-      -var "zones.zone-1=${TF_VAR_zone-1}" \
-      -var "zones.zone-2=${TF_VAR_zone-2}" \
-  popd
-}
-
 ovpn_start() {
-  pushd $APOLLO_ROOT/terraform/aws
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     echo "... initialising VPN setup" >&2
     /bin/sh -x bin/ovpn-init
     /bin/sh -x bin/ovpn-start
@@ -113,17 +60,17 @@ ovpn_start() {
 }
 
 ovpn_client_config() {
-  pushd $APOLLO_ROOT/terraform/aws
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     echo "... creating VPN client configuration" >&2
-    /bin/sh -x bin/ovpn-new-client $TF_VAR_user
-    /bin/sh -x bin/ovpn-client-config $TF_VAR_user
+    /bin/sh -x bin/ovpn-new-client "${TF_VAR_user}"
+    /bin/sh -x bin/ovpn-client-config "${TF_VAR_user}"
 
     # We need to sed the .ovpn file to replace the correct IP address, because we are getting the
     # instance IP address not the elastic IP address in the downloaded file.
     bastion_ip=$(terraform output bastion.ip)
-    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${bastion_ip}/g" $TF_VAR_user-apollo.ovpn
+    /usr/bin/env sed -i -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${bastion_ip}/g" "${TF_VAR_user-apollo.ovpn}"
 
-    /usr/bin/open $TF_VAR_user-apollo.ovpn
+    /usr/bin/open "${TF_VAR_user-apollo.ovpn}"
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
     while true; do
