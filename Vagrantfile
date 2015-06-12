@@ -74,51 +74,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         vb.name = 'vagrant-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
-<<<<<<< HEAD
-
-        override.vm.provision "ansible" do |ansible|
-          ansible.playbook = "site.yml"
-          ansible.sudo = true
-          ansible.extra_vars = {
-            zookeeper_id: node[:zookeeper_id],
-            zookeeper_conf: zookeeper_conf,
-            mesos_master_quorum: 2,
-            mesos_zk_url: mesos_zk_url,
-            mesos_local_address: node[:ip],
-            marathon_zk_url: marathon_zk_url,
-            marathon_hostname: node[:ip],
-            consul_join: consul_join,
-            consul_retry_join: [consul_retry_join],
-            consul_bootstrap_expect: 1,
-            consul_advertise: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
-          }
-          ansible.groups = ansible_groups
-        end
-||||||| merged common ancestors
-
-        override.vm.provision "ansible" do |ansible|
-          ansible.playbook = "site.yml"
-          ansible.sudo = true
-          ansible.extra_vars = {
-            zookeeper_id: node[:zookeeper_id],
-            zookeeper_conf: zookeeper_conf,
-            mesos_master_quorum: 2,
-            mesos_zk_url: mesos_zk_url,
-            mesos_local_address: node[:ip],
-            marathon_local_address: node[:ip],
-            consul_join: consul_join,
-            consul_retry_join: [consul_retry_join],
-            consul_bootstrap_expect: 1,
-            consul_advertise: node[:ip],
-            consul_bind_addr: node[:ip],
-            consul_dc: "vagrant",
-          }
-          ansible.groups = ansible_groups
-        end
-=======
->>>>>>> master
       end
     end
   end
