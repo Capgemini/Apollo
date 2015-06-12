@@ -49,9 +49,9 @@ deploy:
     - pip-install:
         requirements_file: "requirements.txt"
     - capgemini/apollo-deploy:
-        cloud: digitalocean
-        artifact_name: enxebre/apollo-ubuntu-14.04-amd64
-        artifact_version: 2
+        cloud: $CLOUD
+        artifact_name: $ARTIFACT_NAME
+        artifact_version: $ARTIFACT_VERSION
         terraform_version: 0.5.0
         run_tests: true
     after-steps:

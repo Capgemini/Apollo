@@ -7,7 +7,7 @@ export ATLAS_INFRASTRUCTURE=${ATLAS_INFRASTRUCTURE:-capgemini/apollo}
 export TF_VAR_access_key=${TF_VAR_access_key:?"Need to set TF_VAR_access_key non-empty"}
 export TF_VAR_secret_key=${TF_VAR_secret_key:?"Need to set TF_VAR_secret_key non-empty"}
 export TF_VAR_key_file=${TF_VAR_key_file:-$HOME/.ssh/apollo_aws_rsa}
-export TF_VAR_key_name=${TF_VAR_key_name:-apollo}
+export TF_VAR_key_name=${TF_VAR_key_name:-deployer}
 
 # Terraform mappings needs to be statically passed as -var parameters
 # so no really needed to export them. Exporting for consitency.

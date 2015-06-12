@@ -44,7 +44,6 @@ ansible_ssh_config() {
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $TF_VAR_key_file
     UserKnownHostsFile     /dev/null
 EOF
   popd
