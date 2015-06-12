@@ -1,33 +1,38 @@
 #!/bin/bash
 
 # Util functions cloud reusable.
+APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
+DEFAULT_CONFIG="${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/${APOLLO_CONFIG_FILE-"config-default.sh"}"
+if [ -f "${DEFAULT_CONFIG}" ]; then
+  source "${DEFAULT_CONFIG}"
+fi
 
-get_apollo_variables() {
-  local plugin_namespace=${1:-"APOLLO_"}
-  local var_list=()
-  local IFS=$'\n'
+verify_prereqs() {
+  if [[ "$(which terraform)" == "" ]]; then
+    echo -e "${color_red}Can't find terraform in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
 
-  for env_var in $( env | grep ${plugin_namespace} ); do
-  	# This deletes shortest match of $substring from front of $string. ${string#substring}
-    var_value=${env_var#${plugin_namespace}}
+  check_terraform_version "0.5.0"
 
-    var=$( echo $var_value | awk -F = '{ print $1 }' )
-    value=${var_value#*=}
-    var_list+=( "${var}='${value}'" )
-  done
-  echo ${var_list[@]}
+  if [[ "$(which ansible-playbook)" == "" ]]; then
+    echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
+  if [[ "$(which python)" == "" ]]; then
+    echo -e "${color_red}Can't find python in PATH, please fix and retry.${color_norm}"
+    exit 1
+  fi
 }
 
 check_terraform_version() {
-
   local IFS='.'
-  local current_version_string=`terraform --version | awk 'NR==1 {print $2}'`
+  local current_version_string=$(terraform --version | awk 'NR==1 {print $2}')
   local requirement_version_string=${1:-0.5.0}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
   local result=0
-  echo "You are running Terraform ${current_version_string}..."
 
   for (( n=0; n<${#requirement_version[@]}; n+=1 )); do
     diff=$((current_version[n]-requirement_version[n]))
@@ -38,85 +43,86 @@ check_terraform_version() {
 
   done
 
+  echo "You are running Terraform ${current_version_string}..."
   if [ $result -eq 1 ]; then
     echo -e "${color_red}Terraform >= ${requirement_version_string} is required, please fix and retry.${color_norm}"
     exit 1
   fi
 }
 
+get_apollo_variables() {
+  local plugin_namespace=${1:-"APOLLO_"}
+  local -a var_list=()
+  local IFS=$'\n'
+
+  for env_var in $( env | grep "${plugin_namespace}" ); do
+    # This deletes shortest match of $substring from front of $string. ${string#substring}
+    var_value=${env_var#${plugin_namespace}}
+
+    var=$( echo "${var_value}" | awk -F = '{ print "${1}" }' )
+    value=${var_value#*=}
+    var_list+=( "${var}='${value}'" )
+  done
+  echo "${var_list[@]}"
+}
+
+apollo_launch() {
+  terraform_apply
+  run_if_exist "ansible_ssh_config"
+  ansible_playbook_run
+  run_if_exist "set_vpn"
+  open_urls
+}
+
+run_if_exist() {
+  if [ "$(type -t "${1}")" = function ]; then
+    $1
+  fi
+}
+
 open_urls() {
-  pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     if [ -a /usr/bin/open ]; then
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
       /usr/bin/open "http://$(terraform output master.1.ip):8080"
       /usr/bin/open "http://$(terraform output master.1.ip):8500"
+      /usr/bin/open "http://$(terraform output master.1.ip):4040"
     fi
   popd
 }
 
-# Creates "zk://1.1.1.1:2181,2.2.2.2:2181/mesos" from "1.1.1.1,2.2.2.2"
-mesos_zk_url_terraform_to_ansible() {
-  local IFS=','
-  local ips_string=$1
-  local ips=( ${ips_string} )
-  local number_of_servers=${#ips[@]}
-  local last_server=$(( number_of_servers-1 ))
-  local IFS=''
-  local mesos_zk_url=''
-
-  for (( n=0; n<$number_of_servers; n+=1 )); do
-    mesos_zk_url="${mesos_zk_url}${ips[n]}:2181"
-    if [ "${n}" -ne "${last_server}" ]; then
-      mesos_zk_url="${mesos_zk_url},"
-    fi
-  done
-  mesos_zk_url="zk://${mesos_zk_url}/mesos"
-  echo "${mesos_zk_url}"
-}
-
-# Creates
-# "server.1=1.1.1.1:2888:3888 server.2=2.2.2.2:2888:3888 server.3=3.3.3.3:2888:3888" from "1.1.1.1,2.2.2.2,3.3.3.3"
-zookeeper_conf_terraform_to_ansible() {
-  local IFS=','
-  local ips_string=$1
-  local ips=( ${ips_string} )
-  local number_of_servers=${#ips[@]}
-  local last_server=$(( number_of_servers-1 ))
-  local connetion_port=2888
-  local election_port=3888
-  local zookeeper_conf=''
-
-  for (( n=0; n<$number_of_servers; n+=1 )); do
-    zookeeper_conf="${zookeeper_conf}server.$((n+1))=${ips[n]}:${connetion_port}:${election_port}"
-    if [ "${n}" -ne "${last_server}" ]; then
-      zookeeper_conf="${zookeeper_conf} "
-    fi
-  done
-  echo "${zookeeper_conf}"
-}
-
-# Creates "1.1.1.1 2.2.2.2" from "1.1.1.1,2.2.2.2"
-weave_peers_terraform_to_ansible() {
-  local IFS=','
-  local ips_string=$1
-  local ips=( ${ips_string} )
-  echo "${ips[@]}"
-}
-
-# Creates "1.1.1.1 2.2.2.2" from "1.1.1.1,2.2.2.2"
-zookeeper_host_list_terraform_to_ansible() {
-  local IFS=','
-  local ips_string=$1
-  local ips=( ${ips_string} )
-  echo "${ips[@]}"
-}
-
-terraform_to_ansible() {
-  pushd $APOLLO_ROOT/terraform/${APOLLO_PROVIDER}
-  local ips=$(terraform output master_ips)
-  export APOLLO_mesos_zk_url="$( mesos_zk_url_terraform_to_ansible ${ips} )"
-  export APOLLO_weave_launch_peers="$( weave_peers_terraform_to_ansible ${ips} )"
-  export APOLLO_zookeeper_conf="$( zookeeper_conf_terraform_to_ansible ${ips} )"
-  export APOLLO_zookeeper_host_list="$( zookeeper_host_list_terraform_to_ansible ${ips} )"
+ansible_playbook_run() {
+  pushd "${APOLLO_ROOT}"
+    get_ansible_inventory
+    ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
+    --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+      consul_atlas_join=true \
+      consul_atlas_token=${ATLAS_TOKEN} \
+      $( get_apollo_variables  APOLLO_)" \
+    --sudo site.yml
   popd
 }
+
+get_ansible_inventory() {
+    pushd $APOLLO_ROOT
+    if [ ! -f inventory/terraform.py ]; then
+      curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
+      chmod 755 inventory/terraform.py
+    fi
+    popd
+}
+
+terraform_apply() {
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
+    terraform apply -var "instance_size.master=${TF_VAR_master_size}" \
+      -var "instance_size.slave=${TF_VAR_slave_size}" \
+      -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
+      -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
+      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
+      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
+  popd
+}
+
+
+

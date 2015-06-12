@@ -10,10 +10,17 @@ export TF_VAR_secret_key=${TF_VAR_secret_key:?"Need to set TF_VAR_secret_key non
 export TF_VAR_key_file=${TF_VAR_key_file:-$HOME/.ssh/apollo_aws_rsa}
 export TF_VAR_key_name=${TF_VAR_key_name:-apollo}
 
+# Overrides default folder in Terraform.py inventory.
+export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/aws"
+
+export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -q"
+
 # Terraform mappings needs to be statically passed as -var parameters
 # so no really needed to export them. Exporting for consitency.
 export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-ubuntu-14.04-amd64}
 export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-ubuntu-14.04-amd64}
+export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-1}
+export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-1}
 
 export TF_VAR_region=${TF_VAR_region:-eu-west-1}
 export TF_VAR_master_size=${TF_VAR_master_size:-m1.medium}

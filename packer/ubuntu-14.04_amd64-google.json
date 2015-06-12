@@ -7,12 +7,12 @@
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "0.8.1-1.0.171.ubuntu1404",
     "consul_version": "0.5.1",
-    "weave_version": "v0.10.0",
+    "weave_version": "v0.11.2",
     "version": "{{env `APOLLO_VERSION`}}"
   },
   "builders": [{
     "type": "googlecompute",
-    "image_name": "apollo-ubuntu-14.04-amd64",
+    "image_name": "apollo-ubuntu-1404-amd64",
     "image_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "ssh_username": "ubuntu",
     "ssh_timeout": "10m",
