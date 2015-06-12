@@ -9,6 +9,6 @@ syncLimit=2
 {% endfor %}
 {% else %}
 {% for host in groups[zookeeper_server_group] %}
-server.{{loop.index}}={{ hostvars[host]['inventory_hostname'] }}:{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_election_port }}
+server.{{loop.index}}={{ hostvars[host]['ansible_ssh_host'] }}:{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_election_port }}
 {% endfor %}
 {% endif %}

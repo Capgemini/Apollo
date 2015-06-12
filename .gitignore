@@ -13,3 +13,5 @@ ssh.config
 vendor
 .bundle
 .kitchen
+inventory/terraform.py
+

@@ -14,6 +14,7 @@ resource "digitalocean_droplet" "mesos-slave" {
   size               = "${var.instance_size.slave}"
   depends_on         = ["digitalocean_droplet.mesos-master"]
   private_networking = true
+  user_data          = "{role: mesos_slaves}"
   ssh_keys = [
     "${digitalocean_ssh_key.default.id}"
   ]
