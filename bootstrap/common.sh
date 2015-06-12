@@ -95,7 +95,7 @@ ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
     ansible-playbook --user=root \
-    --inventory-file="${APOLLO_ROOT}/inventory/${APOLLO_PROVIDER}" \
+    --inventory-file="${APOLLO_ROOT}/inventory" \
     --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
@@ -116,6 +116,7 @@ get_ansible_inventory() {
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
+    terraform apply -var "instance_size.master=${TF_VAR_master_size}" \
       -var "instance_size.slave=${TF_VAR_slave_size}" \
       -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
       -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
