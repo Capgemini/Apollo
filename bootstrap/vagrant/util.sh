@@ -3,7 +3,6 @@
 # Use the config file specified in $APOLLO_CONFIG_FILE, or default to
 # config-default.sh.
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/../..
-source "${APOLLO_ROOT}/bootstrap/vagrant/${APOLLO_CONFIG_FILE-"config-default.sh"}"
 
 verify_prereqs() {
   if [[ "$(which vagrant)" == "" ]]; then
