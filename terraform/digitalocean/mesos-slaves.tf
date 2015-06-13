@@ -11,7 +11,7 @@ resource "digitalocean_droplet" "mesos-slave" {
   region             = "${var.region}"
   count              = "${var.slaves}"
   name               = "apollo-mesos-slave-${count.index}"
-  size               = "${var.instance_size.slave}"
+  size               = "${var.instance_type.slave}"
   depends_on         = ["digitalocean_droplet.mesos-master"]
   private_networking = true
   user_data          = "{role: mesos_slaves}"
