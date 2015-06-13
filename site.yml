@@ -2,9 +2,9 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: Wait for port 22 to become available from bastion server.
+    - name: Wait for ssh port to become available from bastion server.
       wait_for:
-        port: 22
+        port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
         timeout: 60
@@ -12,7 +12,7 @@
       sudo: False
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port=22 host={{ ansible_ssh_host }} delay=10 timeout=60"
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=60"
       sudo: False
       when: bastion_ip is not defined
 
