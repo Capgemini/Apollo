@@ -1,5 +1,5 @@
 {
-  "id": "drupal-mysql-example",
+  "id": "drupal-7",
   "apps": [
     {
       "id": "mysql",
@@ -7,31 +7,27 @@
         "type": "DOCKER",
         "docker": {
           "image": "mysql:5.5",
-          "network": "BRIDGE",
-          "portMappings": [{
-            "containerPort": 3306,
-            "hostPort": 0,
-            "protocol": "tcp"
-          }]
-        }
+          "network": "BRIDGE"
+        },
       },
       "env": {
         "SERVICE_NAME": "mysql",
-        "MYSQL_DATABASE": "drupal",
-        "MYSQL_USER": "drupal",
-        "MYSQL_PASSWORD": "drupal",
+        "SERVICE_TAGS": "drupal7",
+        "MYSQL_DATABASE": "drupal7",
+        "MYSQL_USER": "drupal7",
+        "MYSQL_PASSWORD": "drupal7",
         "MYSQL_ROOT_PASSWORD": "password"
       },
       "cpus": 1,
-      "mem": 256.0,
+      "mem": 1024.0,
       "instances": 1
     },
     {
-      "id": "drupal",
+      "id": "drupal7",
       "container": {
         "type": "DOCKER",
         "docker": {
-          "image": "capgemini/apollo-commerce-kickstart:latest",
+          "image": "drupal:7",
           "network": "BRIDGE",
           "portMappings": [{
             "containerPort": 80,
@@ -41,13 +37,13 @@
         }
       },
       "env": {
-        "SERVICE_NAME": "drupal",
+        "SERVICE_NAME": "drupal7",
         "DRUPAL_DB_PASSWORD": "password",
-        "DRUPAL_DB_NAME": "drupal",
-        "DRUPAL_DB_HOST": "mysql.service.consul"
+        "DRUPAL_DB_NAME": "drupal7",
+        "DRUPAL_DB_HOST": "drupal7.mysql.service.consul"
       },
-      "cpus": 0.5,
-      "mem": 128.0,
+      "cpus": 1,
+      "mem": 512.0,
       "instances": 1,
       "healthChecks": [{
         "path": "/",
@@ -58,7 +54,7 @@
         "timeoutSeconds": 20,
         "maxConsecutiveFailures": 3
       }],
-      "dependencies": ["/drupal-mysql-example/mysql"]
+      "dependencies": ["/drupal-7/mysql"]
     }
   ]
 }
