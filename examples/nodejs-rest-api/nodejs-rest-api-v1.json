@@ -15,7 +15,8 @@
     }
   },
   "env": {
-    "SERVICE_NAME": "nodejs-rest-api"
+    "SERVICE_NAME": "nodejs-rest-api",
+    "SERVICE_TAGS": "v1"
   },
   "healthChecks": [
     {
