@@ -53,7 +53,7 @@ Security
 - [ ] Authentication and authorization for Mesos
 - [ ] Authentication and authorization for Marathon
 - [ ] Application dynamic firewalls (using consul template)
-- [ ] Network and Data encryption with IPsec 
+- [ ] Network and Data encryption with IPsec
 - [ ] Utilise Docker Audit Toolkit in CI
 - [ ] Add AppArmor to docker containers
 
@@ -61,10 +61,10 @@ Demonstrators / Examples
 ------------------------
 - [ ] Continous Deployment with Marathon
 - [ ] Mule ESB
-- [ ] Drupal / MySQL
+- [x] Drupal / MySQL
 - [ ] Wordpress / MySQL
-- [ ] Simple NodeJS webservice
-- [ ] Spring Boot microservice
+- [x] Simple NodeJS webservice
+- [x] Spring Boot microservice
 - [ ] Jmeter
 - [ ] API Management
 

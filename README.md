@@ -59,6 +59,8 @@ The above architecture is representative of Apollo cluster on AWS VPC.
     - in [docs/getting-started-guides](docs/getting-started-guides)
  - **Demonstrators and Examples**
     - [Drupal/MySQL on Marathon](examples/drupal-mysql)
+    - [Spring boot on Marathon](examples/spring-boot)
+    - [Simple nodeJS REST API on Marathon](examples/nodejs-rest-api)
  - **[Roadmap](docs/roadmap.md)**
  - **Components**
     - for people who want to know more about the individual components and the
