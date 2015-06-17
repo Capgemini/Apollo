@@ -10,3 +10,4 @@ amis.us-west-1 = "ami-857f97c1"
 
 atlas_artifact.master = "udacity/mesos-ubuntu-14.04-amd64"
 atlas_artifact.slave  = "udacity/mesos-ubuntu-14.04-amd64"
+
