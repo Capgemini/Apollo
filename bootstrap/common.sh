@@ -59,7 +59,7 @@ get_apollo_variables() {
     # This deletes shortest match of $substring from front of $string. ${string#substring}
     var_value=${env_var#${plugin_namespace}}
 
-    var=$( echo "${var_value}" | awk -F = '{ print "${1}" }' )
+    var=$( echo "${var_value}" | awk -F = '{ print $1 }' )
     value=${var_value#*=}
     var_list+=( "${var}='${value}'" )
   done
