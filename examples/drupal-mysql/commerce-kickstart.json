@@ -1,0 +1,51 @@
+{
+  "id": "commerce-kickstart",
+  "apps": [
+    {
+      "id": "mysql",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "mysql:5.5",
+          "network": "BRIDGE"
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "mysql",
+        "SERVICE_TAGS": "commerce-kickstart",
+        "MYSQL_DATABASE": "commerce-kickstart",
+        "MYSQL_USER": "ckuser",
+        "MYSQL_PASSWORD": "ckuser",
+        "MYSQL_ROOT_PASSWORD": "password"
+      },
+      "cpus": 1,
+      "mem": 1024.0,
+      "instances": 1
+    },
+    {
+      "id": "web",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "capgemini/apollo-commerce-kickstart:latest",
+          "network": "BRIDGE",
+          "portMappings": [{
+            "containerPort": 80,
+            "hostPort": 0,
+            "protocol": "tcp"
+          }]
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "commerce-kickstart",
+        "DRUPAL_DB_PASSWORD": "password",
+        "DRUPAL_DB_NAME": "commerce-kickstart",
+        "DRUPAL_DB_HOST": "commerce-kickstart.mysql.service.consul"
+      },
+      "cpus": 1,
+      "mem": 512.0,
+      "instances": 1,
+      "dependencies": ["/commerce-kickstart/mysql"]
+    }
+  ]
+}
