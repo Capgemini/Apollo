@@ -30,3 +30,12 @@ expected="You are running Terraform v0.5.0...
 -e Terraform >= 0.7.0 is required, please fix and retry."
 input="0.7.0"
 test "${function}" "${expected}" "${input}"
+
+export TESTSUITE_var1="Galicia"
+export TESTSUITE_var2="Drupal"
+export TESTSUITE_var3="ip1 ip2 ip3"
+export TESTSUITE_var4="property=val property=val property=val"
+function="get_apollo_variables"
+input="TESTSUITE_"
+expected="var4='property=val property=val property=val' var2='Drupal' var3='ip1 ip2 ip3' var1='Galicia'"
+test "${function}" "${expected}" "${input}"
