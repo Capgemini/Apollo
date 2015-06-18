@@ -11,11 +11,34 @@
   tags:
     - marathon
 
-- name: Set Marathon hostname
+- name: set marathon hostname
   sudo: yes
   copy:
     content: "{{ marathon_hostname }}"
     dest: /etc/marathon/conf/hostname
+    mode: 0644
+  notify:
+    - restart marathon
+  tags:
+    - marathon
+
+- name: create marathon artifact store directory
+  file:
+    path: "{{ marathon_artifact_store_dir }}"
+    state: directory
+    mode: 0755
+  when: marathon_artifact_store_dir is defined
+  sudo: yes
+  notify:
+    - restart marathon
+  tags:
+    - marathon
+
+- name: set marathon artifact store
+  sudo: yes
+  copy:
+    content: "{{ marathon_artifact_store }}"
+    dest: /etc/marathon/conf/artifact_store
     mode: 0644
   notify:
     - restart marathon
@@ -70,7 +93,7 @@
 
 - meta: flush_handlers
 
-- name: Set Marathon consul service definition
+- name: set marathon consul service definition
   sudo: yes
   template:
     src: marathon-consul.j2
