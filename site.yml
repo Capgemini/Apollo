@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: all:!role=bastion
   gather_facts: no
   tasks:
     - name: Wait for ssh port to become available from bastion server.
@@ -16,7 +16,7 @@
       sudo: False
       when: bastion_ip is not defined
 
-- hosts: all
+- hosts: all:!role=bastion
   roles:
     - consul
     - dnsmasq
