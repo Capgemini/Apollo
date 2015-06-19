@@ -63,11 +63,11 @@
     }
   ],
   "push": {
-    "name": "wallies/apollo"
+    "name": "Capgemini/apollo"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "wallies/apollo-ubuntu-14.04-amd64",
+    "artifact": "Capgemini/apollo-ubuntu-14.04-amd64",
     "artifact_type": "aws.ami",
     "metadata": {
       "created_at": "{{timestamp}}",
