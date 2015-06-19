@@ -8,8 +8,10 @@ resource "azure_instance" "mesos-master" {
   security_group       = "${azure_security_group.default.name}"
   location             = "${var.region}"
   username             = "${var.username}"
-  ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
-  user_data            = "{role: mesos_masters}"
+  /* @todo - replace password with ssh thumbprint */
+  password             = "${var.password}"
+  /*ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
+  user_data            = "{role: mesos_masters}"*/
 
   endpoint {
     name         = "SSH"

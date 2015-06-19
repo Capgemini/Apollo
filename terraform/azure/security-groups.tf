@@ -6,7 +6,6 @@ resource "azure_security_group" "default" {
 
 resource "azure_security_group_rule" "all-inbound" {
   name                       = "all-inbound-access-rule"
-  description                = "Default security rule that allows all inbound traffic"
   security_group_name        = "${azure_security_group.default.name}"
   type                       = "Inbound"
   action                     = "Allow"
@@ -20,7 +19,6 @@ resource "azure_security_group_rule" "all-inbound" {
 
 resource "azure_security_group_rule" "all-outbound" {
   name                       = "all-outbound-access-rule"
-  description                = "Default security rule that allows all outbound traffic"
   security_group_name        = "${azure_security_group.default.name}"
   type                       = "Outbound"
   action                     = "Allow"

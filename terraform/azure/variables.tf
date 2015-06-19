@@ -8,6 +8,12 @@ variable "username" {
   default = ""
 }
 
+/* @todo - replace */
+variable "password" {
+  description = "The Azure instance password."
+  default = ""
+}
+
 variable "ssh_key_thumbprint" {
   description = "The Azure SSH key thumbprint."
   default = ""
