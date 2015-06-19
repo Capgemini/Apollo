@@ -1,0 +1,81 @@
+---
+# tasks file for marathon
+- name: upload marathon template service
+  template:
+    src: marathon.conf.j2
+    dest: /etc/init/marathon.conf
+    mode: 0755
+  notify:
+    - restart marathon
+  sudo: yes
+  tags:
+    - marathon
+
+- name: Set Marathon hostname
+  sudo: yes
+  copy:
+    content: "{{ marathon_hostname }}"
+    dest: /etc/marathon/conf/hostname
+    mode: 0644
+  notify:
+    - restart marathon
+  tags:
+    - marathon
+
+- name: remove marathon override
+  sudo: yes
+  file:
+    path: /etc/init/marathon.override
+    state: absent
+  notify:
+    - restart marathon
+  tags:
+    - marathon
+
+- name: install wait script
+  sudo: yes
+  template:
+    src: marathon-wait-for-listen.sh.j2
+    dest: /usr/local/bin/marathon-wait-for-listen.sh
+    mode: 0755
+  notify:
+    - restart marathon
+  tags:
+    - marathon
+
+- name: ensure marathon is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: marathon
+    state: started
+    enabled: yes
+  notify:
+    - wait for marathon to listen
+  tags:
+    - marathon
+
+- meta: flush_handlers
+
+# This is here to workaround an issue where marathon does not receive an
+# acknowledgement correctly from Mesos.
+- name: force restart marathon
+  sudo: yes
+  service:
+    name: marathon
+    state: restarted
+  notify:
+    - wait for marathon to listen
+  tags:
+    - marathon
+
+- meta: flush_handlers
+
+- name: Set Marathon consul service definition
+  sudo: yes
+  template:
+    src: marathon-consul.j2
+    dest: "{{ consul_dir }}/marathon.json"
+  notify:
+    - restart consul
+  tags:
+    - marathon

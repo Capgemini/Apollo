@@ -1,0 +1,161 @@
+# used for leader election amongst masters
+- name: Set ZooKeeper URL
+  template:
+    src: zk.j2
+    dest: /etc/mesos/zk
+    mode: 0644
+  sudo: yes
+
+# Tasks for Master nodes
+- name: Set Mesos Master ip
+  copy:
+    content: "{{ mesos_ip }}"
+    dest: /etc/mesos-master/ip
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos master
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master hostname
+  copy:
+    content: "{{ mesos_hostname }}"
+    dest: /etc/mesos-master/hostname
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos master
+  when: mesos_install_mode == "master"
+
+  # The Mesos quorum value is based on the number of Mesos Masters. Take the
+  # number of masters, divide by 2, and round-up to nearest integer. For example,
+  # if there are 1 or 2 masters the quorum count is 1. If there are 3 or 4
+  # masters then the quorum count is 2. For 5 or 6 masters it's 3 and so on.
+- name: Set Mesos Master quorum count
+  template:
+    src: quorum.j2
+    dest: /etc/mesos-master/quorum
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos master
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master Cluster name
+  copy:
+    content: "{{mesos_cluster_name}}"
+    dest: /etc/mesos-master/cluster
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos master
+  when: mesos_install_mode == "master"
+
+- name: Set Mesos Master consul service definition
+  sudo: yes
+  template:
+    src: mesos-master-consul.j2
+    dest: "{{ consul_dir }}/mesos-master.json"
+  notify:
+    - restart consul
+  when: mesos_install_mode == "master"
+
+- name: remove mesos-master override
+  file:
+    path: /etc/init/mesos-master.override
+    state: absent
+  notify:
+    - restart mesos master
+  when: mesos_install_mode == "master"
+
+- name: start mesos-master (and enable it at boot)
+  service:
+    name: mesos-master
+    state: started
+    enabled: yes
+  when: mesos_install_mode == "master"
+
+# Tasks for Slave nodes
+- name: remove mesos-slave override
+  file:
+    path: /etc/init/mesos-slave.override
+    state: absent
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: Set Mesos Slave hostname
+  copy:
+    content: "{{ mesos_hostname }}"
+    dest: /etc/mesos-slave/hostname
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: set executor registration timeout
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/executor_registration_timeout
+    content: "{{ mesos_executor_registration_timeout }}"
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: set containerizers
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/containerizers
+    content: "{{ mesos_containerizers }}"
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: set slave resources
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/resources
+    content: "{{ mesos_resources }}"
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: Set Mesos Slave ip
+  copy:
+    content: "{{ mesos_ip }}"
+    dest: /etc/mesos-slave/ip
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: Create Mesos Slave work area
+  file:
+    dest: "{{mesos_slave_work_dir}}"
+    mode: 0755
+    state: directory
+  sudo: yes
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: Set Mesos Slave work area
+  copy:
+    content: "{{mesos_slave_work_dir}}"
+    dest: /etc/mesos-slave/work_dir
+    mode: 0644
+  sudo: yes
+  notify:
+    - restart mesos slave
+  when: mesos_install_mode == "slave"
+
+- name: start mesos-slave (and enable it at boot)
+  service:
+    name: mesos-slave
+    state: started
+    enabled: yes
+  when: mesos_install_mode == "slave"
+
+- meta: flush_handlers

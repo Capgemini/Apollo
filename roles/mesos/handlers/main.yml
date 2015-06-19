@@ -1,0 +1,25 @@
+---
+# handlers file for mesos
+- name: start mesos master
+  sudo: yes
+  service:
+    name: mesos-master
+    state: started
+
+- name: start mesos slave
+  sudo: yes
+  service:
+    name: mesos-slave
+    state: started
+
+- name: restart mesos master
+  sudo: yes
+  service:
+    name: mesos-master
+    state: restarted
+
+- name: restart mesos slave
+  sudo: yes
+  service:
+    name: mesos-slave
+    state: restarted

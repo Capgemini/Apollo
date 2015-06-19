@@ -7,38 +7,50 @@ resource "atlas_artifact" "mesos-slave" {
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
-  ami               = "${atlas_artifact.mesos-slave.metadata_full.region-eu-west-1}"
+  ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
   count             = "${var.slaves}"
   key_name          = "${var.key_name}"
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.id}"
   security_groups   = ["${aws_security_group.default.id}"]
-  depends_on        = ["aws_instance.nat", "aws_internet_gateway.public", "aws_instance.mesos-master"]
+  depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public", "aws_instance.mesos-master"]
   tags = {
-    Name = "capgemini-mesos-slave-${count.index}"
+    Name = "apollo-mesos-slave-${count.index}"
+    role = "mesos_slaves"
   }
-  block_device {
+  ebs_block_device {
     device_name           = "/dev/sdb"
     volume_size           = "${var.slave_block_device.volume_size}"
     delete_on_termination = true
   }
-  connection {
-    user        = "ubuntu"
-    key_file    = "${var.key_file}"
-    host        = "${aws_instance.nat.public_ip}"
-    script_path = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}.sh"
+}
+
+/* Load balancer */
+resource "aws_elb" "app" {
+  name = "apollo-mesos-elb"
+  subnets = ["${aws_subnet.public.id}"]
+  security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
+
+  listener {
+    instance_port = 80
+    instance_protocol = "http"
+    lb_port = 80
+    lb_protocol = "http"
   }
-  provisioner "file" {
-    source      = "${path.module}/scripts/common.sh"
-    destination = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-00common.sh"
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:34180/haproxy_status"
+    interval            = 30
   }
-  provisioner "file" {
-    source      = "${path.module}/scripts/setup-slave.sh"
-    destination = "/tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-01setup-slave.sh"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "echo main ${element(aws_instance.mesos-slave.*.private_ip, count.index)} ${element(aws_instance.mesos-slave.*.private_dns, count.index)} ${var.atlas_token} ${var.atlas_infrastructure} | cat /tmp/${element(aws_instance.mesos-slave.*.id, count.index)}-*.sh - | bash"
-    ]
-  }
+
+  instances = ["${aws_instance.mesos-slave.*.id}"]
+  cross_zone_load_balancing = true
+}
+
+resource "aws_proxy_protocol_policy" "http" {
+  load_balancer = "${aws_elb.app.name}"
+  instance_ports = ["80"]
 }

@@ -2,36 +2,41 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
-    "mesos_version": "0.22.0",
-    "consul_version": "0.5.0",
-    "weave_version": "latest_release",
-    "build_version": "{{ timestamp }}"
+    "mesos_version": "0.22.1-1.0.ubuntu1404",
+    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
+    "consul_version": "0.5.1",
+    "weave_version": "v0.11.2",
+    "version": "{{env `APOLLO_VERSION`}}",
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_source_ami": "{{env `AWS_SOURCE_AMI`}}",
+    "aws_instance_type": "{{env `AWS_INSTANCE_TYPE`}}"
   },
   "builders": [{
     "type": "amazon-ebs",
-    "ami_name": "mesos-{{user `mesos_version`}}-ubuntu-14.04_amd64_{{user `build_version`}}",
-    "ami_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
+    "ami_name": "apollo-ubuntu-14.04-amd64 {{timestamp}}",
+    "ami_description": "Ubuntu 14.04 LTS, Mesos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "region": "eu-west-1",
-    "source_ami": "ami-394ecc4e",
-    "instance_type": "m1.medium",
+    "region": "{{user `aws_region`}}",
+    "source_ami": "{{user `aws_source_ami`}}",
+    "instance_type": "{{user `aws_instance_type`}}",
     "ami_groups": "all",
     "ssh_username": "ubuntu",
-    "ssh_timeout": "10m",
-    "ami_regions": ["eu-west-1"]
+    "ssh_timeout": "10m"
   }],
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/ubuntu/upstart/consul.conf",
-      "destination": "/tmp/consul.conf"
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
     },
     {
       "type": "shell",
       "environment_vars": [
         "CONSUL_VERSION={{user `consul_version`}}",
-        "WEAVE_VERSION={{user `weave_version`}}"
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
@@ -41,20 +46,32 @@
         "scripts/ubuntu/install_marathon.sh",
         "scripts/common/install_consul.sh",
         "scripts/ubuntu/install_dnsmasq.sh",
-        "scripts/common/install_weave.sh"
+        "scripts/common/install_weave.sh",
+        "scripts/ubuntu/kernel-upgrade.sh"
       ],
-      "execute_command": "{{ .Vars }} sudo  -E -S sh '{{ .Path }}'"
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
     }
   ],
   "push": {
-    "name": "capgemini/mesos-0-21-0-ubuntu-14-04"
+    "name": "wallies/apollo"
   },
   "post-processors": [{
     "type": "atlas",
-    "artifact": "capgemini/mesos-{{user `mesos_version`}}_ubuntu-14.04_amd64",
+    "artifact": "wallies/apollo-ubuntu-14.04-amd64",
     "artifact_type": "aws.ami",
     "metadata": {
-      "created_at": "{{timestamp}}"
+      "created_at": "{{timestamp}}",
+      "version": "{{user `version`}}+{{timestamp}}"
     }
   }]
 }

@@ -1,0 +1,19 @@
+# The numbers of servers
+#########################
+slave_n: 1       # hostname will be slave1,slave2,…
+
+# Memory and Cpus setting
+##########################
+master_mem : 256
+master_cpus: 1
+slave_mem  : 1024
+slave_cpus : 2
+
+# Master IPs
+master1_ip: "172.31.1.11"
+master2_ip: "172.31.1.12"
+master3_ip: "172.31.1.13"
+
+# Slave IPs - must be in the same private address range as the master instances
+# See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+slave1_ip: "172.31.1.14"

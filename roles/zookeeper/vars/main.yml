@@ -1,0 +1,4 @@
+---
+# vars file for zookeeper
+zookeeper_leader_port: "2888"
+zookeeper_election_port: "3888"

@@ -1,0 +1,18 @@
+{
+  "datacenter": "{{ consul_dc }}",
+  "advertise_addr": "{{ consul_advertise }}",
+  "node_name": "{{ consul_node_name }}",
+  "domain": "{{ consul_domain }}",
+  "rejoin_after_leave": true,
+  "bind_addr": "{{ consul_bind_addr }}",
+  "client_addr": "{{ consul_client_addr }}",
+{% if consul_bootstrap_expect > 1 %}
+  "retry_join": [ {{ consul_retry_join }} ],
+{% endif %}
+{% if inventory_hostname in groups[consul_servers_group] %}
+  "server": true,
+  "bootstrap_expect": {{ consul_bootstrap_expect }},
+{% endif %}
+  "data_dir": "/var/lib/consul",
+  "ui_dir": "/opt/consul-ui"
+}

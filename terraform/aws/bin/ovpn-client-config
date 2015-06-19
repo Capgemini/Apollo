@@ -1,1 +1,1 @@
-ssh -t "ubuntu@$(terraform output nat.ip)" sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_getclient "${1}" > "${1}-capgemini-mesos.ovpn"
+ssh -t "ubuntu@$(terraform output bastion.ip)" sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_getclient "${1}" > "${1}-apollo.ovpn"

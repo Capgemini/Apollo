@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "zookeeper",
+    "port": {{ zookeeper_client_port }},
+    "tags": [ "zookeeper" ],
+    "check": {
+      "script": "echo ruok | nc {{ ansible_ssh_host }} {{ zookeeper_client_port }} | grep imok",
+      "interval": "10s"
+    }
+  }
+}

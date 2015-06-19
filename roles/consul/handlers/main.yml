@@ -1,0 +1,14 @@
+---
+# handlers file for consul
+- name: restart consul
+  service:
+    name: consul
+    state: restarted
+  sudo: yes
+  notify:
+    - wait for consul to listen
+
+- name: wait for consul to listen
+  wait_for:
+    host: "{{ consul_bind_addr }}"
+    port: 8500

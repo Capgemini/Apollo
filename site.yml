@@ -1,0 +1,41 @@
+---
+- hosts: all:!role=bastion
+  gather_facts: no
+  tasks:
+    - name: Wait for ssh port to become available from bastion server.
+      wait_for:
+        port: "{{ ansible_ssh_port }}"
+        host: "{{ ansible_ssh_host }}"
+        delay: 10
+        timeout: 60
+      delegate_to: "{{ bastion_ip }}"
+      sudo: False
+      when: bastion_ip is defined
+    - name: Wait for port 22 to become available from local server.
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=60"
+      sudo: False
+      when: bastion_ip is not defined
+
+- hosts: all:!role=bastion
+  roles:
+    - consul
+    - dnsmasq
+    - docker
+    - weave
+    - registrator
+
+- hosts: mesos_masters
+  roles:
+    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
+    - zookeeper
+    - marathon
+
+- hosts: mesos_slaves
+  roles:
+    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
+
+- hosts: load_balancers
+  roles:
+    - haproxy
+
+- include: tests/test.yml

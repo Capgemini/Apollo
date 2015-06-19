@@ -1,0 +1,62 @@
+box: wercker/python
+no-response-timeout: 15
+build:
+  steps:
+    - install-packages:
+        packages: wget unzip
+    - pip-install:
+        requirements_file: "requirements-test.txt"
+    - script:
+        name: install packer
+        cwd: packer/
+        code: |
+          wget https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
+          unzip packer_0.7.5_linux_amd64.zip
+          ./packer version
+    - script:
+        cwd: packer/
+        name: validate packer template for AMI
+        code: ./packer validate ubuntu-14.04_amd64-amis.json
+    - script:
+        cwd: packer/
+        name: validate packer template for Digitalocean
+        code: ./packer validate ubuntu-14.04_amd64-droplet.json
+    - script:
+        cwd: packer/
+        name: validate packer template for Vagrant
+        code: ./packer validate ubuntu-14.04_amd64.json
+    - script:
+        cwd: packer/
+        name: validate packer template for Google
+        code: ./packer validate ubuntu-14.04_amd64-google.json
+    - capgemini/ansible-lint:
+        name: run ansible-lint against the site.yml playbook
+        playbook: site.yml
+    - script:
+        name: syntax-check ansible playbook
+        code: |
+          echo localhost > wercker_inventory
+          ansible-playbook -i wercker_inventory --syntax-check site.yml
+    - script:
+        name: scripts testing
+        cwd: bootstrap/tests
+        code: |
+          /bin/bash test.sh
+deploy:
+    steps:
+    - install-packages:
+        packages: wget unzip
+    - pip-install:
+        requirements_file: "requirements.txt"
+    - capgemini/apollo-deploy:
+        cloud: $CLOUD
+        artifact_name: $ARTIFACT_NAME
+        artifact_version: $ARTIFACT_VERSION
+        terraform_version: 0.5.3
+        run_tests: true
+    after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL
+            channel: apollo
+            username: wercker-bot
+

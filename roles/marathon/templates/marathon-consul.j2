@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "marathon",
+    "tags": [ "marathon" ],
+    "port": {{ marathon_port }},
+    "check": {
+      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ marathon_hostname }}:{{ marathon_port }}/ping",
+      "interval": "10s"
+    }
+  }
+}

@@ -22,6 +22,14 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.public.id}"
   }
+  tags {
+    Name = "main"
+  }
+}
+
+resource "aws_main_route_table_association" "public" {
+    vpc_id = "${aws_vpc.default.id}"
+    route_table_id = "${aws_route_table.public.id}"
 }
 
 /* Associate the routing table to public subnet */

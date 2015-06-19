@@ -1,0 +1,74 @@
+{
+  "variables": {
+    "account_file": "{{env `GCS_ACCOUNT_FILE`}}",
+    "project_id": "{{env `GCS_PROJECT_ID`}}",
+    "source_image": "{{env `GCS_SOURCE_IMAGE`}}",
+    "zone": "{{env `GCS_ZONE`}}",
+    "mesos_version": "0.22.1-1.0.ubuntu1404",
+    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
+    "consul_version": "0.5.1",
+    "weave_version": "v0.11.2",
+    "version": "{{env `APOLLO_VERSION`}}"
+  },
+  "builders": [{
+    "type": "googlecompute",
+    "image_name": "apollo-ubuntu-1404-amd64",
+    "image_description": "Ubuntu 14.04 LTS, Meosos {{user `mesos_version`}}, Docker, Marathon, Consul {{user `consul_version`}}, Weave {{user `weave_version`}}, and Zookeeper.",
+    "ssh_username": "ubuntu",
+    "ssh_timeout": "10m",
+    "account_file": "{{user `account_file`}}",
+    "project_id": "{{user `project_id`}}",
+    "source_image": "{{user `source_image`}}",
+    "zone": "{{user `zone`}}"
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/ubuntu/install_mesos.sh",
+        "scripts/ubuntu/install_marathon.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/ubuntu/install_dnsmasq.sh",
+        "scripts/common/install_weave.sh",
+        "scripts/ubuntu/kernel-upgrade.sh"
+      ],
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/common/serverspec.sh",
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    }
+  ],
+  "push": {
+    "name": "capgemini/apollo"
+  },
+  "post-processors": [{
+    "type": "atlas",
+    "artifact": "capgemini/apollo-ubuntu-14.04-amd64",
+    "artifact_type": "googlecompute.image",
+    "metadata": {
+      "created_at": "{{timestamp}}",
+      "version": "{{user `version`}}+{{timestamp}}"
+    }
+  }]
+}

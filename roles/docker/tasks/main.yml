@@ -1,0 +1,45 @@
+---
+# tasks file for docker
+- name: remove docker override
+  file:
+    path: /etc/init/docker.override
+    state: absent
+  notify:
+    - restart docker
+  tags:
+    - docker
+
+- name: configure docker graph directory
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    regexp: ^DOCKER_OPTS=.*--graph.*
+    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --graph={{ docker_graph_dir }}\"'
+  notify:
+    - restart docker
+
+- name: configure docker temporary directory
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
+  notify:
+    - restart docker
+
+- name: configure docker proxy
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    line: 'export http_proxy=\"{{ http_proxy }}\"'
+  when: http_proxy is defined and http_proxy != ''
+
+- name: ensure docker is running (and enable it at boot)
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  tags:
+    - docker
