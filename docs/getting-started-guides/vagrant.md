@@ -54,12 +54,7 @@ You can interact with your Apollo cluster via the normal vagrant commands - ```v
 
 Edit ``vagrant.yml```
 
-Change ```slave_n:``` to the desired number of slave machines.
-
-Add a ```slave2_ip:``` replacing 2 with the slave number.
-
-In the ```Vagrantfile``` update the ```ansible_groups``` to reference the new
-slave hostnames added (will be in the format slave2, slave3, etc...)
+Add a new ip under ```slaves.ips:``` following the ip´s convention (i.e. 172.31.1.15).
 
 #### Using Apollo Behind a Firewall
 
