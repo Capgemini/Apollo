@@ -5,7 +5,7 @@
     "source_image": "{{env `GCS_SOURCE_IMAGE`}}",
     "zone": "{{env `GCS_ZONE`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "v0.8.2",
+    "marathon_version": "0.8.2-1.0.306.ubuntu1404",
     "consul_version": "0.5.2",
     "weave_version": "1.0.1",
     "version": "{{env `APOLLO_VERSION`}}"
