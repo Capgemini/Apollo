@@ -6,8 +6,7 @@ export ATLAS_INFRASTRUCTURE=${ATLAS_INFRASTRUCTURE:-capgemini/apollo}
 
 export TF_VAR_azure_settings_file=${TF_VAR_azure_settings_file:?"Need to set TF_VAR_azure_settings_file non-empty"}
 export TF_VAR_username=${TF_VAR_username:?"Need to set TF_VAR_username non-empty"}
-export TF_VAR_password=${TF_VAR_password:?"Need to set TF_VAR_password non-empty"}
-#export TF_VAR_ssh_key_thumbprint=${TF_VAR_ssh_key_thumbprint:?"Need to set TF_VAR_ssh_key_thumbprint non-empty"}
+export TF_VAR_ssh_key_thumbprint=${TF_VAR_ssh_key_thumbprint:?"Need to set TF_VAR_ssh_key_thumbprint non-empty"}
 
 # Overrides default folder in Terraform.py inventory.
 export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"

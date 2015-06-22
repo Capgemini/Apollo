@@ -1,6 +1,7 @@
 /* Mesos master instances */
 resource "azure_instance" "mesos-master" {
   name                 = "apollo-mesos-master-${count.index}"
+  description          = "Mesos master instance ${count.index}"
   count                = "${var.masters}"
   /* @todo - proper image needs built */
   image                = "Ubuntu Server 14.04 LTS"
@@ -8,10 +9,8 @@ resource "azure_instance" "mesos-master" {
   security_group       = "${azure_security_group.default.name}"
   location             = "${var.region}"
   username             = "${var.username}"
-  /* @todo - replace password with ssh thumbprint */
-  password             = "${var.password}"
-  /*ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
-  user_data            = "{role: mesos_masters}"*/
+  ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
+  /*user_data            = "{role: mesos_masters}"*/
 
   endpoint {
     name         = "SSH"
