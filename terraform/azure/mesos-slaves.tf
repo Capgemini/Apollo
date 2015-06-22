@@ -1,6 +1,7 @@
 /* Mesos slave instances */
 resource "azure_instance" "mesos-slave" {
   name                 = "apollo-mesos-slave-${count.index}"
+  description          = "Mesos slave instance ${count.index}"
   depends_on           = ["azure_instance.mesos-master"]
   count                = "${var.slaves}"
   /* @todo - proper image needs built */
@@ -9,10 +10,8 @@ resource "azure_instance" "mesos-slave" {
   security_group       = "${azure_security_group.default.name}"
   location             = "${var.region}"
   username             = "${var.username}"
-  /* @todo - replace password with ssh thumbprint */
-  password             = "${var.password}"
-  /*ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
-  user_data            = "{role: mesos_slaves}"*/
+  ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
+  /*user_data            = "{role: mesos_slaves}"*/
 
   endpoint {
     name         = "SSH"
