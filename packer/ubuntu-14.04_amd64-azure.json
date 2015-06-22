@@ -23,7 +23,7 @@
     "os_image_label": "{{user `azure_source_image`}}",
     "location": "{{user `azure_location`}}",
     "instance_size": "{{user `azure_instance_type`}}",
-    "user_image_label": "apollo-ubuntu-14.04-amd64 {{timestamp}}"
+    "user_image_label": "apollo-ubuntu-14.04-amd64-{{timestamp}}"
   }],
   "provisioners": [
     {

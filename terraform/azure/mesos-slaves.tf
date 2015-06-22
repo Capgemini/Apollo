@@ -1,11 +1,11 @@
 /* Mesos slave instances */
 resource "azure_instance" "mesos-slave" {
   name                 = "apollo-mesos-slave-${count.index}"
-  description          = "Mesos slave instance ${count.index}"
+  description          = "Mesos slave ${count.index}"
   depends_on           = ["azure_instance.mesos-master"]
   count                = "${var.slaves}"
-  /* @todo - proper image needs built */
-  image                = "Ubuntu Server 14.04 LTS"
+  /* @todo - replace with variable or atlas artifact */
+  image                = "apollo-ubuntu-14.04-amd64-1434963352"
   size                 = "${var.instance_type.slave}"
   security_group       = "${azure_security_group.default.name}"
   location             = "${var.region}"

@@ -1,10 +1,10 @@
 /* Mesos master instances */
 resource "azure_instance" "mesos-master" {
   name                 = "apollo-mesos-master-${count.index}"
-  description          = "Mesos master instance ${count.index}"
+  description          = "Mesos master ${count.index}"
   count                = "${var.masters}"
-  /* @todo - proper image needs built */
-  image                = "Ubuntu Server 14.04 LTS"
+  /* @todo - replace with variable */
+  image                = "apollo-ubuntu-14.04-amd64-1434963352"
   size                 = "${var.instance_type.master}"
   security_group       = "${azure_security_group.default.name}"
   location             = "${var.region}"

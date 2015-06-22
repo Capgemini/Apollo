@@ -21,8 +21,8 @@ export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_mast
 export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-1}
 
 export TF_VAR_region=${TF_VAR_region:-North Europe}
-export TF_VAR_master_size=${TF_VAR_master_size:-Standard_A1}
-export TF_VAR_slave_size=${TF_VAR_slave_size:-Standard_A1}
+export TF_VAR_master_size=${TF_VAR_master_size:-Medium}
+export TF_VAR_slave_size=${TF_VAR_slave_size:-Medium}
 export TF_VAR_slaves=${TF_VAR_slaves:-1}
 
 export APOLLO_consul_dc=${APOLLO_consul_dc:-$TF_VAR_region}

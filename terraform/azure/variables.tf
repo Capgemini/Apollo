@@ -30,7 +30,7 @@ variable "masters" {
 
 variable "instance_type" {
   default = {
-    master = "Standard_A1"
-    slave  = "Standard_A1"
+    master = "Medium"
+    slave  = "Medium"
   }
 }
