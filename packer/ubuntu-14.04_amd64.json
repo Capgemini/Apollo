@@ -121,7 +121,7 @@
     }
   ],
   "push": {
-    "name": "wallies/apollo"
+    "name": "capgemini/apollo"
   },
   "post-processors": [
     [{
@@ -132,7 +132,7 @@
     },
     {
       "type": "vagrant-cloud",
-      "box_tag": "wallies/apollo",
+      "box_tag": "capgemini/apollo",
       "access_token": "{{user `access_token`}}",
       "version": "{{user `version`}}"
     }]
