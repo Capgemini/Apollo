@@ -9,9 +9,9 @@
     "hostname": "ubuntu",
     "version": "{{env `APOLLO_VERSION`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
+    "marathon_version": "v0.8.2",
     "consul_version": "0.5.2",
-    "weave_version": "v1.0.0",
+    "weave_version": "1.0.1",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
     "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195"

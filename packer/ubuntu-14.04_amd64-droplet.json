@@ -5,9 +5,9 @@
     "digitalocean_size": "{{env `DIGITALOCEAN_SIZE`}}",
     "digitalocean_image": "{{env `DIGITALOCEAN_IMAGE`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
+    "marathon_version": "v0.8.2",
     "consul_version": "0.5.2",
-    "weave_version": "v1.0.0",
+    "weave_version": "1.0.1",
     "version": "{{env `APOLLO_VERSION`}}"
   },
   "builders": [{
