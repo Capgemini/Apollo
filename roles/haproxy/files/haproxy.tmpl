@@ -1,12 +1,12 @@
 global
-    maxconn {{or (key "service/haproxy/maxconn") 256}}
+    maxconn {{ or (key "service/haproxy/maxconn") 256 }}
     debug
 
 defaults
     mode http
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+    timeout connect {{ or (key "service/haproxy/timeouts/connect") "5000ms" }}
+    timeout client {{ or (key "service/haproxy/timeouts/client") "50000ms" }}
+    timeout server {{ or (key "service/haproxy/timeouts/server") "50000ms" }}
 
 # frontend used to return health status without requiring SSL
 frontend haproxy_status
