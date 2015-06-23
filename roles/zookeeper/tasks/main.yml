@@ -19,7 +19,7 @@
 
 - name: Create zookeeper myid file
   copy:
-    content: "{{zookeeper_id}}"
+    content: "{{ zookeeper_id }}"
     dest: /etc/zookeeper/conf/myid
     mode: 0644
   sudo: yes
