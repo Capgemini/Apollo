@@ -12,7 +12,7 @@
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "apollo-ubuntu-14.04-amd64",
+    "snapshot_name": "apollo-ubuntu-14.04-amd64-{{timestamp}}",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "{{user `digitalocean_image`}}",
     "region": "{{user `digitalocean_region`}}",
