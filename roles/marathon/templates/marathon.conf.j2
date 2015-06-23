@@ -6,6 +6,6 @@ stop on runlevel [!2345]
 respawn
 respawn limit 10 5
 
-export LIBPROCESS_IP={{ ansible_ssh_host }}
+export LIBPROCESS_IP={{ marathon_libprocess_ip }}
 
 exec /usr/bin/marathon
