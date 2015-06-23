@@ -11,7 +11,9 @@ curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
+docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:v0.8.2
+
 
 sudo service docker stop
 echo manual | sudo tee /etc/init/docker.override >/dev/null
