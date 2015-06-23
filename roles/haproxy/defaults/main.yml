@@ -11,4 +11,4 @@ haproxy_domain: example.com
 consul_template_dir: /mnt/consul-template.d
 consul_template_loglevel: debug
 consul_backend: consul.service.consul:8500
-consul_template_version: 0.8.0
+consul_template_version: 0.9.0
