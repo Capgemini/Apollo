@@ -22,13 +22,13 @@ frontend www
     bind *:80
 
     # Generated automatically by consul-template
-{{ range services }}
-    acl host_{{ .Name }} hdr(host) -i {{ .Name }}.{{ env "HAPROXY_DOMAIN" }}
-    use_backend {{ .Name }}_backend if host_{{ .Name }}
-{{ end }}
+{{range services}}
+    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
+    use_backend {{.Name}}_backend if host_{{.Name}}
+{{end}}
 
-{{ range services }}
-backend {{ .Name }}_backend
-{{ range service .Name }}
-   server {{ .Node }} {{ .Address }}:{{ .Port }}{{ end }}
-{{ end }}
+{{range services}}
+backend {{.Name}}_backend
+{{range service .Name}}
+   server {{.Node}} {{.Address}}:{{.Port}}{{end}}
+{{end}}
