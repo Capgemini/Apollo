@@ -1,11 +1,12 @@
-description "Marathon scheduler for Mesos"
+description "Marathon container"
 
-start on runlevel [2345]
-stop on runlevel [!2345]
+start on started docker
+stop on stopping docker
+
+script
+  /usr/bin/docker start -a marathon
+end script
 
 respawn
-respawn limit 10 5
-
-export LIBPROCESS_IP={{ marathon_libprocess_ip }}
-
-exec /usr/bin/marathon
+respawn limit 10 10
+kill timeout 10
