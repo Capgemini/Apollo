@@ -1,6 +1,7 @@
 ---
 # defaults file for weave
 weave_bridge: "10.2.0.1/16"
+weave_ip_range: "10.2.0.0/16"
 weave_server_group: weave_servers
 weave_docker_subnet: "
     {%- for host in groups[weave_server_group] -%}
