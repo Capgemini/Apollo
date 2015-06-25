@@ -10,7 +10,7 @@ pre-start exec ${WEAVE} stop
 
 script
  [ -e /etc/default/weave ] && . /etc/default/weave
- ${WEAVE} launch -iprange "{{ weave_docker_subnet }}" ${PEERS}
+ ${WEAVE} launch ${PEERS}
  exec /usr/bin/docker logs -f weave
 end script
 
