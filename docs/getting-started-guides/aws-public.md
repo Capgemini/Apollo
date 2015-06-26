@@ -41,7 +41,6 @@ As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=aws-public
-TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
 TF_VAR_key_name="deployer"
