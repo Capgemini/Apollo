@@ -1,6 +1,7 @@
 ---
 # defaults file for marathon
 marathon_port: 8080
+marathon_zookeeper_group: zookeeper_servers
 consul_dir: /etc/consul.d
 marathon_hostname: "{{ ansible_ssh_host }}"
 marathon_artifact_store: "file:///etc/marathon/store"
