@@ -1,5 +1,27 @@
 ---
 # tasks file for marathon
+- name: Set ZooKeeper URL in master file
+  template:
+    src: master.j2
+    dest: /etc/marathon/conf/master
+    mode: 0644
+  notify:
+    - restart marathon
+  sudo: yes
+  tags:
+    - marathon
+
+- name: Set ZooKeeper URL
+  template:
+    src: zk-marathon.j2
+    dest: /etc/marathon/conf/zk
+    mode: 0644
+  notify:
+    - restart marathon
+  sudo: yes
+  tags:
+    - marathon
+
 - name: upload marathon template service
   template:
     src: marathon.conf.j2
@@ -101,4 +123,4 @@
   notify:
     - restart consul
   tags:
-    - marathon
+    - marathon  
