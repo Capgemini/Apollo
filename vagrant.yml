@@ -15,11 +15,12 @@ slaves:
 # Memory and Cpus setting
   ##########################
   mem: 1024
-  cpus: 2
+  cpus: 1
   # Slave IPs - must be in the same private address range as the master instances
   # See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
   ips:
       - 172.31.1.14
+      - 172.31.1.15
 
 ansible_groups:
   "all:children":
