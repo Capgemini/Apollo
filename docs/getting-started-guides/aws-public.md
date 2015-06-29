@@ -52,14 +52,14 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 
 #### Turn up the cluster
 ```
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
 
 #### Tearing down the cluster
 ```
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```
 
 

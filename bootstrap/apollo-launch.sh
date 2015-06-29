@@ -2,10 +2,7 @@
 
 set -o errexit
 set -o nounset
-
-if [ -n "$BASH" ]; then
-  set -o pipefail
-fi
+set -o pipefail
 
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
 source "${APOLLO_ROOT}/bootstrap/apollo-env.sh"

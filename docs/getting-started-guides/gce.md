@@ -65,11 +65,11 @@ ssh-add ~/.ssh/google_compute_engine
 And:
 
 ```bash
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 #### Tearing down the cluster
 
 ```bash
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```

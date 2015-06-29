@@ -23,7 +23,7 @@ _Note: you may need to run the pip command with Admin priviledges (e.g. sudo ...
 #### Turn up the cluster
 ```
 export APOLLO_PROVIDER=vagrant
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 Note: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command
@@ -43,7 +43,7 @@ To tweak these settings you may modify ```vagrant.yml```
 
 #### Tearing down the cluster
 ```
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```
 
 #### Interacting with your Apollo cluster with Vagrant
