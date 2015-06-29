@@ -5,8 +5,9 @@ resource "aws_key_pair" "deployer" {
 
 /* Base packer build we use for provisioning master instances */
 resource "atlas_artifact" "mesos-master" {
-  name = "${var.atlas_artifact.master}"
-  type = "aws.ami"
+  name    = "${var.atlas_artifact.master}"
+  type    = "aws.ami"
+  version = "${var.atlas_artifact_version.master}"
 }
 
 /* Mesos master instances */

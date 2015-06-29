@@ -1,7 +1,8 @@
 /* Base packer build we use for provisioning slave instances */
 resource "atlas_artifact" "mesos-slave" {
-  name = "${var.atlas_artifact.slave}"
-  type = "aws.ami"
+  name    = "${var.atlas_artifact.slave}"
+  type    = "aws.ami"
+  version = "${var.atlas_artifact_version.master}"
 }
 
 /* Mesos slave instances */
