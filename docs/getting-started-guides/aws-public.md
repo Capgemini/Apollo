@@ -12,7 +12,7 @@
 ```
 cd ~/.ssh
 ssh-keygen -P "" -t rsa -f id_rsa_aws -b 4096 -C "email@example.com"
-openssl rsa -in ~/.ssh/id_rsa_aws -outform pem > id_rsa_tmp.pem
+openssl rsa -in ~/.ssh/id_rsa_aws -outform pem > id_rsa_aws.pem
 chmod 400 id_rsa_aws.pem
 eval `ssh-agent -s`
 ssh-add id_rsa_aws.pem
@@ -24,7 +24,7 @@ ssh-add id_rsa_aws.pem
 
 ##### Install from source at head
 1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo``` 
+2. ```cd apollo```
 3. ```pip install -r requirements.txt```
 
 #### Set config
@@ -41,7 +41,6 @@ As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=aws-public
-TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
 TF_VAR_key_name="deployer"

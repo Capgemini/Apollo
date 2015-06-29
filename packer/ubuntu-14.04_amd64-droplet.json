@@ -5,14 +5,14 @@
     "digitalocean_size": "{{env `DIGITALOCEAN_SIZE`}}",
     "digitalocean_image": "{{env `DIGITALOCEAN_IMAGE`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.1",
-    "weave_version": "v0.11.2",
+    "marathon_version": "0.8.2-1.0.306.ubuntu1404",
+    "consul_version": "0.5.2",
+    "weave_version": "1.0.1",
     "version": "{{env `APOLLO_VERSION`}}"
   },
   "builders": [{
     "type": "digitalocean",
-    "snapshot_name": "apollo-ubuntu-14.04-amd64",
+    "snapshot_name": "apollo-ubuntu-14.04-amd64-{{timestamp}}",
     "api_token": "{{user `digitalocean_api_token`}}",
     "image": "{{user `digitalocean_image`}}",
     "region": "{{user `digitalocean_region`}}",

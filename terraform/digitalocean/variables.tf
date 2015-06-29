@@ -24,7 +24,7 @@ variable "slaves" {
   default = "1"
 }
 
-variable "instance_size" {
+variable "instance_type" {
   default = {
     master = "512mb"
     slave  = "512mb"

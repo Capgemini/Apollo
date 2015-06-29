@@ -12,13 +12,18 @@ resource "aws_elb" "app" {
   }
 
   health_check {
-    healthy_threshold = 2
+    healthy_threshold   = 2
     unhealthy_threshold = 2
-    timeout = 3
-    target = "HTTP:80/"
-    interval = 30
+    timeout             = 3
+    target              = "HTTP:34180/haproxy_status"
+    interval            = 30
   }
 
   instances = ["${aws_instance.mesos-slave.*.id}"]
   cross_zone_load_balancing = true
+}
+
+resource "aws_proxy_protocol_policy" "http" {
+  load_balancer = "${aws_elb.app.name}"
+  instance_ports = ["80"]
 }

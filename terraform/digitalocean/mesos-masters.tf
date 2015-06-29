@@ -17,7 +17,7 @@ resource "digitalocean_droplet" "mesos-master" {
   region             = "${var.region}"
   count              = "${var.masters}"
   name               = "apollo-mesos-master-${count.index}"
-  size               = "${var.instance_size.master}"
+  size               = "${var.instance_type.master}"
   depends_on         = ["digitalocean_ssh_key.default"]
   private_networking = true
   user_data          = "{role: mesos_masters}"

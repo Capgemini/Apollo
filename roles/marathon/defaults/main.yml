@@ -3,3 +3,6 @@
 marathon_port: 8080
 consul_dir: /etc/consul.d
 marathon_hostname: "{{ ansible_ssh_host }}"
+marathon_artifact_store: "file:///etc/marathon/store"
+marathon_artifact_store_dir: /etc/marathon/store
+marathon_libprocess_ip: "{{ ansible_ssh_host }}"

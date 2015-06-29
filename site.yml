@@ -1,10 +1,10 @@
 ---
-- hosts: all
+- hosts: all:!role=bastion
   gather_facts: no
   tasks:
-    - name: Wait for port 22 to become available from bastion server.
+    - name: Wait for ssh port to become available from bastion server.
       wait_for:
-        port: 22
+        port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
         timeout: 60
@@ -14,14 +14,14 @@
     - name: Wait for port 22 to become available from local server.
       local_action:
         module: wait_for
-        port: 22
+        port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
         timeout: 60
       sudo: False
       when: bastion_ip is not defined
 
-- hosts: all
+- hosts: all:!role=bastion
   roles:
     - consul
     - dnsmasq
@@ -44,3 +44,5 @@
     - haproxy
 
 - include: tests/test.yml
+  vars_files:
+    - ../roles/marathon/defaults/main.yml

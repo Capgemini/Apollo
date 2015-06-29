@@ -1,19 +1,42 @@
-# The numbers of servers
-#########################
-slave_n: 1       # hostname will be slave1,slave2,…
+masters:
+  # Memory and Cpus setting
+  ##########################
+  mem: 256
+  cpus: 1
+  # Actual instances
+  ##################
+  ips:
+      - 172.31.1.11
+      - 172.31.1.12
+      - 172.31.1.13
 
+# By default only one slave is set, to increase that number just add new ips.
+slaves:
 # Memory and Cpus setting
-##########################
-master_mem : 256
-master_cpus: 1
-slave_mem  : 1024
-slave_cpus : 2
+  ##########################
+  mem: 1024
+  cpus: 2
+  # Slave IPs - must be in the same private address range as the master instances
+  # See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+  ips:
+      - 172.31.1.14
 
-# Master IPs
-master1_ip: "172.31.1.11"
-master2_ip: "172.31.1.12"
-master3_ip: "172.31.1.13"
-
-# Slave IPs - must be in the same private address range as the master instances
-# See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
-slave1_ip: "172.31.1.14"
+ansible_groups:
+  "all:children":
+    - mesos_masters
+    - mesos_slaves
+    - load_balancers
+  "load_balancers:children":
+    - mesos_slaves
+  "zookeeper_servers:children":
+    - mesos_masters
+  "consul_servers:children":
+    - mesos_masters
+  "weave_servers:children":
+    - mesos_masters
+    - mesos_slaves
+    - load_balancers
+  "vagrant:children":
+    - mesos_masters
+    - mesos_slaves
+    - load_balancers

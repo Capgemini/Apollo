@@ -59,7 +59,7 @@ get_apollo_variables() {
     # This deletes shortest match of $substring from front of $string. ${string#substring}
     var_value=${env_var#${plugin_namespace}}
 
-    var=$( echo "${var_value}" | awk -F = '{ print "${1}" }' )
+    var=$( echo "${var_value}" | awk -F = '{ print $1 }' )
     value=${var_value#*=}
     var_list+=( "${var}='${value}'" )
   done
@@ -115,8 +115,8 @@ get_ansible_inventory() {
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
-    terraform apply -var "instance_size.master=${TF_VAR_master_size}" \
-      -var "instance_size.slave=${TF_VAR_slave_size}" \
+    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
+      -var "instance_type.slave=${TF_VAR_slave_size}" \
       -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
       -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
       -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \

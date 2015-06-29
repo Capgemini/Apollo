@@ -22,6 +22,16 @@
   tags:
     - serverspec
 
+- name: upload marathon runtime serverspecs
+  template:
+    src: marathon_runtime_spec.rb.j2
+    dest: "{{ serverspec_tests_path }}/tests/spec/marathon/marathon_runtime_spec.rb"
+    mode: 0755
+  sudo: yes
+  when: serverspec_run_tests and serverspec_upload_folder
+  tags:
+    - serverspec
+
 - name: install bundler
   command: gem install bundler --no-ri --no-rdoc
   args:
