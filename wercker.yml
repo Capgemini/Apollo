@@ -45,7 +45,7 @@ build:
 deploy:
     steps:
     - install-packages:
-        packages: wget unzip
+        packages: wget unzip auditd audispd-plugins
     - pip-install:
         requirements_file: "requirements.txt"
     - capgemini/apollo-deploy:

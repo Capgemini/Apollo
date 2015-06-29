@@ -1,0 +1,23 @@
+---
+# tasks file for docker bench
+- name: checkout docker bench git repo
+  git: 
+    repo: "{{ dockerbench_repo }}"
+    dest: "{{ dockerbench_dest }}"
+    accept_hostkey: true
+  when: dockerbench_run_test
+
+- name: install docker bench threshold script
+  sudo: yes
+  template:
+    src: docker-bench-warn.sh.j2
+    dest: /usr/local/bin/docker-bench-warn.sh
+    mode: 0755
+  when: dockerbench_run_test
+
+- name: run docker bench script
+  command: /usr/local/bin/docker-bench-warn.sh
+  sudo: yes
+  args:
+    chdir: "{{ dockerbench_dest }}"
+  when: dockerbench_run_test
