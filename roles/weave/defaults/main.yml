@@ -1,6 +1,12 @@
 ---
 # defaults file for weave
-weave_bridge: "10.2.0.1/16"
+weave_bridge: "
+    {%- for host in groups[weave_server_group] -%}
+      {%- if host == 'default' or host == inventory_hostname or host == ansible_fqdn or host in ansible_all_ipv4_addresses -%}
+        10.2.0.{{ loop.index }}/16
+      {%- endif -%}
+    {%- endfor -%}
+"
 weave_server_group: weave_servers
 weave_docker_subnet: "
     {%- for host in groups[weave_server_group] -%}
