@@ -1,0 +1,27 @@
+# Install (docker-py) python package as is a docker module dependency.
+- pip: name=docker-py version=1.1.0
+
+# tasks for running cadvisor
+- name: run cadvisor container
+  when: cadvisor_enabled == "Y"
+  docker:
+    name: cadvisor
+    image: "{{ cadvisor_image }}"
+    state: started
+    restart_policy: always
+    net: host
+    ports:
+      - "{{ cadvisor_port }}:8080"
+    hostname: "{{ hostname }}"
+    volumes:
+    - "/var/lib/docker/:/var/lib/docker:ro"
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+
+# tasks for stopping cadvisor
+- name: stop cadvisor container
+  when: cadvisor_enabled == "N"
+  docker:
+    name: cadvisor
+    image: "{{ cadvisor_image }}"

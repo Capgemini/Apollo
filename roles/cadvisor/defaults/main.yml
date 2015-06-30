@@ -1,0 +1,7 @@
+---
+# defaults file for cadvisor
+cadvisor_enabled: 'Y'
+cadvisor_version: 'latest'
+cadvisor_host_port: 8080
+hostname: "{{ ansible_all_ipv4_addresses }}"
+cadvisor_image: "google/cadvisor:{{ cadvisor_version }}"
