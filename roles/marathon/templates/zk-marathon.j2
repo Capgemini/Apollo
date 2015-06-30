@@ -1,0 +1,14 @@
+{% if marathon_zk_url is defined %}
+{{ marathon_zk_url }}
+{% else %}
+{%- set marathon_zk_url = '' -%}
+{%- for host in groups[marathon_zookeeper_group] -%}
+  {%- if not loop.last -%}
+    {%- set marathon_zk_url = marathon_zk_url + hostvars[host]['ansible_ssh_host'] + ':2181,' -%}
+  {%- endif -%}
+{%- if loop.last -%}
+  {%- set marathon_zk_url = marathon_zk_url + hostvars[host]['ansible_ssh_host'] + ':2181/marathon' -%}
+zk://{{ marathon_zk_url }}
+  {%- endif -%}
+{%- endfor -%}
+{%- endif -%}
