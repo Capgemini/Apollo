@@ -3,7 +3,6 @@ consul_dc: vagrant
 mesos_ip: "{{ ansible_eth1.ipv4.address }}"
 consul_advertise: "{{ ansible_eth1.ipv4.address }}"
 consul_bind_addr: "{{ ansible_eth1.ipv4.address }}"
-marathon_libprocess_ip: "{{ ansible_eth1.ipv4.address }}"
 marathon_hostname: "{{ ansible_eth1.ipv4.address }}"
 mesos_hostname: "{{ ansible_eth1.ipv4.address }}"
 mesos_master_quorum: 2
