@@ -1,0 +1,29 @@
+---
+# defaults file for chronos
+chronos_enabled: true
+chronos_consul_dir: /etc/consul.d
+chronos_cluster_name: "{{ mesos_cluster_name }}"
+chronos_version: 'chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404'
+chronos_restart_policy: 'no'
+chronos_net: 'bridge'
+chronos_hostname: "{{ ansible_ssh_host }}"
+chronos_host_port: 4400
+chronos_container_memory_limit: '512MB'
+chronos_server_zk_group: mesos_masters
+chronos_image: "mesosphere/chronos:{{ chronos_version }}"
+chronos_zk_peers_nodes: "
+{%- if chronos_zk_url is defined -%}
+    {{ chronos_zk_url }}
+{%- else -%}
+    {%- set chronos_peers = [] -%}
+    {%- for host in groups[chronos_server_zk_group] -%}
+      {%- if host not in chronos_peers -%}
+        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
+        {%- do chronos_peers.append(current_host) -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {{ chronos_peers|join(',') }}
+{%- endif -%}"
+
+chronos_master_peers: "{%- set master_peers = 'zk://' + chronos_zk_peers_nodes + '/mesos' -%} {{ master_peers }}"
+chronos_command: "/usr/bin/chronos run_jar --http_port 4400 --master {{ chronos_master_peers }} --zk_hosts {{ chronos_zk_peers_nodes }}"

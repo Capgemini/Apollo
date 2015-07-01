@@ -75,6 +75,15 @@
   tags:
     - marathon
 
+- name: Set marathon consul service definition
+  sudo: yes
+  template:
+    src: marathon-consul.j2
+    dest: "{{ marathon_consul_dir }}/marathon.json"
+  notify:
+    - restart consul
+  when: marathon_enabled
+
 # tasks for stoping docker marathon
 - name: stop marathon container
   when: not marathon_enabled
