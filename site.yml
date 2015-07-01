@@ -23,6 +23,7 @@
     - docker
     - weave
     - registrator
+    - cadvisor
 
 - hosts: mesos_masters
   roles:

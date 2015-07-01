@@ -1,0 +1,12 @@
+description "cadvisor container"
+
+start on started docker
+stop on stopping docker
+
+script
+  /usr/bin/docker start -a cadvisor
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10
