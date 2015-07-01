@@ -4,6 +4,7 @@
     "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
     "marathon_version": "v0.9.0-RC3",
+    "chronos_version": "chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404",
     "consul_version": "0.5.2",
     "weave_version": "1.0.1",
     "version": "{{env `APOLLO_VERSION`}}",
@@ -44,7 +45,8 @@
         "CONSUL_VERSION={{user `consul_version`}}",
         "WEAVE_VERSION={{user `weave_version`}}",
         "MESOS_VERSION={{user `mesos_version`}}",
-        "MARATHON_VERSION={{user `marathon_version`}}"
+        "MARATHON_VERSION={{user `marathon_version`}}",
+        "CHRONOS_VERSION={{user `chronos_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
