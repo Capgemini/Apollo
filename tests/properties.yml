@@ -9,6 +9,7 @@ mesos_masters:
     - docker
     - registrator
     - cadvisor
+    - chronos
 mesos_slaves:
   :roles:
     - dnsmasq

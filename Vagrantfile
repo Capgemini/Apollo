@@ -67,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
   marathon_master_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
   marathon_zk_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/marathon"
+  chronos_zk_url = master_infos.map{|master| master[:ip]+":2181"}.join(",")
   zookeeper_conf = master_infos.map{|master|
     "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
   consul_join = master_infos.map{|master| master[:ip]}.join(" ")
