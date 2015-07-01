@@ -5,8 +5,8 @@ Mesos Frameworks
 --------
 - [x] Marathon framework
 - [ ] Jenkins framework
-- [ ] Aurora framework
-- [ ] Chronos framework
+- [x] Aurora framework
+- [x] Chronos framework
 - [ ] Kubernetes framework
 - [ ] Cassandra framework
 - [ ] Myriad framework
