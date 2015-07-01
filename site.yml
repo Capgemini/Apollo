@@ -41,3 +41,6 @@
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml
+
+- include: contrib-plugins/playbook.yml
+

@@ -1,0 +1,4 @@
+# Sample plugin.
+#- src: https://github.com/Capgemini/apollo-aurora-plugin.git
+#  path: contrib-plugins/roles
+#  name: aurora
