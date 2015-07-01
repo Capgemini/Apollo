@@ -1,13 +1,17 @@
 {
   "variables": {
+    "HTTP_PROXY": "{{env `http_proxy`}}",
+    "HTTPS_PROXY": "{{env `https_proxy`}}",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
     "hostname": "ubuntu",
     "version": "{{env `APOLLO_VERSION`}}",
     "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "0.8.1-1.0.171.ubuntu1404",
-    "consul_version": "0.5.1",
-    "weave_version": "v0.11.2",
+    "marathon_version": "v0.9.0-RC3",
+    "consul_version": "0.5.2",
+    "weave_version": "1.0.1",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
     "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195"
@@ -17,6 +21,7 @@
     "guest_os_type": "Ubuntu_64",
     "headless": true,
     "vm_name": "apollo-ubuntu-14.04-amd64-virtualbox",
+    "name": "apollo-ubuntu-14.04-amd64-virtualbox",
     "disk_size": 40960,
     "vboxmanage": [
       [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
@@ -51,6 +56,7 @@
     "guest_os_type": "linux",
     "headless": true,
     "vm_name": "apollo-ubuntu-14.04-amd64-vmware",
+    "name": "apollo-ubuntu-14.04-amd64-vmware",
     "disk_size": 40960,
     "vmx_data": {
       "memsize": "2048",
@@ -88,6 +94,10 @@
     {
       "type": "shell",
       "environment_vars": [
+        "HTTP_PROXY={{user `HTTP_PROXY`}}",
+        "HTTPS_PROXY={{user `HTTPS_PROXY`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
         "CONSUL_VERSION={{user `consul_version`}}",
         "WEAVE_VERSION={{user `weave_version`}}",
         "MESOS_VERSION={{user `mesos_version`}}",
@@ -102,7 +112,6 @@
         "scripts/common/sshd.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/ubuntu/install_mesos.sh",
-        "scripts/ubuntu/install_marathon.sh",
         "scripts/common/install_consul.sh",
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"

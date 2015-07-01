@@ -14,6 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please install vagrant-cachier plugin.
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.enable :apt
+    config.cache.scope = :box
   end
 
   # throw error if vagrant-hostmanager not installed
@@ -27,46 +28,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.hostmanager.include_offline = true
   config.ssh.insert_key = false
 
-  ansible_groups = {
-    "mesos_masters"              => ["master1", "master2", "master3"],
-    "mesos_slaves"               => ["slave1"],
-    "all:children"               => ["mesos_masters", "mesos_slaves", "load_balancers"],
-    "load_balancers:children"    => ["mesos_slaves"],
-    "zookeeper_servers:children" => ["mesos_masters"],
-    "consul_servers:children"    => ["mesos_masters"],
-    "weave_servers:children"     => ["mesos_masters", "mesos_slaves", "load_balancers"],
-    "vagrant:children"           => ["mesos_masters", "mesos_slaves", "load_balancers"],
-  }
+  # Common ansible groups.
+  ansible_groups = conf['ansible_groups'];
+
+  masters_conf = conf['masters']
+  masters_n = masters_conf['ips'].count
+  ansible_groups["mesos_masters"] = []
+  master_infos = []
 
   # Mesos master nodes
-  master_infos = (1..3).map do |i|
+  (1..masters_n).each { |i|
+
+    ip = masters_conf['ips'][i - 1]
     node = {
       :zookeeper_id    => i,
       :hostname        => "master#{i}",
-      :ip              => conf["master#{i}_ip"],
-      :mem             => conf['master_mem'],
-      :cpus            => conf['master_cpus'],
+      :ip              => ip,
+      :mem             => masters_conf['mem'],
+      :cpus            => masters_conf['cpus'],
     }
-  end
-  mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
-  zookeeper_conf = master_infos.map{|master|
-    "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
-  consul_join = master_infos.map{|master| master[:ip]}.join(" ")
-  consul_retry_join = master_infos.map{|master|
-    "\"#{master[:ip]}\""}.join(", ")
 
-  # Mesos slave nodes
-  slave_n = conf['slave_n']
-  slave_infos = (1..slave_n).map do |i|
-    node = {
-      :hostname => "slave#{i}",
-      :ip => conf["slave#{i}_ip"],
-      :mem => conf['slave_mem'],
-      :cpus => conf['slave_cpus'],
-    }
-  end
+    master_infos.push(node)
 
-  master_infos.flatten.each_with_index do |node|
+    # Add the node to the correct ansible group.
+    ansible_groups["mesos_masters"].push(node[:hostname])
+
     config.vm.define node[:hostname] do |cfg|
       cfg.vm.provider :virtualbox do |vb, machine|
         machine.vm.hostname = node[:hostname]
@@ -76,9 +62,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
       end
     end
-  end
+  }
 
-  slave_infos.flatten.each_with_index do |node|
+  mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
+  marathon_master_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
+  marathon_zk_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/marathon"
+  zookeeper_conf = master_infos.map{|master|
+    "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
+  consul_join = master_infos.map{|master| master[:ip]}.join(" ")
+  consul_retry_join = master_infos.map{|master|
+    "\"#{master[:ip]}\""}.join(", ")
+
+  # Mesos slave nodes
+  slaves_conf = conf['slaves']
+  ansible_groups["mesos_slaves"] = []
+
+  slave_n = slaves_conf['ips'].count
+
+  (1..slave_n).each { |i|
+
+    ip = slaves_conf['ips'][i - 1]
+
+    node = {
+      :hostname => "slave#{i}",
+      :ip => ip,
+      :mem => slaves_conf['mem'],
+      :cpus => slaves_conf['cpus'],
+    }
+
+    # Add the node to the correct ansible group.
+    ansible_groups["mesos_slaves"].push(node[:hostname])
+
     config.vm.define node[:hostname] do |cfg|
       cfg.vm.provider :virtualbox do |vb, machine|
         machine.vm.hostname = node[:hostname]
@@ -99,13 +113,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               mesos_zk_url: mesos_zk_url,
               zookeeper_conf: zookeeper_conf,
               consul_join: consul_join,
-              consul_retry_join: consul_retry_join
+              consul_retry_join: consul_retry_join,
+              marathon_master_peers: marathon_master_peers,
+              marathon_zk_peers: marathon_zk_peers
             }
           end
         end
       end
     end
-  end
+  }
 
   # If you want to use a custom `.dockercfg` file simply place it
   # in this directory.

@@ -43,7 +43,7 @@
 
 - name: Set Mesos Master Cluster name
   copy:
-    content: "{{mesos_cluster_name}}"
+    content: "{{ mesos_cluster_name }}"
     dest: /etc/mesos-master/cluster
     mode: 0644
   sudo: yes
@@ -133,7 +133,7 @@
 
 - name: Create Mesos Slave work area
   file:
-    dest: "{{mesos_slave_work_dir}}"
+    dest: "{{ mesos_slave_work_dir }}"
     mode: 0755
     state: directory
   sudo: yes
@@ -143,7 +143,7 @@
 
 - name: Set Mesos Slave work area
   copy:
-    content: "{{mesos_slave_work_dir}}"
+    content: "{{ mesos_slave_work_dir }}"
     dest: /etc/mesos-slave/work_dir
     mode: 0644
   sudo: yes

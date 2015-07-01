@@ -26,3 +26,6 @@ mesos_masters
 mesos_masters
 mesos_slaves
 load_balancers
+
+[marathon_servers:children]
+mesos_masters

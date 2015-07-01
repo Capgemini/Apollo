@@ -1,81 +1,84 @@
----
-# tasks file for marathon
-- name: upload marathon template service
-  template:
-    src: marathon.conf.j2
-    dest: /etc/init/marathon.conf
-    mode: 0755
-  notify:
-    - restart marathon
-  sudo: yes
-  tags:
-    - marathon
-
-- name: Set Marathon hostname
-  sudo: yes
-  copy:
-    content: "{{ marathon_hostname }}"
-    dest: /etc/marathon/conf/hostname
-    mode: 0644
-  notify:
-    - restart marathon
-  tags:
-    - marathon
-
-- name: remove marathon override
-  sudo: yes
-  file:
-    path: /etc/init/marathon.override
-    state: absent
-  notify:
-    - restart marathon
-  tags:
-    - marathon
+# Install (docker-py) python package as is a docker module dependency.
+- pip: name=docker-py version=1.1.0
 
 - name: install wait script
+  when: marathon_enabled
   sudo: yes
   template:
     src: marathon-wait-for-listen.sh.j2
     dest: /usr/local/bin/marathon-wait-for-listen.sh
     mode: 0755
-  notify:
-    - restart marathon
   tags:
     - marathon
 
+- name: create marathon artifact store directory
+  when: marathon_artifact_store_dir is defined and marathon_enabled
+  file:
+    path: "{{ marathon_artifact_store_dir }}"
+    state: directory
+    mode: 0755
+  sudo: yes
+  tags:
+    - marathon
+
+- name: run marathon container
+  when: marathon_enabled
+  docker:
+    name: marathon
+    image: "{{ marathon_image }}"
+    state: started
+    restart_policy: "{{ marathon_restart_policy }}"
+    ports:
+    - "{{ marathon_port }}:{{ marathon_port }}"
+    expose:
+    - "{{ marathon_port }}"
+    net: "{{ marathon_net }}"
+    command: "{{ marathon_command }}"
+    volumes:
+    - "{{ marathon_artifact_store_dir }}:/store"
+    - "/var/run/docker.sock:/tmp/docker.sock"
+    memory_limit: "{{ marathon_container_memory_limit }}"
+    env:
+      JAVA_OPTS: "{{ marathon_java_settings }}"
+  notify:
+    - wait for marathon to listen
+
+- name: remove marathon override
+  when: marathon_enabled
+  sudo: yes
+  file:
+    path: /etc/init/marathon.override
+    state: absent
+  tags:
+    - marathon
+
+- name: upload marathon template service
+  when: marathon_enabled
+  template:
+    src: marathon.conf.j2
+    dest: /etc/init/marathon.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - marathon
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
 - name: ensure marathon is running (and enable it at boot)
+  when: marathon_enabled
   sudo: yes
   service:
     name: marathon
     state: started
     enabled: yes
-  notify:
-    - wait for marathon to listen
   tags:
     - marathon
 
-- meta: flush_handlers
-
-# This is here to workaround an issue where marathon does not receive an
-# acknowledgement correctly from Mesos.
-- name: force restart marathon
-  sudo: yes
-  service:
+# tasks for stoping docker marathon
+- name: stop marathon container
+  when: not marathon_enabled
+  docker:
     name: marathon
-    state: restarted
-  notify:
-    - wait for marathon to listen
-  tags:
-    - marathon
-
-- meta: flush_handlers
-
-- name: Set Marathon consul service definition
-  sudo: yes
-  template:
-    src: marathon-consul.j2
-    dest: "{{ consul_dir }}/marathon.json"
-  notify:
-    - restart consul
-  tags:
-    - marathon
+    image: "{{ marathon_image }}"
+    state: stopped
