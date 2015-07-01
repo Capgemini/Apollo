@@ -113,7 +113,22 @@ marathon_enabled: true
 marathon_version: '0.9.0-RC3'
 ``` 
 
-* It's usually a good idea [attach a process manager to manage it](to https://docs.docker.com/articles/host_integration/)
+* It's usually a good idea [attach a process manager to manage it](https://docs.docker.com/articles/host_integration/)
+
+```
+description "Marathon container"
+
+start on started docker
+stop on stopping docker
+
+script
+  /usr/bin/docker start -a marathon
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10
+```
 
 ```yml
 - name: ensure marathon is running (and enable it at boot)
