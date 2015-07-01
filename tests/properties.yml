@@ -8,6 +8,7 @@ mesos_masters:
     - weave
     - docker
     - registrator
+    - cadvisor
 mesos_slaves:
   :roles:
     - dnsmasq
@@ -16,6 +17,8 @@ mesos_slaves:
     - weave
     - docker
     - registrator
+    - cadvisor
 load_balancers:
   :roles:
     - haproxy
+    - cadvisor
