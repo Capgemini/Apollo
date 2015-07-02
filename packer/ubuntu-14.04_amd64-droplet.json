@@ -43,7 +43,8 @@
         "scripts/ubuntu/install_mesos.sh",
         "scripts/common/install_consul.sh",
         "scripts/ubuntu/install_dnsmasq.sh",
-        "scripts/common/install_weave.sh"
+        "scripts/common/install_weave.sh",
+        "scripts/ubuntu/kernel-upgrade.sh"
       ],
       "execute_command": "{{ .Vars }} sudo -E -S bash -c '{{ .Path }}'"
     },
