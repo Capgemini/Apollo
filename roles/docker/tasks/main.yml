@@ -28,19 +28,6 @@
   notify:
     - restart docker
 
-- name: change storage backend 
-  sudo: yes
-  lineinfile:
-    dest: /etc/default/docker
-    state: present
-    line: 'DOCKER_STORAGE_OPTIONS= -s \"{{ docker_storage_driver }}\"'
-    state: present
-  when: docker_storage_driver is defined
-  notify: 
-    - restart docker
-  tags:
-    - docker
-
 - name: configure docker proxy
   sudo: yes
   lineinfile:
