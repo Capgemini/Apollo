@@ -41,7 +41,6 @@ As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=aws-public
-TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
 TF_VAR_key_name="deployer"
@@ -53,14 +52,14 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 
 #### Turn up the cluster
 ```
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
 
 #### Tearing down the cluster
 ```
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```
 
 

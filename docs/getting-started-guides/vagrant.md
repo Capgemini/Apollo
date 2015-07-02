@@ -23,7 +23,7 @@ _Note: you may need to run the pip command with Admin priviledges (e.g. sudo ...
 #### Turn up the cluster
 ```
 export APOLLO_PROVIDER=vagrant
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 Note: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command
@@ -43,7 +43,7 @@ To tweak these settings you may modify ```vagrant.yml```
 
 #### Tearing down the cluster
 ```
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```
 
 #### Interacting with your Apollo cluster with Vagrant
@@ -54,12 +54,7 @@ You can interact with your Apollo cluster via the normal vagrant commands - ```v
 
 Edit ``vagrant.yml```
 
-Change ```slave_n:``` to the desired number of slave machines.
-
-Add a ```slave2_ip:``` replacing 2 with the slave number.
-
-In the ```Vagrantfile``` update the ```ansible_groups``` to reference the new
-slave hostnames added (will be in the format slave2, slave3, etc...)
+Add a new ip under ```slaves.ips:``` following the ip´s convention (i.e. 172.31.1.15).
 
 #### Using Apollo Behind a Firewall
 

@@ -78,3 +78,10 @@ variable "atlas_artifact" {
     slave  = "capgemini/apollo-ubuntu-14.04-amd64"
   }
 }
+
+variable "atlas_artifact_version" {
+  default = {
+    master = "6"
+    slave  = "6"
+  }
+}

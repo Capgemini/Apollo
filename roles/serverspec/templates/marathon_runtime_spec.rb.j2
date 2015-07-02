@@ -1,0 +1,12 @@
+require 'spec_helper'
+
+describe command("curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://{{ marathon_hostname }}:8080/v2/info") do
+  its(:stdout) { should match '.*"master":"{{ marathon_master_peers }}".*' }
+  its(:stdout) { should match '.*"zk":"{{ marathon_zk_peers }}".*' }
+  its(:stdout) { should match '.*"name":"marathon".*' }
+  its(:stdout) { should match '.*"mesos_user":"root".*' }
+  its(:stdout) { should match '.*"executor":"//cmd".*' }
+  its(:stdout) { should match '.*"version":"{{ marathon_version }}".*' }
+  its(:exit_status) { should eq 0 }
+end
+
