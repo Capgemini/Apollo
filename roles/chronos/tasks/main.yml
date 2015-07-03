@@ -17,6 +17,7 @@
     name: chronos
     image: "{{ chronos_image }}"
     state: started
+    hostname: "{{ chronos_hostname }}"
     restart_policy: "{{ chronos_restart_policy }}"
     ports:
     - "{{ chronos_host_port }}:4400"
