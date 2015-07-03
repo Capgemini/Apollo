@@ -8,7 +8,7 @@
         "docker": {
           "image": "mysql:5.5",
           "network": "BRIDGE"
-        },
+        }
       },
       "env": {
         "SERVICE_NAME": "mysql",
