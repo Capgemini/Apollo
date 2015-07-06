@@ -9,7 +9,7 @@ Apollo
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
 across multiple hosts, and big data type workloads. Apollo leverages other
-open source components to provide basic mehanisms for deployment, maintenance,
+open source components to provide basic mechanisms for deployment, maintenance,
 and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
