@@ -62,7 +62,7 @@ Demonstrators / Examples
 - [ ] Continous Deployment with Marathon
 - [ ] Mule ESB
 - [x] Drupal / MySQL
-- [ ] Wordpress / MySQL
+- [x] Wordpress / MySQL
 - [x] Simple NodeJS webservice
 - [x] Spring Boot microservice
 - [ ] Jmeter
