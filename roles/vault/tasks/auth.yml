@@ -1,0 +1,30 @@
+- name: enable app-id auth backend
+  run_once: true
+  when: vault_root_token is defined
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+  command: "vault auth-enable app-id"
+  sudo: yes
+  tags:
+    - vault
+
+- name: create weave app-id
+  when: vault_root_token is defined
+  run_once: true
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+  command: "vault write auth/app-id/map/app-id/{{ vault_weave_app_id }} value=weave display_name=weave"
+  sudo: yes
+  tags:
+    - vault
+
+- name: create weave user-ids
+  when: vault_root_token is defined
+  run_once: true
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+  command: "vault write auth/app-id/map/user-id/{{ hostvars[item][vault_weave_user_id] }} value=weave"
+  with_items: groups['weave_servers']
+  sudo: yes
+  tags:
+    - vault

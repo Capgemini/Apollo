@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "vault",
+    "tags": [ "vault" ],
+    "port": {{ vault_port }},
+    "check": {
+      "script": "curl -L 1 --silent --show-error  --fail --dump-header /dev/stderr --retry 2 {{ vault_addr }}/v1/sys/health",
+      "interval": "10s"
+    }
+  }
+}

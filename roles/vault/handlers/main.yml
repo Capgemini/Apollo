@@ -1,0 +1,9 @@
+---
+- name: restart vault
+  sudo: yes
+  service:
+    name: vault
+    state: restarted
+    enabled: yes
+  tags:
+    - vault

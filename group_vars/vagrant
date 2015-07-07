@@ -8,6 +8,7 @@ mesos_hostname: "{{ ansible_eth1.ipv4.address }}"
 mesos_master_quorum: 2
 consul_bootstrap_expect: 3
 registrator_uri: "consul://{{ ansible_eth1.ipv4.address }}:8500"
+vault_advertise_addr: "{{ ansible_eth1.ipv4.address }}"
 weave_launch_peers: "
   {%- set weave_peers = [] -%}
   {%- for host in groups[weave_server_group] -%}

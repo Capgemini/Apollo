@@ -1,5 +1,8 @@
 ---
 # defaults file for weave
+# TODO: This "until loop" is here as the consul force restart makes vault achieve
+# an unconsitent state without leader for some seconds.
+weave_command_login_vault: "until curl --max-redirs 1 -L -XPOST  -d'{\"app_id\": \"{{ vault_weave_app_id }}\", \"user_id\": \"{{ hostvars[inventory_hostname][vault_weave_user_id] }}\"}' {{ vault_addr }}/v1/auth/app-id/login | grep client_token ; do sleep 1; done"
 weave_bridge: "
     {%- for host in groups[weave_server_group] -%}
       {%- if host == 'default' or host == inventory_hostname or host == ansible_fqdn or host in ansible_all_ipv4_addresses -%}

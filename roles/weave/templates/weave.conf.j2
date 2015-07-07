@@ -10,7 +10,11 @@ pre-start exec ${WEAVE} stop
 
 script
  [ -e /etc/default/weave ] && . /etc/default/weave
- ${WEAVE} launch ${PEERS}
+
+ pass_json=$( curl -sL -H 'X-Vault-Token: {{ tmp_client_token }}' {{ vault_addr }}/v1/secret/weave/password )
+ pass_value=$( echo $pass_json | sed -e 's/^.*"value"[ ]*:[ ]*"//' -e 's/".*//' )
+ 
+ ${WEAVE} launch -password ${pass_value} ${PEERS}
  exec /usr/bin/docker logs -f weave
 end script
 

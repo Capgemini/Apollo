@@ -1,0 +1,59 @@
+- name: ensure vault is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: vault
+    state: started
+    enabled: yes
+  tags:
+    - vault
+
+- name: vault status
+  sudo: yes
+  command: "{{ vault_initialize_status_command }}"
+  register: vault_initialized_output
+  tags:
+    - vault
+
+- name: initialize vault
+  when: vault_initialized_output.stdout == "{\"initialized\":false}"
+  run_once: true
+  sudo: yes
+  command: "{{ vault_initialize_command }}"
+  register: vault_init_output
+  tags:
+    - vault
+
+- name: set vault security values
+  when: vault_initialized_output.stdout == "{\"initialized\":false}"
+  run_once: true
+  sudo: yes
+  set_fact:
+    vault_keys: "{{ (vault_init_output.stdout | from_json)['keys'] }}"
+    vault_root_token: "{{ (vault_init_output.stdout | from_json)['root_token'] }}"
+  tags:
+    - vault
+
+- name: upload vault unseal template
+  when: vault_keys is defined and vault_initialized_output.stdout == "{\"initialized\":false}"
+  template:
+    src: unseal.j2
+    dest: "{{ vault_config_folder }}/unseal"
+    mode: 0755
+  sudo: yes
+  tags:
+    - vault
+  notify: restart vault
+
+- name: unseal vault
+  when: vault_keys is defined
+  sudo: yes
+  command: "{{ vault_config_folder }}/unseal"
+  tags:
+    - vault
+
+- name: store vault security values
+  when: vault_root_token is defined and vault_initialized_output.stdout == "{\"initialized\":false}"
+  local_action: "template src=vault-security.yaml.j2 dest=./vault-security.yaml mode=0644"
+  sudo: False
+  tags:
+    - vault

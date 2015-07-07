@@ -2,6 +2,7 @@ mesos_masters:
   :roles:
     - dnsmasq
     - consul
+    - vault
     - mesos_master
     - marathon
     - zookeeper
@@ -14,6 +15,7 @@ mesos_slaves:
   :roles:
     - dnsmasq
     - consul
+    - vault
     - mesos_slave
     - weave
     - docker
@@ -23,3 +25,4 @@ load_balancers:
   :roles:
     - haproxy
     - cadvisor
+    - vault
