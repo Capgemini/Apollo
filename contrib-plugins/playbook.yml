@@ -1,0 +1,4 @@
+# Sample plugins playbook.
+- hosts: mesos_masters
+#  roles:
+#    - aurora

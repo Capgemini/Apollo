@@ -12,8 +12,8 @@ docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest
-docker pull mesosphere/marathon:v0.8.2
-
+docker pull mesosphere/marathon:${MARATHON_VERSION}
+docker pull mesosphere/chronos:${CHRONOS_VERSION}
 
 sudo service docker stop
 echo manual | sudo tee /etc/init/docker.override >/dev/null

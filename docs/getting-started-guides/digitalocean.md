@@ -75,7 +75,7 @@ TF_VAR_atlas_artifact_version_slave=
 
 #### Start up the cluster
 ```
-sh bootstrap/apollo-launch.sh
+/bin/bash bootstrap/apollo-launch.sh
 ```
 
 NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK) by default. It will also create a mesos slave cluster and a SSH key so you can access the droplets.
@@ -83,5 +83,5 @@ NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK) by de
 
 #### Tearing down the cluster
 ```
-sh bootstrap/apollo-down.sh
+/bin/bash bootstrap/apollo-down.sh
 ```

@@ -23,12 +23,14 @@
     - docker
     - weave
     - registrator
+    - cadvisor
 
 - hosts: mesos_masters
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
     - marathon
+    - chronos
 
 - hosts: mesos_slaves
   roles:
@@ -41,3 +43,6 @@
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml
+
+- include: contrib-plugins/playbook.yml
+
