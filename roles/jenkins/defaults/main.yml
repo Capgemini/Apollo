@@ -1,0 +1,28 @@
+---
+# defaults file for jenkins
+jenkins_consul_dir: /etc/consul.d
+jenkins_url: "{{ ansible_ssh_host }}"
+jenkins_enabled: true
+jenkins_version: 'latest'
+jenkins_restart_policy: 'no'
+jenkins_net: 'bridge'
+jenkins_hostname: "{{ ansible_ssh_host }}"
+jenkins_host_port: '8213'
+jenkins_home_volume: '/var/jenkins_home'
+jenkins_container_memory_limit: '512MB'
+jenkins_java_settings: '-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError'
+jenkins_image: "enxebre/jenkins-mesos"
+jenkins_command: ""
+jenkins_zk_peers_nodes: "
+{%- if jenkins_zk_url is defined -%}
+    {{ jenkins_zk_url }}
+{%- else -%}
+    {%- set jenkins_peers = [] -%}
+    {%- for host in groups['zookeeper_servers'] -%}
+      {%- if host not in jenkins_peers -%}
+        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
+        {%- do jenkins_peers.append(current_host) -%}
+      {%- endif -%}
+    {%- endfor -%}
+    zk://{{ jenkins_peers|join(',') }}/mesos
+{%- endif -%}"

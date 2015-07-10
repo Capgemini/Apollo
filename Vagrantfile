@@ -116,7 +116,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               consul_join: consul_join,
               consul_retry_join: consul_retry_join,
               marathon_master_peers: marathon_master_peers,
-              marathon_zk_peers: marathon_zk_peers
+              marathon_zk_peers: marathon_zk_peers,
+              jenkins_zk_url: marathon_master_peers
             }
           end
         end

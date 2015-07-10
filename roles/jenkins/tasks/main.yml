@@ -1,0 +1,92 @@
+# Install (docker-py) python package as is a docker module dependency.
+- pip: name=docker-py version=1.1.0
+
+- name: create jenkins home folder
+  when: jenkins_enabled
+  run_once: true
+  file:
+    path: "{{ jenkins_home_volume }}"
+    state: directory
+    mode: 0777
+  sudo: yes
+  tags:
+    - jenkins
+
+- name: upload jenkins config template
+  run_once: true
+  when: jenkins_enabled
+  template:
+    src: config.xml.j2
+    dest: "{{ jenkins_home_volume }}/config.xml"
+    mode: 0755
+  sudo: yes
+  tags:
+    - marathon
+
+- name: run jenkins container
+  when: jenkins_enabled
+  run_once: true
+  docker:
+    name: jenkins
+    image: "{{ jenkins_image }}"
+    state: started
+    restart_policy: "{{ jenkins_restart_policy }}"
+    ports:
+    - "{{ jenkins_host_port }}:8080"
+    - "50000:50000"
+    net: "{{ jenkins_net }}"
+    command: "{{ jenkins_command }}"
+    volumes:
+    - "{{ jenkins_home_volume }}:{{ jenkins_home_volume }}"
+    - "/var/run/docker.sock:/tmp/docker.sock"
+    #memory_limit: "{{ jenkins_container_memory_limit }}"
+    #env:
+      #JAVA_OPTS: "{{ jenkins_java_settings }}"
+
+
+- name: upload jenkins template service
+  run_once: true
+  when: jenkins_enabled
+  template:
+    src: jenkins.conf.j2
+    dest: /etc/init/jenkins.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - jenkins
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
+- name: ensure jenkins is running (and enable it at boot)
+  when: jenkins_enabled
+  run_once: true
+  sudo: yes
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+  tags:
+    - jenkins
+
+- name: Set jenkins consul service definition
+  when: jenkins_enabled
+  run_once: true
+  sudo: yes
+  template:
+    src: jenkins-consul.j2
+    dest: "{{ jenkins_consul_dir }}/jenkins.json"
+  notify:
+    - restart consul
+
+# tasks for stoping docker jenkins
+- name: ensure jenkins is stopped
+  when: not jenkins_enabled
+  run_once: true
+  sudo: yes
+  service:
+    name: jenkins
+    state: stopped
+    enabled: yes
+  tags:
+    - jenkins

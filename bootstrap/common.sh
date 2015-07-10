@@ -84,11 +84,12 @@ open_urls() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     if [ -a /usr/bin/open ]; then
       /usr/bin/open "http://$(terraform output master.1.ip):5050"
-      /usr/bin/open "http://$(terraform output master.1.ip):8080"
       /usr/bin/open "http://$(terraform output master.1.ip):8500"
       /usr/bin/open "http://$(terraform output master.1.ip):4040"
-      /usr/bin/open "http://$(terraform output master.1.ip):4400"
       /usr/bin/open "http://$(terraform output master.1.ip):8081"
+      [ "${APOLLO_marathon_enabled}" = 'true' ] && /usr/bin/open "http://$(terraform output master.1.ip):8080"
+      [ "${APOLLO_chronos_enabled}" = 'true' ] && /usr/bin/open "http://$(terraform output master.1.ip):4400"
+      [ "${APOLLO_jenkins_enabled}" = 'true' ] && /usr/bin/open "http://$(terraform output master.1.ip):8213"
     fi
   popd
 }

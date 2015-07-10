@@ -28,9 +28,10 @@
 - hosts: mesos_masters
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
+    - jenkins
     - zookeeper
-    - marathon
-    - chronos
+#    - marathon
+#    - chronos
 
 - hosts: mesos_slaves
   roles:

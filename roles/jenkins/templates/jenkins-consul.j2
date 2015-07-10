@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "jenkins",
+    "tags": [ "jenkins" ],
+    "port": {{ jenkins_host_port }},
+    "check": {
+      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ jenkins_hostname }}:{{ jenkins_host_port }}",
+      "interval": "10s"
+    }
+  }
+}

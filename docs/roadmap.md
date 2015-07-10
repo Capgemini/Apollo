@@ -4,7 +4,7 @@ Apollo Roadmap
 Mesos Frameworks
 --------
 - [x] Marathon framework
-- [ ] Jenkins framework
+- [x] Jenkins framework
 - [x] Aurora framework
 - [x] Chronos framework
 - [ ] Kubernetes framework
