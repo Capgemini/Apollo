@@ -56,7 +56,7 @@ Ansible playbook to provision the cluster.
 
 Finally it will attempt to start and configure a VPN client connection for you.
 
-For instructions on how to configure the VPN (outside of the bootstrap script) to access the web interface of the tools see the [vpn guide](../aws/vpn.md).
+For instructions on how to configure the VPN (outside of the bootstrap script) to access the web interface of the tools see the [vpn guide](aws/vpn.md).
 
 #### Tearing down the cluster
 ```
