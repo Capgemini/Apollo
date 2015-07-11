@@ -3,9 +3,19 @@ variable "username" {
   default = ""
 }
 
+variable "password" {
+  description = "The password used to authenticate to openstack provider"
+  default = ""
+}
+
 variable "tenant_id" {
   description = "The tenant id"
   default = ""
+}
+
+variable "endpoint_type" {
+  description = "Whether to use public or private endpoint"
+  default = "public"
 }
 
 variable "auth_url" {
@@ -24,7 +34,7 @@ variable "atlas_infrastructure" {
 }
 
 variable "region" {
-  description = "The AWS region to create resources in."
+  description = "The OpenStack region to create resources in."
   default = "LON"
 }
 
@@ -81,5 +91,12 @@ variable "atlas_artifact" {
   default = {
     master = "capgemini/apollo-ubuntu-14.04-amd64"
     slave  = "capgemini/apollo-ubuntu-14.04-amd64"
+  }
+}
+
+variable "atlas_artifact_version" {
+  default = {
+    master = "1"
+    slave  = "1"
   }
 }
