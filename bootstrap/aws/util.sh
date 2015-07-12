@@ -17,6 +17,10 @@ ansible_ssh_config() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     export APOLLO_bastion_ip=$(terraform output bastion.ip)
 
+    # Virtual private cloud CIDR IP.
+    ip=$(terraform output vpc_cidr_block.ip)
+    export APOLLO_network_identifier=get_network_identifier ip
+
     cat <<EOF > ssh.config
   Host bastion $APOLLO_bastion_ip
     StrictHostKeyChecking  no
@@ -28,7 +32,7 @@ ansible_ssh_config() {
     PasswordAuthentication no
     UserKnownHostsFile     /dev/null
 
-  Host 10.*
+  Host $APOLLO_network_identifier.*
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
@@ -83,4 +87,3 @@ ovpn_client_config() {
       esac
     done
 }
-

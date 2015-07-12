@@ -126,5 +126,8 @@ terraform_apply() {
   popd
 }
 
-
-
+# Helper function to get the fist octet of an IPv4 address.
+get_network_identifier() {
+  ip="$1"
+  echo $(echo $ip | tr "." " " | awk '{ print $1 }')
+}
