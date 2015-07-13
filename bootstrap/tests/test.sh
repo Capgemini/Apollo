@@ -17,7 +17,7 @@ test() {
     echo "Pass. Function ${function}. Expected: ${expected}, Got: ${result}"
   else
     echo "${RED}Fail. Function ${function}. Expected: ${expected}, Got: ${result}${NC}"
-  fi	
+  fi
 }
 
 function="check_terraform_version"
@@ -38,4 +38,15 @@ export TESTSUITE_var4="property=val property=val property=val"
 function="get_apollo_variables"
 input="TESTSUITE_"
 expected="var4='property=val property=val property=val' var2='Drupal' var3='ip1 ip2 ip3' var1='Galicia'"
+test "${function}" "${expected}" "${input}"
+
+# Network identifier helper function tests.
+function="get_network_identifier"
+expected="10"
+input="10.0.0.0/16"
+test "${function}" "${expected}" "${input}"
+
+function="get_network_identifier"
+expected="172"
+input="172.31.1.0/24"
 test "${function}" "${expected}" "${input}"
