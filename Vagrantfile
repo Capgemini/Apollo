@@ -65,14 +65,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   }
 
-  # zk_ips_format e.g. 172.31.1.11:2181,172.31.1.12:2181,172.31.1.13:2181
-  zk_ips_format = master_infos.map{|master| master[:ip]+":2181"}.join(",")
-
-  mesos_zk_url          = "zk://"+zk_ips_format+"/mesos"
-  marathon_master_peers = "zk://"+zk_ips_format+"/mesos"
-  marathon_zk_peers     = "zk://"+zk_ips_format+"/marathon"
-  chronos_zk_url        = zk_ips_format
-
+  # zookeeper_peers e.g. 172.31.1.11:2181,172.31.1.12:2181,172.31.1.13:2181
+  zookeeper_peers   = master_infos.map{|master| master[:ip]+":2181"}.join(",")
   # zookeeper_conf e.g. server.1=172.31.1.11:2888:3888 server.2=172.31.1.12:2888:3888 server.3=172.31.1.13:2888:3888
   zookeeper_conf    = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
   # consul_js e.g. 172.31.1.11 172.31.1.12 172.31.1.13
@@ -116,13 +110,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             ansible.groups = ansible_groups
             ansible.limit = 'all'
             ansible.extra_vars = {
-              mesos_zk_url: mesos_zk_url,
+              zookeeper_peers: zookeeper_peers,
               zookeeper_conf: zookeeper_conf,
               consul_join: consul_join,
               consul_retry_join: consul_retry_join,
-              marathon_master_peers: marathon_master_peers,
-              marathon_zk_peers: marathon_zk_peers,
-              chronos_zk_url: chronos_zk_url,
               mesos_master_quorum: conf['mesos_master_quorum'],
               consul_bootstrap_expect: conf['consul_bootstrap_expect']
             }

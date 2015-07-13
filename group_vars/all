@@ -1,6 +1,19 @@
 mesos_cluster_name: "Cluster01"
 zookeeper_client_port: "2181"
-zookeeper_url: "zk://{{ groups.mesos-masters | join(':' + zookeeper_client_port + ',') }}:{{ zookeeper_client_port }}"
+zookeeper_peers_nodes: "
+	{%- if zookeeper_peers is defined -%}
+	    {{ zookeeper_peers }}
+	{%- else -%}
+	    {%- set zookeeper_peers = [] -%}
+	    {%- for host in groups[zookeeper_server_group] -%}
+	      {%- if host not in zookeeper_peers -%}
+	        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
+	        {%- do zookeeper_peers.append(current_host) -%}
+	      {%- endif -%}
+	    {%- endfor -%}
+	    {{ zookeeper_peers|join(',') }}
+	{%- endif -%}
+"
 consul_domain: consul
 proxy_env:
   http_proxy: ''

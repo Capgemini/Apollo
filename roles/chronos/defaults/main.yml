@@ -11,19 +11,5 @@ chronos_host_port: 4400
 chronos_container_memory_limit: '512MB'
 chronos_server_zk_group: mesos_masters
 chronos_image: "mesosphere/chronos:{{ chronos_version }}"
-chronos_zk_peers_nodes: "
-{%- if chronos_zk_url is defined -%}
-    {{ chronos_zk_url }}
-{%- else -%}
-    {%- set chronos_peers = [] -%}
-    {%- for host in groups[chronos_server_zk_group] -%}
-      {%- if host not in chronos_peers -%}
-        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
-        {%- do chronos_peers.append(current_host) -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {{ chronos_peers|join(',') }}
-{%- endif -%}"
-
-chronos_master_peers: "{%- set master_peers = 'zk://' + chronos_zk_peers_nodes + '/mesos' -%} {{ master_peers }}"
-chronos_command: "/usr/bin/chronos run_jar --http_port 4400 --master {{ chronos_master_peers }} --zk_hosts {{ chronos_zk_peers_nodes }}"
+chronos_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
+chronos_command: "/usr/bin/chronos run_jar --http_port 4400 --master {{ chronos_master_peers }} --zk_hosts {{ zookeeper_peers_nodes }}"

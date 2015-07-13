@@ -1,14 +1,1 @@
-{% if mesos_zk_url is defined %}
-{{ mesos_zk_url }}
-{% else %}
-{%- set mesos_zk_url = '' -%}
-{%- for host in groups[mesos_zookeeper_group] -%}
-  {%- if not loop.last -%}
-    {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['ansible_ssh_host'] + ':2181,' -%}
-  {%- endif -%}
-{%- if loop.last -%}
-  {%- set mesos_zk_url = mesos_zk_url + hostvars[host]['ansible_ssh_host'] + ':2181/mesos' -%}
-zk://{{ mesos_zk_url }}
-  {%- endif -%}
-{%- endfor -%}
-{%- endif -%}
+zk://{{ zookeeper_peers_nodes }}/mesos
