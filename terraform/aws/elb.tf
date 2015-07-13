@@ -1,13 +1,14 @@
-resource "aws_elb" "web" {
-  name = "apollo-elb"
-
-  subnets = ["${aws_subnet.public.*.id}"]
+/* Load balancer */
+resource "aws_elb" "app" {
+  name = "apollo-mesos-elb"
+  subnets = ["${aws_subnet.public.id}"]
+  security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
 
   listener {
-    instance_port     = 80
+    instance_port = 80
     instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
+    lb_port = 80
+    lb_protocol = "http"
   }
 
   health_check {
@@ -23,6 +24,6 @@ resource "aws_elb" "web" {
 }
 
 resource "aws_proxy_protocol_policy" "http" {
-  load_balancer = "${aws_elb.web.name}"
+  load_balancer = "${aws_elb.app.name}"
   instance_ports = ["80"]
 }

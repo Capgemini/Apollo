@@ -28,11 +28,6 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "subnet_availability_zone" {
-  description = "Availability zone for Apollo subnet."
-  default = "eu-west-1b"
-}
-
 variable "vpc_cidr_block" {
   description = "Cidr block for the VPC."
   default = "10.0.0.0/16"
@@ -43,9 +38,20 @@ variable "public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
-variable "private_subnet_cidr_block" {
-  description = "Cidr block for private Mesos subnet."
-  default = "10.0.1.0/24"
+variable "zones" {
+  default = {
+    zone-0 = "eu-west-1a"
+    zone-1 = "eu-west-1b"
+    zone-2 = "eu-west-1c"
+  }
+}
+
+variable "cidr_blocks" {
+  default = {
+    zone-0 = "10.0.1.0/24"
+    zone-1 = "10.0.2.0/24"
+    zone-2 = "10.0.3.0/24"
+  }
 }
 
 variable "slaves" {
@@ -61,8 +67,8 @@ variable "masters" {
 variable "master_ips" {
   default = {
     master-0 = "10.0.1.11"
-    master-1 = "10.0.1.12"
-    master-2 = "10.0.1.13"
+    master-1 = "10.0.2.12"
+    master-2 = "10.0.3.13"
   }
 }
 

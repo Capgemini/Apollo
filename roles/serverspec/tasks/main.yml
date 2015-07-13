@@ -1,6 +1,17 @@
 ---
 # tasks file for serverspec
 
+- name: upload serverspecs via bastion
+  synchronize:
+    src: ../../../tests
+    dest: "{{ serverspec_tests_path }}"
+    recursive: yes
+    delete: yes
+  delegate_to: "{{ bastion_ip }}"
+  when: serverspec_run_tests and serverspec_install_bundler and serverspec_upload_folder and bastion_ip is defined
+  tags:
+    - serverspec
+
 - name: upload serverspecs
   synchronize:
     src: ../../../tests

@@ -25,4 +25,3 @@ apollo_down() {
       -var "region=${TF_VAR_region}"
   popd
 }
-
