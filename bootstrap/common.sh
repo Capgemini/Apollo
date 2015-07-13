@@ -27,11 +27,7 @@ verify_prereqs() {
 
 check_terraform_version() {
   local IFS='.'
-  if [ -z "$2" ]; then 
-    local current_version_string=$(terraform --version | awk 'NR==1 {print $2}') 
-  else
-    local current_version_string="$2"
-  fi
+  local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
   local requirement_version_string=${1:-0.5.0}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
