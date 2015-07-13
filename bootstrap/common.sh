@@ -80,17 +80,31 @@ run_if_exist() {
   fi
 }
 
+get_master_url() {
+  local master_url=''
+
+  if [[ $APOLLO_PROVIDER == "vagrant" ]]; then
+    master_url="http://master1"
+  else
+    pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+      master_url="http://$(terraform output master.1.ip)"
+    popd
+  fi
+
+  echo "${master_url}"
+}
+
 open_urls() {
-  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    if [ -a /usr/bin/open ]; then
-      /usr/bin/open "http://$(terraform output master.1.ip):5050"
-      /usr/bin/open "http://$(terraform output master.1.ip):8080"
-      /usr/bin/open "http://$(terraform output master.1.ip):8500"
-      /usr/bin/open "http://$(terraform output master.1.ip):4040"
-      /usr/bin/open "http://$(terraform output master.1.ip):4400"
-      /usr/bin/open "http://$(terraform output master.1.ip):8081"
-    fi
-  popd
+  local master_url=$(get_master_url)
+
+  if [ -a /usr/bin/open ]; then
+    /usr/bin/open "${master_url}:5050"
+    /usr/bin/open "${master_url}:8080"
+    /usr/bin/open "${master_url}:8500"
+    /usr/bin/open "${master_url}:4040"
+    /usr/bin/open "${master_url}:4400"
+    /usr/bin/open "${master_url}:8081"
+  fi
 }
 
 ansible_playbook_run() {
