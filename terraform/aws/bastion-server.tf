@@ -1,19 +1,24 @@
+resource "aws_key_pair" "deployer" {
+  key_name   = "${var.key_name}"
+  public_key = "${file(var.key_file)}"
+}
+
 /* NAT/VPN server */
 resource "aws_instance" "bastion" {
   ami               = "${lookup(var.amis, var.region)}"
   instance_type     = "t2.micro"
   subnet_id         = "${aws_subnet.public.id}"
   security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
-  depends_on        = ["aws_internet_gateway.public"]
-  key_name          = "${var.key_name}"
+  depends_on        = ["aws_internet_gateway.public", "aws_key_pair.deployer"]
+  key_name          = "${aws_key_pair.deployer.key_name}"
   source_dest_check = false
   tags = {
     Name = "apollo-mesos-bastion"
     role = "bastion"
   }
   connection {
-    user       = "ubuntu"
-    key_file   = "${var.key_file}"
+    user     = "ubuntu"
+    key_file = "${var.private_key_file}"
   }
   provisioner "remote-exec" {
     inline = [

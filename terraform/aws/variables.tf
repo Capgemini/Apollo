@@ -18,6 +18,11 @@ variable "key_file" {
   default = ""
 }
 
+variable "private_key_file" {
+  description = "The ssh public key for using with the cloud provider."
+  default = ""
+}
+
 variable "atlas_infrastructure" {
   description = "The Atlas infrastructure project to join."
   default = "capgemini/infrastructure"
@@ -28,9 +33,14 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "subnet_availability_zone" {
-  description = "Availability zone for Apollo subnet."
-  default = "eu-west-1b"
+variable "public_subnet_availability_zone" {
+  description = "Public availability zone."
+  default = ""
+}
+
+variable "availability_zones" {
+  description = "AWS availability zones list separated by ','"
+  default = ""
 }
 
 variable "vpc_cidr_block" {
@@ -43,11 +53,6 @@ variable "public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
-variable "private_subnet_cidr_block" {
-  description = "Cidr block for private Mesos subnet."
-  default = "10.0.1.0/24"
-}
-
 variable "slaves" {
   description = "The number of slaves."
   default = "1"
@@ -56,14 +61,6 @@ variable "slaves" {
 variable "masters" {
   description = "The number of masters."
   default = "3"
-}
-
-variable "master_ips" {
-  default = {
-    master-0 = "10.0.1.11"
-    master-1 = "10.0.1.12"
-    master-2 = "10.0.1.13"
-  }
 }
 
 variable "slave_block_device" {
@@ -84,6 +81,13 @@ variable "atlas_artifact" {
   default = {
     master = "capgemini/apollo-ubuntu-14.04-amd64"
     slave  = "capgemini/apollo-ubuntu-14.04-amd64"
+  }
+}
+
+variable "atlas_artifact_version" {
+  default = {
+    master = "6"
+    slave  = "6"
   }
 }
 

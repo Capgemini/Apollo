@@ -6,7 +6,7 @@ resource "aws_internet_gateway" "public" {
 /* Public subnet */
 resource "aws_subnet" "public" {
   vpc_id                  = "${aws_vpc.default.id}"
-  availability_zone       = "${var.subnet_availability_zone}"
+  availability_zone       = "${var.public_subnet_availability_zone}"
   cidr_block              = "${var.public_subnet_cidr_block}"
   map_public_ip_on_launch = true
   depends_on              = ["aws_internet_gateway.public"]

@@ -16,7 +16,7 @@ resource "aws_instance" "mesos-master" {
   ami               = "${replace(atlas_artifact.mesos-master.id, concat(var.region, ":"), "")}"
   count             = "${var.masters}"
   key_name          = "${aws_key_pair.deployer.key_name}"
-  subnet_id         = "${aws_subnet.public.id}"
+  subnet_id         = "${element(aws_subnet.public.*.id, count.index)}"
   source_dest_check = false
   security_groups   = ["${aws_security_group.default.id}"]
   tags = {
