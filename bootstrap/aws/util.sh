@@ -15,7 +15,7 @@ function set_vpn() {
 
 ansible_ssh_config() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    export APOLLO_bastion_ip=$(terraform output bastion.ip)
+    export APOLLO_bastion_ip=$( terraform output bastion.ip )
 
     # Virtual private cloud CIDR IP.
     ip=$( terraform output vpc_cidr_block.ip )
@@ -27,7 +27,7 @@ ansible_ssh_config() {
     User                   ubuntu
     HostName               $APOLLO_bastion_ip
     ProxyCommand           none
-    IdentityFile           $TF_VAR_key_file
+    IdentityFile           $TF_VAR_private_key_file
     BatchMode              yes
     PasswordAuthentication no
     UserKnownHostsFile     /dev/null
@@ -41,7 +41,7 @@ ansible_ssh_config() {
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
     User                   ubuntu
-    IdentityFile           $TF_VAR_key_file
+    IdentityFile           $TF_VAR_private_key_file
     UserKnownHostsFile     /dev/null
 EOF
   popd
