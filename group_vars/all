@@ -1,5 +1,6 @@
 mesos_cluster_name: "Cluster01"
 zookeeper_client_port: "2181"
+zookeeper_server_group: zookeeper_servers
 zookeeper_peers_nodes: "
 	{%- if zookeeper_peers is defined -%}
 	    {{ zookeeper_peers }}
