@@ -86,9 +86,9 @@ get_master_url() {
   if [[ $APOLLO_PROVIDER == "vagrant" ]]; then
     master_url="http://master1"
   else
-    pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}" > /dev/null
       master_url="http://$(terraform output master.1.ip)"
-    popd
+    popd > /dev/null
   fi
 
   echo "${master_url}"
