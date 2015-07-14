@@ -38,14 +38,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   master_infos = []
   node = conf['masters']
 
-  mesos_zk_url          = "zk://"+node['ip']+":2181/mesos"
-  marathon_master_peers = "zk://"+node['ip']+":2181/mesos"
-  marathon_zk_peers     = "zk://"+node['ip']+":2181/marathon"
-  chronos_zk_url        = node['ip']+":2181"
-
-  zookeeper_conf        = "server="+node['ip']+":2888:3888"
-  consul_join           = node['ip']
-  consul_retry_join     = "\"#{node['ip']}\""
+  # zookeeper_peers e.g. 172.31.1.11:2181
+  zookeeper_peers   = node['ip']+":2181"
+  # zookeeper_conf e.g. server.1=172.31.1.11:2888:3888
+  zookeeper_conf    = "server="+node['ip']+":2888:3888"
+  # consul_js e.g. 172.31.1.11
+  consul_join       = node['ip']
+  # consul_retry_join e.g. "172.31.1.11"
+  consul_retry_join = "\"#{node['ip']}\""
 
   # Add the node to the correct ansible group.
   ansible_groups["mesos_masters"].push(node['hostname'])
@@ -60,19 +60,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--memory", node['mem'], "--cpus", node['cpus'] ]
 
       machine.vm.provision :ansible do |ansible|
-
         ansible.playbook = "site.yml"
         ansible.sudo = true
         ansible.groups = ansible_groups
         ansible.limit = 'all'
         ansible.extra_vars = {
-          mesos_zk_url: mesos_zk_url,
+          zookeeper_peers: zookeeper_peers,
           zookeeper_conf: zookeeper_conf,
           consul_join: consul_join,
           consul_retry_join: consul_retry_join,
-          marathon_master_peers: marathon_master_peers,
-          marathon_zk_peers: marathon_zk_peers,
-          chronos_zk_url: chronos_zk_url,
           mesos_master_quorum: conf['mesos_master_quorum'],
           consul_bootstrap_expect: conf['consul_bootstrap_expect']
         }
