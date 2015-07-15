@@ -6,6 +6,8 @@ base_dir = File.expand_path(File.dirname(__FILE__))
 conf = YAML.load_file(File.join(base_dir, "vagrant-standalone.yml"))
 groups = YAML.load_file(File.join(base_dir, "ansible-groups.yml"))
 
+require File.join(base_dir, "vagrant_helper")
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.7.0"
@@ -47,6 +49,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # consul_retry_join e.g. "172.31.1.11"
   consul_retry_join = "\"#{node['ip']}\""
 
+  # Ansible variables
+  ansible_extra_vars = {
+    zookeeper_peers: zookeeper_peers,
+    zookeeper_conf: zookeeper_conf,
+    consul_join: consul_join,
+    consul_retry_join: consul_retry_join,
+    mesos_master_quorum: conf['mesos_master_quorum'],
+    consul_bootstrap_expect: conf['consul_bootstrap_expect']
+  }
+  # Apollo environment variables
+  apollo_vars = get_apollo_variables(ENV)
+  # Add apollo variables to ansible ones
+  ansible_extra_vars.merge!(apollo_vars)
+
   # Add the node to the correct ansible group.
   ansible_groups["mesos_masters"].push(node['hostname'])
   ansible_groups["mesos_slaves"].push(node['hostname'])
@@ -64,14 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.sudo = true
         ansible.groups = ansible_groups
         ansible.limit = 'all'
-        ansible.extra_vars = {
-          zookeeper_peers: zookeeper_peers,
-          zookeeper_conf: zookeeper_conf,
-          consul_join: consul_join,
-          consul_retry_join: consul_retry_join,
-          mesos_master_quorum: conf['mesos_master_quorum'],
-          consul_bootstrap_expect: conf['consul_bootstrap_expect']
-        }
+        ansible.extra_vars = ansible_extra_vars
       end
     end
   end
