@@ -8,6 +8,16 @@
 4. You need to have installed and configured Terraform (>= 0.5.0 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 5. You will need a VPN client if you want to access the web interfaces for Mesos, Consul and Marathon. We recommend using Tunnelblick. Visit [https://code.google.com/p/tunnelblick/](https://code.google.com/p/tunnelblick/) to download and install.
 6. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
+7. You will need to have created an SSH RSA key pair for accessing your aws intances. You can create it as follows:
+
+```
+cd ~/.ssh
+ssh-keygen -P "" -t rsa -f id_rsa_aws -b 4096 -C "email@example.com"
+openssl rsa -in ~/.ssh/id_rsa_aws -outform pem > id_rsa_aws.pem
+chmod 400 id_rsa_aws.pem
+eval `ssh-agent -s`
+ssh-add id_rsa_aws.pem
+```
 
 ### Cluster Turnup
 
@@ -35,8 +45,9 @@ APOLLO_PROVIDER=aws
 TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
-TF_VAR_key_file
-TF_VAR_key_name
+TF_VAR_key_name="deployer"
+TF_VAR_key_file='~/.ssh/id_rsa_aws.pub'
+TF_VAR_private_key_file='~/.ssh/id_rsa_aws.pem'
 ATLAS_TOKEN
 ```
 
@@ -47,7 +58,7 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 /bin/bash bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
+NOTE: The script will provision a new VPC and a 3 node mesos master cluster across all the availability zones in eu-west-1 (Ireland).
 
 It will also create a mesos slave cluster and a Bastion server for accessing the VPC via VPN and SSH.
 
