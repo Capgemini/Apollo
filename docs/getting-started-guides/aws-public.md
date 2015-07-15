@@ -55,7 +55,7 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 /bin/bash bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
+NOTE: The script will provision a new VPC and a 3 node mesos master cluster across all the availability zones in eu-west-1 (Ireland).
 
 #### Tearing down the cluster
 ```
