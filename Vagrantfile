@@ -123,6 +123,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           machine.vm.provision :ansible do |ansible|
             ansible.playbook = "site.yml"
             ansible.sudo = true
+            unless ENV['ANSIBLE_LOG'].nil? || ENV['ANSIBLE_LOG'].empty?
+              ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
+            end
             ansible.groups = ansible_groups
             ansible.limit = 'all'
             ansible.extra_vars = ansible_extra_vars
