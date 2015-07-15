@@ -43,6 +43,7 @@
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
+        "scripts/common/install_jq.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/ubuntu/install_mesos.sh",
         "scripts/common/install_consul.sh",
