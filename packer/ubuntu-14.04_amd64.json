@@ -112,6 +112,7 @@
         "scripts/common/virtualbox/sudoers.sh",
         "scripts/common/virtualbox/vagrant_ssh.sh",
         "scripts/common/sshd.sh",
+        "scripts/ubuntu/kernel-upgrade.sh",
         "scripts/ubuntu/install_docker.sh",
         "scripts/ubuntu/install_mesos.sh",
         "scripts/common/install_consul.sh",
