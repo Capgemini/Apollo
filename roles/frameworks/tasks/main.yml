@@ -1,0 +1,3 @@
+---
+# tasks file for frameworks
+- include: cassandra.yml
