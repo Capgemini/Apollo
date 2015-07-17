@@ -2,6 +2,6 @@
   "mesos": {"master": "{{ frameworks_zk_master_peers }}"},
   "cassandra": {
     "zk": "zk://{{ zookeeper_peers_nodes }}/cassandra-mesos",
-    "node-count": "{{ frameworks_cassandra_node_count }}"
+    "node-count": {{ frameworks_cassandra_node_count }}
   }
 }

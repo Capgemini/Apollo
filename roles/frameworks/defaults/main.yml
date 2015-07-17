@@ -2,8 +2,10 @@
 # defaults file for frameworks
 frameworks_dcos_cli_image: capgemini/dcos-cli
 frameworks_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
-frameworks_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
-frameworks_marathon_url: "http://{{ ansible_ssh_host }}:8080"
+frameworks_mesos_master_url: "http://{{ ansible_ssh_host }}:{{ mesos_master_port }}"
+frameworks_marathon_url: "http://{{ ansible_ssh_host }}:{{ marathon_port }}"
 
 frameworks_cassandra_enabled: false
 frameworks_cassandra_node_count: 1
+frameworks_list:
+  - cassandra
