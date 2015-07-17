@@ -40,6 +40,11 @@
   roles:
     - haproxy
 
+# Installing DCOS frameworks from one master.
+- hosts: mesos_masters
+  roles:
+    - frameworks
+
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml

@@ -5,6 +5,9 @@ consul_advertise: "{{ ansible_eth1.ipv4.address }}"
 consul_bind_addr: "{{ ansible_eth1.ipv4.address }}"
 marathon_hostname: "{{ ansible_eth1.ipv4.address }}"
 mesos_hostname: "{{ ansible_eth1.ipv4.address }}"
+frameworks_marathon_url: "http://{{ ansible_eth1.ipv4.address }}:8080"
+frameworks_mesos_master_url: "http://{{ ansible_eth1.ipv4.address }}:5050"
+
 registrator_uri: "consul://{{ ansible_eth1.ipv4.address }}:8500"
 weave_launch_peers: "
   {%- set weave_peers = [] -%}
