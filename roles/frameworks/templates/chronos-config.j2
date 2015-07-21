@@ -1,0 +1,7 @@
+{
+  "mesos": {"master": "{{ frameworks_zk_master_peers }}"},
+  "chronos": {
+    "zk-hosts": "{{ zookeeper_peers_nodes }}",
+    "mem": {{ frameworks_chronos_mem }}
+  }
+}
