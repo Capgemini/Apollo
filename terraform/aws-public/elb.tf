@@ -1,5 +1,5 @@
 resource "aws_elb" "web" {
-  name = "apollo-elb"
+  name = "${var.elb_name}"
 
   subnets = ["${aws_subnet.public.*.id}"]
 

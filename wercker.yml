@@ -59,4 +59,3 @@ deploy:
             webhook_url: $SLACK_WEBHOOK_URL
             channel: apollo
             username: wercker-bot
-
