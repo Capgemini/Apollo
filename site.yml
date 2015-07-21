@@ -30,7 +30,6 @@
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
     - marathon
-    - chronos
 
 - hosts: mesos_slaves
   roles:

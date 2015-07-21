@@ -102,7 +102,6 @@ open_urls() {
     /usr/bin/open "${master_url}:8080"
     /usr/bin/open "${master_url}:8500"
     /usr/bin/open "${master_url}:4040"
-    /usr/bin/open "${master_url}:4400"
     /usr/bin/open "${master_url}:8081"
   fi
 }
