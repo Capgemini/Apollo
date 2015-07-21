@@ -16,7 +16,7 @@ Image_amd64="http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.19.8-vivid/linux-i
 DEB="linux-headers-3.19.8*.deb linux-image-3.19.8*.deb"
 
 # Currently Installed Kernel Version
-CurrentKernel=$(uname -r) 
+CurrentKernel=$(uname -r)
 
 # System Architecture
 SystemArch=$(uname -i)
@@ -50,12 +50,12 @@ then
   sleep 2s
 
   echo "Installing the packages..."
-  dpkg -i "$DEB"
+  sudo DEBIAN_FRONTEND=noninteractive dpkg -i $DEB
 
 # For 64-bit Systems
 elif [ "$SystemArch" = "x86_64" ]
 then
-  echo "Kernel upgrade process for 64-bit systems will now start..." 
+  echo "Kernel upgrade process for 64-bit systems will now start..."
   sleep 2s
 
   wget $Headers_All
@@ -66,7 +66,7 @@ then
   sleep 2s
 
   echo "Installing the packages..."
-  dpkg -i "$DEB"
+  sudo DEBIAN_FRONTEND=noninteractive dpkg -i $DEB
 
 # If system architecture is not compatible
 else
@@ -78,5 +78,5 @@ fi
 
 echo "Your system has been successfully upgraded to latest kernel version $(LatestKernel)."
 echo "System will now reboot."
-reboot
+sudo reboot
 sleep 60
