@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe package('docker-py') do
+  it { should be_installed.by('pip').with_version('1.3.0') }
+end
+
 describe package('lxc-docker') do
   it { should be_installed }
 end
