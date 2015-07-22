@@ -3,6 +3,8 @@ How to contribute
 
 Apollo is based on an strong open-source philosophy so we would love your contributions.
 
+This project adheres to the [Open Code of Conduct](http://todogroup.org/opencodeofconduct/#Apollo/digitaldevops.uk@capgemini.com). By participating, you are expected to uphold this code.
+
 ## Apollo Core
 
 Apollo is built on top of several opensource tecnologies:
