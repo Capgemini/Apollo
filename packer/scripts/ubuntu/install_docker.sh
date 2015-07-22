@@ -3,6 +3,9 @@ set -eux
 set -o pipefail
 
 sudo apt-get -y update
+
+sudo pip install docker-py==1.3.0
+
 sudo apt-get install -y linux-image-extra-$(uname -r)
 curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 
