@@ -52,7 +52,7 @@ deploy:
         cloud: $CLOUD
         artifact_name: $ARTIFACT_NAME
         artifact_version: $ARTIFACT_VERSION
-        terraform_version: 0.5.3
+        terraform_version: 0.6.1
         run_tests: true
     after-steps:
         - wantedly/pretty-slack-notify:

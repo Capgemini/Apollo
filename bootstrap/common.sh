@@ -13,7 +13,7 @@ verify_prereqs() {
     exit 1
   fi
 
-  check_terraform_version "0.5.0"
+  check_terraform_version
 
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
@@ -28,7 +28,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.5.0}
+  local requirement_version_string=${1:-0.6.1}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
