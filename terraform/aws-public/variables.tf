@@ -62,8 +62,8 @@ variable "slave_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master = "m3.medium"
+    slave  = "m3.medium"
   }
 }
 
@@ -76,7 +76,22 @@ variable "atlas_artifact" {
 
 variable "atlas_artifact_version" {
   default = {
-    master = "6"
-    slave  = "6"
+    master = "8"
+    slave  = "8"
+  }
+}
+
+/* Remember to update the list every time when you build a new artifact on atlas */
+variable "amis" {
+  default = {
+    ap-northeast-1 = "ami-249e2e24"
+    ap-southeast-1 = "ami-f20b06a0"
+    ap-southeast-2 = "ami-7d793847"
+    eu-central-1   = "ami-f6888deb"
+    eu-west-1      = "ami-8c6431fb"
+    sa-east-1      = "ami-158b0508"
+    us-east-1      = "ami-2f36ee44"
+    us-west-1      = "ami-1d6d9059"
+    us-west-2      = "ami-af323d9f"
   }
 }
