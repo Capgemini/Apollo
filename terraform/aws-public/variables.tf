@@ -38,6 +38,11 @@ variable "availability_zones" {
   default     = ""
 }
 
+variable "elb_name" {
+  description = "Elb name"
+  default     = "apollo-elb"
+}
+
 variable "slaves" {
   description = "The number of slaves."
   default = "1"
