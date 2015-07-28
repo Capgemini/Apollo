@@ -76,7 +76,7 @@ If you need any help/mentoring be sure to drop by our [Gitter channel](https://g
 
 ## Keep up to date...
 
-Check out the [Capgemini UK Engineering blog](capgemini.github.io/) to find out more about how Apollo works and its new features.
+Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to find out more about how Apollo works and its new features.
 
 * [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
 * [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
