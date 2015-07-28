@@ -26,6 +26,7 @@ resource "aws_instance" "bastion" {
       "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
       /* Install docker */
       "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
+      "sudo service docker start",
       /* Initialize open vpn data container */
       "sudo mkdir -p /etc/openvpn",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
