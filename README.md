@@ -73,3 +73,12 @@ If you're interested in helping out we've [tagged issues specifically for new co
 to help you get familiar with the codebase.
 
 If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
+
+## Keep up to date...
+
+Check out the [Capgemini UK Engineering blog](capgemini.github.io/) to find out more about how Apollo works and its new features.
+
+* [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
+* [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
+* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+
