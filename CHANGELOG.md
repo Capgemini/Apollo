@@ -1,10 +1,20 @@
-## 0.2.0 (Unreleased)
+## 0.2.0 (July 28, 2015)
 
 FEATURES:
 
-  * Add cAdviser for monitoring containers [GH-354]
-  * Add plugin system [GH-357]
-  * Add Chronos as a Mesos framework [GH-359]
+  * Add cAdvisor for monitoring containers [#354](https://github.com/Capgemini/Apollo/pull/354)
+  * Add Cassandra as a Mesos framework [#396](https://github.com/Capgemini/Apollo/pull/396)
+  * Add Chronos as a Mesos framework [#407](https://github.com/Capgemini/Apollo/pull/407)
+
+IMPROVEMENTS:
+
+  * Multi-AZ support for High Availabilty on aws [#385](https://github.com/Capgemini/Apollo/pull/385)
+  * Apollo ami available across all aws regions [#427](https://github.com/Capgemini/Apollo/pull/427)
+  * Add plugin system for hooking customizations on top of Apollo [#357](https://github.com/Capgemini/Apollo/pull/357)
+  * Add DCOS-CLI support for installing frameworks [#396](https://github.com/Capgemini/Apollo/pull/396)
+  * Add hvm virtualisation type support for aws [#427](https://github.com/Capgemini/Apollo/pull/427)
+  * Support for single machine Vagranfile [#369](https://github.com/Capgemini/Apollo/pull/369)
+
 
 ## 0.1.4 (June 30, 2015)
 
