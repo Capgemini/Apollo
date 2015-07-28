@@ -132,10 +132,24 @@
       "compression_level": 9
     },
     {
-      "type": "vagrant-cloud",
-      "box_tag": "capgemini/apollo",
-      "access_token": "{{user `access_token`}}",
-      "version": "{{user `version`}}"
+      "type": "atlas",
+      "only": ["apollo-ubuntu-14.04-amd64-vmware"],
+      "artifact": "capgemini/apollo",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+          "provider": "vmware_desktop",
+          "version": "{{user `version`}}"
+      }
+    },
+    {
+      "type": "atlas",
+      "only": ["apollo-ubuntu-14.04-amd64-virtualbox"],
+      "artifact": "capgemini/apollo",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+          "provider": "virtualbox",
+          "version": "{{user `version`}}"
+      }
     }]
   ]
 }
