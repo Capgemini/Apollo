@@ -23,8 +23,8 @@ export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_mast
 export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-6}
 
 export TF_VAR_region=${TF_VAR_region:-eu-west-1}
-export TF_VAR_master_size=${TF_VAR_master_size:-m1.medium}
-export TF_VAR_slave_size=${TF_VAR_slave_size:-m1.medium}
+export TF_VAR_master_size=${TF_VAR_master_size:-m3.medium}
+export TF_VAR_slave_size=${TF_VAR_slave_size:-m3.medium}
 export TF_VAR_slaves=${TF_VAR_slaves:-1}
 export TF_VAR_availability_zones=${TF_VAR_availability_zones:-'eu-west-1a,eu-west-1b,eu-west-1c'}
 export TF_VAR_public_subnet_availability_zone=${TF_VAR_public_subnet_availability_zone:-'eu-west-1a'}
