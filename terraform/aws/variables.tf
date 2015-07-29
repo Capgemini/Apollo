@@ -77,6 +77,10 @@ variable "instance_type" {
   }
 }
 
+variable "bastion_instance_type" {
+  default = "t2.micro"
+}
+
 variable "atlas_artifact" {
   default = {
     master = "capgemini/apollo-ubuntu-14.04-amd64"

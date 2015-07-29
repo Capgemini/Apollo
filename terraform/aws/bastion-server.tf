@@ -3,10 +3,21 @@ resource "aws_key_pair" "deployer" {
   public_key = "${file(var.key_file)}"
 }
 
+/*
+   Terraform module to get the current set of publicly available ubuntu AMIs.
+   https://github.com/terraform-community-modules/tf_aws_ubuntu_ami
+*/
+module "ami_bastion" {
+  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
+  region = "${var.region}"
+  distribution = "trusty"
+  instance_type = "${var.bastion_instance_type}"
+}
+
 /* NAT/VPN server */
 resource "aws_instance" "bastion" {
-  ami               = "${lookup(var.amis, var.region)}"
-  instance_type     = "t2.micro"
+  ami               = "${module.ami_bastion.ami_id}"
+  instance_type     = "${var.bastion_instance_type}"
   subnet_id         = "${aws_subnet.public.id}"
   security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
   depends_on        = ["aws_internet_gateway.public", "aws_key_pair.deployer"]

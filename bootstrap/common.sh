@@ -67,6 +67,7 @@ get_apollo_variables() {
 }
 
 apollo_launch() {
+  get_terraform_modules
   terraform_apply
   run_if_exist "ansible_ssh_config"
   ansible_playbook_run
@@ -125,6 +126,13 @@ get_ansible_inventory() {
       chmod 755 inventory/terraform.py
     fi
     popd
+}
+
+get_terraform_modules() {
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    # Downloads terraform modules.
+    terraform get
+  popd
 }
 
 terraform_apply() {
