@@ -1,1 +1,3 @@
-server=/{{ consul_domain }}/127.0.0.1#8600
+{% for host in groups['consul_servers'] %}
+server=/{{ consul_domain }}/{{ hostvars[host]['ansible_ssh_host'] }}#8600
+{% endfor %}
