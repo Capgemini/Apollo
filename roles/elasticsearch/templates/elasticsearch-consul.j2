@@ -1,0 +1,17 @@
+{
+  "service": {
+    "name": "elasticsearch",
+    "tags": [ "elasticsearch" ],
+    "port": {{ elasticsearch_http_port }},
+    "check": {
+      "name": "Elasticsearch HTTP",
+      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ elasticsearch_hostname }}:{{ elasticsearch_http_port }}",
+      "interval": "10s"
+    }
+  },
+  "check": {
+    "name": "Elasticsearch Transport Port",
+    "script": "nc -z localhost 9300 >/dev/null 2>&1",
+    "interval": "10s"
+  }
+}

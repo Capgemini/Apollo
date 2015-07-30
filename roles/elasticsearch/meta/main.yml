@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Paul Bauer
+  description:
+  company: Udacity
+  license: license (MIT)
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+     - trusty
+  categories:
+  - cloud
+  - system
+dependencies:
+  - role: handlers

@@ -1,0 +1,11 @@
+- name: restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+  sudo: yes
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
+  sudo: yes

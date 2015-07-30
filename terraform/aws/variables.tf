@@ -73,6 +73,13 @@ variable "slave_block_device" {
   }
 }
 
+variable "elasticsearch_block_device" {
+  description = "Block device for elasticsearch."
+  default = {
+    volume_size = 80
+  }
+}
+
 variable "instance_type" {
   default = {
     master = "m1.medium"

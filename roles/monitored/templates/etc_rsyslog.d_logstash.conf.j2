@@ -1,0 +1,23 @@
+template(name="ls_json" type="list" option.json="on") {
+     constant(value="{")
+     constant(value="\"@timestamp\":\"")         property(name="timegenerated" dateFormat="rfc3339")
+     constant(value="\",\"@version\":\"1")
+     constant(value="\",\"message\":\"")         property(name="msg")
+     constant(value="\",\"host\":\"{{ ansible_hostname }}")
+     constant(value="\",\"host_ip\":\"{{ ansible_default_ipv4.address }}")
+     constant(value="\",\"udacity_environment\":\"Development")
+     constant(value="\",\"severity_label\":\"")  property(name="syslogseverity-text")
+     constant(value="\",\"severity\":\"")        property(name="syslogseverity")
+     constant(value="\",\"facility_label\":\"")  property(name="syslogfacility-text")
+     constant(value="\",\"facility\":\"")        property(name="syslogfacility")
+     constant(value="\",\"program\":\"")         property(name="programname")
+     constant(value="\",\"pid\":\"")             property(name="procid")
+     constant(value="\",\"rawmsg\":\"")          property(name="rawmsg")
+     constant(value="\",\"syslogtag\":\"")       property(name="syslogtag")
+     constant(value="\"}\n")
+}
+*.* @@logstash.service.consul:5500;ls_json
+$ActionExecOnlyWhenPreviousIsSuspended on
+& @@logstash.service.consul:5500;ls_json
+& /var/log/localbuffer
+$ActionExecOnlyWhenPreviousIsSuspended off

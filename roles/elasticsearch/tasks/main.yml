@@ -1,0 +1,74 @@
+# Install (docker-py) python package as is a docker module dependency.
+- pip: name=docker-py version=1.1.0
+
+- name: destroy old elasticsearch container
+  when: elasticsearch_rebuild_container
+  docker:
+    name: elasticsearch
+    image: "{{ elasticsearch_image }}"
+    state: absent
+
+- name: create config directory
+  file: path={{ elasticsearch_host_home}}/config state=directory
+
+- name: upload elasticsearch config files
+  when: elasticsearch_enabled
+  sudo: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ elasticsearch_host_home }}/config/{{ item }}"
+  with_items:
+    - elasticsearch.yml
+    - logging.yml
+  notify: restart elasticsearch
+
+- name: run elasticsearch container
+  when: elasticsearch_enabled
+  docker:
+    name: elasticsearch
+    image: "{{ elasticsearch_image }}"
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ elasticsearch_http_port }}:{{ elasticsearch_http_port }}"
+    - "{{ elasticsearch_transport_port }}:{{ elasticsearch_transport_port }}"
+    command: "{{ elasticsearch_command }}"
+    volumes:
+    - "{{ elasticsearch_host_home }}/config:/usr/share/elasticsearch/config"
+    - "{{ elasticsearch_host_home }}/data:/usr/share/elasticsearch/data"
+    env:
+      ES_MAX_MEM: "3G"
+      SERVICE_IGNORE: True
+
+- name: upload elasticsearch template service
+  when: elasticsearch_enabled
+  copy:
+    src: elasticsearch.conf
+    dest: /etc/init/elasticsearch.conf
+    mode: 0755
+  sudo: yes
+
+- name: ensure elasticsearch is running (and enable it at boot)
+  when: elasticsearch_enabled
+  sudo: yes
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: Set elasticsearch consul service definition
+  when: elasticsearch_enabled
+  sudo: yes
+  template:
+    src: elasticsearch-consul.j2
+    dest: "/etc/consul.d/elasticsearch.json"
+  notify:
+    - reload consul
+
+- name: stop elasticsearch container
+  when: not elasticsearch_enabled
+  docker:
+    name: elasticsearch
+    image: "{{ elasticsearch_image }}"
+    state: stopped
+    enabled: no

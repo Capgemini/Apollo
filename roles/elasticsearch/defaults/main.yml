@@ -1,0 +1,17 @@
+---
+elasticsearch_image: elasticsearch
+elasticsearch_image_tag: 1.6.0
+elasticsearch_rebuild_container: False
+elasticsearch_host_home: /mnt/es
+elasticsearch_enabled: True
+elasticsearch_hostname: "{{ ansible_ssh_host }}"
+elasticsearch_http_port: "9200"
+elasticsearch_transport_port: "9300"
+elasticsearch_command: ""
+elasticsearch_hosts: "
+  {%- set es_hosts = [] -%}
+  {%- for host in groups.elasticsearch -%}
+    {%- do es_hosts.append(hostvars[host]['ansible_eth0']['ipv4']['address'] + ':' + elasticsearch_transport_port) -%}
+  {%- endfor -%}
+  {{ es_hosts|join(',') }}
+"

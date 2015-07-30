@@ -10,6 +10,9 @@ output "master_ips" {
 output "slave_ips" {
    value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
 }
+output "elasticsearch_ips" {
+   value = "${join(",", aws_instance.elasticsearch.*.private_ip)}"
+}
 output "elb.hostname" {
   value = "${aws_elb.app.dns_name}"
 }

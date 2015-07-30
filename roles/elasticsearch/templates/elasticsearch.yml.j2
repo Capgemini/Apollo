@@ -1,0 +1,26 @@
+bootstrap.mlockall: true
+discovery:
+  # set to 'zen' or 'ec2'
+  type:                         zen
+  zen:
+    ping:
+      multicast:
+        enabled:                false
+      unicast:
+        hosts:                  {{ elasticsearch_hosts }}
+    # There are two fault detection processes running. The first is by the
+    # master, to ping all the other nodes in the cluster and verify that they
+    # are alive. And on the other end, each node pings to master to verify if
+    # its still alive or an election process needs to be initiated.
+    fd:
+      # How often a node gets pinged. Defaults to "1s".
+      ping_interval:            3s
+      # How long to wait for a ping response, defaults to "30s".
+      ping_timeout:             10s
+      # How many ping failures / timeouts cause a node to be considered failed. Defaults to 3.
+      ping_retries:             3
+
+# for dev only ... need to address this
+index:
+  #number_of_shards: 1
+  number_of_replicas: 1

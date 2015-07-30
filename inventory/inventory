@@ -2,11 +2,16 @@
 
 [role=mesos_slaves]
 
+[role=elasticsearch]
+
 [mesos_masters:children]
 role=mesos_masters
 
 [mesos_slaves:children]
 role=mesos_slaves
+
+[elasticsearch:children]
+role=elasticsearch
 
 [load_balancers:children]
 mesos_slaves
@@ -15,6 +20,7 @@ mesos_slaves
 mesos_masters
 mesos_slaves
 load_balancers
+elasticsearch
 
 [zookeeper_servers:children]
 mesos_masters

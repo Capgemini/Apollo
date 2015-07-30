@@ -36,6 +36,16 @@
   roles:
     - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
 
+- hosts: elasticsearch
+  roles:
+    - { role: elasticsearch, tags: ["elasticsearch"] }
+
+# MANUAL MAGIC HAPPENS HERE
+# 1. launch logstash collector on marathon ... needs marathon module to automate
+- hosts: all:!role=bastion:!elasticsearch
+  roles:
+    - { role: monitored, tags: ["monitoring"] }
+
 - hosts: load_balancers
   roles:
     - haproxy
