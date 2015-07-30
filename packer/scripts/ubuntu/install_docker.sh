@@ -8,6 +8,9 @@ curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 
 # Download docker containers to the machine to save download time on
 # provisioning later
+docker pull mesosphere/mesos:${MESOS_VERSION}
+docker pull mesosphere/mesos-master:${MESOS_VERSION}
+docker pull mesosphere/mesos-slave:${MESOS_VERSION}
 docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}

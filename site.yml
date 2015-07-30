@@ -27,13 +27,13 @@
 
 - hosts: mesos_masters
   roles:
-    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
+    - { role: mesos, mesos_install_mode: "master" }
     - marathon
 
 - hosts: mesos_slaves
   roles:
-    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
+    - { role: mesos, mesos_install_mode: "slave" }
 
 - hosts: load_balancers
   roles:
