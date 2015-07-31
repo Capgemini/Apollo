@@ -22,8 +22,8 @@
 
 - name: Create zookeeper environments file
   template:
-    src: environments.j2
-    dest: "{{ zookeeper_config_dir }}/environments"
+    src: environment.j2
+    dest: "{{ zookeeper_config_dir }}/environment"
   sudo: yes
   notify:
     - restart zookeeper
@@ -77,7 +77,7 @@
     image: "mesosphere/mesos:0.23.0-1.0.ubuntu1404"
     state: started
     volumes:
-    - "{{ zookeeper_config_dir }}/"
+    - "{{ zookeeper_config_dir }}/:{{ zookeeper_config_dir }}/"
     ports:
     - "{{ zookeeper_client_port }}:{{ zookeeper_client_port }}"
     - "{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_connect_port }}"

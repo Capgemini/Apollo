@@ -8,9 +8,14 @@ describe "mesos slave" do
   describe service('mesos-slave') do
     it { should be_running }
   end
+end
 
-describe "mesos master" do
+describe "mesos slave" do
   describe service('mesos-master') do
     it { should_not be_running }
   end
+end
+
+describe port(5051) do
+  it { should be_listening }
 end
