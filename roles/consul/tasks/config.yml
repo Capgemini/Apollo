@@ -1,0 +1,43 @@
+# tasks file for consul
+- name: remove consul override
+  file:
+    path: /etc/init/consul.override
+    state: absent
+
+- service: name=consul state=stopped enabled=no
+
+- name: configure consul
+  sudo: yes
+  template:
+    src: consul.json.j2
+    dest: /etc/consul.d/consul.json
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart consul
+  tags:
+    - consul
+
+- name: configure atlas for consul
+  sudo: yes
+  template:
+    src: atlas.json.j2
+    dest: /etc/consul.d/atlas.json
+    owner: root
+    group: root
+    mode: 0644
+  when: consul_atlas_join
+  notify:
+    - restart consul
+  tags:
+    - consul
+
+- name: create consul data directory
+  file:
+    path: "{{ consul_data_dir }}"
+    state: directory
+    mode: 0755
+  sudo: yes
+  tags:
+    - consul

@@ -1,0 +1,18 @@
+# Docker
+- name: run consul agent client
+  sudo: yes
+  when: "inventory_hostname not in groups[consul_servers_group]"
+  docker:
+    name: consul
+    image: "gliderlabs/consul-agent"
+    state: started
+    volumes:
+    - "{{ consul_config_dir }}:/config"
+    - "{{ consul_data_dir }}:/{{ consul_data_dir }}"
+    ports:
+    - "8400:8400"
+    - "8500:53/udp"
+    - "8600:8600"
+    net: "host"
+  tags:
+    - consul
