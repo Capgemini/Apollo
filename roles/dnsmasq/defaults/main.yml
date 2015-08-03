@@ -1,2 +1,4 @@
 ---
 # defaults file for dnsmasq
+dnsmasq_config_folder: "/etc/dnsmasq.d"
+dnsmasq_resolvconf_file: "{{ dnsmasq_config_folder }}/resolv.conf~"

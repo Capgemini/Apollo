@@ -18,6 +18,7 @@ docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 docker pull mesosphere/chronos:${CHRONOS_VERSION}
 docker pull capgemini/dcos-cli:latest
+docker pull andyshinn/dnsmasq:latest
 
 sudo service docker stop
 echo manual | sudo tee /etc/init/docker.override >/dev/null

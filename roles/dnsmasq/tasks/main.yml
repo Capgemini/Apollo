@@ -1,23 +1,15 @@
 ---
 # tasks file for dnsmasq
-- name: remove dnsmasq override
+- name: create dnsmasq config directory
   file:
-    path: /etc/init/dnsmasq.override
-    state: absent
-  notify:
-    - restart dnsmasq
+    path: "/etc/dnsmasq.d"
+    state: directory
+    mode: 0755
+  sudo: yes
   tags:
     - dnsmasq
 
-- name: ensure dnsmasq is running (and enable it at boot)
-  service:
-    name: dnsmasq
-    state: started
-    enabled: yes
-  tags:
-    - dnsmasq
-
-- name: configure dnsmasq
+- name: configure consul resolution dnsmasq
   sudo: yes
   template:
     src: 10-consul.j2
@@ -27,5 +19,37 @@
     mode: 0644
   notify:
     - restart dnsmasq
+  tags:
+    - dnsmasq
+
+# This should be using -cap-add=NET_ADMIN rather than privileged: true.
+# This will be supported in Ansible 2.0
+- name: run dnsmasq container
+  docker:
+    name: dnsmasq
+    image: "andyshinn/dnsmasq"
+    state: started
+    privileged: true
+    volumes:
+    - "{{ dnsmasq_config_folder }}/:{{ dnsmasq_config_folder }}/"
+    ports:
+    - "53:53/tcp"
+    - "53:53/udp"
+    command: "-r {{ dnsmasq_resolvconf_file }} --conf-dir={{ dnsmasq_config_folder }}"
+
+- name: upload dnsmasq template service
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/init/dnsmasq.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - dnsmasq
+
+- name: ensure dnsmasq is running (and enable it at boot)
+  service:
+    name: dnsmasq
+    state: started
+    enabled: yes
   tags:
     - dnsmasq
