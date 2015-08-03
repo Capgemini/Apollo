@@ -13,6 +13,7 @@
     "chronos_version": "chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404",
     "consul_version": "0.5.2",
     "weave_version": "1.0.1",
+    "docker_version": "1.7.0",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.2-server-amd64.iso",
     "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195"
@@ -103,7 +104,8 @@
         "WEAVE_VERSION={{user `weave_version`}}",
         "MESOS_VERSION={{user `mesos_version`}}",
         "MARATHON_VERSION={{user `marathon_version`}}",
-        "CHRONOS_VERSION={{user `chronos_version`}}"
+        "CHRONOS_VERSION={{user `chronos_version`}}",
+        "DOCKER_VERSION={{user `docker_version`}}"
       ],
       "scripts": [
         "scripts/ubuntu/base.sh",
