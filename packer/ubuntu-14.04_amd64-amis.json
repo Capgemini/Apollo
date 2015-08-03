@@ -2,7 +2,7 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
-    "mesos_version": "0.22.1-1.0.ubuntu1404",
+    "mesos_version": "0.23.0-1.0.ubuntu1404",
     "marathon_version": "v0.9.0",
     "chronos_version": "chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404",
     "consul_version": "0.5.2",
@@ -55,7 +55,6 @@
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
         "scripts/ubuntu/install_docker.sh",
-        "scripts/ubuntu/install_mesos.sh",
         "scripts/common/install_consul.sh",
         "scripts/ubuntu/install_dnsmasq.sh",
         "scripts/common/install_weave.sh"

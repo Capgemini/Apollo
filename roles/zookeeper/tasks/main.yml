@@ -1,16 +1,39 @@
-- name: ensure zookeeper is running (and enable it at boot)
+---
+
+# Generate config files in the host
+- name: create zookeeper config directory
+  file:
+    path: "{{ zookeeper_config_dir }}"
+    state: directory
+    mode: 0755
   sudo: yes
-  service:
-    name: zookeeper
-    state: started
-    enabled: yes
   tags:
     - zookeeper
 
 - name: Create zookeeper config file
   template:
     src: zoo.cfg.j2
-    dest: /etc/zookeeper/conf/zoo.cfg
+    dest: "{{ zookeeper_config_dir }}/zoo.cfg"
+  sudo: yes
+  notify:
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: Create zookeeper environments file
+  template:
+    src: environment.j2
+    dest: "{{ zookeeper_config_dir }}/environment"
+  sudo: yes
+  notify:
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: Create zookeeper configuration.xsl file
+  template:
+    src: configuration.xsl.j2
+    dest: "{{ zookeeper_config_dir }}/configuration.xsl"
   sudo: yes
   notify:
     - restart zookeeper
@@ -20,8 +43,18 @@
 - name: Create zookeeper myid file
   copy:
     content: "{{ zookeeper_id }}"
-    dest: /etc/zookeeper/conf/myid
+    dest: "{{ zookeeper_config_dir }}/myid"
     mode: 0644
+  sudo: yes
+  notify:
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: Create zookeeper log4j file
+  template:
+    src: log4j.properties.j2
+    dest: "{{ zookeeper_config_dir }}/log4j.properties"
   sudo: yes
   notify:
     - restart zookeeper
@@ -37,3 +70,38 @@
     - restart consul
   tags:
     - zookeeper
+
+- name: run zookeeper container
+  docker:
+    name: zookeeper
+    image: "mesosphere/mesos:0.23.0-1.0.ubuntu1404"
+    state: started
+    volumes:
+    - "{{ zookeeper_config_dir }}/:{{ zookeeper_config_dir }}/"
+    ports:
+    - "{{ zookeeper_client_port }}:{{ zookeeper_client_port }}"
+    - "{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_connect_port }}"
+    - "{{ zookeeper_leader_election_port }}:{{ zookeeper_leader_election_port }}"
+    net: "host"
+    command: /usr/share/zookeeper/bin/zkServer.sh start-foreground
+  tags:
+    - zookeeper
+
+- name: upload zookeeper template service
+  template:
+    src: zookeeper.conf.j2
+    dest: /etc/init/zookeeper.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - zookeeper
+
+- name: ensure zookeeper is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: zookeeper
+    state: started
+    enabled: yes
+  tags:
+    - zookeeper
+

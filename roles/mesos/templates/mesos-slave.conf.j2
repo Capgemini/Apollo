@@ -1,0 +1,12 @@
+description "Mesos-slave container"
+
+start on started docker
+stop on stopping docker
+
+script
+  /usr/bin/docker start -a mesos-slave
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10
