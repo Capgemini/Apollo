@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe package('lxc-docker') do
+docker_version = 'lxc-docker-' + ENV['DOCKER_VERSION']
+
+describe package(docker_version) do
   it { should be_installed }
 end
 
