@@ -1,29 +1,10 @@
 ---
+# Consul tasks
+
 - include: config.yml
 - include: server.yml
 - include: client.yml
-
-- name: upload consul upstart
-  sudo: yes
-  template:
-    src: consul.conf.j2
-    dest: /etc/init/consul.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart consul
-  tags:
-    - consul
-
-- name: enable consul
-  sudo: yes
-  service:
-    name: consul
-    enabled: yes
-    state: started
-  tags:
-    - consul
+- include: service.yml
 
 # Give some time for leader election to occur
 - name: wait for leader

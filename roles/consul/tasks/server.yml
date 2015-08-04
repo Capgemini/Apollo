@@ -1,4 +1,6 @@
-# Docker
+---
+# Docker consul agent server
+
 - name: run consul agent master
   sudo: yes
   when: "inventory_hostname in groups[consul_servers_group]"

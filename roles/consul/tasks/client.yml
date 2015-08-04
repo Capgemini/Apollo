@@ -1,4 +1,6 @@
-# Docker
+---
+# Docker consul agent client
+
 - name: run consul agent client
   sudo: yes
   when: "inventory_hostname not in groups[consul_servers_group]"

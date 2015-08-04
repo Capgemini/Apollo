@@ -1,10 +1,5 @@
-# tasks file for consul
-- name: remove consul override
-  file:
-    path: /etc/init/consul.override
-    state: absent
-
-- service: name=consul state=stopped enabled=no
+---
+# tasks file with config for consul
 
 - name: configure consul
   sudo: yes
