@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe docker_container('mesos-slave') do
   it { should be_running }
+  it { should have_volume('/tmp/mesos','/tmp/mesos') }
 end
 
 describe "mesos slave" do

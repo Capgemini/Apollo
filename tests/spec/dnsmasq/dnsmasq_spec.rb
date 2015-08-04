@@ -17,3 +17,9 @@ end
 describe port(53) do
   it { should be_listening }
 end
+
+# Containers should be able to reach each other
+# via dnsmasq resolving through consul-dns.
+describe command("docker exec cadvisor ping -c 3 marathon") do
+  its(:exit_status) { should eq 0 }
+end

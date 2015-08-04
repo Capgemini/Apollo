@@ -1,5 +1,6 @@
 describe docker_container('mesos-master') do
   it { should be_running }
+  it { should have_volume('/var/lib/mesos','/var/lib/mesos') }
 end
 
 describe "mesos master" do

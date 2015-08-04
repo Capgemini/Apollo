@@ -19,7 +19,7 @@
     state: started
     privileged: true
     volumes:
-    - "{{ mesos_slave_work_dir }}/{{ mesos_slave_work_dir }}"
+    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
     - "/proc:/host/proc:ro"
     - "/cgroup:/cgroup"
     - "/sys:/sys"
