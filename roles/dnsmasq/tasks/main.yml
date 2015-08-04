@@ -29,6 +29,7 @@
     name: dnsmasq
     image: "andyshinn/dnsmasq"
     state: started
+    net: "host"
     privileged: true
     volumes:
     - "{{ dnsmasq_config_folder }}/:{{ dnsmasq_config_folder }}/"
