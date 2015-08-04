@@ -23,6 +23,9 @@ sudo apt-get install -y lxc-docker-${DOCKER_VERSION}
 
 # Download docker containers to the machine to save download time on
 # provisioning later
+docker pull gliderlabs/consul:${CONSUL_VERSION}
+docker pull gliderlabs/consul-agent:${CONSUL_VERSION}
+docker pull gliderlabs/consul-server:${CONSUL_VERSION}
 docker pull mesosphere/mesos:${MESOS_VERSION}
 docker pull mesosphere/mesos-master:${MESOS_VERSION}
 docker pull mesosphere/mesos-slave:${MESOS_VERSION}

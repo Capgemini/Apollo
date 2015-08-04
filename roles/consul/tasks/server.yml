@@ -1,0 +1,25 @@
+---
+# Docker consul agent server
+
+- name: run consul agent master
+  sudo: yes
+  when: "inventory_hostname in groups[consul_servers_group]"
+  docker:
+    name: consul
+    image: "gliderlabs/consul-server"
+    state: started
+    volumes:
+    - "{{ consul_config_dir }}:/config"
+    - "{{ consul_data_dir }}:/{{ consul_data_dir }}"
+    ports:
+    - "8300:8300"
+    - "8301:8301"
+    - "8301:8301/udp"
+    - "8302:8302"
+    - "8302:8302/udp"
+    - "8400:8400"
+    - "8500:53/udp"
+    - "8600:8600"
+    net: "host"
+  tags:
+    - consul

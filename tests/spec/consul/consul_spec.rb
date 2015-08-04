@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'consul' do
 
+  describe docker_container('consul') do
+    it { should be_running }
+  end
+
   describe service('consul') do
     it { should be_running }
   end

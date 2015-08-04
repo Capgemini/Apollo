@@ -7,7 +7,7 @@
     "mesos_version": "0.23.0-1.0.ubuntu1404",
     "marathon_version": "v0.9.0",
     "chronos_version": "chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404",
-    "consul_version": "0.5.2",
+    "consul_version": "0.5",
     "weave_version": "1.0.1",
     "docker_version": "1.7.0",
     "version": "{{env `APOLLO_VERSION`}}"
@@ -24,11 +24,6 @@
     "zone": "{{user `zone`}}"
   }],
   "provisioners": [
-    {
-      "type": "file",
-      "source": "scripts/ubuntu/upstart/",
-      "destination": "/tmp"
-    },
     {
       "type": "file",
       "source": "tests",
@@ -48,7 +43,6 @@
         "scripts/ubuntu/base.sh",
         "scripts/common/sshd.sh",
         "scripts/ubuntu/install_docker.sh",
-        "scripts/common/install_consul.sh",
         "scripts/common/install_weave.sh",
         "scripts/common/serverspec.sh"
       ],

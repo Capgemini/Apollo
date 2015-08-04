@@ -18,9 +18,9 @@
 
 - hosts: all:!role=bastion
   roles:
-    - consul
     - docker
     - weave
+    - consul
     - dnsmasq
     - registrator
     - cadvisor
