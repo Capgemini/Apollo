@@ -108,3 +108,4 @@ variable "amis" {
     us-west-1 = "ami-bb3fc3ff"
     us-west-2 = "ami-5fafa16f"
   }
+}
