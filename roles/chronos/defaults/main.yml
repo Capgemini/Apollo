@@ -27,4 +27,4 @@ chronos_zk_peers_nodes: "
 {%- endif -%}"
 
 chronos_master_peers: "{%- set master_peers = 'zk://' + chronos_zk_peers_nodes + '/mesos' -%} {{ master_peers }}"
-chronos_command: "/usr/bin/chronos run_jar --http_port 4400 --master {{ chronos_master_peers }} --zk_hosts {{ chronos_zk_peers_nodes }}"
+chronos_command: "/usr/bin/chronos run_jar --hostname {{ chronos_hostname }} --http_port 4400 --master {{ chronos_master_peers }} --zk_hosts {{ chronos_zk_peers_nodes }}"
