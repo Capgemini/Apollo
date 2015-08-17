@@ -82,13 +82,20 @@ run_if_exist() {
 
 open_urls() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    local open_cmd=""
     if [ -a /usr/bin/open ]; then
-      /usr/bin/open "http://$(terraform output master.1.ip):5050"
-      /usr/bin/open "http://$(terraform output master.1.ip):8080"
-      /usr/bin/open "http://$(terraform output master.1.ip):8500"
-      /usr/bin/open "http://$(terraform output master.1.ip):4040"
-      /usr/bin/open "http://$(terraform output master.1.ip):4400"
-      /usr/bin/open "http://$(terraform output master.1.ip):8081"
+      open_cmd=/usr/bin/open
+    elif [ -a /usr/bin/xdg-open ]; then
+      open_cmd=/usr/bin/xdg-open
+    fi
+
+    if [ -a ${open_cmd} ]; then
+      ${open_cmd} "http://$(terraform output master.1.ip):5050"
+      ${open_cmd} "http://$(terraform output master.1.ip):8080"
+      ${open_cmd} "http://$(terraform output master.1.ip):8500"
+      ${open_cmd} "http://$(terraform output master.1.ip):4040"
+      ${open_cmd} "http://$(terraform output master.1.ip):4400"
+      ${open_cmd} "http://$(terraform output master.1.ip):8081"
     fi
   popd
 }
