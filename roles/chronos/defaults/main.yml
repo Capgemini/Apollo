@@ -5,6 +5,7 @@ chronos_consul_dir: /etc/consul.d
 chronos_cluster_name: "{{ mesos_cluster_name }}"
 chronos_version: 'chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404'
 chronos_restart_policy: 'no'
+chronos_rebuild_container: False
 chronos_net: 'bridge'
 chronos_hostname: "{{ ansible_ssh_host }}"
 chronos_host_port: 4400

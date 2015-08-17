@@ -8,6 +8,8 @@ haproxy_image_tag: latest
 #    app1.example.com, app2.example.com, etc.  set this to 'example.com'
 haproxy_domain: example.com
 
+haproxy_rebuild_container: False
+
 consul_template_dir: /mnt/consul-template.d
 consul_template_loglevel: debug
 consul_backend: consul.service.consul:8500

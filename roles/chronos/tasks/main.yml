@@ -11,6 +11,13 @@
   tags:
     - chronos
 
+- name: destroy old chronos container
+  when: chronos_rebuild_container
+  docker:
+    name: chronos
+    image: "{{ chronos_image }}"
+    state: absent
+
 - name: run chronos container
   when: chronos_enabled
   docker:

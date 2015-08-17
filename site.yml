@@ -17,6 +17,12 @@
       when: bastion_ip is not defined
 
 - hosts: all:!role=bastion
+  tasks:
+    - name: set hostname to local ipv4 address
+      sudo: Yes
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
     - dnsmasq
@@ -28,9 +34,9 @@
 - hosts: mesos_masters
   roles:
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
-    - zookeeper
-    - marathon
-    - chronos
+    - { role: zookeeper, tags: ["zookeeper"] }
+    - { role: marathon, tags: ["marathon"] }
+    - { role: chronos, tags: ["chronos"] }
 
 - hosts: mesos_slaves
   roles:
@@ -48,11 +54,10 @@
 
 - hosts: load_balancers
   roles:
-    - haproxy
+    - { role: haproxy, tags: ["haproxy"] }
 
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml
 
 - include: contrib-plugins/playbook.yml
-
