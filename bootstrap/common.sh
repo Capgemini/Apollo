@@ -98,12 +98,19 @@ get_master_url() {
 open_urls() {
   local master_url=$(get_master_url)
 
+  local open_cmd=""
   if [ -a /usr/bin/open ]; then
-    /usr/bin/open "${master_url}:5050"
-    /usr/bin/open "${master_url}:8080"
-    /usr/bin/open "${master_url}:8500"
-    /usr/bin/open "${master_url}:4040"
-    /usr/bin/open "${master_url}:8081"
+    open_cmd=/usr/bin/open
+  elif [ -a /usr/bin/xdg-open ]; then
+    open_cmd=/usr/bin/xdg-open
+  fi
+
+  if [ -a ${open_cmd} ]; then
+    ${open_cmd} "${master_url}:5050"
+    ${open_cmd} "${master_url}:8080"
+    ${open_cmd} "${master_url}:8500"
+    ${open_cmd} "${master_url}:4040"
+    ${open_cmd} "${master_url}:8081"
   fi
 }
 
