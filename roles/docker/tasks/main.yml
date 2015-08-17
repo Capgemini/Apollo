@@ -19,6 +19,16 @@
   notify:
     - restart docker
 
+- name: configure docker log driver
+  sudo: yes
+  lineinfile:
+    dest: /etc/default/docker
+    state: present
+    regexp: ^DOCKER_OPTS=.*--log-driver.*
+    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --log-driver={{ docker_log_driver }}"'
+  notify:
+    - restart docker
+
 - name: configure docker temporary directory
   sudo: yes
   lineinfile:
