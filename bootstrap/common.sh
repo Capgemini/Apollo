@@ -67,11 +67,15 @@ get_apollo_variables() {
 }
 
 apollo_launch() {
-  terraform_apply
-  run_if_exist "ansible_ssh_config"
-  ansible_playbook_run
-  run_if_exist "set_vpn"
-  open_urls
+  if [ "$@" ]; then
+    eval $@
+  else
+    terraform_apply
+    run_if_exist "ansible_ssh_config"
+    ansible_playbook_run
+    run_if_exist "set_vpn"
+    open_urls
+  fi
 }
 
 run_if_exist() {
