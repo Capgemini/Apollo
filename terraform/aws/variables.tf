@@ -13,6 +13,11 @@ variable "key_name" {
   default = "Apollo"
 }
 
+variable "ssl_certificate_arn" {
+  description = "arn for ssl certificate"
+  default = ""
+}
+
 variable "key_file" {
   description = "The ssh public key for using with the cloud provider."
   default = ""
