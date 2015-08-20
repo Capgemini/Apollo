@@ -21,6 +21,9 @@ frontend haproxy_status
 frontend www
     bind *:80
 
+    acl is_http hdr(X-Forwarded-Proto) http
+    redirect scheme https code 301 if is_http
+
     # Generated automatically by consul-template
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
     acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
