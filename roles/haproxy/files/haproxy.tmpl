@@ -22,13 +22,17 @@ frontend www
     bind *:80
 
     # Generated automatically by consul-template
-{{range services}}
+{{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
     acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
     use_backend {{.Name}}_backend if host_{{.Name}}
-{{end}}
+{{end}}{{end}}{{end}}
 
-{{range services}}
+{{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
 {{range service .Name}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-{{end}}
+{{end}}{{end}}{{end}}
+
+backend consul_backend
+{{range service "consul"}}
+   server {{.Node}} {{.Address}}:{{.Port}}{{end}}
