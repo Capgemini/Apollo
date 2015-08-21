@@ -8,16 +8,16 @@
 4. You need to have [Packer](https://www.packer.io) installed.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 6. You will need to have created an SSH RSA key pair for accessing your Digitalocean
-droplets. Execute ```ssh-keygen -t rsa``` to create a key pair.
+droplets. Execute `ssh-keygen -t rsa` to create a key pair.
 
 ### Cluster Startup
 
 #### Download Apollo
 
 ##### Install from source at head
-1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo```
-3. ```pip install -r requirements.txt```
+1. `git clone https://github.com/Capgemini/apollo.git`
+2. `cd apollo`
+3. `pip install -r requirements.txt`
 
 #### Build the base image in Atlas
 
@@ -27,13 +27,13 @@ builds.
 You will need to push and build your Atlas artifact (via Packer in the Atlas cloud) in order to
 provision your nodes via terraform. See the [guide on how to build artifacts in Atlas](../../docs/atlas.md)
 
-When using ```atlas_artifact``` in Terraform, Terraform is looking up the Atlas artifact to retrieve the Digitalocean image ID to replace it in the ```image``` field. If you need to debug to see which images are available under your Digitalocean account you can run the following from your terminal -
+When using `atlas_artifact` in Terraform, Terraform is looking up the Atlas artifact to retrieve the Digitalocean image ID to replace it in the `image` field. If you need to debug to see which images are available under your Digitalocean account you can run the following from your terminal -
 
 ```
 curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer $DIGITALOCEAN_API_TOKEN' "https://api.digitalocean.com/v2/images?page=1&per_page=1&private=true"
 ```
 
-replacing ```$DIGITALOCEAN_API_TOKEN``` with your v2 API token.
+replacing `$DIGITALOCEAN_API_TOKEN` with your v2 API token.
 
 #### Set config
 
@@ -43,7 +43,7 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following the pattern "APOLLO_" will be available for Apollo in ansible.
 
-For a full list of default config options for Digital Ocean see ```bootstrap/digitalocean/config-default.sh```
+For a full list of default config options for Digital Ocean see `bootstrap/digitalocean/config-default.sh`
 
 As a minimum you will need to set these environment variables -
 

@@ -31,6 +31,13 @@
   tags:
     - haproxy
 
+- name: destroy old haproxy container
+  when: haproxy_rebuild_container
+  docker:
+    name: haproxy
+    image: "{{ haproxy_image }}"
+    state: absent
+
 - name: run haproxy container
   docker:
     name: haproxy

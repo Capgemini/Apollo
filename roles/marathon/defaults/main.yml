@@ -12,6 +12,7 @@ marathon_java_settings: '-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError'
 marathon_artifact_store: 'file:///store'
 marathon_artifact_store_dir: '/etc/marathon/store'
 marathon_server_zk_group: marathon_servers
+marathon_rebuild_container: False
 marathon_image: "mesosphere/marathon:v{{ marathon_version }}"
 marathon_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 marathon_zk_peers: "zk://{{ zookeeper_peers_nodes }}/marathon"

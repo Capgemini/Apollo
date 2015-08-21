@@ -16,8 +16,8 @@ main() {
   verify_prereqs
 
   echo "... calling apollo-launch" >&2
-  apollo_launch
+  apollo_launch $@
 }
 
-main
+main @
 exit 0

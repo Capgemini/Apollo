@@ -17,6 +17,12 @@
       when: bastion_ip is not defined
 
 - hosts: all:!role=bastion
+  tasks:
+    - name: set hostname to local ipv4 address
+      sudo: Yes
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
     - docker
@@ -27,9 +33,9 @@
 
 - hosts: mesos_masters
   roles:
-    - zookeeper
+    - { role: zookeeper, tags: ["zookeeper"] }
     - { role: mesos, mesos_install_mode: "master" }
-    - marathon
+    - { role: marathon, tags: ["marathon"] }
 
 - hosts: mesos_slaves
   roles:
@@ -37,7 +43,7 @@
 
 - hosts: load_balancers
   roles:
-    - haproxy
+    - { role: haproxy, tags: ["haproxy"] }
 
 # Installing DCOS frameworks from one master.
 - hosts: mesos_masters
