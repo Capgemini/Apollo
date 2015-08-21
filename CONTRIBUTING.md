@@ -15,6 +15,7 @@ Apollo is built on top of several opensource tecnologies:
 * [Consul](http://consul.io) for service discovery, DNS
 * [Docker](http://docker.io) for application container runtimes
 * [Weave](https://github.com/zettio/weave) for networking of docker containers
+* [Zookeeper](https://zookeeper.apache.org/) for cconfiguration information, naming, providing distributed synchronization, and providing group services
 
 We want Apollo core to be as slim as possible providing a cloud agnostic Mesos cluster with an autodiscovery system based on consul for multi-service tasks.
 
