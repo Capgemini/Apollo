@@ -31,7 +31,6 @@ docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
-docker pull mesosphere/chronos:${CHRONOS_VERSION}
 docker pull capgemini/dcos-cli:latest
 docker pull andyshinn/dnsmasq:latest
 
