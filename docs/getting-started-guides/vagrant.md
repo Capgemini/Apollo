@@ -18,7 +18,7 @@ Running Apollo with Vagrant (and Virtualbox) is an easy way to run/test/develop 
 2. ```cd Apollo```
 3. ```pip install -r requirements.txt```
 
-_Note: you may need to run the pip command with Admin priviledges (e.g. sudo ... if you're on a *nix machine)._
+_**Note**: you may need to run the pip command with Admin privileges (e.g. sudo ... if you're on a *nix machine)._
 
 #### Turn up the cluster
 ```
@@ -26,19 +26,19 @@ export APOLLO_PROVIDER=vagrant
 /bin/bash bootstrap/apollo-launch.sh
 ```
 
-#### Runing the cluster in standalone mode
+#### Running the cluster in standalone mode
 ```
 export APOLLO_PROVIDER=vagrant
 export VAGRANT_VAGRANTFILE=Vagrantfile-standalone
 /bin/bash bootstrap/apollo-launch.sh
 ```
-Note: remember to remove VAGRANT_VAGRANTFILE variable if you want run the cluster in default mode.
+_**Note**: remember to remove ```VAGRANT_VAGRANTFILE ``` variable if you want run the cluster in default mode._
 
 ```
 unset VAGRANT_VAGRANTFILE
 ```
 
-Note: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command
+_**Note**: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command._
 
 Vagrant will set up a 3 node mesos-master cluster and 1 mesos-slave. By default the master nodes will each take up 256MB and 1 CPU. The slave will take 1024MB and 2 CPUs.
 
@@ -64,7 +64,7 @@ You can interact with your Apollo cluster via the normal vagrant commands - ```v
 
 #### Adding more slave machines
 
-Edit ```vagrant.yml```
+Edit ```vagrant.yml```.
 
 Add a new ip under ```slaves.ips:``` following the ip´s convention (i.e. 172.31.1.15).
 
@@ -74,6 +74,6 @@ To change resources for standalone mode edit ```vagrant-standalone.yml``` file.
 
 #### Using Apollo Behind a Firewall
 
-Edit ```groups_vars/all```
+Edit ```groups_vars/all```.
 
-Change all the ```proxy_env``` variables to the proxy hostname e.g. http://10.99.11.11:9090
+Change all the ```proxy_env``` variables to the proxy hostname e.g. ```http://10.99.11.11:9090```.
