@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe docker_container('marathon') do
   it { should be_running }
-  it { should have_volume('/tmp/docker.sock','/var/run/docker.sock') }
-  it { should have_volume('/store','/etc/marathon/store') }
+  # it { should have_volume('/tmp/docker.sock','/var/run/docker.sock') }
+  # it { should have_volume('/store','/etc/marathon/store') }
 end
 
 describe port(8080) do

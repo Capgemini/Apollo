@@ -22,6 +22,7 @@
     - serverspec
 
 - name: install bundler
+  sudo: yes
   command: gem install bundler --no-ri --no-rdoc
   args:
     creates: /usr/local/bin/bundler
@@ -30,6 +31,7 @@
     - serverspec
 
 - name: install bundle files
+  sudo: yes
   command: bundle install --path vendor
   args:
     chdir: "{{ serverspec_tests_path }}/tests"
