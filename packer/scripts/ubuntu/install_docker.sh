@@ -5,6 +5,10 @@ set -o pipefail
 sudo apt-get -y update
 sudo apt-get install -y linux-image-extra-$(uname -r)
 
+# enable memory and swap cgroup
+perl -p -i -e 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g'  /etc/default/grub
+/usr/sbin/update-grub
+
 # This is a docker script from https://get.docker.com/ubuntu/. We added it here directly to downgrade docker version
 # from 1.7.1 to 1.7.0. This is a temporary solution to get rid of the issue https://github.com/Capgemini/Apollo/issues/428.
 
