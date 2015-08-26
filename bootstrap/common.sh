@@ -13,7 +13,7 @@ verify_prereqs() {
     exit 1
   fi
 
-  check_terraform_version "0.5.0"
+  check_terraform_version
 
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
@@ -27,8 +27,8 @@ verify_prereqs() {
 
 check_terraform_version() {
   local IFS='.'
-  local current_version_string=$(terraform --version | awk 'NR==1 {print $2}')
-  local requirement_version_string=${1:-0.5.0}
+  local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
+  local requirement_version_string=${1:-0.6.1}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
@@ -70,6 +70,7 @@ apollo_launch() {
   if [ "$@" ]; then
     eval $@
   else
+    get_terraform_modules
     terraform_apply
     run_if_exist "ansible_ssh_config"
     ansible_playbook_run
@@ -84,31 +85,44 @@ run_if_exist() {
   fi
 }
 
-open_urls() {
-  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    local open_cmd=""
-    if [ -a /usr/bin/open ]; then
-      open_cmd=/usr/bin/open
-    elif [ -a /usr/bin/xdg-open ]; then
-      open_cmd=/usr/bin/xdg-open
-    fi
+get_master_url() {
+  local master_url=''
 
-    if [ -a ${open_cmd} ]; then
-      ${open_cmd} "http://$(terraform output master.1.ip):5050"
-      ${open_cmd} "http://$(terraform output master.1.ip):8080"
-      ${open_cmd} "http://$(terraform output master.1.ip):8500"
-      ${open_cmd} "http://$(terraform output master.1.ip):4040"
-      ${open_cmd} "http://$(terraform output master.1.ip):4400"
-      ${open_cmd} "http://$(terraform output master.1.ip):8081"
-    fi
-  popd
+  if [[ $APOLLO_PROVIDER == "vagrant" ]]; then
+    master_url="http://master1"
+  else
+    pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}" > /dev/null
+      master_url="http://$(terraform output master.1.ip)"
+    popd > /dev/null
+  fi
+
+  echo "${master_url}"
+}
+
+open_urls() {
+  local master_url=$(get_master_url)
+  local open_cmd=""
+
+  if [ -a /usr/bin/open ]; then
+    open_cmd=/usr/bin/open
+  elif [ -a /usr/bin/xdg-open ]; then
+    open_cmd=/usr/bin/xdg-open
+  fi
+
+  if [ -a /usr/bin/open ]; then
+    ${open_cmd} "${master_url}:5050"
+    ${open_cmd} "${master_url}:8080"
+    ${open_cmd} "${master_url}:8500"
+    ${open_cmd} "${master_url}:4040"
+    ${open_cmd} "${master_url}:8081"
+  fi
 }
 
 ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
     ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
-    --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+    ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
       $( get_apollo_variables  APOLLO_)" \
@@ -125,6 +139,13 @@ get_ansible_inventory() {
     popd
 }
 
+get_terraform_modules() {
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    # Downloads terraform modules.
+    terraform get
+  popd
+}
+
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
@@ -137,5 +158,8 @@ terraform_apply() {
   popd
 }
 
-
-
+# Helper function to get the fist octet of an IPv4 address.
+get_network_identifier() {
+  ip="$1"
+  echo $(echo $ip | tr "." " " | awk '{ print $1 }')
+}

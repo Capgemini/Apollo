@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe package('lxc-docker') do
-  it { should be_installed }
+describe package('docker-engine') do
+  it { should be_installed.by('apt').with_version(ENV['DOCKER_VERSION']) }
 end
 
 describe package("linux-image-extra-#{`uname -r`.strip}") do

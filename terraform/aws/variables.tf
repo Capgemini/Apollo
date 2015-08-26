@@ -23,6 +23,11 @@ variable "key_file" {
   default = ""
 }
 
+variable "private_key_file" {
+  description = "The ssh public key for using with the cloud provider."
+  default = ""
+}
+
 variable "atlas_infrastructure" {
   description = "The Atlas infrastructure project to join."
   default = "capgemini/infrastructure"
@@ -33,9 +38,14 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "subnet_availability_zone" {
-  description = "Availability zone for Apollo subnet."
-  default = "eu-west-1b"
+variable "public_subnet_availability_zone" {
+  description = "Public availability zone."
+  default = ""
+}
+
+variable "availability_zones" {
+  description = "AWS availability zones list separated by ','"
+  default = ""
 }
 
 variable "vpc_cidr_block" {
@@ -48,11 +58,6 @@ variable "public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
-variable "private_subnet_cidr_block" {
-  description = "Cidr block for private Mesos subnet."
-  default = "10.0.1.0/24"
-}
-
 variable "slaves" {
   description = "The number of slaves."
   default = "1"
@@ -61,14 +66,6 @@ variable "slaves" {
 variable "masters" {
   description = "The number of masters."
   default = "3"
-}
-
-variable "master_ips" {
-  default = {
-    master-0 = "10.0.1.11"
-    master-1 = "10.0.1.12"
-    master-2 = "10.0.1.13"
-  }
 }
 
 variable "slave_block_device" {
@@ -87,9 +84,13 @@ variable "elasticsearch_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master = "m3.medium"
+    slave  = "m3.medium"
   }
+}
+
+variable "bastion_instance_type" {
+  default = "t2.micro"
 }
 
 variable "atlas_artifact" {
@@ -99,11 +100,24 @@ variable "atlas_artifact" {
   }
 }
 
-/* Base Ubuntu 14.04 amis by region */
-variable "amis" {
-  description = "Base AMI to launch the instances with"
+variable "atlas_artifact_version" {
   default = {
-    eu-west-1 = "ami-234ecc54"
+    master = "13"
+    slave  = "13"
   }
 }
 
+/* Remember to update the list every time when you build a new artifact on atlas */
+variable "amis" {
+  default = {
+    ap-northeast-1 = "ami-dedc5fde"
+    ap-southeast-1 = "ami-8c6e66de"
+    ap-southeast-2 = "ami-316f220b"
+    eu-central-1 = "ami-7eecea63"
+    eu-west-1 = "ami-4c28733b"
+    sa-east-1 = "ami-7743c86a"
+    us-east-1 = "ami-dbe158b0"
+    us-west-1 = "ami-37dc2473"
+    us-west-2 = "ami-b1889e81"
+  }
+}

@@ -2,7 +2,7 @@
 - pip: name=docker-py version=1.1.0
 
 - name: install wait script
-  when: marathon_enabled
+  when: marathon_enabled | bool
   sudo: yes
   template:
     src: marathon-wait-for-listen.sh.j2
@@ -12,7 +12,7 @@
     - marathon
 
 - name: create marathon artifact store directory
-  when: marathon_artifact_store_dir is defined and marathon_enabled
+  when: marathon_artifact_store_dir is defined and marathon_enabled | bool
   file:
     path: "{{ marathon_artifact_store_dir }}"
     state: directory
@@ -29,7 +29,7 @@
     state: absent
 
 - name: run marathon container
-  when: marathon_enabled
+  when: marathon_enabled | bool
   docker:
     name: marathon
     image: "{{ marathon_image }}"
@@ -50,17 +50,8 @@
   notify:
     - wait for marathon to listen
 
-- name: remove marathon override
-  when: marathon_enabled
-  sudo: yes
-  file:
-    path: /etc/init/marathon.override
-    state: absent
-  tags:
-    - marathon
-
 - name: upload marathon template service
-  when: marathon_enabled
+  when: marathon_enabled | bool
   template:
     src: marathon.conf.j2
     dest: /etc/init/marathon.conf
@@ -73,7 +64,7 @@
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
 - name: ensure marathon is running (and enable it at boot)
-  when: marathon_enabled
+  when: marathon_enabled | bool
   sudo: yes
   service:
     name: marathon
@@ -83,18 +74,20 @@
     - marathon
 
 - name: Set marathon consul service definition
+  when: marathon_enabled | bool
   sudo: yes
   template:
     src: marathon-consul.j2
     dest: "{{ marathon_consul_dir }}/marathon.json"
   notify:
     - restart consul
-  when: marathon_enabled
 
 # tasks for stoping docker marathon
 - name: stop marathon container
-  when: not marathon_enabled
-  docker:
+  when: not marathon_enabled | bool
+  service:
     name: marathon
-    image: "{{ marathon_image }}"
     state: stopped
+    enabled: no
+  tags:
+    - marathon

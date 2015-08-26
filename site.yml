@@ -25,22 +25,21 @@
         line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
-    - dnsmasq
     - docker
     - weave
+    - dnsmasq
     - registrator
     - cadvisor
 
 - hosts: mesos_masters
   roles:
-    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - { role: zookeeper, tags: ["zookeeper"] }
+    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - { role: marathon, tags: ["marathon"] }
-    - { role: chronos, tags: ["chronos"] }
 
 - hosts: mesos_slaves
   roles:
-    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
+    - { role: mesos, mesos_install_mode: "slave" }
 
 - hosts: elasticsearch
   roles:
@@ -55,6 +54,11 @@
 - hosts: load_balancers
   roles:
     - { role: haproxy, tags: ["haproxy"] }
+
+# Installing DCOS frameworks from one master.
+- hosts: mesos_masters
+  roles:
+    - frameworks
 
 - include: tests/test.yml
   vars_files:

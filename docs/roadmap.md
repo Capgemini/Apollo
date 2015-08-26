@@ -8,7 +8,7 @@ Mesos Frameworks
 - [x] Aurora framework
 - [x] Chronos framework
 - [ ] Kubernetes framework
-- [ ] Cassandra framework
+- [x] Cassandra framework
 - [ ] Myriad framework
 - [ ] Spark framework
 - [ ] Storm framework
@@ -62,7 +62,7 @@ Demonstrators / Examples
 - [ ] Continous Deployment with Marathon
 - [ ] Mule ESB
 - [x] Drupal / MySQL
-- [ ] Wordpress / MySQL
+- [x] Wordpress / MySQL
 - [x] Simple NodeJS webservice
 - [x] Spring Boot microservice
 - [ ] Jmeter

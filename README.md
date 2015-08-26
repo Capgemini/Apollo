@@ -9,7 +9,7 @@ Apollo
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
 across multiple hosts, and big data type workloads. Apollo leverages other
-open source components to provide basic mehanisms for deployment, maintenance,
+open source components to provide basic mechanisms for deployment, maintenance,
 and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
@@ -73,3 +73,12 @@ If you're interested in helping out we've [tagged issues specifically for new co
 to help you get familiar with the codebase.
 
 If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
+
+## Keep up to date...
+
+Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to find out more about how Apollo works and its new features.
+
+* [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
+* [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
+* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+

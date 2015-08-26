@@ -4,6 +4,9 @@ require 'yaml'
 
 base_dir = File.expand_path(File.dirname(__FILE__))
 conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
+groups = YAML.load_file(File.join(base_dir, "ansible-groups.yml"))
+
+require File.join(base_dir, "vagrant_helper")
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -29,11 +32,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
   # Common ansible groups.
-  ansible_groups = conf['ansible_groups'];
+  ansible_groups = groups['ansible_groups']
+  ansible_groups["mesos_masters"] = []
 
   masters_conf = conf['masters']
-  masters_n = masters_conf['ips'].count
-  ansible_groups["mesos_masters"] = []
+  masters_n    = masters_conf['ips'].count
   master_infos = []
 
   # Mesos master nodes
@@ -41,11 +44,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ip = masters_conf['ips'][i - 1]
     node = {
-      :zookeeper_id    => i,
-      :hostname        => "master#{i}",
-      :ip              => ip,
-      :mem             => masters_conf['mem'],
-      :cpus            => masters_conf['cpus'],
+      :zookeeper_id => i,
+      :hostname     => "master#{i}",
+      :ip           => ip,
+      :mem          => masters_conf['mem'],
+      :cpus         => masters_conf['cpus'],
     }
 
     master_infos.push(node)
@@ -64,15 +67,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   }
 
-  mesos_zk_url = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
-  marathon_master_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/mesos"
-  marathon_zk_peers = "zk://"+master_infos.map{|master| master[:ip]+":2181"}.join(",")+"/marathon"
-  chronos_zk_url = master_infos.map{|master| master[:ip]+":2181"}.join(",")
-  zookeeper_conf = master_infos.map{|master|
-    "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
-  consul_join = master_infos.map{|master| master[:ip]}.join(" ")
-  consul_retry_join = master_infos.map{|master|
-    "\"#{master[:ip]}\""}.join(", ")
+  # zookeeper_peers e.g. 172.31.1.11:2181,172.31.1.12:2181,172.31.1.13:2181
+  zookeeper_peers   = master_infos.map{|master| master[:ip]+":2181"}.join(",")
+  # zookeeper_conf e.g. server.1=172.31.1.11:2888:3888 server.2=172.31.1.12:2888:3888 server.3=172.31.1.13:2888:3888
+  zookeeper_conf    = master_infos.map{|master| "server.#{master[:zookeeper_id]}"+"="+master[:ip]+":2888:3888"}.join(" ")
+  # consul_js e.g. 172.31.1.11 172.31.1.12 172.31.1.13
+  consul_join       = master_infos.map{|master| master[:ip]}.join(" ")
+  # consul_retry_join e.g. "172.31.1.11", "172.31.1.12", "172.31.1.13"
+  consul_retry_join = master_infos.map{|master| "\"#{master[:ip]}\""}.join(", ")
+
+  # Ansible variables
+  ansible_extra_vars = {
+    zookeeper_peers: zookeeper_peers,
+    zookeeper_conf: zookeeper_conf,
+    consul_join: consul_join,
+    consul_retry_join: consul_retry_join,
+    mesos_master_quorum: conf['mesos_master_quorum'],
+    consul_bootstrap_expect: conf['consul_bootstrap_expect']
+  }
+  # Apollo environment variables
+  apollo_vars = get_apollo_variables(ENV)
+  # Add apollo variables to ansible ones
+  ansible_extra_vars.merge!(apollo_vars)
 
   # Mesos slave nodes
   slaves_conf = conf['slaves']
@@ -83,12 +99,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..slave_n).each { |i|
 
     ip = slaves_conf['ips'][i - 1]
-
     node = {
       :hostname => "slave#{i}",
-      :ip => ip,
-      :mem => slaves_conf['mem'],
-      :cpus => slaves_conf['cpus'],
+      :ip       => ip,
+      :mem      => slaves_conf['mem'],
+      :cpus     => slaves_conf['cpus'],
     }
 
     # Add the node to the correct ansible group.
@@ -108,16 +123,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           machine.vm.provision :ansible do |ansible|
             ansible.playbook = "site.yml"
             ansible.sudo = true
+            unless ENV['ANSIBLE_LOG'].nil? || ENV['ANSIBLE_LOG'].empty?
+              ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
+            end
             ansible.groups = ansible_groups
             ansible.limit = 'all'
-            ansible.extra_vars = {
-              mesos_zk_url: mesos_zk_url,
-              zookeeper_conf: zookeeper_conf,
-              consul_join: consul_join,
-              consul_retry_join: consul_retry_join,
-              marathon_master_peers: marathon_master_peers,
-              marathon_zk_peers: marathon_zk_peers
-            }
+            ansible.extra_vars = ansible_extra_vars
           end
         end
       end

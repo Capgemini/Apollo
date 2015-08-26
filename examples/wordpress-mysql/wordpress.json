@@ -1,0 +1,61 @@
+{
+  "id": "wordpress",
+  "apps": [
+    {
+      "id": "mysql",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "mysql:5.5",
+          "network": "BRIDGE"
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "mysql",
+        "SERVICE_TAGS": "wordpress",
+        "MYSQL_DATABASE": "wordpress",
+        "MYSQL_USER": "wordpress",
+        "MYSQL_PASSWORD": "wordpress",
+        "MYSQL_ROOT_PASSWORD": "password"
+      },
+      "cpus": 1,
+      "mem": 512.0,
+      "instances": 1
+    },
+    {
+      "id": "wordpress",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "wordpress",
+          "network": "BRIDGE",
+          "portMappings": [{
+            "containerPort": 80,
+            "hostPort": 0,
+            "protocol": "tcp"
+          }]
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "wordpress",
+        "WORDPRESS_DB_HOST": "wordpress.mysql.service.consul:3306",
+        "WORDPRESS_DB_USER": "wordpress",
+        "WORDPRESS_DB_PASSWORD": "wordpress",
+        "WORDPRESS_DB_NAME": "wordpress"
+      },
+      "cpus": 1,
+      "mem": 256.0,
+      "instances": 1,
+      "healthChecks": [{
+        "path": "/",
+        "portIndex": 0,
+        "protocol": "HTTP",
+        "gracePeriodSeconds": 120,
+        "intervalSeconds": 10,
+        "timeoutSeconds": 20,
+        "maxConsecutiveFailures": 3
+      }],
+      "dependencies": ["/wordpress/mysql"]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
-description "Chronos container"
+description "Zookeeper container"
 
 start on started docker
 stop on stopping docker
 
 script
-  /usr/bin/docker start -a chronos
+  /usr/bin/docker start -a zookeeper
 end script
 
 respawn

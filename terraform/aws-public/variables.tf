@@ -28,24 +28,19 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "availability_zone" {
-  description = "Availability zone for Apollo."
-  default = "eu-west-1b"
-}
-
 variable "vpc_cidr_block" {
   description = "Cidr block for the VPC."
   default = "10.0.0.0/16"
 }
 
-variable "subnet_availability_zone" {
-  description = "Availability zone for Apollo subnet."
-  default = "eu-west-1b"
+variable "availability_zones" {
+  description = "AWS availability zones list separated by ','"
+  default     = ""
 }
 
-variable "public_subnet_cidr_block" {
-  description = "CIDR for public subnet"
-  default     = "10.0.0.0/24"
+variable "elb_name" {
+  description = "Elb name"
+  default     = "apollo-elb"
 }
 
 variable "slaves" {
@@ -67,8 +62,8 @@ variable "slave_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master = "m3.medium"
+    slave  = "m3.medium"
   }
 }
 
@@ -81,7 +76,22 @@ variable "atlas_artifact" {
 
 variable "atlas_artifact_version" {
   default = {
-    master = "6"
-    slave  = "6"
+    master = "13"
+    slave  = "13"
+  }
+}
+
+/* Remember to update the list every time when you build a new artifact on atlas */
+variable "amis" {
+  default = {
+    ap-northeast-1 = "ami-dedc5fde"
+    ap-southeast-1 = "ami-8c6e66de"
+    ap-southeast-2 = "ami-316f220b"
+    eu-central-1 = "ami-7eecea63"
+    eu-west-1 = "ami-4c28733b"
+    sa-east-1 = "ami-7743c86a"
+    us-east-1 = "ami-dbe158b0"
+    us-west-1 = "ami-37dc2473"
+    us-west-2 = "ami-b1889e81"
   }
 }

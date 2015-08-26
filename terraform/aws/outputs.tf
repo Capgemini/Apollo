@@ -1,3 +1,6 @@
+output "vpc_cidr_block.ip" {
+  value = "${aws_vpc.default.cidr_block}"
+}
 output "bastion.ip" {
   value = "${aws_eip.bastion.public_ip}"
 }

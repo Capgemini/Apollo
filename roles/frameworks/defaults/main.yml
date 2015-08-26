@@ -1,0 +1,10 @@
+---
+# defaults file for frameworks
+frameworks_dcos_cli_image: capgemini/dcos-cli
+frameworks_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
+frameworks_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
+frameworks_marathon_url: "http://{{ ansible_ssh_host }}:8080"
+frameworks_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip",]'
+frameworks_list:
+  - cassandra
+  - chronos

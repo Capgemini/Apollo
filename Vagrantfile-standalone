@@ -1,0 +1,100 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'yaml'
+
+base_dir = File.expand_path(File.dirname(__FILE__))
+conf = YAML.load_file(File.join(base_dir, "vagrant-standalone.yml"))
+groups = YAML.load_file(File.join(base_dir, "ansible-groups.yml"))
+
+require File.join(base_dir, "vagrant_helper")
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.require_version ">= 1.7.0"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # if you want to use vagrant-cachier,
+  # please install vagrant-cachier plugin.
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.enable :apt
+    config.cache.scope = :box
+  end
+
+  # throw error if vagrant-hostmanager not installed
+  unless Vagrant.has_plugin?("vagrant-hostmanager")
+    raise "vagrant-hostmanager plugin not installed"
+  end
+
+  config.vm.box = "capgemini/apollo"
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.include_offline = true
+  config.ssh.insert_key = false
+
+  # Common ansible groups.
+  ansible_groups = groups['ansible_groups'];
+
+  ansible_groups["mesos_masters"] = []
+  ansible_groups["mesos_slaves"]  = []
+
+  master_infos = []
+  node = conf['masters']
+
+  # zookeeper_peers e.g. 172.31.1.11:2181
+  zookeeper_peers   = node['ip']+":2181"
+  # zookeeper_conf e.g. server.1=172.31.1.11:2888:3888
+  zookeeper_conf    = "server="+node['ip']+":2888:3888"
+  # consul_js e.g. 172.31.1.11
+  consul_join       = node['ip']
+  # consul_retry_join e.g. "172.31.1.11"
+  consul_retry_join = "\"#{node['ip']}\""
+
+  # Ansible variables
+  ansible_extra_vars = {
+    zookeeper_peers: zookeeper_peers,
+    zookeeper_conf: zookeeper_conf,
+    consul_join: consul_join,
+    consul_retry_join: consul_retry_join,
+    mesos_master_quorum: conf['mesos_master_quorum'],
+    consul_bootstrap_expect: conf['consul_bootstrap_expect']
+  }
+  # Apollo environment variables
+  apollo_vars = get_apollo_variables(ENV)
+  # Add apollo variables to ansible ones
+  ansible_extra_vars.merge!(apollo_vars)
+
+  # Add the node to the correct ansible group.
+  ansible_groups["mesos_masters"].push(node['hostname'])
+  ansible_groups["mesos_slaves"].push(node['hostname'])
+
+  config.vm.define node['hostname'] do |cfg|
+    cfg.vm.provider :virtualbox do |vb, machine|
+      machine.vm.hostname = node['hostname']
+      machine.vm.network :private_network, :ip => node['ip']
+
+      vb.name = node['hostname']
+      vb.customize ["modifyvm", :id, "--memory", node['mem'], "--cpus", node['cpus'] ]
+
+      machine.vm.provision :ansible do |ansible|
+        ansible.playbook = "site.yml"
+        ansible.sudo = true
+        unless ENV['ANSIBLE_LOG'].nil? || ENV['ANSIBLE_LOG'].empty?
+          ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
+        end
+        ansible.groups = ansible_groups
+        ansible.limit = 'all'
+        ansible.extra_vars = ansible_extra_vars
+      end
+    end
+  end
+
+  # If you want to use a custom `.dockercfg` file simply place it
+  # in this directory.
+  if File.exist?(".dockercfg")
+    config.vm.provision :shell, :priviledged => true, :inline => <<-SCRIPT
+      cp /vagrant/.dockercfg /root/.dockercfg
+      chmod 600 /root/.dockercfg
+      chown root /root/.dockercfg
+    SCRIPT
+  end
+end

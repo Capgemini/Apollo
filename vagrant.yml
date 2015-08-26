@@ -9,36 +9,19 @@ masters:
       - 172.31.1.11
       - 172.31.1.12
       - 172.31.1.13
-
 # By default only one slave is set, to increase that number just add new ips.
 slaves:
 # Memory and Cpus setting
   ##########################
-  mem: 1024
+  mem: 1536
   cpus: 2
   # Slave IPs - must be in the same private address range as the master instances
   # See http://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
   ips:
       - 172.31.1.14
-
-ansible_groups:
-  "all:children":
-    - mesos_masters
-    - mesos_slaves
-    - load_balancers
-  "load_balancers:children":
-    - mesos_slaves
-  "zookeeper_servers:children":
-    - mesos_masters
-  "consul_servers:children":
-    - mesos_masters
-  "weave_servers:children":
-    - mesos_masters
-    - mesos_slaves
-    - load_balancers
-  "marathon_servers":
-    - mesos_masters
-  "vagrant:children":
-    - mesos_masters
-    - mesos_slaves
-    - load_balancers
+# Mesos master quorum: quorum > (number of masters)/2
+# For standalone mode is always 1
+mesos_master_quorum: 2
+# Expected number of server nodes
+# For standalone mode is always 1
+consul_bootstrap_expect: 3
