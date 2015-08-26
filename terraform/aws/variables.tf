@@ -90,22 +90,22 @@ variable "atlas_artifact" {
 
 variable "atlas_artifact_version" {
   default = {
-    master = "11"
-    slave  = "11"
+    master = "13"
+    slave  = "13"
   }
 }
 
 /* Remember to update the list every time when you build a new artifact on atlas */
 variable "amis" {
   default = {
-    ap-northeast-1 = "ami-364cfe36"
-    ap-southeast-1 = "ami-54b0bd06"
-    ap-southeast-2 = "ami-79145443"
-    eu-central-1 = "ami-fa7571e7"
-    eu-west-1 = "ami-d67c2ba1"
-    sa-east-1 = "ami-ed72fcf0"
-    us-east-1 = "ami-87d374ec"
-    us-west-1 = "ami-bb3fc3ff"
-    us-west-2 = "ami-5fafa16f"
+    ap-northeast-1 = "ami-dedc5fde"
+    ap-southeast-1 = "ami-8c6e66de"
+    ap-southeast-2 = "ami-316f220b"
+    eu-central-1 = "ami-7eecea63"
+    eu-west-1 = "ami-4c28733b"
+    sa-east-1 = "ami-7743c86a"
+    us-east-1 = "ami-dbe158b0"
+    us-west-1 = "ami-37dc2473"
+    us-west-2 = "ami-b1889e81"
   }
 }

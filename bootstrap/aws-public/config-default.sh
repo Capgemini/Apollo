@@ -18,8 +18,8 @@ export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.conf
 # so no really needed to export them. Exporting for consitency.
 export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-ubuntu-14.04-amd64}
 export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-ubuntu-14.04-amd64}
-export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-11}
-export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-11}
+export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-13}
+export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-13}
 
 export TF_VAR_region=${TF_VAR_region:-eu-west-1}
 export TF_VAR_master_size=${TF_VAR_master_size:-m3.medium}
