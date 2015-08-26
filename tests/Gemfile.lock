@@ -2,35 +2,39 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    multi_json (1.11.0)
+    multi_json (1.11.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    net-telnet (0.1.1)
     rake (10.4.2)
-    rspec (3.2.0)
-      rspec-core (~> 3.2.0)
-      rspec-expectations (~> 3.2.0)
-      rspec-mocks (~> 3.2.0)
-    rspec-core (3.2.3)
-      rspec-support (~> 3.2.0)
-    rspec-expectations (3.2.1)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
+    rspec-core (3.3.2)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
+      rspec-support (~> 3.3.0)
     rspec-its (1.2.0)
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
-    rspec-mocks (3.2.1)
+    rspec-mocks (3.3.2)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
-    rspec-support (3.2.2)
-    serverspec (2.16.0)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
+    serverspec (2.22.0)
       multi_json
       rspec (~> 3.0)
       rspec-its
-      specinfra (~> 2.31)
-    specinfra (2.31.1)
+      specinfra (~> 2.42)
+    sfl (2.2)
+    specinfra (2.42.0)
       net-scp
-      net-ssh
+      net-ssh (~> 2.7)
+      net-telnet
+      sfl
 
 PLATFORMS
   ruby

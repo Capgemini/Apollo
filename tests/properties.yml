@@ -15,10 +15,10 @@ mesos_slaves:
     - dnsmasq
     - consul
     - mesos_slave
-    - weave
     - docker
     - registrator
     - cadvisor
+    - weave
 load_balancers:
   :roles:
     - haproxy

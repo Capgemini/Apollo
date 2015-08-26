@@ -11,7 +11,7 @@ end
 
 describe docker_container('dnsmasq') do
   it { should be_running }
-  it { should have_volume('/etc/dnsmasq.d','/etc/dnsmasq.d') }
+  # it { should have_volume('/etc/dnsmasq.d','/etc/dnsmasq.d') }
 end
 
 describe port(53) do
