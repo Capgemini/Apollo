@@ -5,13 +5,13 @@ resource "atlas_artifact" "elasticsearch" {
 
 resource "aws_instance" "elasticsearch" {
   instance_type     = "${var.instance_type.master}"
-  ami               = "${replace(atlas_artifact.elasticsearch.id, concat(var.region, ":"), "")}"
+  ami               = "${atlas_artifact.elasticsearch.metadata_full.region-us-west-2}"
   count             = "1"
-  key_name          = "${var.key_name}"
   source_dest_check = false
-  subnet_id         = "${aws_subnet.private.id}"
+  subnet_id         = "${aws_subnet.private.0.id}"
   security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public"]
+  key_name          = "${aws_key_pair.deployer.key_name}"
   tags = {
     Name = "apollo-elasticsearch-${count.index}"
     role = "elasticsearch"
@@ -24,7 +24,7 @@ resource "aws_instance" "elasticsearch" {
   }
   connection {
     user         = "ubuntu"
-    key_file     = "${var.key_file}"
+    key_file     = "${var.private_key_file}"
     bastion_host = "${aws_instance.bastion.public_ip}"
   }
   provisioner "remote-exec" {

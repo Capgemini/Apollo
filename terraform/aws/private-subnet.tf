@@ -3,7 +3,7 @@ resource "aws_subnet" "private" {
   vpc_id                  = "${aws_vpc.default.id}"
   count                   = "${length(split(",", var.availability_zones))}"
   availability_zone       = "${element(split(",", var.availability_zones), count.index)}"
-  cidr_block              = "10.0.${count.index+1}.0/24"
+  cidr_block              = "${element(split(",", var.private_subnet_cidr_blocks), count.index)}"
   map_public_ip_on_launch = false
   depends_on              = ["aws_instance.bastion"]
   tags {

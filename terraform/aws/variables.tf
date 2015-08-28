@@ -58,6 +58,11 @@ variable "public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
+variable "private_subnet_cidr_blocks" {
+  description = "CIDR for private subnets separated by ','"
+  default     = ""
+}
+
 variable "slaves" {
   description = "The number of slaves."
   default = "1"
