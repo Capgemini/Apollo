@@ -20,7 +20,7 @@ docker pull mesosphere/mesos:${MESOS_VERSION}
 docker pull mesosphere/mesos-master:${MESOS_VERSION}
 docker pull mesosphere/mesos-slave:${MESOS_VERSION}
 docker pull gliderlabs/registrator:master
-docker pull asteris/haproxy-consul:latest
+docker pull udacity/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
