@@ -14,15 +14,15 @@ resource "aws_instance" "mesos-slave" {
   subnet_id         = "${element(aws_subnet.private.*.id, count.index)}"
   security_groups   = ["${aws_security_group.default.id}"]
   depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public", "aws_instance.mesos-master"]
+  root_block_device {
+    volume_size           = "${var.slave_block_device.volume_size}"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
   tags = {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
   }
-#  ebs_block_device {
-#    device_name           = "/dev/sdb"
-#    volume_size           = "${var.slave_block_device.volume_size}"
-#    delete_on_termination = true
-#  }
 }
 
 /* Load balancer */
