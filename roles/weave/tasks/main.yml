@@ -62,6 +62,7 @@
     mode: 0755
     validate_certs: no
   environment: proxy_env
+  when: weave_enable_scope
   tags:
     - weave
 
@@ -71,5 +72,6 @@
     dest: "/etc/init/weavescope.conf"
     mode: 0755
   sudo: yes
+  when: weave_enable_scope
   tags:
     - weave
