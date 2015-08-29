@@ -26,7 +26,7 @@
     "ami_groups": "all",
     "ssh_username": "ubuntu",
     "ssh_timeout": "10m",
-    "ami_regions": [],
+    "ami_regions": ["us-west-2"],
     "tags": {
       "owner": "udacity",
       "application": "mesos-host",
