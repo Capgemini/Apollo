@@ -18,7 +18,7 @@ module "ami_bastion" {
 resource "aws_instance" "bastion" {
   ami               = "${module.ami_bastion.ami_id}"
   instance_type     = "${var.bastion_instance_type}"
-  subnet_id         = "${aws_subnet.public.id}"
+  subnet_id         = "${aws_subnet.public.1.id}"
   security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
   depends_on        = ["aws_internet_gateway.public", "aws_key_pair.deployer"]
   key_name          = "${aws_key_pair.deployer.key_name}"
