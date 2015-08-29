@@ -7,3 +7,4 @@ atlas_artifact.slave  = "udacity/mesos-ubuntu-14.04-amd64"
 
 ssl_certificate_arn = "arn:aws:iam::434162760768:server-certificate/star-udacity-com-expires-2016-04-29"
 
+slave_block_device.volume_size = 60
