@@ -24,7 +24,7 @@
 - name: destroy old marathon container
   when: marathon_rebuild_container
   docker:
-    name: chronos
+    name: marathon
     image: "{{ marathon_image }}"
     state: absent
 
