@@ -7,16 +7,8 @@ resource "atlas_artifact" "mesos-slave" {
 
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
-  /*
-     We had to hardcode the amis list in variables.tf file creating amis map because terraform doesn't
-     support interpolation in the way which could allow us to replaced the region dinamically.
-     We need to remember to update the map every time when we build a new artifact on atlas.
-     Similar issue related to metada_full is mentioned here:
-     https://github.com/hashicorp/terraform/issues/732
-  */
-
   instance_type     = "${var.instance_type.slave}"
-  ami               = "${lookup(var.amis, var.region)}"
+  ami               = "${lookup(atlas_artifact.mesos-slave.metadata_full, concat("region-", var.region))}"
   count             = "${var.slaves}"
   key_name          = "${aws_key_pair.deployer.key_name}"
   source_dest_check = false
@@ -27,10 +19,21 @@ resource "aws_instance" "mesos-slave" {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
   }
+  root_block_device {
+    volume_size           = "${var.slave_root_device.volume_size}"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
   ebs_block_device {
     device_name           = "/dev/sdb"
-    volume_size           = "${var.slave_block_device.volume_size}"
+    volume_size           = "${var.block_device.volume_size}"
     delete_on_termination = true
+  }
+  provisioner "remote-exec" {
+    script = "mount.sh"
+    connection {
+      user = "ubuntu"
+    }
   }
 }
 

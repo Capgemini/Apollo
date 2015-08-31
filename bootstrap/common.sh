@@ -68,6 +68,7 @@ get_apollo_variables() {
 
 apollo_launch() {
   get_terraform_modules
+  run_if_exist "mount_docker_volume_script"
   terraform_apply
   run_if_exist "ansible_ssh_config"
   ansible_playbook_run

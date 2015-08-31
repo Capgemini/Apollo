@@ -53,8 +53,15 @@ variable "masters" {
   default = "3"
 }
 
-variable "slave_block_device" {
+variable "block_device" {
   description = "Block device for OSD."
+  default = {
+    volume_size = 50
+  }
+}
+
+variable "slave_root_device" {
+  description = "Root device for OS"
   default = {
     volume_size = 30
   }
