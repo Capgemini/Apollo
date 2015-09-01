@@ -16,7 +16,7 @@
     state: started
     restart_policy: always
     net: host
-    command: "-internal {{ registrator_uri }}"
+    command: "-internal -resync=120 {{ registrator_uri }}"
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
   environment: proxy_env
