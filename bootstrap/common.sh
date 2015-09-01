@@ -67,12 +67,16 @@ get_apollo_variables() {
 }
 
 apollo_launch() {
-  get_terraform_modules
-  terraform_apply
-  run_if_exist "ansible_ssh_config"
-  ansible_playbook_run
-  run_if_exist "set_vpn"
-  open_urls
+  if [ "$@" ]; then
+    eval $@
+  else
+    get_terraform_modules
+    terraform_apply
+    run_if_exist "ansible_ssh_config"
+    ansible_playbook_run
+    run_if_exist "set_vpn"
+    open_urls
+  fi
 }
 
 run_if_exist() {
@@ -98,12 +102,19 @@ get_master_url() {
 open_urls() {
   local master_url=$(get_master_url)
 
+  local open_cmd=""
   if [ -a /usr/bin/open ]; then
-    /usr/bin/open "${master_url}:5050"
-    /usr/bin/open "${master_url}:8080"
-    /usr/bin/open "${master_url}:8500"
-    /usr/bin/open "${master_url}:4040"
-    /usr/bin/open "${master_url}:8081"
+    open_cmd=/usr/bin/open
+  elif [ -a /usr/bin/xdg-open ]; then
+    open_cmd=/usr/bin/xdg-open
+  fi
+
+  if [ -a ${open_cmd} ]; then
+    ${open_cmd} "${master_url}:5050"
+    ${open_cmd} "${master_url}:8080"
+    ${open_cmd} "${master_url}:8500"
+    ${open_cmd} "${master_url}:4040"
+    ${open_cmd} "${master_url}:8081"
   fi
 }
 
@@ -115,6 +126,7 @@ ansible_playbook_run() {
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
       $( get_apollo_variables  APOLLO_)" \
+    ${ANSIBLE_EXARGS:-} \
     --sudo site.yml
   popd
 }

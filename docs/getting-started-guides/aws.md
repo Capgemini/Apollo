@@ -24,9 +24,9 @@ ssh-add id_rsa_aws.pem
 #### Download Apollo
 
 ##### Install from source at head
-1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo```
-3. ```pip install -r requirements.txt```
+1. `git clone https://github.com/Capgemini/apollo.git`
+2. `cd apollo`
+3. `pip install -r requirements.txt`
 
 #### Set config
 
@@ -36,7 +36,7 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following pattern "APOLLO_" will be available for Apollo in ansible.
 
-For a full list of default config options for AWS see ```bootstrap/aws/config-default.sh```
+For a full list of default config options for AWS see `bootstrap/aws/config-default.sh`
 
 As a minimum you will need to set these environment variables -
 
@@ -76,7 +76,7 @@ For instructions on how to configure the VPN (outside of the bootstrap script) t
 
 #### SSH'ing to your private instances
 
-As part of ```apollo-launch.sh``` an SSH config file will be generated in ```$APOLLO_ROOT/terraform/aws/ssh.config```.
+As part of `apollo-launch.sh` an SSH config file will be generated in `$APOLLO_ROOT/terraform/aws/ssh.config`.
 
 If your master instance has a private IP of 10.0.1.11 (for example), You can SSH directly to that instance by doing the following -
 
