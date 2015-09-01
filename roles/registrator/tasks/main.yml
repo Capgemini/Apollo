@@ -8,6 +8,13 @@
   tags:
     - registrator
 
+- name: destroy old marathon container
+  when: registrator_rebuild_container
+  docker:
+    name: registrator
+    image: "{{ registrator_image }}"
+    state: absent
+
 # tasks file for docker registrator
 - name: run registrator container
   docker:
