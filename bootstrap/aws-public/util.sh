@@ -18,6 +18,27 @@ EOF
   popd
 }
 
+mount_docker_volume_script() {
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+
+    cat <<EOF > mount.ssh
+  #!/usr/bin/env bash
+  set -eux
+  set -o pipefail
+
+  while [ ! -e /dev/xvdb ]; do sleep 1; done
+
+  fstab_string='/dev/xvdb /var/lib/docker ext4 defaults,nofail,nobootwait 0 2'
+  if grep -q -F -v "$fstab_string" /etc/fstab; then
+    echo "$fstab_string" | sudo tee -a /etc/fstab
+  fi
+
+  sudo rm -rf /var/lib/docker && sudo mkdir -p /var/lib/docker && \
+    sudo mkfs -t ext4 /dev/xvdb && sudo mount -t ext4 /dev/xvdb /var/lib/docker
+EOF
+  popd
+}
+
 apollo_down() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     terraform destroy -var "access_key=${TF_VAR_access_key}" \
