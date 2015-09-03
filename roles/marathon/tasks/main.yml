@@ -21,6 +21,13 @@
   tags:
     - marathon
 
+- name: destroy old marathon container
+  when: marathon_rebuild_container
+  docker:
+    name: marathon
+    image: "{{ marathon_image }}"
+    state: absent
+
 - name: run marathon container
   when: marathon_enabled | bool
   docker:
