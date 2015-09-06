@@ -21,7 +21,7 @@ describe 'consul' do
     it { should be_listening }
   end
 
-  describe command('curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://127.0.0.1:8500/v1/catalog/service/consul') do
+  describe command('curl --silent --show-error --fail --dump-header /dev/stdout --retry 2 http://127.0.0.1:8500/v1/catalog/service/consul') do
     its(:exit_status) { should eq 0 }
     its(:stdout)      { should contain 'HTTP/1.1 200 OK' }
     its(:stdout)      { should contain 'X-Consul-Knownleader: true' }

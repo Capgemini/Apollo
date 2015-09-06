@@ -72,9 +72,13 @@ variable "slave_block_device" {
 
 variable "instance_type" {
   default = {
-    master = "m1.medium"
-    slave  = "m1.medium"
+    master = "m3.medium"
+    slave  = "m3.medium"
   }
+}
+
+variable "bastion_instance_type" {
+  default = "t2.micro"
 }
 
 variable "atlas_artifact" {
@@ -86,16 +90,22 @@ variable "atlas_artifact" {
 
 variable "atlas_artifact_version" {
   default = {
-    master = "6"
-    slave  = "6"
+    master = "13"
+    slave  = "13"
   }
 }
 
-/* Base Ubuntu 14.04 amis by region */
+/* Remember to update the list every time when you build a new artifact on atlas */
 variable "amis" {
-  description = "Base AMI to launch the instances with"
   default = {
-    eu-west-1 = "ami-234ecc54"
+    ap-northeast-1 = "ami-dedc5fde"
+    ap-southeast-1 = "ami-8c6e66de"
+    ap-southeast-2 = "ami-316f220b"
+    eu-central-1 = "ami-7eecea63"
+    eu-west-1 = "ami-4c28733b"
+    sa-east-1 = "ami-7743c86a"
+    us-east-1 = "ami-dbe158b0"
+    us-west-1 = "ami-37dc2473"
+    us-west-2 = "ami-b1889e81"
   }
 }
-

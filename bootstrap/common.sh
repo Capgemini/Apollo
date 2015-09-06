@@ -13,7 +13,7 @@ verify_prereqs() {
     exit 1
   fi
 
-  check_terraform_version "0.5.0"
+  check_terraform_version
 
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
@@ -28,7 +28,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.5.0}
+  local requirement_version_string=${1:-0.6.1}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
@@ -67,11 +67,16 @@ get_apollo_variables() {
 }
 
 apollo_launch() {
-  terraform_apply
-  run_if_exist "ansible_ssh_config"
-  ansible_playbook_run
-  run_if_exist "set_vpn"
-  open_urls
+  if [ "$@" ]; then
+    eval $@
+  else
+    get_terraform_modules
+    terraform_apply
+    run_if_exist "ansible_ssh_config"
+    ansible_playbook_run
+    run_if_exist "set_vpn"
+    open_urls
+  fi
 }
 
 run_if_exist() {
@@ -97,12 +102,19 @@ get_master_url() {
 open_urls() {
   local master_url=$(get_master_url)
 
+  local open_cmd=""
   if [ -a /usr/bin/open ]; then
-    /usr/bin/open "${master_url}:5050"
-    /usr/bin/open "${master_url}:8080"
-    /usr/bin/open "${master_url}:8500"
-    /usr/bin/open "${master_url}:4040"
-    /usr/bin/open "${master_url}:8081"
+    open_cmd=/usr/bin/open
+  elif [ -a /usr/bin/xdg-open ]; then
+    open_cmd=/usr/bin/xdg-open
+  fi
+
+  if [ -a ${open_cmd} ]; then
+    ${open_cmd} "${master_url}:5050"
+    ${open_cmd} "${master_url}:8080"
+    ${open_cmd} "${master_url}:8500"
+    ${open_cmd} "${master_url}:4040"
+    ${open_cmd} "${master_url}:8081"
   fi
 }
 
@@ -114,6 +126,7 @@ ansible_playbook_run() {
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
       $( get_apollo_variables  APOLLO_)" \
+    ${ANSIBLE_EXARGS:-} \
     --sudo site.yml
   popd
 }
@@ -125,6 +138,13 @@ get_ansible_inventory() {
       chmod 755 inventory/terraform.py
     fi
     popd
+}
+
+get_terraform_modules() {
+  pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+    # Downloads terraform modules.
+    terraform get
+  popd
 }
 
 terraform_apply() {

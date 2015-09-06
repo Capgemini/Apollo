@@ -49,9 +49,11 @@ for.
 bin/ovpn-client-config $USER
 ```
 
-The above command creates a $USER-capgemini-mesos.ovpn client
+The above command creates a $USER-apollo.ovpn client
 configuration file in the current directory. Double-click on the file to
 import the configuration to your VPN client
+
+# You will also need to sed or edit $USER-apollo.ovpn file andreplace ovpn gateway with the correct IP address, because we are getting the bastion instance IP address not the elastic IP address in the downloaded file.
 
 ### Connecting to the VPN server (Mac OS X)
 

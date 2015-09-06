@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe docker_container('cadvisor') do
   it { should be_running }
-  it { should have_volume('/var/lib/docker','/var/lib/docker') }
-  it { should have_volume('/rootfs','/') }
-  it { should have_volume('/var/run','/var/run') }
-  it { should have_volume('/sys','/sys') }
+  # it { should have_volume('/var/lib/docker','/var/lib/docker') }
+  # it { should have_volume('/rootfs','/') }
+  # it { should have_volume('/var/run','/var/run') }
+  # it { should have_volume('/sys','/sys') }
 end
 
 describe port(8081) do
