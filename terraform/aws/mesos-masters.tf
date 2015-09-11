@@ -7,6 +7,7 @@ resource "atlas_artifact" "mesos-master" {
 /* Mesos master instances */
 resource "aws_instance" "mesos-master" {
   instance_type     = "${var.instance_type.master}"
+  /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
   ami               = "${atlas_artifact.mesos-master.metadata_full.region-us-west-2}"
   count             = "${var.masters}"
   key_name          = "${aws_key_pair.deployer.key_name}"

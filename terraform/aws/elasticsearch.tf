@@ -5,6 +5,7 @@ resource "atlas_artifact" "elasticsearch" {
 
 resource "aws_instance" "elasticsearch" {
   instance_type     = "${var.instance_type.master}"
+  /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
   ami               = "${atlas_artifact.elasticsearch.metadata_full.region-us-west-2}"
   count             = "1"
   source_dest_check = false
