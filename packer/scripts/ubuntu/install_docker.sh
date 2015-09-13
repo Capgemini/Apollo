@@ -22,6 +22,7 @@ docker pull mesosphere/mesos-slave:${MESOS_VERSION}
 docker pull gliderlabs/registrator:master
 docker pull asteris/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
+docker pull weaveworks/weaveexec:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 docker pull capgemini/dcos-cli:latest

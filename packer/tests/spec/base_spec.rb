@@ -9,7 +9,10 @@ packages = [
   'wget',
   'python-setuptools',
   'python-protobuf',
-  'cgroup-bin'
+  'cgroup-bin',
+  'ruby2.0',
+  'auditd',
+  'audispd-plugins'
 ]
 
 packages.each do |package|
