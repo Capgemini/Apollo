@@ -10,7 +10,7 @@ packages = [
   'python-setuptools',
   'python-protobuf',
   'cgroup-bin',
-  'ruby',
+  'ruby2.0',
   'auditd',
   'audispd-plugins'
 ]
