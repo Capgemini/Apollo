@@ -24,13 +24,13 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    serverspec (2.22.0)
+    serverspec (2.23.1)
       multi_json
       rspec (~> 3.0)
       rspec-its
-      specinfra (~> 2.42)
+      specinfra (~> 2.43)
     sfl (2.2)
-    specinfra (2.42.0)
+    specinfra (2.43.4)
       net-scp
       net-ssh (~> 2.7)
       net-telnet
@@ -42,3 +42,6 @@ PLATFORMS
 DEPENDENCIES
   rake
   serverspec
+
+BUNDLED WITH
+   1.10.6
