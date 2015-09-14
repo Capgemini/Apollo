@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe file('/etc/default/grub') do
+  it { should contain 'cgroup_enable=memory swapaccount=1' }
+end
+
 describe package('docker-engine') do
   it { should be_installed.by('apt').with_version(ENV['DOCKER_VERSION']) }
 end
