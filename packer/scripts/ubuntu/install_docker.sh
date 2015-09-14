@@ -5,6 +5,10 @@ set -o pipefail
 sudo apt-get -y update
 sudo apt-get install -y linux-image-extra-$(uname -r)
 
+# enable memory and swap cgroup
+perl -p -i -e 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g'  /etc/default/grub
+/usr/sbin/update-grub
+
 # Install docker
 # Add the repository to your APT sources
 sudo echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' | tee /etc/apt/sources.list.d/docker.list
