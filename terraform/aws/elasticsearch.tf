@@ -11,7 +11,7 @@ resource "aws_instance" "elasticsearch" {
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.0.id}"
   security_groups   = ["${aws_security_group.default.id}"]
-  depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public"]
+  depends_on        = ["aws_instance.mesos-slave", "aws_internet_gateway.public"]
   key_name          = "${aws_key_pair.deployer.key_name}"
   tags = {
     Name = "apollo-elasticsearch-${count.index}"
@@ -28,6 +28,7 @@ resource "aws_instance" "elasticsearch" {
     user         = "ubuntu"
     key_file     = "${var.private_key_file}"
     bastion_host = "${aws_instance.bastion.public_ip}"
+    agent        = false
   }
   provisioner "remote-exec" {
     inline = [
