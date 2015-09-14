@@ -1,3 +1,4 @@
+# -*- mode: yaml; -*-
 mesos_cluster_name: "Cluster01"
 zookeeper_client_port: "2181"
 zookeeper_server_group: zookeeper_servers
@@ -22,3 +23,32 @@ proxy_env:
   HTTP_PROXY: ''
   HTTPS_PROXY: ''
 http_proxy: ''
+
+datadog_api_key: "{{ lookup('env','DD_API_KEY') }}"
+datadog_config:
+  tags: "{{ mesos_cluster_name }},berlioz"
+  log_level: INFO
+datadog_checks:
+  docker:
+    init_config:
+
+      # Timeout on Docker socket connection. You may have to increase it if you have many containers.
+      socket_timeout: 100
+
+    instances:
+      - url: "unix://var/run/docker.sock"
+        new_tag_names: true
+
+        # Create events whenever a container status change.
+        #
+        # collect_events: true
+
+        # Collect disk usage per container with docker.disk.size metric.
+        # Warning: This feature is broken in some version of Docker (such as 1.2).
+        # Test it before running it in production.
+        #
+        collect_container_size: true
+
+        # Collect images stats
+        # Number of available active images and intermediate images as gauges. Default: true.
+        collect_images_stats: false

@@ -59,6 +59,7 @@
         "scripts/ubuntu/install_docker.sh",
         "scripts/common/install_consul.sh",
         "scripts/common/install_weave.sh",
+        "scripts/ubuntu/install_datadog.sh",
         "scripts/common/serverspec.sh"
       ],
       "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"

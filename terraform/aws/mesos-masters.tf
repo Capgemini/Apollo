@@ -18,5 +18,6 @@ resource "aws_instance" "mesos-master" {
   tags = {
     Name = "apollo-mesos-master-${count.index}"
     role = "mesos_masters"
+    monitoring = "datadog"
   }
 }

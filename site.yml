@@ -45,6 +45,15 @@
   roles:
     - { role: elasticsearch, tags: ["elasticsearch"] }
 
+- hosts: all
+  pre_tasks:
+    - name: remove datadog.override
+      file:
+        path: /etc/init/datadog-agent.override
+        state: absent
+  roles:
+    - { role: datadog-agent, tags: ["monitoring"] }
+
 # MANUAL MAGIC HAPPENS HERE
 # 1. launch logstash collector on marathon ... needs marathon module to automate
 - hosts: all:!role=bastion:!elasticsearch

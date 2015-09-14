@@ -1,0 +1,5 @@
+- src: https://github.com/dustinbrown/ansible-datadog
+  version: f00e6c6ab1ba697bef8f6d5bc4f2752323339744
+  name: datadog-agent
+  path: roles
+      

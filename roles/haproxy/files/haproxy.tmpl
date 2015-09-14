@@ -18,6 +18,14 @@ frontend haproxy_status
     monitor-uri /haproxy_status
     monitor fail if backend_dead
 
+listen stats 127.0.0.1:9000
+    mode http
+    stats enable
+    stats uri /haproxy?stats
+    stats realm Haproxy\ Statistics
+    stats auth admin:admin
+    option httpclose
+
 frontend www
     bind *:80
 

@@ -1,0 +1,41 @@
+# -*- mode: yaml; -*-
+datadog_checks:
+  docker:
+    init_config:
+
+      # Timeout on Docker socket connection. You may have to increase it if you have many containers.
+      socket_timeout: 100
+
+    instances:
+      - url: "unix://var/run/docker.sock"
+        new_tag_names: true
+
+        # Create events whenever a container status change.
+        #
+        # collect_events: true
+
+        # Collect disk usage per container with docker.disk.size metric.
+        # Warning: This feature is broken in some version of Docker (such as 1.2).
+        # Test it before running it in production.
+        #
+        collect_container_size: true
+
+        # Collect images stats
+        # Number of available active images and intermediate images as gauges. Default: true.
+        collect_images_stats: false
+  mesos_master:
+    init_config:
+      default_timeout: 10
+    instances:
+      - url: "http://{{ ansible_default_ipv4.address }}:5050"
+  marathon:
+    init_config:
+      default_timeout: 10
+    instances:
+      - url: "http://{{ ansible_default_ipv4.address }}:8080"
+  zk:
+    init_config:
+    instances:
+      - host: localhost
+        port: 2181
+        timeout: 10

@@ -121,6 +121,7 @@ open_urls() {
 ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
+    get_ansible_requirements
     ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
     ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
@@ -136,6 +137,14 @@ get_ansible_inventory() {
     if [ ! -f inventory/terraform.py ]; then
       curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
       chmod 755 inventory/terraform.py
+    fi
+    popd
+}
+
+get_ansible_requirements() {
+    pushd $APOLLO_ROOT
+    if [ ! -d roles/datadog-agent ]; then
+        ansible-galaxy install -r requirements.yml --ignore-errors --force
     fi
     popd
 }

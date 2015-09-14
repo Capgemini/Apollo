@@ -26,6 +26,7 @@ resource "aws_instance" "bastion" {
   tags = {
     Name = "apollo-mesos-bastion"
     role = "bastion"
+    monitoring = "datadog"
   }
   connection {
     user     = "ubuntu"

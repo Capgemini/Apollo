@@ -23,6 +23,7 @@ resource "aws_instance" "mesos-slave" {
   tags = {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
+    monitoring = "datadog"
   }
 }
 
@@ -53,6 +54,10 @@ resource "aws_elb" "app" {
     timeout             = 3
     target              = "HTTP:34180/haproxy_status"
     interval            = 30
+  }
+
+  tags {
+    monitoring = "datadog"
   }
 
   instances = ["${aws_instance.mesos-slave.*.id}"]

@@ -16,6 +16,7 @@ resource "aws_instance" "elasticsearch" {
   tags = {
     Name = "apollo-elasticsearch-${count.index}"
     role = "elasticsearch"
+    monitoring = "datadog"
   }
   ebs_block_device {
     device_name = "/dev/sde"
