@@ -15,5 +15,3 @@ sudo easy_install pip
 
 sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 1
 sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 1
-
-sudo pip install docker-py==1.1.0

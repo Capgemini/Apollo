@@ -3,6 +3,9 @@ set -eux
 set -o pipefail
 
 sudo apt-get -y update
+
+sudo pip install docker-py==1.3.1
+
 sudo apt-get install -y linux-image-extra-$(uname -r)
 
 # enable memory and swap cgroup
