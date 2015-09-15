@@ -1,3 +1,5 @@
+network:
+  host: {{ ansible_eth0.ipv4.address }}
 bootstrap.mlockall: true
 discovery:
   # set to 'zen' or 'ec2'

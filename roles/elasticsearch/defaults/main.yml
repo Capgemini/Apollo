@@ -4,7 +4,7 @@ elasticsearch_image_tag: 1.6.0
 elasticsearch_rebuild_container: False
 elasticsearch_host_home: /mnt/es
 elasticsearch_enabled: True
-elasticsearch_hostname: "{{ ansible_ssh_host }}"
+elasticsearch_hostname: "{{ ansible_eth0.ipv4.address }}"
 elasticsearch_http_port: "9200"
 elasticsearch_transport_port: "9300"
 elasticsearch_command: ""

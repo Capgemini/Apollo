@@ -11,7 +11,7 @@
   },
   "check": {
     "name": "Elasticsearch Transport Port",
-    "script": "nc -z localhost 9300 >/dev/null 2>&1",
+    "script": "nc -z {{ elasticsearch_hostname }} {{ elasticsearch_transport_port }} >/dev/null 2>&1",
     "interval": "10s"
   }
 }

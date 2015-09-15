@@ -28,10 +28,8 @@
     name: elasticsearch
     image: "{{ elasticsearch_image }}"
     state: started
+    net: host
     restart_policy: always
-    ports:
-    - "{{ elasticsearch_http_port }}:{{ elasticsearch_http_port }}"
-    - "{{ elasticsearch_transport_port }}:{{ elasticsearch_transport_port }}"
     command: "{{ elasticsearch_command }}"
     volumes:
     - "{{ elasticsearch_host_home }}/config:/usr/share/elasticsearch/config"
