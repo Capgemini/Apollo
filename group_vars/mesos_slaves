@@ -31,7 +31,7 @@ datadog_checks:
   haproxy:
     init_config:
     instances:
-      - url: http://localhost/haproxy?stats
+      - url: http://localhost:9000/haproxy?stats
         username: admin
         password: admin
         #
