@@ -47,6 +47,7 @@
     memory_limit: "{{ marathon_container_memory_limit }}"
     env:
       JAVA_OPTS: "{{ marathon_java_settings }}"
+      SERVICE_IGNORE: yes
   notify:
     - wait for marathon to listen
 

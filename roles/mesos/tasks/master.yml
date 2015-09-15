@@ -41,6 +41,7 @@
       MESOS_LOG_DIR: "/var/log/mesos"
       MESOS_QUORUM: "{{ mesos_quorum }}"
       MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
+      SERVICE_IGNORE: yes
   tags:
     - mesos-master
 

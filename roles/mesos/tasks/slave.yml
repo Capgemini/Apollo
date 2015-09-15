@@ -38,6 +38,7 @@
       MESOS_IP: "{{ mesos_ip }}"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
       MESOS_HOSTNAME: "{{ mesos_hostname }}"
+      SERVICE_IGNORE: yes
   tags:
     - mesos-slave
 
