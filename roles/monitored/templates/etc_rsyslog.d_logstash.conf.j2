@@ -5,7 +5,7 @@ template(name="ls_json" type="list" option.json="on") {
      constant(value="\",\"message\":\"")         property(name="msg")
      constant(value="\",\"host\":\"{{ ansible_hostname }}")
      constant(value="\",\"host_ip\":\"{{ ansible_default_ipv4.address }}")
-     constant(value="\",\"udacity_environment\":\"Development")
+     constant(value="\",\"environment\":\"{{ mesos_cluster_name }}")
      constant(value="\",\"severity_label\":\"")  property(name="syslogseverity-text")
      constant(value="\",\"severity\":\"")        property(name="syslogseverity")
      constant(value="\",\"facility_label\":\"")  property(name="syslogfacility-text")
