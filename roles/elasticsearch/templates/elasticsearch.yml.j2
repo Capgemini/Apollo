@@ -1,5 +1,5 @@
 network:
-  host: {{ ansible_eth0.ipv4.address }}
+  host: {{ elasticsearch_hostname }}
 bootstrap.mlockall: true
 discovery:
   # set to 'zen' or 'ec2'
