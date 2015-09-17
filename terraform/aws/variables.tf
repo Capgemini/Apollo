@@ -1,3 +1,8 @@
+variable "cluster_name" {
+  description = "unique name for cluster"
+  default = "berlioz-test"
+}
+
 variable "access_key" {
   description = "The aws access key."
   default = ""

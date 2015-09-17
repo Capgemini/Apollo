@@ -29,7 +29,7 @@ resource "aws_instance" "mesos-slave" {
 
 /* Load balancer */
 resource "aws_elb" "app" {
-  name = "apollo-mesos-elb"
+  name = "apollo-mesos-elb-${var.cluster_name}"
   subnets = ["${aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
 
