@@ -19,7 +19,7 @@ sudo apt-get install -y docker-engine=${DOCKER_VERSION}
 docker pull mesosphere/mesos:${MESOS_VERSION}
 docker pull mesosphere/mesos-master:${MESOS_VERSION}
 docker pull mesosphere/mesos-slave:${MESOS_VERSION}
-docker pull gliderlabs/registrator:master
+docker pull udacity/registrator:latest
 docker pull udacity/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest

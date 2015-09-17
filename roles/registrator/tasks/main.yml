@@ -8,7 +8,7 @@
   tags:
     - registrator
 
-- name: destroy old marathon container
+- name: destroy old registrator container
   when: registrator_rebuild_container
   docker:
     name: registrator

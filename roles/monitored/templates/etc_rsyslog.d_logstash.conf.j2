@@ -16,8 +16,8 @@ template(name="ls_json" type="list" option.json="on") {
      constant(value="\",\"syslogtag\":\"")       property(name="syslogtag")
      constant(value="\"}\n")
 }
-*.* @@logstash-5500.service.consul:5500;ls_json
+*.* @@logstash.service.consul:5500;ls_json
 $ActionExecOnlyWhenPreviousIsSuspended on
-& @@logstash-5500.service.consul:5500;ls_json
+& @@logstash.service.consul:5500;ls_json
 & /var/log/localbuffer
 $ActionExecOnlyWhenPreviousIsSuspended off
