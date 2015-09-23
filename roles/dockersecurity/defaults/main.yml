@@ -1,0 +1,5 @@
+---
+# defaults file for dockerbench
+docker_mount: /var/lib/docker
+device_name: 
+

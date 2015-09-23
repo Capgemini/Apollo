@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dockerwarns=$(/bin/bash {{ dockerbench_dest }}/docker-bench-security.sh | grep WARN | wc -l)
+dockeroutput="$(/bin/bash {{ dockerbench_dest }}/docker-bench-security.sh | grep WARN)"
+if [[ $dockerwarns -gt {{ dockerbench_warn_threshold }} ]] ; then
+  echo "There are $dockerwarns docker security warnings. The threshold is {{ dockerbench_warn_threshold }}"
+  echo "${dockeroutput}"
+  exit 1
+else
+  echo "There are $dockerwarns docker security warnings."
+  echo "${dockeroutput}"
+  exit 0
+fi
+
+# EOF
