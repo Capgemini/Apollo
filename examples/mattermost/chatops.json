@@ -1,0 +1,43 @@
+{
+  "id": "chatops",
+  "instances": 1,
+  "cpus": 0.2,
+  "mem": 1024,
+  "labels": {
+    "DCOS_PACKAGE_NAME": "chatops",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false"
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 15,
+      "maxConsecutiveFailures": 10,
+      "path": "/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "timeoutSeconds": 5
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/var/run/docker.sock",
+        "hostPath": "/var/run/docker.sock",
+        "mode": "RO"
+      }
+    ],
+    "docker": {
+      "image": "mattermost/platform",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8065,
+          "hostPort": 0,
+          "servicePort": 8065,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  }
+}
