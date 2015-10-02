@@ -78,4 +78,4 @@ Edit `groups_vars/all`
 
 Change all the `proxy_env` variables to the proxy hostname e.g. http://10.99.11.11:9090
 
-N.b. your host system also needs to have settings for HTTP and HTTPS proxies set at the commandline. E.g. on MacOS, `export http_proxy=10.23.12.100:8080; export https_proxy=10.23.12.100:8080; export HTTP_PROXY=10.23.12.100:8080; export HTTPS_PROXY=10.23.12.100:8080`
+N.b. your host system also needs to have settings for HTTP and HTTPS proxies set at the commandline. E.g. on MacOS, `export http_proxy=10.99.11.11:9090; export https_proxy=10.99.11.11:9090; export HTTP_PROXY=10.99.11.11:9090; export HTTPS_PROXY=10.99.11.11:9090`
