@@ -1,21 +1,29 @@
+/* Cloud services for master instances */
+resource "azure_hosted_service" "mesos-master" {
+  name               = "${var.hosted_service_name.master}-${count.index}"
+  count              = "${var.masters}"
+  location           = "${var.region}"
+  ephemeral_contents = false
+  description        = "Mesos master service ${count.index}"
+  label              = "mesos_masters"
+  provisioner "local-exec" {
+    command = "./azure-upload-certificate.sh ${var.hosted_service_name.master}-${count.index}"
+  }
+}
+
 /* Mesos master instances */
 resource "azure_instance" "mesos-master" {
   name                 = "apollo-mesos-master-${count.index}"
-  description          = "Mesos master ${count.index}"
+  hosted_service_name  = "${element(azure_hosted_service.mesos-master.*.name, count.index)}"
+  depends_on           = ["azure_instance.bastion"]
+  description          = "mesos_masters"
   count                = "${var.masters}"
-  /* @todo - replace with variable */
-  image                = "apollo-ubuntu-14.04-amd64-1434963352"
+  image                = "${var.atlas_artifact.master}"
   size                 = "${var.instance_type.master}"
-  security_group       = "${azure_security_group.default.name}"
+  storage_service_name = "${azure_storage_service.azure_mesos_storage.name}"
+  virtual_network      = "${azure_virtual_network.virtual-network.id}"
+  subnet               = "private"
   location             = "${var.region}"
   username             = "${var.username}"
-  ssh_key_thumbprint   = "${var.ssh_key_thumbprint}"
-  /*user_data            = "{role: mesos_masters}"*/
-
-  endpoint {
-    name         = "SSH"
-    protocol     = "tcp"
-    public_port  = 22
-    private_port = 22
-  }
+  ssh_key_thumbprint   = "${file("ssh_thumbprint")}"
 }

@@ -1,0 +1,1 @@
+ssh -t "ubuntu@$(terraform output bastion.ip)" sudo docker run --volumes-from ovpn-data --rm -it gosuri/openvpn ovpn_initpki
