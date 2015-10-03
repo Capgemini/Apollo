@@ -4,6 +4,7 @@
 *.tfstate*
 *.tfvars
 *.tfplan
+*.ovpn
 packer_cache
 packer/build
 packer/*.pem
@@ -17,3 +18,4 @@ inventory/terraform.py
 tests/spec/*/*runtime_spec.rb
 contrib-plugins/*
 terraform/*/.terraform
+terraform/azure/ssh_thumbprint
