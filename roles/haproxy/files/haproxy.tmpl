@@ -34,21 +34,21 @@ frontend www
 
     # Generated automatically by consul-template
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
-    use_backend {{.Name}}_backend if host_{{.Name}}
+    acl host_public_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
+    use_backend public_{{.Name}}_backend if host_public_{{.Name}}
 {{end}}{{end}}{{end}}
 {{range $tag, $services := services | byTag}}{{ if eq $tag "staging" }}{{range $services}}
-    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_STAGING_DOMAIN"}}
-    use_backend {{.Name}}_backend if host_{{.Name}}
+    acl host_staging_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_STAGING_DOMAIN"}}
+    use_backend staging_{{.Name}}_backend if host_staging_{{.Name}}
 {{end}}{{end}}{{end}}
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-backend {{.Name}}_backend
+backend public_{{.Name}}_backend
 {{range service .Name}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
 {{end}}{{end}}{{end}}
 {{range $tag, $services := services | byTag}}{{ if eq $tag "staging" }}{{range $services}}
-backend {{.Name}}_backend
+backend staging_{{.Name}}_backend
 {{range service .Name}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
 {{end}}{{end}}{{end}}
