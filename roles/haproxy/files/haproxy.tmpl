@@ -44,14 +44,14 @@ frontend www
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend public_{{.Name}}_backend
-{{range service .Name}}
+{{range service .Name}}{{ if .Tags | contains "public" }}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-{{end}}{{end}}{{end}}
+{{end}}{{end}}{{end}}{{end}}
 {{range $tag, $services := services | byTag}}{{ if eq $tag "staging" }}{{range $services}}
 backend staging_{{.Name}}_backend
-{{range service .Name}}
+{{range service .Name}}{{ if .Tags | contains "staging" }}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-{{end}}{{end}}{{end}}
+{{end}}{{end}}{{end}}{{end}}
 
 backend consul_backend
 {{range service "consul"}}
