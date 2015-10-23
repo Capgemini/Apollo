@@ -107,6 +107,8 @@ open_urls() {
     open_cmd=/usr/bin/open
   elif [ -a /usr/bin/xdg-open ]; then
     open_cmd=/usr/bin/xdg-open
+  elif start; then
+    open_cmd=start
   fi
 
   if [ -a ${open_cmd} ]; then
