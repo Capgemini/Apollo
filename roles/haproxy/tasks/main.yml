@@ -50,7 +50,6 @@
       - "34180:34180"
     env:
       HAPROXY_DOMAIN: "{{ haproxy_domain }}"
-      HAPROXY_STAGING_DOMAIN: "{{ haproxy_staging_domain }}"
       CONSUL_TEMPLATE_VERSION: "{{ consul_template_version }}"
       CONSUL_LOGLEVEL: "{{ consul_template_loglevel }}"
       CONSUL_CONNECT: "{{ consul_backend }}"

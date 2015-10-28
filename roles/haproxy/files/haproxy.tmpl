@@ -34,24 +34,15 @@ frontend www
 
     # Generated automatically by consul-template
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-    acl host_public_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
-    use_backend public_{{.Name}}_backend if host_public_{{.Name}}
-{{end}}{{end}}{{end}}
-{{range $tag, $services := services | byTag}}{{ if eq $tag "staging" }}{{range $services}}
-    acl host_staging_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_STAGING_DOMAIN"}}
-    use_backend staging_{{.Name}}_backend if host_staging_{{.Name}}
+    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
+    use_backend {{.Name}}_backend if host_{{.Name}}
 {{end}}{{end}}{{end}}
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-backend public_{{.Name}}_backend
-{{range service .Name}}{{ if .Tags | contains "public" }}
+backend {{.Name}}_backend
+{{range service .Name}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-{{end}}{{end}}{{end}}{{end}}
-{{range $tag, $services := services | byTag}}{{ if eq $tag "staging" }}{{range $services}}
-backend staging_{{.Name}}_backend
-{{range service .Name}}{{ if .Tags | contains "staging" }}
-   server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-{{end}}{{end}}{{end}}{{end}}
+{{end}}{{end}}{{end}}
 
 backend consul_backend
 {{range service "consul"}}
