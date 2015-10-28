@@ -1,5 +1,6 @@
 global
     maxconn {{or (key "service/haproxy/maxconn") 256}}
+    log /dev/log local0
     debug
 
 defaults

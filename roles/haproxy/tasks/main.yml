@@ -56,6 +56,7 @@
       CONSUL_CONFIG: "/config"
       SERVICE_NAME: haproxy
     volumes:
+    - "/dev/log:/dev/log"
     - "{{ consul_template_dir }}/config:/config"
     - "{{ consul_template_dir }}/templates:/templates"
   tags:
