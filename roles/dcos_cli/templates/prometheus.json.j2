@@ -13,7 +13,23 @@
     }]
   },
   "id": "prometheus",
-  "instances": 1,
+  "instances": {{ dcos_cli_app_prometheus_instances }},
   "cpus": {{ dcos_cli_app_prometheus_cpus }},
-  "mem": {{ dcos_cli_app_prometheus_mem }}
+  "mem": {{ dcos_cli_app_prometheus_mem }},
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/",
+      "portIndex": 0,
+      "gracePeriodSeconds": 30,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 2,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0.0
+  }
 }

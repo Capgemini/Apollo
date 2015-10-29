@@ -4,6 +4,7 @@
 
 # Create the JSON files for apps
 - name: create json files for apps
+  when: "dcos_cli_app_{{ item }}_enabled | bool"
   run_once: true
   template:
     src: '{{ item }}.json.j2'
@@ -16,7 +17,8 @@
   with_items:
     - "{{ dcos_cli_apps_list }}"
 
-- name: "add marathon app"
+- name: add marathon app via dcos-cli
+  when: "dcos_cli_app_{{ item }}_enabled | bool"
   run_once: true
   docker:
     name: "{{ item }}"
@@ -29,6 +31,24 @@
       MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
       MARATHON_URL: "{{ dcos_cli_marathon_url }}"
       SOURCES: "{{ dcos_cli_sources }}"
+  tags:
+    - "{{ item }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+
+- name: remove marathon app via dcos-cli
+  when: "not dcos_cli_app_{{ item }}_enabled | bool"
+  run_once: true
+  docker:
+    name: "{{ item }}"
+    image: "{{ dcos_cli_image }}"
+    state: started
+    command: "marathon app remove {{ item }}"
+    env:
+      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
+      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
   tags:
     - "{{ item }}"
     - dcos_cli
