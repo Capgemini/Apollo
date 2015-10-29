@@ -3,7 +3,14 @@ set -eux
 set -o pipefail
 
 sudo apt-get -y update
+
+sudo pip install docker-py==1.3.1
+
 sudo apt-get install -y linux-image-extra-$(uname -r)
+
+# enable memory and swap cgroup
+perl -p -i -e 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g'  /etc/default/grub
+/usr/sbin/update-grub
 
 # Install docker
 # Add the repository to your APT sources
@@ -22,6 +29,7 @@ docker pull mesosphere/mesos-slave:${MESOS_VERSION}
 docker pull udacity/registrator:latest
 docker pull udacity/haproxy-consul:latest
 docker pull weaveworks/weave:${WEAVE_VERSION}
+docker pull weaveworks/weaveexec:${WEAVE_VERSION}
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 docker pull capgemini/dcos-cli:latest

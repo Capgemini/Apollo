@@ -1,14 +1,5 @@
 ---
-
-# Install (docker-py) python package as is a docker module dependency.
-- pip:
-    name: docker-py
-    version: 1.1.0
-  environment: proxy_env
-  tags:
-    - registrator
-
-- name: destroy old registrator container
+- name: destroy old marathon container
   when: registrator_rebuild_container
   docker:
     name: registrator

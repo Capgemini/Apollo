@@ -107,14 +107,16 @@ open_urls() {
     open_cmd=/usr/bin/open
   elif [ -a /usr/bin/xdg-open ]; then
     open_cmd=/usr/bin/xdg-open
+  elif start; then
+    open_cmd=start
   fi
 
   if [ -a ${open_cmd} ]; then
-    ${open_cmd} "${master_url}:5050"
-    ${open_cmd} "${master_url}:8080"
-    ${open_cmd} "${master_url}:8500"
-    ${open_cmd} "${master_url}:4040"
-    ${open_cmd} "${master_url}:8081"
+    "${open_cmd}" "${master_url}:5050"
+    "${open_cmd}" "${master_url}:8080"
+    "${open_cmd}" "${master_url}:8500"
+    "${open_cmd}" "${master_url}:4040"
+    "${open_cmd}" "${master_url}:8081"
   fi
 }
 

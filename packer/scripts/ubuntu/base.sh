@@ -11,9 +11,11 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get upgrade -y
 sudo apt-get update -y
 
-sudo apt-get -y install git curl auditd audispd-plugins libcurl3 bridge-utils bundler unzip wget python-setuptools python-protobuf cgroup-bin ruby1.9.1
+sudo apt-get -y install git curl auditd audispd-plugins libcurl3 bridge-utils bundler unzip wget python-setuptools python-protobuf cgroup-bin ruby2.0
 sudo easy_install pip
-sudo pip install docker-py==1.1.0
+
+sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 1
+sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 1
 
 # install java8
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
