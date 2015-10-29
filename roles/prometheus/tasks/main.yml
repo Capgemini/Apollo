@@ -30,3 +30,12 @@
   tags:
     - prometheus
 
+- name: Set node-exporter consul service definition
+  sudo: yes
+  template:
+    src: node-exporter-consul.j2
+    dest: "{{ prometheus_consul_dir }}/node-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
