@@ -65,7 +65,7 @@
     - mesos-master
 
 - name: run prometheus mesos master exporter container
-  when: mesos_install_mode == "master"
+  when: mesos_install_mode == "master" and prometheus_enabled|bool
   docker:
     name: mesos-exporter
     image: "{{ prometheus_mesos_exporter_image }}"
@@ -80,7 +80,7 @@
     - mesos_master
 
 - name: Set mesos-exporter consul service definition
-  when: mesos_install_mode == "master"
+  when: mesos_install_mode == "master" and prometheus_enabled|bool
   sudo: yes
   template:
     src: mesos-exporter-consul.j2

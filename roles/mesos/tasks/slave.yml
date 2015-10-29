@@ -62,7 +62,7 @@
     - mesos-slave
 
 - name: run prometheus mesos slave exporter container
-  when: mesos_install_mode == "slave"
+  when: mesos_install_mode == "slave" and prometheus_enabled|bool
   docker:
     name: mesos-exporter
     image: "{{ prometheus_mesos_exporter_image }}"
@@ -77,7 +77,7 @@
     - mesos_slave
 
 - name: Set mesos-exporter consul service definition
-  when: mesos_install_mode == "slave"
+  when: mesos_install_mode == "slave" and prometheus_enabled|bool
   sudo: yes
   template:
     src: mesos-exporter-consul.j2

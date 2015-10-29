@@ -22,3 +22,4 @@ proxy_env:
   HTTP_PROXY: ''
   HTTPS_PROXY: ''
 http_proxy: ''
+prometheus_enabled: true

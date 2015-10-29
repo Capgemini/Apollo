@@ -30,7 +30,7 @@
     - dnsmasq
     - registrator
     - cadvisor
-    - prometheus
+    - { role: prometheus, when: prometheus_enabled|bool }
 
 - hosts: mesos_masters
   roles:
