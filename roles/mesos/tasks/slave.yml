@@ -75,3 +75,15 @@
   tags:
     - prometheus
     - mesos_slave
+
+- name: Set mesos-exporter consul service definition
+  when: mesos_install_mode == "slave"
+  sudo: yes
+  template:
+    src: mesos-exporter-consul.j2
+    dest: "{{ consul_dir }}/mesos-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
+    - mesos_slave
