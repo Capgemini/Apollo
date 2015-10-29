@@ -27,4 +27,4 @@ weave_launch_peers: "
 weave_docker_opts: "--bridge=weave --fixed-cidr={{ weave_docker_subnet }} --dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }}"
 weave_scope_url: https://github.com/weaveworks/scope/releases/download/latest_release/scope
 weave_scope_dest: /usr/local/bin/scope
-weave_scope_enabled: True
+weave_scope_enabled: true

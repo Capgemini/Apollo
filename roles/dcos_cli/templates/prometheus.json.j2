@@ -1,0 +1,19 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "network": "BRIDGE",
+      "image": "{{ prometheus_image }}:{{ prometheus_image_tag }}",
+      "portMappings": [{"containerPort": 9090, "hostPort": 0, "protocol": "tcp"}]
+    },
+    "volumes": [{
+      "containerPath": "/etc/prometheus/prometheus.yml",
+      "hostPath": "{{ prometheus_config_dir }}/prometheus.yml",
+      "mode": "RO"
+    }]
+  },
+  "id": "prometheus",
+  "instances": 1,
+  "cpus": {{ dcos_cli_app_prometheus_cpus }},
+  "mem": {{ dcos_cli_app_prometheus_mem }}
+}

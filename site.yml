@@ -30,6 +30,7 @@
     - dnsmasq
     - registrator
     - cadvisor
+    - prometheus
 
 - hosts: mesos_masters
   roles:
@@ -45,10 +46,12 @@
   roles:
     - { role: haproxy, tags: ["haproxy"] }
 
-# Installing DCOS frameworks from one master.
+# Installing DCOS frameworks and apps from one master.
 - hosts: mesos_masters
   roles:
-    - frameworks
+    - dcos_cli
+  vars_files:
+    - roles/prometheus/defaults/main.yml
 
 - include: tests/test.yml
   vars_files:

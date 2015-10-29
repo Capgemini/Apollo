@@ -115,8 +115,6 @@ open_urls() {
     "${open_cmd}" "${master_url}:5050"
     "${open_cmd}" "${master_url}:8080"
     "${open_cmd}" "${master_url}:8500"
-    "${open_cmd}" "${master_url}:4040"
-    "${open_cmd}" "${master_url}:8081"
   fi
 }
 

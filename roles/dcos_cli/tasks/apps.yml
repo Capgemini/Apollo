@@ -1,0 +1,36 @@
+- include_vars: "{{ item }}.yml"
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+# Create the JSON files for apps
+- name: create json files for apps
+  run_once: true
+  template:
+    src: '{{ item }}.json.j2'
+    dest: "/etc/marathon/{{ item }}.json"
+    mode: 0755
+  sudo: yes
+  tags:
+    - "{{ item }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+- name: "add marathon app"
+  run_once: true
+  docker:
+    name: "{{ item }}"
+    image: "{{ dcos_cli_image }}"
+    state: started
+    command: "marathon app add /config/{{ item }}.json"
+    volumes:
+    - "/etc/marathon:/config"
+    env:
+      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
+      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
+      SOURCES: "{{ dcos_cli_sources }}"
+  tags:
+    - "{{ item }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"

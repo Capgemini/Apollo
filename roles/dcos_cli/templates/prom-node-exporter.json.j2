@@ -1,0 +1,15 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "network": "HOST",
+      "image": "{{ prom_node_exporter_image }}:{{ prom_node_exporter_image_tag }}",
+      "portMappings": [{"containerPort": 9100, "hostPort": 9100, "protocol": "tcp"}]
+    }
+  },
+  "id": "prom-node-exporter",
+  "instances": 1,
+  "constraints": [["hostname", "UNIQUE"]],
+  "cpus": {{ dcos_cli_app_prom_node_exporter_cpus }},
+  "mem": {{ dcos_cli_app_prom_node_exporter_mem }}
+}

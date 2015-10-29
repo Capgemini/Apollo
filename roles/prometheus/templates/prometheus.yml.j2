@@ -1,0 +1,52 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 30s
+  # scrape_timeout is set to the global default (10s).
+
+scrape_configs:
+- job_name: prometheus
+
+  honor_labels: true
+
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+
+  target_groups:
+  - targets: ['localhost:9090']
+
+- job_name: service-consul
+
+  consul_sd_configs:
+  - server: '{{ prometheus_consul_host }}:8500'
+    services: ['mesos-exporter', 'cadvisor']
+
+  relabel_configs:
+  - source_labels: ['__meta_consul_service']
+    regex:         '(.*)'
+    target_label:  'job'
+    replacement:   '$1'
+  - source_labels: ['__meta_consul_node']
+    regex:         '(.*)'
+    target_label:  'instance'
+    replacement:   '$1'
+  - source_labels: ['__meta_consul_service_address', '__meta_consul_service_port']
+    separator:     ';'
+    regex:         '(.*);(.*)'
+    replacement:   '${1}:${2}'
+    target_label:  '__address__'
+
+- job_name: service-consul-node-exporter
+
+  consul_sd_configs:
+  - server: '{{ prometheus_consul_host }}:8500'
+    services: ['node-exporter']
+
+  relabel_configs:
+  - source_labels: ['__meta_consul_service']
+    regex:         '(.*)'
+    target_label:  'job'
+    replacement:   '$1'
+  - source_labels: ['__meta_consul_node']
+    regex:         '(.*)'
+    target_label:  'instance'
+    replacement:   '$1'

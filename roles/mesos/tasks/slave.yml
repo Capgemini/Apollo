@@ -61,3 +61,17 @@
   tags:
     - mesos-slave
 
+- name: run prometheus mesos slave exporter container
+  when: mesos_install_mode == "slave"
+  docker:
+    name: mesos-exporter
+    image: "{{ prometheus_mesos_exporter_image }}"
+    command: "-exporter.scrape-mode=slave -exporter.url=http://{{ mesos_hostname }}:{{ mesos_slave_port }}"
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
+  environment: proxy_env
+  tags:
+    - prometheus
+    - mesos_slave

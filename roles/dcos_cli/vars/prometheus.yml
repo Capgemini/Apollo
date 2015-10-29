@@ -1,0 +1,2 @@
+dcos_cli_app_prometheus_mem: 128
+dcos_cli_app_prometheus_cpus: 0.5
