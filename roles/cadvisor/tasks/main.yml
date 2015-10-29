@@ -56,6 +56,8 @@
   notify:
     - restart consul
   when: cadvisor_enabled
+  tags:
+    - cadvisor
 
 - name: stop cadvisor container
   when: not cadvisor_enabled
