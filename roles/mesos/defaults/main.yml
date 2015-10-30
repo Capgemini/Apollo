@@ -5,6 +5,7 @@ mesos_executor_registration_timeout: 10mins
 mesos_cluster_name: "Cluster01"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_ssh_host }}"
+mesos_docker_socket: "/var/run/weave/weave.sock"
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051

@@ -4,7 +4,7 @@ marathon_consul_dir: /etc/consul.d
 marathon_enabled: true
 marathon_version: '0.10.1'
 marathon_restart_policy: 'always'
-marathon_net: 'bridge'
+marathon_net: 'host'
 marathon_hostname: "{{ ansible_ssh_host }}"
 marathon_port: '8080'
 marathon_container_memory_limit: '512MB'

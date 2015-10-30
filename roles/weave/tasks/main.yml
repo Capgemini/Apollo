@@ -1,37 +1,4 @@
 ---
-# tasks file for weave
-- name: include all interfaces.d
-  sudo: yes
-  lineinfile:
-    dest: /etc/network/interfaces
-    state: present
-    line: 'source /etc/network/interfaces.d/*.cfg'
-  tags:
-    - weave
-
-# Start docker as it is a requirement for weave create-bridge.
-- name: Start up docker
-  service:
-    name: docker
-    state: started
-  tags:
-    - weave
-
-- name: configure weave interface
-  sudo: yes
-  template:
-    src: interfaces.j2
-    dest: /etc/network/interfaces.d/weave.cfg
-    owner: root
-    group: root
-    mode: 0644
-  tags:
-    - weave
-
-# Create weave bridge.
-- name: bring up weave bridge
-  command: ifup weave
-  sudo: yes
 
 - name: upload weave template service
   template:
@@ -42,36 +9,9 @@
   tags:
     - weave
 
-# Restart docker with weave bridge available and triggers weave service.
-- name: configure weave bridge for docker
+- name: ensure weave service is running.
   sudo: yes
-  lineinfile:
-    dest: /etc/default/docker
-    state: present
-    regexp: ^DOCKER_OPTS=.*--bridge=weave.*
-    line: 'DOCKER_OPTS=\"$DOCKER_OPTS {{ weave_docker_opts }}\"'
-  notify:
-    - restart docker
-  tags:
-    - weave
-
-- name: download weave scope
-  get_url:
-    url: "{{ weave_scope_url }}"
-    dest: "{{ weave_scope_dest }}"
-    mode: 0755
-    validate_certs: no
-  environment: proxy_env
-  when: weave_scope_enabled
-  tags:
-    - weave
-
-- name: upload weave scope template service
-  template:
-    src: scope.conf.j2
-    dest: "/etc/init/weavescope.conf"
-    mode: 0755
-  sudo: yes
-  when: weave_scope_enabled
-  tags:
-    - weave
+  service:
+    name: weave
+    state: started
+    enabled: yes
