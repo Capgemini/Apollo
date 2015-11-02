@@ -40,7 +40,6 @@
     command: "{{ marathon_command }}"
     volumes:
     - "{{ marathon_artifact_store_dir }}:/store"
-    - "/var/run/docker.sock:/tmp/docker.sock"
     memory_limit: "{{ marathon_container_memory_limit }}"
     env:
       JAVA_OPTS: "{{ marathon_java_settings }}"

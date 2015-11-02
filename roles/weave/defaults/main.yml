@@ -1,9 +1,7 @@
 ---
+
 # defaults file for weave
-weave_host_eth0_address: "{{ ansible_eth0.ipv4.address.split('.') }}"
-weave_bridge: "10.{{ weave_host_eth0_address[2] }}.0.{{ weave_host_eth0_address[3] }}/14"
 weave_server_group: weave_servers
-weave_docker_subnet: "10.{{ weave_host_eth0_address[2] }}.{{ weave_host_eth0_address[3] }}.0/24"
 weave_launch_peers: "
   {%- set weave_peers = [] -%}
   {%- for host in groups[weave_server_group] -%}
@@ -13,7 +11,7 @@ weave_launch_peers: "
   {%- endfor -%}
   {{ weave_peers|join(' ') }}
 "
-weave_docker_opts: "--bridge=weave --fixed-cidr={{ weave_docker_subnet }} --dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }}"
+
 weave_scope_url: https://github.com/weaveworks/scope/releases/download/latest_release/scope
 weave_scope_dest: /usr/local/bin/scope
 weave_scope_enabled: True

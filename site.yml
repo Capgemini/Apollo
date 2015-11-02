@@ -28,8 +28,8 @@
     - docker
     - weave
     - dnsmasq
-    - registrator
     - cadvisor
+    - registrator
 
 - hosts: mesos_masters
   roles:

@@ -1,4 +1,10 @@
 ---
+
+- name: wait for weave socket to be ready.
+  wait_for:
+    port: 6783
+    delay: 10
+
 - name: destroy old marathon container
   when: registrator_rebuild_container
   docker:
@@ -14,9 +20,9 @@
     state: started
     restart_policy: always
     net: host
-    command: "-internal -resync=120 {{ registrator_uri }}"
+    command: "-internal -resync=10 {{ registrator_uri }}"
     volumes:
-    - "/var/run/docker.sock:/tmp/docker.sock"
+    - "{{ registrator_docker_socket }}:/tmp/docker.sock"
   environment: proxy_env
   tags:
     - registrator
