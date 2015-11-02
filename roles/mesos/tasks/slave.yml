@@ -15,7 +15,7 @@
   when: mesos_install_mode == "slave"
   docker:
     name: mesos-slave
-    image: "mesosphere/mesos-slave:0.23.0-1.0.ubuntu1404"
+    image: "mesosphere/mesos-slave:0.25.0-0.2.70.ubuntu1404"
     state: started
     privileged: true
     volumes:
