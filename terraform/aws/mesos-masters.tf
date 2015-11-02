@@ -1,6 +1,7 @@
 /* Base packer build we use for provisioning master instances */
 resource "atlas_artifact" "mesos-master" {
   name    = "${var.atlas_artifact.master}"
+  version = "${var.atlas_artifact_version.master}"
   type    = "aws.ami"
 }
 
@@ -8,7 +9,7 @@ resource "atlas_artifact" "mesos-master" {
 resource "aws_instance" "mesos-master" {
   instance_type     = "${var.instance_type.master}"
   /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
-  ami               = "${atlas_artifact.mesos-master.metadata_full.region-us-west-2}"
+  ami               = "${atlas_artifact.mesos-master.metadata_full.ami_id}"
   count             = "${var.masters}"
   key_name          = "${aws_key_pair.deployer.key_name}"
   source_dest_check = false

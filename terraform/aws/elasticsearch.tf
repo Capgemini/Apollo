@@ -1,12 +1,13 @@
 resource "atlas_artifact" "elasticsearch" {
   name = "${var.atlas_artifact.master}"
+  version = "${var.atlas_artifact_version.master}"
   type = "aws.ami"
 }
 
 resource "aws_instance" "elasticsearch" {
   instance_type     = "${var.instance_type.master}"
   /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
-  ami               = "${atlas_artifact.elasticsearch.metadata_full.region-us-west-2}"
+  ami               = "${atlas_artifact.elasticsearch.metadata_full.ami_id}"
   count             = "1"
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.0.id}"
