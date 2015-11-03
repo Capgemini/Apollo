@@ -112,8 +112,8 @@ variable "atlas_artifact" {
 
 variable "atlas_artifact_version" {
   default = {
-    master = "13"
-    slave  = "13"
+    master = "24"
+    slave  = "24"
   }
 }
 
