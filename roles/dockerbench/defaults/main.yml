@@ -3,5 +3,5 @@
 dockerbench_run_test: false
 dockerbench_dest: /opt/dockerbench
 dockerbench_repo: https://github.com/docker/docker-bench-security.git
+dockerbench_version: master
 dockerbench_warn_threshold: 100
-
