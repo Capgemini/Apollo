@@ -26,7 +26,7 @@
   when: elasticsearch_enabled
   docker:
     name: elasticsearch
-    image: "{{ elasticsearch_image }}"
+    image: "{{ elasticsearch_image }}:{{ elasticsearch_image_tag }}"
     state: started
     net: host
     restart_policy: always
