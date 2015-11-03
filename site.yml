@@ -28,8 +28,8 @@
     - docker
     - weave
     - dnsmasq
-    - registrator
     - cadvisor
+    - registrator
     - { role: prometheus, when: prometheus_enabled|bool }
 
 - hosts: mesos_masters

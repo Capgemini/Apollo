@@ -25,8 +25,8 @@
     - "/sys:/sys"
     - "/lib/libpthread.so.0:/lib/libpthread.so.0:ro"
     - "/usr/bin/docker:/usr/bin/docker:ro"
-    - "/var/run/docker.sock:/var/run/docker.sock"
     - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/usr/lib/x86_64-linux-gnu/libapparmor.so.1"
+    - "{{ mesos_docker_socket }}:/var/run/docker.sock"
     ports:
     - "{{ mesos_slave_port }}:{{ mesos_slave_port }}"
     net: "host"
