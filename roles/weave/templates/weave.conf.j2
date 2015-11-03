@@ -5,6 +5,7 @@ stop on stopping docker
 
 env PEERS="{{ weave_launch_peers }}"
 env WEAVE='/usr/local/bin/weave'
+env WEAVE_VERSION='git-6a238818daf2'
 
 pre-start exec ${WEAVE} stop
 
