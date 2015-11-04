@@ -97,7 +97,7 @@ variable "atlas_artifact_version" {
 
 variable "docker_version" {
   description = "Docker version"
-  default = "1.8.2-0~trusty"
+  default = "1.9.0-0~trusty"
 }
 
 /* Remember to update the list every time when you build a new artifact on atlas */
