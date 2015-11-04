@@ -35,6 +35,7 @@
       MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
       MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
       MESOS_RESOURCES: "{{ mesos_resources }}"
+      MESOS_LOG_DIR: "/var/log/mesos"
       MESOS_IP: "{{ mesos_ip }}"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
       MESOS_HOSTNAME: "{{ mesos_hostname }}"
