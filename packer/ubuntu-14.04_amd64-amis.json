@@ -6,7 +6,7 @@
     "marathon_version": "v0.10.1",
     "consul_version": "0.5.2",
     "weave_version": "1.2.0",
-    "docker_version": "1.8.2-0~trusty",
+    "docker_version": "1.9.0-0~trusty",
     "version": "{{env `APOLLO_VERSION`}}",
     "aws_region": "{{env `AWS_REGION`}}",
     "aws_source_ami": "{{env `AWS_SOURCE_AMI`}}",

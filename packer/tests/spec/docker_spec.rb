@@ -9,7 +9,7 @@ describe package('docker-engine') do
 end
 
 describe package('docker-py') do
-  it { should be_installed.by('pip').with_version('1.3.1') }
+  it { should be_installed.by('pip').with_version('1.5.0') }
 end
 
 describe package("linux-image-extra-#{`uname -r`.strip}") do
