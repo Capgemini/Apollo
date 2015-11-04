@@ -12,7 +12,7 @@
     "marathon_version": "v0.10.1",
     "consul_version": "0.5.2",
     "weave_version": "1.2.0",
-    "docker_version": "1.8.2-0~trusty",
+    "docker_version": "1.9.0-0~trusty",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",
     "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417"
