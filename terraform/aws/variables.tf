@@ -109,3 +109,8 @@ variable "amis" {
     us-west-2 = "ami-00657261"
   }
 }
+
+variable "docker_version" {
+  description = "Docker version"
+  default = "1.8.2-0~trusty"
+}
