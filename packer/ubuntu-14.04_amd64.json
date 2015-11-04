@@ -11,7 +11,7 @@
     "mesos_version": "0.23.0-1.0.ubuntu1404",
     "marathon_version": "v0.10.1",
     "consul_version": "0.5.2",
-    "weave_version": "v1.1.0",
+    "weave_version": "1.2.0",
     "docker_version": "1.8.2-0~trusty",
     "access_token": "{{env `ATLAS_TOKEN`}}",
     "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",

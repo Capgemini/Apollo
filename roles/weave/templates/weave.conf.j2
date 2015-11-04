@@ -5,12 +5,15 @@ stop on stopping docker
 
 env PEERS="{{ weave_launch_peers }}"
 env WEAVE='/usr/local/bin/weave'
+env WEAVE_VERSION='git-6a238818daf2'
 
 pre-start exec ${WEAVE} stop
 
 script
  [ -e /etc/default/weave ] && . /etc/default/weave
- ${WEAVE} launch ${PEERS}
+ ${WEAVE} launch-router --no-dns ${PEERS}
+ ${WEAVE} launch-proxy --without-dns --rewrite-inspect
+ ${WEAVE} expose
  exec /usr/bin/docker logs -f weave
 end script
 
