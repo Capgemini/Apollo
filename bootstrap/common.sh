@@ -28,7 +28,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.6.1}
+  local requirement_version_string=${1:-0.6.6}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
@@ -69,13 +69,19 @@ get_apollo_variables() {
 apollo_launch() {
   if [ "$@" ]; then
     eval $@
-  else
+  elif [[ "-i" ]]; then
     get_terraform_modules
     terraform_apply
     run_if_exist "ansible_ssh_config"
     ansible_playbook_run
     run_if_exist "set_vpn"
     open_urls
+  else
+    get_terraform_modules
+    terraform_apply
+    run_if_exist "ansible_ssh_config"
+    ansible_playbook_run
+    run_if_exist "set_vpn"
   fi
 }
 
