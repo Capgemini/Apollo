@@ -3,11 +3,11 @@
   "container": {
     "docker": {
       "type": "DOCKER",
-      "image": "capgemini/apollo-spring-boot:latest",
+      "image": "capgemini/apollo-spring-boot:1.0.1",
       "network": "BRIDGE",
       "portMappings": [
         {
-          "containerPort": 8080, 
+          "containerPort": 8080,
           "hostPort": 0,
           "protocol": "tcp"
         }
