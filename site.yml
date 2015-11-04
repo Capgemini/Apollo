@@ -27,28 +27,41 @@
     - consul
     - docker
     - weave
+
+- hosts: all:!role=bastion
+  roles:
+    - registrator
     - dnsmasq
     - cadvisor
-    - registrator
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_masters
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
     - marathon
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_slaves
   roles:
     - { role: mesos, mesos_install_mode: "slave" }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: load_balancers
   roles:
     - { role: haproxy, tags: ["haproxy"] }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 # Installing DCOS frameworks from one master.
 - hosts: mesos_masters
   roles:
     - frameworks
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - include: tests/test.yml
   vars_files:

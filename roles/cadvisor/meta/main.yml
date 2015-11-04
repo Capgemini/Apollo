@@ -121,7 +121,7 @@ galaxy_info:
   - system
   #- web
 dependencies:
-  # - role: consul
+  - role: handlers
   # - role: registrator
   # - role: zookeeper
   # List your role dependencies here, one per line. Only
