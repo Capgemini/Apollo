@@ -16,6 +16,11 @@
     state: started
     enabled: yes
 
+- name: wait for weave socket to be ready.
+  wait_for:
+    port: 6783
+    delay: 10
+
 - name: download weave scope
   get_url:
     url: "{{ weave_scope_url }}"
