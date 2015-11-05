@@ -1,6 +1,7 @@
 ---
 # defaults file for zookeeper
 zookeeper_config_dir: "/etc/zookeeper/conf"
+zookeeper_image: "mesosphere/mesos:0.25.0-0.2.70.ubuntu1404"
 zookeeper_client_port: 2181
 zookeeper_leader_connect_port: 2888
 zookeeper_leader_election_port: 3888
