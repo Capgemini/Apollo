@@ -33,6 +33,7 @@
     - registrator
     - dnsmasq
     - cadvisor
+    - { role: prometheus, when: prometheus_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
@@ -56,10 +57,12 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-# Installing DCOS frameworks from one master.
+# Installing DCOS frameworks and apps from one master.
 - hosts: mesos_masters
   roles:
-    - frameworks
+    - dcos_cli
+  vars_files:
+    - roles/prometheus/defaults/main.yml
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
