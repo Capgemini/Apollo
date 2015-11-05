@@ -17,8 +17,4 @@ describe file('/etc/init/weave.conf') do
   it { should be_mode 755 }
 end
 
-describe file('/etc/init/weavescope.conf') do
-  it { should be_file }
-  it { should be_mode 755 }
-end
 
