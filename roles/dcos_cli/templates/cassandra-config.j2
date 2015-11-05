@@ -1,0 +1,7 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "cassandra": {
+    "zk": "zk://{{ zookeeper_peers_nodes }}/cassandra-mesos",
+    "node-count": {{ dcos_cli_framework_cassandra_node_count }}
+  }
+}

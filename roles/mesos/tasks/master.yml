@@ -63,3 +63,30 @@
     enabled: yes
   tags:
     - mesos-master
+
+- name: run prometheus mesos master exporter container
+  when: mesos_install_mode == "master" and prometheus_enabled|bool
+  docker:
+    name: mesos-exporter
+    image: "{{ prometheus_mesos_exporter_image }}"
+    command: "-exporter.scrape-mode=master -exporter.url=http://{{ mesos_hostname }}:{{ mesos_master_port }}"
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
+  environment: proxy_env
+  tags:
+    - prometheus
+    - mesos_master
+
+- name: Set mesos-exporter consul service definition
+  when: mesos_install_mode == "master" and prometheus_enabled|bool
+  sudo: yes
+  template:
+    src: mesos-exporter-consul.j2
+    dest: "{{ consul_dir }}/mesos-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
+    - mesos_master

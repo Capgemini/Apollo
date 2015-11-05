@@ -1,0 +1,9 @@
+{
+  "check": {
+    "id": "node-exporter",
+    "name": "node exporter status",
+    "service_id": "{{ prometheus_node_exporter_consul_service_id }}",
+    "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ prometheus_node_exporter_hostname }}:{{ prometheus_node_exporter_port }}",
+    "interval": "10s"
+  }
+}

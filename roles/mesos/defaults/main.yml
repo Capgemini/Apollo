@@ -18,6 +18,10 @@ mesos_zookeeper_group: zookeeper_servers
 mesos_master_port: 5050
 mesos_master_work_dir: "/var/lib/mesos"
 
+prometheus_mesos_exporter_image: "prom/mesos-exporter:latest"
+prometheus_mesos_exporter_port: 9105
+prometheus_mesos_exporter_consul_service_id: "{{ ansible_hostname }}:mesos-exporter:{{ prometheus_mesos_exporter_port }}"
+
 # The Mesos quorum value is based on the number of Mesos Masters. Take the
 # number of masters, divide by 2, and round-up to nearest integer. For example,
 # if there are 1 or 2 masters the quorum count is 1. If there are 3 or 4
