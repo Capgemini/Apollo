@@ -117,17 +117,22 @@ variable "atlas_artifact_version" {
   }
 }
 
+variable "docker_version" {
+  description = "Docker version"
+  default = "1.9.0-0~trusty"
+}
+
 /* Remember to update the list every time when you build a new artifact on atlas */
 variable "amis" {
   default = {
-    ap-northeast-1 = "ami-75dcf81b"
-    ap-southeast-1 = "ami-7324e310"
-    ap-southeast-2 = "ami-a60c52c5"
-    eu-central-1 = "ami-950b18f9"
-    eu-west-1 = "ami-f603dd85"
-    sa-east-1 = "ami-da962db6"
-    us-east-1 = "ami-be106dd4"
-    us-west-1 = "ami-7b046b1b"
-    us-west-2 = "ami-00657261"
+    ap-northeast-1 = "ami-113d1a7f"
+    ap-southeast-1 = "ami-7c53941f"
+    ap-southeast-2 = "ami-4a5e0029"
+    eu-central-1   = "ami-372b385b"
+    eu-west-1      = "ami-a1b26bd2"
+    sa-east-1      = "ami-be58e3d2"
+    us-east-1      = "ami-6e562a04"
+    us-west-1      = "ami-b25a35d2"
+    us-west-2      = "ami-9ef6e1ff"
   }
 }

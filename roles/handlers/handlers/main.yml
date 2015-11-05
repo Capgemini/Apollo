@@ -19,3 +19,10 @@
    name: docker
    state: restarted
   sudo: yes
+  notify:
+  - wait for weave to listen
+
+- name: wait for weave to listen
+  wait_for:
+    port: 6783
+    delay: 10

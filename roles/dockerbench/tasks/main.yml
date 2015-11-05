@@ -1,10 +1,11 @@
 ---
 # tasks file for docker bench
 - name: checkout docker bench git repo
-  git: 
+  git:
     repo: "{{ dockerbench_repo }}"
     dest: "{{ dockerbench_dest }}"
     accept_hostkey: true
+    version: "{{ dockerbench_version }}"
   when: dockerbench_run_test
 
 - name: install docker bench threshold script

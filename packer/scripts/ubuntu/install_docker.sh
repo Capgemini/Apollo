@@ -4,7 +4,7 @@ set -o pipefail
 
 sudo apt-get -y update
 
-sudo pip install docker-py==1.3.1
+sudo pip install docker-py==1.5.0
 
 sudo apt-get install -y linux-image-extra-$(uname -r)
 

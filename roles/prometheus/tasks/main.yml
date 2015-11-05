@@ -1,0 +1,41 @@
+# tasks for running prometheus
+- name: create prometheus config dir
+  file:
+    path: "{{ prometheus_config_dir }}"
+    state: directory
+    mode: 0755
+  sudo: yes
+  tags:
+    - prometheus
+
+- name: upload prometheus config file
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
+    mode: 0755
+  sudo: yes
+  tags:
+    - prometheus
+
+- name: run prometheus node exporter container
+  docker:
+    name: node-exporter
+    image: "{{ prometheus_node_exporter_image }}"
+    state: started
+    restart_policy: always
+    net: host
+    ports:
+    - "{{ prometheus_node_exporter_port }}:{{ prometheus_node_exporter_port }}"
+  environment: proxy_env
+  tags:
+    - prometheus
+
+- name: Set node-exporter consul service definition
+  sudo: yes
+  template:
+    src: node-exporter-consul.j2
+    dest: "{{ prometheus_consul_dir }}/node-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
