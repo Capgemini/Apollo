@@ -1,0 +1,10 @@
+{
+  "mesos": {"master": "{{ frameworks_zk_master_peers }}"},
+  "logstash": {
+    "executor": {
+      "heap-size": "{{ frameworks_logstash_java_heap_size }}",
+      "logstash-heap-size": "{{ frameworks_logstash_heap_size }}",
+      "volumes": "{{ frameworks_logstash_volumes }}"
+    }
+  }
+}

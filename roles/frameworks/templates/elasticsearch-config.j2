@@ -2,12 +2,12 @@
   "mesos": {"master": "{{ frameworks_zk_master_peers }}"},
   "elasticsearch": {
     "executor": {
-      "instances": {{ frameworks_elasticsearch_executor_instances }},
-      "image": {{ frameworks_elasticsearch_executor_image }}
-    }
+      "instances": "{{ frameworks_elasticsearch_executor_instances }}",
+      "image": "{{ frameworks_elasticsearch_executor_image }}"
+    },
     "scheduler": {
-      "instances": {{ frameworks_elasticsearch_scheduler_instances }},
-      "image": {{ frameworks_elasticsearch_scheduler_image }}
+      "instances": "{{ frameworks_elasticsearch_scheduler_instances }}",
+      "image": "{{ frameworks_elasticsearch_scheduler_image }}"
     }
   }
 }

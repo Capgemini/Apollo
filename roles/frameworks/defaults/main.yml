@@ -9,3 +9,4 @@ frameworks_list:
   - cassandra
   - chronos
   - elasticsearch
+  - logstash

@@ -45,7 +45,7 @@ variable "elb_name" {
 
 variable "slaves" {
   description = "The number of slaves."
-  default = "1"
+  default = "3"
 }
 
 variable "masters" {
