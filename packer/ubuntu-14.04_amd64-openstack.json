@@ -8,8 +8,8 @@
     "mesos_version": "0.23.0-1.0.ubuntu1404",
     "marathon_version": "v0.10.1",
     "consul_version": "0.5.2",
-    "weave_version": "v1.1.0",
-    "docker_version": "1.8.2-0~trusty",
+    "weave_version": "1.2.0",
+    "docker_version": "1.9.0-0~trusty",
     "version": "{{env `APOLLO_VERSION`}}",
     "openstack_region": "{{env `OPENSTACK_REGION`}}",
     "openstack_flavour": "{{env `OPENSTACK_FLAVOUR`}}",
@@ -24,8 +24,10 @@
     "flavor": "{{user `openstack_flavour`}}",
     "image_name": "apollo-ubuntu-14.04-amd64 {{timestamp}}",
     "source_image": "{{user `openstack_source_image`}}",
+    "ssh_keypair_name": "public",
+    "ssh_private_key_file": "~/.ssh/id_rsa_rackspace",
     "ssh_username": "root",
-    "ssh_timeout": "10m",
+    "ssh_timeout": "10m"
   }],
   "provisioners": [
     {

@@ -9,7 +9,7 @@ export TF_VAR_username=${TF_VAR_username:?"Need to set TF_VAR_username non-empty
 export TF_VAR_api_key=${TF_VAR_api_key:?"Need to set TF_VAR_api_key non-empty"}
 export TF_VAR_password=${TF_VAR_password:?"Need to set TF_VAR_password non-empty"}
 
-export TF_VAR_key_file=${TF_VAR_key_file:-$HOME/.ssh/apollo_openstack_rsa}
+export TF_VAR_key_file=${TF_VAR_key_file:-$HOME/.ssh/id_rsa_openstack.pub}
 export TF_VAR_key_name=${TF_VAR_key_name:-deployer}
 
 # Overrides default folder in Terraform.py inventory.

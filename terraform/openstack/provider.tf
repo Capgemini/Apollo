@@ -8,6 +8,6 @@ provider "openstack" {
 }
 
 resource "openstack_compute_keypair_v2" "default" {
-  name       = "${ var.key_name }"
-  public_key = "${ file(var.key_file) }"
+  name       = "${var.key_name}"
+  public_key = "${file(var.key_file)}"
 }
