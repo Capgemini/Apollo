@@ -4,6 +4,8 @@
 
 [role=elasticsearch]
 
+[role=bastion]
+
 [mesos_masters:children]
 role=mesos_masters
 
@@ -13,6 +15,9 @@ role=mesos_slaves
 [elasticsearch:children]
 role=elasticsearch
 
+[bastion:children]
+role=bastion
+
 [load_balancers:children]
 mesos_slaves
 
@@ -21,6 +26,7 @@ mesos_masters
 mesos_slaves
 load_balancers
 elasticsearch
+bastion
 
 [zookeeper_servers:children]
 mesos_masters
@@ -32,6 +38,7 @@ mesos_masters
 mesos_masters
 mesos_slaves
 load_balancers
+bastion
 
 [marathon_servers:children]
 mesos_masters

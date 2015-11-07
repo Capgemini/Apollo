@@ -1,5 +1,5 @@
 ---
-- hosts: all:!role=bastion
+- hosts: all:!bastion
   gather_facts: no
   tasks:
     - name: Wait for ssh port to become available from bastion server.
@@ -16,7 +16,7 @@
       sudo: False
       when: bastion_ip is not defined
 
-- hosts: all:!role=bastion
+- hosts: all
   tasks:
     - name: set hostname to local ipv4 address
       sudo: Yes
@@ -27,11 +27,11 @@
     - consul
     - docker
     - weave
+    - dnsmasq
 
-- hosts: all:!role=bastion
+- hosts: all:!bastion
   roles:
     - registrator
-    - dnsmasq
     - cadvisor
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
@@ -55,7 +55,7 @@
   roles:
     - { role: elasticsearch, tags: ["elasticsearch"] }
 
-- hosts: all
+- hosts: all:!bastion
   pre_tasks:
     - name: remove datadog.override
       file:
@@ -66,7 +66,7 @@
 
 # MANUAL MAGIC HAPPENS HERE
 # 1. launch logstash collector on marathon ... needs marathon module to automate
-- hosts: all:!role=bastion:!elasticsearch
+- hosts: all:!bastion:!elasticsearch
   roles:
     - { role: monitored, tags: ["monitoring"] }
 

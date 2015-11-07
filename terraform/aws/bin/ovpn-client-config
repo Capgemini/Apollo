@@ -1,1 +1,5 @@
-ssh -t "ubuntu@$(terraform output bastion.ip)" sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_getclient "${1}" > "${1}-apollo.ovpn"
+bastion_ip=$(terraform output bastion.ip)
+ssh -t "ubuntu@${bastion_ip}" sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_getclient "${1}" \
+  | /usr/bin/env sed -e "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${bastion_ip}/g" \
+  | grep -v 'redirect-gateway def1' \
+  > "${1}-apollo.ovpn"
