@@ -1,5 +1,5 @@
-network:
-  host: {{ elasticsearch_hostname }}
+network.host: {{ elasticsearch_hostname }}
+cluster.name: elasticsearch.service.consul
 bootstrap.mlockall: true
 discovery:
   # set to 'zen' or 'ec2'
