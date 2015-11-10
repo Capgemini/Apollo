@@ -1,0 +1,8 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "chronos": {
+    "zk-hosts": "{{ zookeeper_peers_nodes }}",
+    "mem": {{ dcos_cli_framework_chronos_mem }},
+    "cpus": {{ dcos_cli_framework_chronos_cpus }}
+  }
+}

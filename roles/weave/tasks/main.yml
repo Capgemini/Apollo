@@ -40,3 +40,7 @@
   when: weave_scope_enabled
   tags:
     - weave
+
+# Flush handlers so we restart the Docker process here with the weave network
+# enabled and containers correctly start in the weave network.
+- meta: flush_handlers

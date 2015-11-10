@@ -15,7 +15,7 @@
   when: mesos_install_mode == "slave"
   docker:
     name: mesos-slave
-    image: "mesosphere/mesos-slave:0.23.0-1.0.ubuntu1404"
+    image: "{{ mesos_slave_image }}"
     state: started
     privileged: true
     volumes:
@@ -62,3 +62,29 @@
   tags:
     - mesos-slave
 
+- name: run prometheus mesos slave exporter container
+  when: mesos_install_mode == "slave" and prometheus_enabled|bool
+  docker:
+    name: mesos-exporter
+    image: "{{ prometheus_mesos_exporter_image }}"
+    command: "-exporter.scrape-mode=slave -exporter.url=http://{{ mesos_hostname }}:{{ mesos_slave_port }}"
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
+  environment: proxy_env
+  tags:
+    - prometheus
+    - mesos_slave
+
+- name: Set mesos-exporter consul service definition
+  when: mesos_install_mode == "slave" and prometheus_enabled|bool
+  sudo: yes
+  template:
+    src: mesos-exporter-consul.j2
+    dest: "{{ consul_dir }}/mesos-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
+    - mesos_slave

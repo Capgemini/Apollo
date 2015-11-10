@@ -103,14 +103,14 @@ variable "docker_version" {
 /* Remember to update the list every time when you build a new artifact on atlas */
 variable "amis" {
   default = {
-    ap-northeast-1 = "ami-3f6a4d51"
-    ap-southeast-1 = "ami-1e3cfb7d"
-    ap-southeast-2 = "ami-ca326ca9"
-    eu-central-1   = "ami-de392ab2"
-    eu-west-1      = "ami-4972ac3a"
-    sa-east-1      = "ami-7076cd1c"
-    us-east-1      = "ami-48ef9222"
-    us-west-1      = "ami-54610e34"
-    us-west-2      = "ami-cb3b2caa"
+    ap-northeast-1 = "ami-113d1a7f"
+    ap-southeast-1 = "ami-7c53941f"
+    ap-southeast-2 = "ami-4a5e0029"
+    eu-central-1   = "ami-372b385b"
+    eu-west-1      = "ami-a1b26bd2"
+    sa-east-1      = "ami-be58e3d2"
+    us-east-1      = "ami-6e562a04"
+    us-west-1      = "ami-b25a35d2"
+    us-west-2      = "ami-9ef6e1ff"
   }
 }

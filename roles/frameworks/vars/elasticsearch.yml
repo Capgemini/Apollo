@@ -1,5 +1,0 @@
-frameworks_elasticsearch_enabled: true
-frameworks_elasticsearch_executor_instances: 3
-frameworks_elasticsearch_executor_image: mesos/elasticsearch-executor:0.5.0
-frameworks_elasticsearch_scheduler_instances: 1
-frameworks_elasticsearch_scheduler_image: mesos/elasticsearch-scheduler:0.5.0
