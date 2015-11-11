@@ -75,7 +75,7 @@
 - name: run zookeeper container
   docker:
     name: zookeeper
-    image: "mesosphere/mesos:0.23.0-1.0.ubuntu1404"
+    image: "{{ zookeeper_image }}"
     state: started
     volumes:
     - "{{ zookeeper_config_dir }}/:{{ zookeeper_config_dir }}/"

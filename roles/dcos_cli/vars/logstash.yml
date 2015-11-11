@@ -1,0 +1,4 @@
+dcos_cli_app_logstash_enabled: true
+dcos_cli_app_logstash_mem: 756
+dcos_cli_app_logstash_cpus: 1.0
+dcos_cli_app_logstash_instances: 1

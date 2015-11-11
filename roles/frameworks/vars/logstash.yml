@@ -1,4 +1,0 @@
-frameworks_logstash_enabled: true
-frameworks_logstash_java_heap_size: 256
-frameworks_logstash_heap_size: 512
-frameworks_logstash_volumes: /var/log/syslog

@@ -1,0 +1,5 @@
+dcos_cli_framework_elasticsearch_enabled: true
+dcos_cli_framework_elasticsearch_executor_instances: 3
+dcos_cli_framework_elasticsearch_executor_image: mesos/elasticsearch-executor:snapshot
+dcos_cli_framework_elasticsearch_scheduler_instances: 1
+dcos_cli_framework_elasticsearch_scheduler_image: mesos/elasticsearch-scheduler:snapshot
