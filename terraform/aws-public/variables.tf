@@ -84,14 +84,14 @@ variable "atlas_artifact_version" {
 /* Remember to update the list every time when you build a new artifact on atlas */
 variable "amis" {
   default = {
-    ap-northeast-1 = "ami-113d1a7f"
-    ap-southeast-1 = "ami-7c53941f"
-    ap-southeast-2 = "ami-4a5e0029"
-    eu-central-1   = "ami-372b385b"
-    eu-west-1      = "ami-a1b26bd2"
-    sa-east-1      = "ami-be58e3d2"
-    us-east-1      = "ami-6e562a04"
-    us-west-1      = "ami-b25a35d2"
-    us-west-2      = "ami-9ef6e1ff"
+    ap-northeast-1 = "ami-a53c1dcb"
+    ap-southeast-1 = "ami-8ce82eef"
+    ap-southeast-2 = "ami-31df8152"
+    eu-central-1   = "ami-9ebcaff2"
+    eu-west-1      = "ami-225e8651"
+    sa-east-1      = "ami-f3e05a9f"
+    us-east-1      = "ami-43eb9229"
+    us-west-1      = "ami-1f29477f"
+    us-west-2      = "ami-bd8492dc"
   }
 }
