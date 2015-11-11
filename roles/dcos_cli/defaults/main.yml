@@ -11,6 +11,7 @@ dcos_cli_frameworks_list:
   - elasticsearch
 dcos_cli_apps_list:
   - prometheus
+  - logstash
 
 # apps
 prometheus_image: prom/prometheus
