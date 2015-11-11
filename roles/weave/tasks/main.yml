@@ -1,20 +1,4 @@
 ---
-
-- name: weave login vault
-  sudo: yes
-  shell: "{{ weave_command_login_vault }}"
-  register: vault_login_output
-  tags:
-    - vault
-
-- name: weave set vault token
-  run_once: true
-  sudo: yes
-  set_fact:
-    tmp_client_token: "{{ (vault_login_output.stdout | from_json)['auth']['client_token'] }}"
-  tags:
-    - vault
-
 - name: upload weave template service
   template:
     src: weave.conf.j2

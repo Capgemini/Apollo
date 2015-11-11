@@ -2,6 +2,3 @@
 # tasks file for vault
 - include: install.yml
 - include: bootstrap.yml
-- include: policies.yml
-- include: auth.yml
-- include: secrets.yml

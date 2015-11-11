@@ -26,7 +26,6 @@
   roles:
     - consul
     - vault
-    - dnsmasq
     - docker
     - weave
 

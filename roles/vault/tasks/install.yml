@@ -47,15 +47,6 @@
   tags:
     - vault
 
-- name: upload vault weave acl policy template
-  template:
-    src: acl_weave.hcl.j2
-    dest: /etc/vault/acl_weave.hcl
-    mode: 0755
-  sudo: yes
-  tags:
-    - vault
-
 - name: upload wait for vault leader script
   sudo: yes
   template:
