@@ -1,4 +1,13 @@
 # tasks for running cadvisor
+- name: destroy old cadvisor container
+  when: cadvisor_rebuild_container
+  docker:
+    name: cadvisor
+    image: "{{ cadvisor_image }}"
+    state: absent
+  tags:
+    - cadvisor
+
 - name: run cadvisor container
   when: cadvisor_enabled
   docker:

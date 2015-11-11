@@ -11,6 +11,15 @@
   tags:
     - mesos-slave
 
+- name: destroy old mesos-slave container
+  when: mesos_slave_rebuild_container
+  docker:
+    name: mesos-slave
+    image: "{{ mesos_slave_image }}"
+    state: absent
+  tags:
+    - mesos-slave
+
 - name: run mesos-slave container
   when: mesos_install_mode == "slave"
   docker:

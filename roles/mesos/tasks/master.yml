@@ -22,6 +22,15 @@
   tags:
     - mesos-master
 
+- name: destroy old mesos-master container
+  when: mesos_master_rebuild_container
+  docker:
+    name: mesos-master
+    image: "{{ mesos_master_image }}"
+    state: absent
+  tags:
+    - mesos-master
+
 - name: run mesos-master container
   when: mesos_install_mode == "master"
   docker:

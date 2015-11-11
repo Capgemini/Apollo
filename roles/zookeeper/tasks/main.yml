@@ -72,6 +72,15 @@
   tags:
     - zookeeper
 
+- name: destroy old zookeeper container
+  when: zookeeper_rebuild_container
+  docker:
+    name: zookeeper
+    image: "{{ zookeeper_image }}"
+    state: absent
+  tags:
+    - zookeeper
+
 - name: run zookeeper container
   docker:
     name: zookeeper

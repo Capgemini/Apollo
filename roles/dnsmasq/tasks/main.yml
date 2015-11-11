@@ -22,12 +22,21 @@
   tags:
     - dnsmasq
 
+- name: destroy old dnsmasq container
+  when: dnsmasq_rebuild_container
+  docker:
+    name: dnsmasq
+    image: "{{ dnsmasq_image }}"
+    state: absent
+  tags:
+    - dnsmasq
+
 # This should be using -cap-add=NET_ADMIN rather than privileged: true.
 # This will be supported in Ansible 2.0
 - name: run dnsmasq container
   docker:
     name: dnsmasq
-    image: "andyshinn/dnsmasq"
+    image: "{{ dnsmasq_image }}"
     state: started
     net: "host"
     privileged: true
