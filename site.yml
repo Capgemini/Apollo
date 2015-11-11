@@ -17,33 +17,59 @@
       when: bastion_ip is not defined
 
 - hosts: all:!role=bastion
+  tasks:
+    - name: set hostname to local ipv4 address
+      sudo: Yes
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
     - vault
     - dnsmasq
     - docker
     - weave
+
+- hosts: all:!role=bastion
+  roles:
     - registrator
+    - dnsmasq
     - cadvisor
+    - { role: prometheus, when: prometheus_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_masters
   roles:
-    - { role: mesos, mesos_install_mode: "master", tags: ["mesos-master"] }
     - zookeeper
+    - { role: mesos, mesos_install_mode: "master" }
     - marathon
-    - chronos
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_slaves
   roles:
-    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos-slave"] }
+    - { role: mesos, mesos_install_mode: "slave" }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: load_balancers
   roles:
-    - haproxy
+    - { role: haproxy, tags: ["haproxy"] }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+# Installing DCOS frameworks and apps from one master.
+- hosts: mesos_masters
+  roles:
+    - dcos_cli
+  vars_files:
+    - roles/prometheus/defaults/main.yml
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml
 
 - include: contrib-plugins/playbook.yml
-

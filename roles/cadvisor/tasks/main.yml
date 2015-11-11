@@ -1,6 +1,3 @@
-# Install (docker-py) python package as is a docker module dependency.
-- pip: name=docker-py version=1.1.0
-
 # tasks for running cadvisor
 - name: run cadvisor container
   when: cadvisor_enabled
@@ -10,8 +7,6 @@
     state: started
     restart_policy: "{{ cadvisor_restart_policy }}"
     net: "{{ cadvisor_net }}"
-    ports:
-      - "{{ cadvisor_host_port }}:8080"
     hostname: "{{ cadvisor_hostname }}"
     volumes:
     - "/var/lib/docker/:/var/lib/docker:ro"
@@ -44,6 +39,15 @@
   tags:
     - cadvisor
 
+- name: get cadvisor container ip
+  sudo: yes
+  command: >
+    docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} cadvisor
+  register: cadvisor_container_ip
+  when: cadvisor_enabled
+  tags:
+    - cadvisor
+
 - name: Set cadvisor consul service definition
   sudo: yes
   template:
@@ -52,8 +56,10 @@
   notify:
     - restart consul
   when: cadvisor_enabled
+  tags:
+    - cadvisor
 
-- name: ensure cadvisor is running (and enable it at boot)
+- name: stop cadvisor container
   when: not cadvisor_enabled
   sudo: yes
   service:

@@ -2,11 +2,11 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_ACCESS_KEY`}}",
-    "mesos_version": "0.22.1-1.0.ubuntu1404",
-    "marathon_version": "v0.9.0-RC3",
-    "chronos_version": "chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404",
+    "mesos_version": "0.25.0-0.2.70.ubuntu1404",
+    "marathon_version": "v0.11.1",
     "consul_version": "0.5.2",
-    "weave_version": "1.0.1",
+    "weave_version": "1.2.0",
+    "docker_version": "1.9.0-0~trusty",
     "version": "{{env `APOLLO_VERSION`}}",
     "aws_region": "{{env `AWS_REGION`}}",
     "aws_source_ami": "{{env `AWS_SOURCE_AMI`}}",
@@ -19,6 +19,17 @@
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
     "region": "{{user `aws_region`}}",
+    "ami_regions": [
+      "us-east-1",
+      "us-west-1",
+      "us-west-2",
+      "eu-west-1",
+      "eu-central-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "ap-northeast-1",
+      "sa-east-1"
+    ],
     "source_ami": "{{user `aws_source_ami`}}",
     "instance_type": "{{user `aws_instance_type`}}",
     "ami_groups": "all",
@@ -32,33 +43,27 @@
       "destination": "/tmp"
     },
     {
-      "type": "shell",
-      "environment_vars": [
-        "CONSUL_VERSION={{user `consul_version`}}",
-        "WEAVE_VERSION={{user `weave_version`}}",
-        "MESOS_VERSION={{user `mesos_version`}}",
-        "MARATHON_VERSION={{user `marathon_version`}}",
-        "CHRONOS_VERSION={{user `chronos_version`}}"
-      ],
-      "scripts": [
-        "scripts/ubuntu/base.sh",
-        "scripts/common/sshd.sh",
-        "scripts/ubuntu/install_docker.sh",
-        "scripts/ubuntu/install_mesos.sh",
-        "scripts/common/install_consul.sh",
-        "scripts/ubuntu/install_dnsmasq.sh",
-        "scripts/common/install_weave.sh"
-      ],
-      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
-    },
-    {
       "type": "file",
       "source": "tests",
       "destination": "/tmp"
     },
     {
       "type": "shell",
-      "script": "scripts/common/serverspec.sh",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}",
+        "DOCKER_VERSION={{user `docker_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/common/install_weave.sh",
+        "scripts/common/serverspec.sh"
+      ],
       "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
     }
   ],

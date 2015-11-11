@@ -2,9 +2,9 @@
 # defaults file for marathon
 marathon_consul_dir: /etc/consul.d
 marathon_enabled: true
-marathon_version: '0.8.2'
+marathon_version: '0.11.1'
 marathon_restart_policy: 'always'
-marathon_net: 'bridge'
+marathon_net: 'host'
 marathon_hostname: "{{ ansible_ssh_host }}"
 marathon_port: '8080'
 marathon_container_memory_limit: '512MB'
@@ -12,21 +12,8 @@ marathon_java_settings: '-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError'
 marathon_artifact_store: 'file:///store'
 marathon_artifact_store_dir: '/etc/marathon/store'
 marathon_server_zk_group: marathon_servers
+marathon_rebuild_container: False
 marathon_image: "mesosphere/marathon:v{{ marathon_version }}"
-marathon_peers_nodes: "
-{%- if marathon_zk_url is defined -%}
-    {{ marathon_zk_url }}
-{%- else -%}
-    {%- set marathon_peers = [] -%}
-    {%- for host in groups[marathon_server_zk_group] -%}
-      {%- if host not in marathon_peers -%}
-        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
-        {%- do marathon_peers.append(current_host) -%}
-      {%- endif -%}
-    {%- endfor -%}
-    zk://{{ marathon_peers|join(',') }}
-{%- endif -%}"
-
-marathon_master_peers: "{%- set master_peers = marathon_peers_nodes + '/mesos' -%} {{ master_peers }}"
-marathon_zk_peers: "{%- set master_peers = marathon_peers_nodes + '/marathon' -%} {{ master_peers }}"
+marathon_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
+marathon_zk_peers: "zk://{{ zookeeper_peers_nodes }}/marathon"
 marathon_command: "--artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"

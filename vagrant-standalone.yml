@@ -1,0 +1,15 @@
+masters:
+  # Memory and Cpus setting
+  ##########################
+  mem: 4096
+  cpus: 4
+  # Actual instances
+  ##################
+  ip: 172.31.1.11
+  hostname: master1
+# Mesos master quorum: quorum > (number of masters)/2
+# For standalone mode is always 1
+mesos_master_quorum: 1
+# Expected number of server nodes
+# For standalone mode is always 1
+consul_bootstrap_expect: 1

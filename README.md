@@ -1,16 +1,18 @@
 Apollo
-=========
-
+======
 [![Join the chat at https://gitter.im/Capgemini/Apollo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![wercker status](https://app.wercker.com/status/71503ff3fde8b162b72e2cc094f52679/s/master "wercker status")](https://app.wercker.com/project/bykey/71503ff3fde8b162b72e2cc094f52679)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
+
 Apollo is an open source project to aid with building and deploying IAAS and
 PAAS services. It is particularly geared towards managing containerized applications
 across multiple hosts, and big data type workloads. Apollo leverages other
-open source components to provide basic mehanisms for deployment, maintenance,
+open source components to provide basic mechanisms for deployment, maintenance,
 and scaling of infrastructure and applications.
+
+![Apollo](https://cloud.githubusercontent.com/assets/1230698/10170455/df48a3d8-66cc-11e5-8b22-669289975f78.png)
 
 Apollo is built on top of the following components:
 
@@ -73,3 +75,12 @@ If you're interested in helping out we've [tagged issues specifically for new co
 to help you get familiar with the codebase.
 
 If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
+
+## Keep up to date...
+
+Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to find out more about how Apollo works and its new features.
+
+* [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
+* [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
+* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+

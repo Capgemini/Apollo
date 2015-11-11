@@ -17,10 +17,10 @@ mesos_slaves:
     - consul
     - vault
     - mesos_slave
-    - weave
     - docker
     - registrator
     - cadvisor
+    - weave
 load_balancers:
   :roles:
     - haproxy

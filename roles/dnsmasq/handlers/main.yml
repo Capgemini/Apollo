@@ -6,8 +6,3 @@
     state: restarted
   sudo: yes
 
-- name: reload dnsmasq
-  service:
-    name: dnsmasq
-    state: reloaded
-  sudo: yes

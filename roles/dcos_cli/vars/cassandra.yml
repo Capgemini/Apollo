@@ -1,0 +1,2 @@
+dcos_cli_framework_cassandra_enabled: false
+dcos_cli_framework_cassandra_node_count: 1

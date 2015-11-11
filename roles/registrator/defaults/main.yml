@@ -2,4 +2,5 @@
 # defaults file for registrator
 registrator_image: "gliderlabs/registrator:master"
 registrator_uri: "consul://{{ ansible_default_ipv4.address }}:8500"
-
+registrator_rebuild_container: False
+registrator_docker_socket: "/var/run/weave/weave.sock"

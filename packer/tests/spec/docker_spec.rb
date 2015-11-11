@@ -1,7 +1,15 @@
 require 'spec_helper'
 
-describe package('lxc-docker') do
-  it { should be_installed }
+describe file('/etc/default/grub') do
+  it { should contain 'cgroup_enable=memory swapaccount=1' }
+end
+
+describe package('docker-engine') do
+  it { should be_installed.by('apt').with_version(ENV['DOCKER_VERSION']) }
+end
+
+describe package('docker-py') do
+  it { should be_installed.by('pip').with_version('1.5.0') }
 end
 
 describe package("linux-image-extra-#{`uname -r`.strip}") do

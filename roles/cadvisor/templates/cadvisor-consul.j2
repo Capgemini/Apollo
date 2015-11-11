@@ -1,11 +1,9 @@
 {
-  "service": {
-    "name": "cadvisor",
-    "tags": [ "cadvisor" ],
-    "port": {{ cadvisor_host_port }},
-    "check": {
-      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ cadvisor_hostname }}:{{ cadvisor_host_port}}",
-      "interval": "10s"
-    }
+  "check": {
+    "id": "cadvisor",
+    "name": "cadvisor status",
+    "service_id": "{{ cadvisor_consul_service_id }}",
+    "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ cadvisor_container_ip.stdout }}:8080",
+    "interval": "10s"
   }
 }

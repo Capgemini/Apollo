@@ -3,6 +3,8 @@ How to contribute
 
 Apollo is based on an strong open-source philosophy so we would love your contributions.
 
+This project adheres to the [Open Code of Conduct](http://todogroup.org/opencodeofconduct/#Apollo/digitaldevops.uk@capgemini.com). By participating, you are expected to uphold this code.
+
 ## Apollo Core
 
 Apollo is built on top of several opensource tecnologies:
@@ -13,6 +15,7 @@ Apollo is built on top of several opensource tecnologies:
 * [Consul](http://consul.io) for service discovery, DNS
 * [Docker](http://docker.io) for application container runtimes
 * [Weave](https://github.com/zettio/weave) for networking of docker containers
+* [Zookeeper](https://zookeeper.apache.org/) for cconfiguration information, naming, providing distributed synchronization, and providing group services
 
 We want Apollo core to be as slim as possible providing a cloud agnostic Mesos cluster with an autodiscovery system based on consul for multi-service tasks.
 
@@ -27,6 +30,43 @@ If you find an issue belonging to any of the tools used by Apollo please, refer 
 * Fork the repo, develop and test your feature.
 
 * Submit a pull request.
+
+## Contributing a mesos framework
+
+We relying on Marathon and [dcos-cli-docker](https://github.com/Capgemini/dcos-cli-docker) for installing mesos frameworks via [DCOS-CLI](https://docs.mesosphere.com/using/cli/)
+See [frameworks role.](https://github.com/Capgemini/Apollo/tree/master/roles/frameworks)
+
+For providing a new mesos framework you need to add it to the frameworks list in "default/mail.yml" e.g chronos:
+
+```
+frameworks_list:
+  - cassandra
+  - chronos
+```
+
+You'll need to add a template with the required configuration for the package e.g. chronos-config.j2:
+
+```
+{
+  "mesos": {"master": "{{ frameworks_zk_master_peers }}"},
+  "chronos": {
+    "zk-hosts": "{{ zookeeper_peers_nodes }}",
+    "mem": {{ frameworks_chronos_mem }}
+  }
+}
+```
+
+You can define the values for the config at "vars/chronos.yml". The values defined here will be overridable via environment variables, e.g
+
+```
+APOLLO_frameworks_chronos_enabled=True
+```
+
+```
+frameworks_chronos_sources: '["https://github.com/Capgemini/universe/archive/develop.zip",]'
+frameworks_chronos_enabled: true
+frameworks_chronos_mem: 512
+```
 
 
 ## Developing Apollo Plugins
@@ -43,7 +83,7 @@ At the moment we rely on [ansible-galaxy](http://docs.ansible.com/galaxy.html) f
 ansible-galaxy init marathon
 ```
 
-Write your code e.g yet another framework on top of Mesos and push it into its own git repo.
+Write the code providing the add-on feature on top of Apollo and push it into its own git repo.
 
 * Hook up a the new plugin adding your role into contrib-plugins/plugins.yml. For more info see [advanced-control-over-role-requirements-files](http://docs.ansible.com/galaxy.html#advanced-control-over-role-requirements-files). E.g:
 
@@ -51,15 +91,15 @@ Write your code e.g yet another framework on top of Mesos and push it into its o
 # Apollo plugins.
 - src: https://github.com/Capgemini/your-plugin-repo.git
   path: contrib-plugins/roles
-  name: marathon
+  name: cadvisor
 ```
 
 * Add the plugin into the playbook by editing contrib-plugins/playbook.yml like:
 
 ```yml
-- hosts: mesos_masters
+- hosts: all
   roles:
-    - marathon
+    - cadvisor
 ```
 
 * You can now put "contrib-plugins" folder under a control version system.
@@ -73,31 +113,28 @@ ansible-galaxy install -r contrib-plugins/plugins.yml
 
 ## Best practices.
 
-* When creating a new plugin we are keen on using the ansible role for deploying Mesos frameworks inside containers so we achieve total flexibility, reusability and portabilty across operating systems.
+* When creating a new plugin we are keen on using the ansible role for deploying services inside containers so we achieve total flexibility, reusability and portabilty across operating systems.
 
 ```yml
-# tasks for running docker marathon
-- name: run marathon container
-  when: marathon_enabled
+# tasks for running cadvisor
+- name: run cadvisor container
+  when: cadvisor_enabled
   docker:
-    name: marathon
-    image: "{{ marathon_image }}"
+    name: cadvisor
+    image: "{{ cadvisor_image }}"
     state: started
-    restart_policy: "{{ marathon_restart_policy }}"
+    restart_policy: "{{ cadvisor_restart_policy }}"
+    net: "{{ cadvisor_net }}"
     ports:
-    - "{{ marathon_port }}:{{ marathon_port }}"
-    expose:
-    - "{{ marathon_port }}"
-    net: "{{ marathon_net }}"
-    command: "{{ marathon_command }}"
+      - "{{ cadvisor_host_port }}:8080"
+    hostname: "{{ cadvisor_hostname }}"
     volumes:
-    - "{{ marathon_artifact_store_dir }}:/store"
-    - "/var/run/docker.sock:/tmp/docker.sock"
-    memory_limit: "{{ marathon_container_memory_limit }}"
-    env:
-      JAVA_OPTS: "{{ marathon_java_settings }}"
-  notify:
-    - wait for marathon to listen
+    - "/var/lib/docker/:/var/lib/docker:ro"
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+  tags:
+    - cadvisor
 ```
 
 * The variables in the role following the pattern:
@@ -109,20 +146,20 @@ pluginname_variablename: value
 will be automatically overridable via environment variables using the pattern "APOLLO_PLUGINNAME_VARNAME". Every plugin should provide the capacity for been enabled or disabled via these variables e.g:
 
 ```yml
-marathon_enabled: true
-marathon_version: '0.9.0-RC3'
-``` 
+cadvisor_enabled: true
+cadvisor_version: 'latest'
+```
 
 * It's usually a good idea [attach a process manager to manage it](https://docs.docker.com/articles/host_integration/)
 
 ```
-description "Marathon container"
+description "cadvisor container"
 
 start on started docker
 stop on stopping docker
 
 script
-  /usr/bin/docker start -a marathon
+  /usr/bin/docker start -a cadvisor
 end script
 
 respawn
@@ -131,28 +168,28 @@ kill timeout 10
 ```
 
 ```yml
-- name: ensure marathon is running (and enable it at boot)
-  when: marathon_enabled
+- name: ensure cadvisor is running (and enable it at boot)
+  when: cadvisor_enabled
   sudo: yes
   service:
-    name: marathon
+    name: cadvisor
     state: started
     enabled: yes
   tags:
-    - marathon
+    - cadvisor
 ```
 
 * Your plugin must ensure state is consistent when it is disabled, e.g:
 ```yml
-- name: ensure marathon is stopped
-  when: not marathon_enabled
+- name: ensure cadvisor is running (and enable it at boot)
+  when: not cadvisor_enabled
   sudo: yes
   service:
-    name: marathon
+    name: cadvisor
     state: stopped
     enabled: yes
   tags:
-    - marathon
+    - cadvisor
 ```
 
 * Create Consul Healchecks
@@ -160,11 +197,11 @@ kill timeout 10
 ```json
 {
   "service": {
-    "name": "marathon",
-    "tags": [ "marathon" ],
-    "port": {{ marathon_port }},
+    "name": "cadvisor",
+    "tags": [ "cadvisor" ],
+    "port": {{ cadvisor_host_port }},
     "check": {
-      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ marathon_hostname }}:{{ marathon_port }}/ping",
+      "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ cadvisor_hostname }}:{{ cadvisor_host_port}}",
       "interval": "10s"
     }
   }

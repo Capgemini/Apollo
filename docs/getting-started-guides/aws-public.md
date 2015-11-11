@@ -23,9 +23,9 @@ ssh-add id_rsa_aws.pem
 #### Download Apollo
 
 ##### Install from source at head
-1. ```git clone https://github.com/Capgemini/apollo.git```
-2. ```cd apollo```
-3. ```pip install -r requirements.txt```
+1. `git clone https://github.com/Capgemini/apollo.git`
+2. `cd apollo`
+3. `pip install -r requirements.txt`
 
 #### Set config
 
@@ -35,7 +35,7 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following pattern "APOLLO_" will be available for Apollo in ansible.
 
-For a full list of default config options for AWS see ```bootstrap/aws-public/config-default.sh```
+For a full list of default config options for AWS see `bootstrap/aws-public/config-default.sh`
 
 As a minimum you will need to set these environment variables -
 
@@ -55,7 +55,7 @@ _NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with yo
 /bin/bash bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a new VPC and a 3 node mesos master cluster in eu-west-1 (Ireland).
+NOTE: The script will provision a new VPC and a 3 node mesos master cluster across all the availability zones in eu-west-1 (Ireland).
 
 #### Tearing down the cluster
 ```

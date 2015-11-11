@@ -13,6 +13,7 @@ verify_prereqs() {
 
 apollo_launch() {
   vagrant up --provision
+  open_urls
 }
 
 apollo_down() {
