@@ -2,17 +2,17 @@
 - hosts: mesos_masters
   gather_facts: no
   roles:
-    - { role: ../roles/serverspec, test_role: "mesos_masters" }
-    - { role: ../roles/dockerbench }
+    - { role: ../roles/serverspec, test_role: "mesos_masters", when: serverspec_run_tests|bool }
+    - { role: ../roles/dockerbench, when: dockerbench_run_test|bool }
 
 - hosts: mesos_slaves
   gather_facts: no
   roles:
-    - { role: ../roles/serverspec, test_role: "mesos_slaves" }
-    - { role: ../roles/dockerbench }
+    - { role: ../roles/serverspec, test_role: "mesos_slaves", when: serverspec_run_tests|bool }
+    - { role: ../roles/dockerbench, when: dockerbench_run_test|bool }
 
 - hosts: load_balancers
   gather_facts: no
   roles:
-    - { role: ../roles/serverspec, test_role: "load_balancers" }
-    - { role: ../roles/dockerbench }
+    - { role: ../roles/serverspec, test_role: "load_balancers", when: serverspec_run_tests|bool }
+    - { role: ../roles/dockerbench, when: dockerbench_run_test|bool }
