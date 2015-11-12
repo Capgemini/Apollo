@@ -3,6 +3,8 @@
 # Util functions cloud reusable.
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
 DEFAULT_CONFIG="${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/${APOLLO_CONFIG_FILE-"config-default.sh"}"
+DYNAMIC_INVENTORY="https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py"
+
 if [ -f "${DEFAULT_CONFIG}" ]; then
   source "${DEFAULT_CONFIG}"
 fi
@@ -77,6 +79,7 @@ apollo_launch() {
   elif [ "$@" ]; then
     eval $@
   else
+    run_if_exist "ssh_thumbprint"
     get_terraform_modules
     terraform_apply
     run_if_exist "ansible_ssh_config"
@@ -140,7 +143,7 @@ ansible_playbook_run() {
 get_ansible_inventory() {
     pushd $APOLLO_ROOT
     if [ ! -f inventory/terraform.py ]; then
-      curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
+      curl -sS ${DYNAMIC_INVENTORY} -o inventory/terraform.py
       chmod 755 inventory/terraform.py
     fi
     popd

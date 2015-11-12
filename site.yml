@@ -7,12 +7,12 @@
         port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
-        timeout: 60
+        timeout: 240
       delegate_to: "{{ bastion_ip }}"
       sudo: False
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=60"
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=240"
       sudo: False
       when: bastion_ip is not defined
 
