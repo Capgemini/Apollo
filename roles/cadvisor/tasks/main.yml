@@ -1,6 +1,6 @@
 # tasks for running cadvisor
 - name: destroy old cadvisor container
-  when: cadvisor_rebuild_container
+  when: cadvisor_rebuild_container|bool
   docker:
     name: cadvisor
     image: "{{ cadvisor_image }}"
@@ -9,7 +9,6 @@
     - cadvisor
 
 - name: run cadvisor container
-  when: cadvisor_enabled
   docker:
     name: cadvisor
     image: "{{ cadvisor_image }}"
@@ -26,7 +25,6 @@
     - cadvisor
 
 - name: upload cadvisor template service
-  when: cadvisor_enabled
   template:
     src: cadvisor.conf.j2
     dest: /etc/init/cadvisor.conf
@@ -39,7 +37,6 @@
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
 - name: ensure cadvisor is running (and enable it at boot)
-  when: cadvisor_enabled
   sudo: yes
   service:
     name: cadvisor
@@ -53,7 +50,6 @@
   command: >
     docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} cadvisor
   register: cadvisor_container_ip
-  when: cadvisor_enabled
   tags:
     - cadvisor
 
@@ -65,15 +61,5 @@
   notify:
     - restart consul
   when: cadvisor_enabled
-  tags:
-    - cadvisor
-
-- name: stop cadvisor container
-  when: not cadvisor_enabled
-  sudo: yes
-  service:
-    name: cadvisor
-    state: stopped
-    enabled: yes
   tags:
     - cadvisor

@@ -1,6 +1,5 @@
 ---
 # Tasks for Master nodes
-
 - name: set mesos-master consul service definition
   when: mesos_install_mode == "master"
   sudo: yes
@@ -23,7 +22,7 @@
     - mesos-master
 
 - name: destroy old mesos-master container
-  when: mesos_master_rebuild_container
+  when: mesos_master_rebuild_container|bool
   docker:
     name: mesos-master
     image: "{{ mesos_master_image }}"

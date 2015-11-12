@@ -12,7 +12,7 @@
     - mesos-slave
 
 - name: destroy old mesos-slave container
-  when: mesos_slave_rebuild_container
+  when: mesos_slave_rebuild_container|bool
   docker:
     name: mesos-slave
     image: "{{ mesos_slave_image }}"

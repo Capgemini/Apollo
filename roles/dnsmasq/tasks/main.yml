@@ -23,7 +23,7 @@
     - dnsmasq
 
 - name: destroy old dnsmasq container
-  when: dnsmasq_rebuild_container
+  when: dnsmasq_rebuild_container|bool
   docker:
     name: dnsmasq
     image: "{{ dnsmasq_image }}"

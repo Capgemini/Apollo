@@ -73,7 +73,7 @@
     - zookeeper
 
 - name: destroy old zookeeper container
-  when: zookeeper_rebuild_container
+  when: zookeeper_rebuild_container|bool
   docker:
     name: zookeeper
     image: "{{ zookeeper_image }}"
