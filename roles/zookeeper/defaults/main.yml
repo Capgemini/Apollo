@@ -22,3 +22,4 @@ zookeeper_id: "
     {%- endif -%}
 "
 consul_dir: /etc/consul.d
+zookeeper_rebuild_container: false
