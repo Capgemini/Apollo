@@ -23,6 +23,14 @@
       lineinfile:
         dest: /etc/hosts
         line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
+
+    - name: set hostname for every cluster machine
+      sudo: Yes
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ hostvars[item].ansible_eth0.ipv4.address }} {{ hostvars[item].inventory_hostname }}"
+      with_items: groups.all
+
   roles:
     - consul
     - docker
