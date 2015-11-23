@@ -65,6 +65,14 @@
   tags:
     - marathon
 
+- name: store docker credentials on artifact
+  run_once: true
+  when: docker_registry_mail is defined and docker_registry_pass is defined and docker_registry_user is defined
+  command: "curl -v -F 'name=file' -F 'filename=.docker.tar.gz' -F 'file=@/root/docker.tar.gz' http://0.0.0.0:8080/v2/artifacts"
+  sudo: yes
+  tags:
+    - marathon
+
 - name: Set marathon consul service definition
   sudo: yes
   template:

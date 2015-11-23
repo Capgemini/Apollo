@@ -1,0 +1,18 @@
+---
+
+- name: docker login
+  when: docker_registry_mail is defined and docker_registry_pass is defined and docker_registry_user is defined
+  command: "/usr/bin/docker login -e {{ docker_registry_mail }} -p {{ docker_registry_pass }} -u {{ docker_registry_user }}"
+  sudo: yes
+  tags:
+    - docker
+
+- name: tar docker credential files
+  when: docker_registry_mail is defined and docker_registry_pass is defined and docker_registry_user is defined
+  command: "tar czf docker.tar.gz .docker"
+  sudo: yes
+  args:
+    chdir: "~"
+  tags:
+    - docker
+

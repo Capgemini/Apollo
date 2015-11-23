@@ -11,6 +11,15 @@
   tags:
     - mesos-slave
 
+- name: copy tar docker credentials file
+  when: docker_registry_mail is defined and docker_registry_pass is defined and docker_registry_user is defined and mesos_install_mode == "slave"
+  command: "cp docker.tar.gz {{ mesos_slave_work_dir }}"
+  sudo: yes
+  args:
+    chdir: "~"
+  tags:
+    - docker
+
 - name: destroy old mesos-slave container
   when: mesos_slave_rebuild_container|bool
   docker:

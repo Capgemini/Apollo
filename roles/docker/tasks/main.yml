@@ -43,3 +43,6 @@
     enabled: yes
   tags:
     - docker
+
+- include: login.yml
+
