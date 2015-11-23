@@ -3,6 +3,26 @@
 Docker is used as an application container runtime. The main usage is for running
 containers (as a task) on top of Mesos via a Mesos framework.
 
+For accessing private registries make sure you export the next environment variables before deploying Apollo:
+* APOLLO_docker_registry_mail
+* APOLLO_docker_registry_pass
+* APOLLO_docker_registry_user
+
+Your credentials would be available for marathon via:
+```
+  "uris": [
+    "http://your-marathon-url:8080/v2/artifacts/docker.tar.gz"
+  ],
+```
+
+or:
+
+```
+"uris": [
+  "file:///tmp/mesos/docker.tar.gz"
+],
+```
+
 For example the [Marathon](https://github.com/mesosphere/marathon)
 and [Kubernetes](http://kubernetes.io) can both utilise Docker to deploy,
 manage and run containers.
