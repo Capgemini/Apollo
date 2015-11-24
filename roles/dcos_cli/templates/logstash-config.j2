@@ -1,0 +1,14 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "logstash": {
+    "cpus": {{ dcos_cli_framework_logstash_cpus }},
+    "mem": {{ dcos_cli_framework_logstash_mem }},
+    "instances": {{ dcos_cli_framework_logstash_instances }},
+    "image": "{{ dcos_cli_framework_logstash_image }}",
+    "executor": {
+      "heap-size": "{{ dcos_cli_framework_logstash_java_heap_size }}",
+      "logstash-heap-size": "{{ dcos_cli_framework_logstash_heap_size }}",
+      "volumes": "{{ dcos_cli_framework_logstash_volumes }}"
+    }
+  }
+}

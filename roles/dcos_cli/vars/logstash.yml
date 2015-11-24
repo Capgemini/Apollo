@@ -1,4 +1,8 @@
-dcos_cli_app_logstash_enabled: true
-dcos_cli_app_logstash_mem: 756
-dcos_cli_app_logstash_cpus: 1.0
-dcos_cli_app_logstash_instances: 1
+dcos_cli_framework_logstash_enabled: true
+dcos_cli_framework_logstash_java_heap_size: 256
+dcos_cli_framework_logstash_heap_size: 512
+dcos_cli_framework_logstash_volumes: /var/log/syslog
+dcos_cli_framework_logstash_mem: 300.0
+dcos_cli_framework_logstash_cpus: 0.8
+dcos_cli_framework_logstash_instances: 1
+dcos_cli_framework_logstash_image: mesos/logstash-scheduler:0.0.6
