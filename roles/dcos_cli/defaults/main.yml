@@ -9,12 +9,13 @@ dcos_cli_frameworks_list:
   - cassandra
   - chronos
   - elasticsearch
+  - logstash
 dcos_cli_apps_list:
   - prometheus
-  - logstash
+#  - logstash
 
 # apps
 prometheus_image: prom/prometheus
 prometheus_image_tag: 0.16.1
-logstash_image: logstash
-logstash_image_tag: 2.0.0-1
+#logstash_image: logstash
+#logstash_image_tag: 2.0.0-1

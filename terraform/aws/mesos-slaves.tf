@@ -28,7 +28,7 @@ resource "aws_instance" "mesos-slave" {
     role = "mesos_slaves"
   }
   ebs_block_device {
-    device_name           = "/dev/sdb"
+    device_name           = "/dev/sda1"
     volume_size           = "${var.slave_block_device.volume_size}"
     delete_on_termination = true
   }

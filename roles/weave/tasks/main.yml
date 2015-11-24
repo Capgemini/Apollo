@@ -1,5 +1,4 @@
 ---
-
 - name: upload weave template service
   template:
     src: weave.conf.j2
@@ -21,25 +20,8 @@
     port: 6783
     delay: 10
 
-- name: download weave scope
-  get_url:
-    url: "{{ weave_scope_url }}"
-    dest: "{{ weave_scope_dest }}"
-    mode: 0755
-    validate_certs: no
-  when: weave_scope_enabled
-  tags:
-    - weave
-
-- name: upload weave scope template service
-  template:
-    src: scope.conf.j2
-    dest: "/etc/init/weavescope.conf"
-    mode: 0755
-  sudo: yes
-  when: weave_scope_enabled
-  tags:
-    - weave
+- include: scope.yml
+  when: weave_scope_enabled|bool
 
 # Flush handlers so we restart the Docker process here with the weave network
 # enabled and containers correctly start in the weave network.
