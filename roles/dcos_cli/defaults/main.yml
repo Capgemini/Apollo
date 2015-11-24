@@ -4,13 +4,22 @@ dcos_cli_image: capgemini/dcos-cli
 dcos_cli_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 dcos_cli_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
 dcos_cli_marathon_url: "http://{{ ansible_ssh_host }}:8080"
-dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip",]'
+dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip", "https://github.com/triforkse/universe/archive/version-1.x.zip"]'
 dcos_cli_frameworks_list:
   - cassandra
   - chronos
+  - elasticsearch
+  - logstash
+
 dcos_cli_apps_list:
   - prometheus
+  - kibana
 
 # apps
 prometheus_image: prom/prometheus
 prometheus_image_tag: 0.16.1
+
+#elasticsearch_image: mesos/elasticsearch-scheduler
+
+kibana_image: kibana
+kibana_image_tag: 4.2.1

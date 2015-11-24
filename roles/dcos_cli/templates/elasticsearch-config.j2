@@ -1,0 +1,16 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "elasticsearch": {
+    "port": "{{ dcos_cli_framework_elasticsearch_ports }}",
+    "executor": {
+      "instances": "{{ dcos_cli_framework_elasticsearch_executor_instances }}",
+      "image": "{{ dcos_cli_framework_elasticsearch_executor_image }}"
+    },
+    "scheduler": {
+      "instances": "{{ dcos_cli_framework_elasticsearch_scheduler_instances }}",
+      "image": "{{ dcos_cli_framework_elasticsearch_scheduler_image }}",
+      "cpu": "{{ dcos_cli_framework_elasticsearch_scheduler_cpu }}",
+      "ram": "{{ dcos_cli_framework_elasticsearch_scheduler_mem }}"
+    }
+  }
+}

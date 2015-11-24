@@ -20,9 +20,6 @@
     port: 6783
     delay: 10
 
-- include: scope.yml
-  when: weave_scope_enabled|bool
-
 # Flush handlers so we restart the Docker process here with the weave network
 # enabled and containers correctly start in the weave network.
 - meta: flush_handlers

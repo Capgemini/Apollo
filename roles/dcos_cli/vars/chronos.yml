@@ -1,3 +1,3 @@
 dcos_cli_framework_chronos_enabled: true
-dcos_cli_framework_chronos_mem: 512
-dcos_cli_framework_chronos_cpus: 0.5
+dcos_cli_framework_chronos_mem: 2048
+dcos_cli_framework_chronos_cpus: 1.0

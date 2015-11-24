@@ -23,6 +23,7 @@ proxy_env:
   HTTPS_PROXY: ''
 http_proxy: ''
 prometheus_enabled: true
+kibana_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true
 docker_host: 'unix:///var/run/weave/weave.sock'
