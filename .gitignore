@@ -4,6 +4,7 @@
 *.tfstate*
 *.tfvars
 *.tfplan
+*.ovpn
 packer_cache
 packer/build
 packer/*.pem
