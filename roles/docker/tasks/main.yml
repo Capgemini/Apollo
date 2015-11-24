@@ -15,7 +15,7 @@
     dest: /etc/default/docker
     state: present
     regexp: ^DOCKER_OPTS=.*--graph.*
-    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --graph={{ docker_graph_dir }} --dns 172.17.0.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }} \"'
+    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --host=tcp://0.0.0.0:2376 --storage-driver=overlay --graph={{ docker_graph_dir }} --dns 172.17.0.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }} \"'
   notify:
     - restart docker
 

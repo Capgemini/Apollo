@@ -5,4 +5,4 @@ dcos_cli_framework_logstash_volumes: /var/log/syslog
 dcos_cli_framework_logstash_mem: 300.0
 dcos_cli_framework_logstash_cpus: 0.8
 dcos_cli_framework_logstash_instances: 1
-dcos_cli_framework_logstash_image: mesos/logstash-scheduler:0.0.5
+dcos_cli_framework_logstash_image: mesos/logstash-scheduler:0.0.6
