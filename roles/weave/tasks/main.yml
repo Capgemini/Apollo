@@ -27,6 +27,7 @@
     dest: "{{ weave_scope_dest }}"
     mode: 0755
     validate_certs: no
+  environment: proxy_env
   when: weave_scope_enabled
   tags:
     - weave
