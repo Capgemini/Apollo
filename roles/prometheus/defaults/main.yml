@@ -7,3 +7,8 @@ prometheus_node_exporter_port: 9100
 prometheus_node_exporter_hostname: "{{ ansible_ssh_host }}"
 prometheus_node_exporter_consul_service_id: "{{ ansible_hostname }}:node-exporter:9100"
 prometheus_consul_dir: /etc/consul.d
+# promdash settings
+promdash_enabled: true
+promdash_volume: /tmp/prom
+promdash_database_url: "sqlite3:/tmp/prom/promdash.sqlite3"
+promdash_image: "prom/promdash:latest"

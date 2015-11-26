@@ -1,0 +1,39 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "network": "BRIDGE",
+      "image": "{{ promdash_image }}",
+      "portMappings": [{"containerPort": 3000, "hostPort": 0, "protocol": "tcp"}]
+    },
+    "volumes": [{
+      "containerPath": "{{ promdash_volume }}",
+      "hostPath": "{{ promdash_volume }}",
+      "mode": "RW"
+    }]
+  },
+  "env": {
+    "DATABASE_URL": "{{ promdash_database_url }}"
+  },
+  "id": "promdash",
+  "instances": {{ dcos_cli_app_promdash_instances }},
+  "cpus": {{ dcos_cli_app_promdash_cpus }},
+  "mem": {{ dcos_cli_app_promdash_mem }},
+  "ports": [3000],
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/",
+      "portIndex": 0,
+      "gracePeriodSeconds": 30,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 2,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0.0
+  }
+}
