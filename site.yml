@@ -30,7 +30,6 @@
 
 - hosts: all:!role=bastion
   roles:
-    - registrator
     - dnsmasq
     - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
@@ -53,7 +52,7 @@
 
 - hosts: load_balancers
   roles:
-    - { role: haproxy, tags: ["haproxy"] }
+    - { role: traefik, tags: ["traefik"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
