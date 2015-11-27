@@ -1,0 +1,8 @@
+---
+logstash_config_dir: "/etc/logstash.d"
+
+# Stdout
+logstash_output_stdout: no
+
+# Logstash output Elasticsearch
+logstash_elasticsearch_output: "elasticsearch-9200.service.consul:9200"

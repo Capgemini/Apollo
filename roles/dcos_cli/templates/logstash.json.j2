@@ -1,0 +1,39 @@
+{
+  "id": "logstash",
+  "cmd": "logstash -e 'input { tcp { port => 5000 type => syslog } udp { port => 5000 type => syslog } gelf { port => 12201 type => gelf } } output { elasticsearch { hosts => \"{{ dcos_cli_app_logstash_elasticsearch }}\" } }'",
+  "instances": {{ dcos_cli_app_logstash_instances }},
+  "cpus": {{ dcos_cli_app_logstash_cpus }},
+  "mem": {{ dcos_cli_app_logstash_mem }},
+  "labels": {
+    "DCOS_PACKAGE_NAME": "logstash",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "true"
+  },
+  "env": {
+    "SERVICE_NAME": "logstash"
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 15,
+      "maxConsecutiveFailures": 10,
+      "path": "/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "timeoutSeconds": 5
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ logstash_image }}:{{ logstash_image_tag }}",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  }
+}

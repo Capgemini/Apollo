@@ -1,0 +1,37 @@
+input {
+  tcp {
+    port => 5000
+    type => syslog
+  }
+  udp {
+    port => 5000
+    type => syslog
+  }
+  gelf {
+    port => 12201
+    type => "gelf"
+  }
+  log4j {
+    port => 4560
+  }
+}
+
+filter {
+  if [type] == "syslog" {
+    mutate {
+      replace => { "host" => "{{ inventory_hostname }}" }
+    }
+  }
+}
+
+output {
+  elasticsearch { 
+    hosts => "{{ logstash_elasticsearch_output }}" 
+  }
+
+{% if logstash_output_stdout %}
+  stdout {
+    codec => rubydebug
+  }
+{% endif %}
+}

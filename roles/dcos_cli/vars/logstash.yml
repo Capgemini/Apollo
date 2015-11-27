@@ -1,0 +1,5 @@
+dcos_cli_app_logstash_enabled: "{{ elk_enabled }}"
+dcos_cli_app_logstash_mem: 512
+dcos_cli_app_logstash_cpus: 0.5
+dcos_cli_app_logstash_instances: 2
+dcos_cli_app_logstash_elasticsearch: elasticsearch-9200.service.consul:9200

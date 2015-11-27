@@ -1,0 +1,19 @@
+---
+- name: create configuration directory
+  sudo: yes
+  file:
+    path: /etc/logstash.d
+    state: directory
+    mode: 0755
+  tags:
+    - logstash
+
+- name: configure logstash
+  sudo: yes
+  template:
+    src: logstash.conf.j2
+    dest: "{{ logstash_config_dir }}/logstash.conf"
+  notify:
+    - restart logstash
+  tags:
+    - logstash

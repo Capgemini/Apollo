@@ -1,0 +1,38 @@
+{
+  "id": "elasticsearch",
+  "instances": {{ dcos_cli_app_elasticsearch_instances }},
+  "cpus": {{ dcos_cli_app_elasticsearch_cpus }},,
+  "mem": {{ dcos_cli_app_elasticsearch_mem }},
+  "labels": {
+    "DCOS_PACKAGE_NAME": "elasticsearch",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "true"
+  },
+  "env": {
+    "SERVICE_NAME": "elasticsearch"
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 15,
+      "maxConsecutiveFailures": 10,
+      "path": "/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "timeoutSeconds": 5
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ elasticsearch_image }}:{{ elasticsearch_image_tag }}",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 9200,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  }
+}

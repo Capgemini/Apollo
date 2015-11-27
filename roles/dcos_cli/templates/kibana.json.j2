@@ -1,0 +1,34 @@
+{
+  "id": "kibana",
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ kibana_image }}:{{ kibana_image_tag }}",
+      "network": "BRIDGE",
+      "portMappings": [{ "containerPort": 5601, "hostPort": 0, "protocol": "tcp" }]
+    }
+  },
+  "instances": {{ dcos_cli_app_kibana_instances }},
+  "cpus": {{ dcos_cli_app_kibana_cpus }},
+  "mem": {{ dcos_cli_app_kibana_mem }},
+  "labels": {
+    "DCOS_PACKAGE_NAME": "kibana",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "true"
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/",
+      "portIndex": 0,
+      "initialDelaySeconds": 600,
+      "gracePeriodSeconds": 10,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 120,
+      "maxConsecutiveFailures": 10
+    }
+  ],
+  "env": {
+    "ELASTICSEARCH_URL": "http://elasticsearch-9200.service.consul:9200",
+    "SERVICE_NAME": "elasticsearch"
+  }
+}

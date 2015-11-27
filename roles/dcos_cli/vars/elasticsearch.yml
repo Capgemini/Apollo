@@ -1,0 +1,4 @@
+dcos_cli_app_elasticsearch_enabled: "{{ elk_enabled }}"
+dcos_cli_app_elasticsearch_mem: 512
+dcos_cli_app_elasticsearch_cpus: 0.5
+dcos_cli_app_elasticsearch_instances: 2
