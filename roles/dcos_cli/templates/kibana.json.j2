@@ -33,7 +33,7 @@
     }
   ],
   "env": {
-    "ELASTICSEARCH_URL": "http://elasticsearch-9200.service.consul:9200",
+    "ELASTICSEARCH_URL": "http://elasticsearch-9200.service.{{ consul_domain }}:9200",
     "SERVICE_NAME": "elasticsearch"
   }
 }
