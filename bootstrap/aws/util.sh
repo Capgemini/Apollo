@@ -1,16 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Use the config file specified in $APOLLO_CONFIG_FILE, or default to
 # config-default.sh.
 function set_vpn() {
-  while true; do
-  read -p "Do you want to start the VPN and setup a connection now (y/n)?" yn
+  echo -n "Do you want to start the VPN and setup a connection now (y/n)?"
+  read yn 
     case $yn in
         [Yy]* ) ovpn_start;ovpn_client_config; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer y or n.";;
     esac
-  done
 }
 
 ansible_ssh_config() {
@@ -69,16 +68,15 @@ ovpn_client_config() {
     /bin/sh -x bin/ovpn-new-client "${TF_VAR_user}"
     /bin/sh -x bin/ovpn-client-config "${TF_VAR_user}"
 
-    /usr/bin/open "${TF_VAR_user-apollo.ovpn}"
+    /usr/bin/open "${TF_VAR_user}-apollo.ovpn"
     # Display a prompt to tell the user to connect in their VPN client,
     # and pause/wait for them to connect.
-    while true; do
-    read -p "Your VPN client should be open. Please now connect to the VPN using your VPN client.
-      Once connected hit y to open the web interface or n to exit (y/n)?" yn
+    echo -n "Your VPN client should be open. Please now connect to the VPN using your VPN client.
+      Once connected hit y to open the web interface or n to exit (y/n)?"
+    read yn
       case $yn in
           [Yy]* ) popd;open_urls; break;;
           [Nn]* ) popd;exit;;
           * ) echo "Please answer y or n.";;
       esac
-    done
 }
