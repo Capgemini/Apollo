@@ -9,6 +9,7 @@ packer/build
 packer/*.pem
 .wercker
 *.cache
+*.ovpn
 ssh.config
 vendor
 .bundle
