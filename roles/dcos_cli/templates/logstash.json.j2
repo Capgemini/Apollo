@@ -1,6 +1,6 @@
 {
   "id": "logstash",
-  "cmd": "logstash -e 'input { tcp { port => 5000 type => syslog } udp { port => 5000 type => syslog } gelf { port => 12201 type => gelf } } output { elasticsearch { hosts => \"{{ dcos_cli_app_logstash_elasticsearch }}\" } }'",
+  "cmd": "/bin/bash -c \"/opt/logstash/bin/plugin install logstash-input-salesforce; logstash -f /config-dir/logstash.conf\"",
   "instances": {{ dcos_cli_app_logstash_instances }},
   "cpus": {{ dcos_cli_app_logstash_cpus }},
   "mem": {{ dcos_cli_app_logstash_mem }},
@@ -11,27 +11,34 @@
   "env": {
     "SERVICE_NAME": "logstash"
   },
-  "healthChecks": [
-    {
-      "gracePeriodSeconds": 120,
-      "intervalSeconds": 15,
-      "maxConsecutiveFailures": 10,
-      "path": "/",
-      "portIndex": 0,
-      "protocol": "HTTP",
-      "timeoutSeconds": 5
-    }
-  ],
   "container": {
     "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/config-dir",
+        "hostPath": "/etc/logstash.d",
+        "mode": "RO"
+      }
+    ],
     "docker": {
       "image": "{{ logstash_image }}:{{ logstash_image_tag }}",
       "network": "BRIDGE",
+      "parameters": [
+        {"key":"publish", "value": "5000:5000"},
+        {"key":"publish", "value": "5000:5000/udp"}
+      ],
       "portMappings": [
         {
-          "containerPort": 5000,
+          "containerPort": 12201,
+          "servicePort": 12201,
           "hostPort": 0,
           "protocol": "tcp"
+        },
+        {
+          "containerPort": 5000,
+          "servicePort": 5000,
+          "hostPort": 0,
+          "protocol": "udp"
         }
       ]
     }

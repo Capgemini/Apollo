@@ -4,24 +4,36 @@ input {
     type => syslog
   }
   udp {
-    port => 5000
-    type => syslog
+    port  => 5000
+    codec => json
+    type  => syslog
   }
   gelf {
     port => 12201
     type => "gelf"
   }
-  log4j {
-    port => 4560
+  salesforce {
+    client_id        => '3MVG9rFJvQRVOvk43yJyr3Z73Sr_zeHXd9hJt5ljEzgK7vBZp5Q5wHwwUt7DRcI_RHRUaiX1iI36cCYcibl4l'
+    client_secret    => '4669348946349272643'
+    username         => 'cam.parry@capgemini.com'
+    password         => 'Freedom1'
+    security_token   => 'ruT4wwySkkKmJSAHL1jJtJFt'
+    sfdc_object_name => 'Opportunity'
   }
 }
 
-filter {
-  if [type] == "syslog" {
-    mutate {
-      replace => { "host" => "{{ inventory_hostname }}" }
+# After the data has been parsed, if it containts a field called "CLIENT_IP" or "SOURCE_IP" then  
+# convert those IP addresses to a GeoIP. By doing this you can plot data on to a map in kibana.
+# Note GeoIP is a Logstash plugin.
+filter {  
+    geoip {
+        source => "CLIENT_IP"
+        target => "geoip"
     }
-  }
+    geoip {
+        source => "SOURCE_IP"
+        target => "source_ip"
+    }
 }
 
 output {

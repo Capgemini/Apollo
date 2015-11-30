@@ -10,9 +10,9 @@ dcos_cli_frameworks_list:
   - chronos
 dcos_cli_apps_list:
   - prometheus
-  - kibana
   - elasticsearch
   - logstash
+  - kibana
 
 # apps
 prometheus_image: prom/prometheus

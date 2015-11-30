@@ -1,8 +1,22 @@
 ---
+# Logspout configuration
+logspout_enabled: "{{ elk_enabled }}"
+logspout_restart_policy: 'always'
+logspout_version: latest
+logspout_net: 'bridge'
+logspout_image: "wallies/logspout-logstash:{{ logspout_version }}"
+logspout_consul_dir: /etc/consul.d
+logspout_consul_service_id: "{{ ansible_hostname }}:logspout:8000"
+logspout_rebuild_container: false
+
 logstash_config_dir: "/etc/logstash.d"
+logstash_syslog_host: "logstash-5000.service.consul"
 
 # Stdout
 logstash_output_stdout: no
 
 # Logstash output Elasticsearch
 logstash_elasticsearch_output: "elasticsearch-9200.service.consul:9200"
+
+# logstash_plugins_list:
+#   - logstash-input-sfdc_elf

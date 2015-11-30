@@ -5,7 +5,12 @@
     "docker": {
       "image": "{{ kibana_image }}:{{ kibana_image_tag }}",
       "network": "BRIDGE",
-      "portMappings": [{ "containerPort": 5601, "hostPort": 0, "protocol": "tcp" }]
+      "portMappings": [{ 
+        "containerPort": 5601,
+        "servicePort": 5601,
+        "hostPort": 0, 
+        "protocol": "tcp" 
+      }]
     }
   },
   "instances": {{ dcos_cli_app_kibana_instances }},

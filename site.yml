@@ -33,6 +33,7 @@
     - registrator
     - dnsmasq
     - { role: cadvisor, when: cadvisor_enabled|bool }
+    - { role: logstash, when: elk_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
@@ -48,7 +49,6 @@
 - hosts: mesos_slaves
   roles:
     - { role: mesos, mesos_install_mode: "slave" }
-    - { role: logstash, when: elk_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 

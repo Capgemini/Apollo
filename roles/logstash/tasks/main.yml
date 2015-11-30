@@ -13,7 +13,71 @@
   template:
     src: logstash.conf.j2
     dest: "{{ logstash_config_dir }}/logstash.conf"
-  notify:
-    - restart logstash
   tags:
     - logstash
+
+- name: destroy old logspout container
+  when: logspout_rebuild_container|bool
+  docker:
+    name: logspout
+    image: "{{ logspout_image }}"
+    state: absent
+  tags:
+    - logspout
+
+- name: run logspout container
+  docker:
+    name: logspout
+    image: "{{ logspout_image }}"
+    state: started
+    restart_policy: "{{ logspout_restart_policy }}"
+    net: "{{ logspout_net }}"
+    ports:
+    - "8000:8000"
+    env:
+      ROUTE_URIS: logstash://{{ logstash_syslog_host }}:5000
+      LOGSPOUT: ignore
+    volumes:
+    - "/var/lib/docker/:/var/run/docker.sock:ro"
+  tags:
+    - logspout
+
+- name: upload logspout template service
+  template:
+    src: logspout.conf.j2
+    dest: /etc/init/logspout.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - logspout
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
+- name: ensure logspout is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: logspout
+    state: started
+    enabled: yes
+  tags:
+    - logspout
+
+- name: get logspout container ip
+  sudo: yes
+  command: >
+    docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} logspout
+  register: logspout_container_ip
+  tags:
+    - logspout
+
+- name: Set logspout consul service definition
+  sudo: yes
+  template:
+    src: logspout-consul.j2
+    dest: "{{ cadvisor_consul_dir }}/logspout.json"
+  notify:
+    - restart consul
+  when: logspout_enabled
+  tags:
+    - logspout
