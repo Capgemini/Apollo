@@ -40,14 +40,14 @@
 - hosts: mesos_masters
   roles:
     - zookeeper
-    - { role: mesos, mesos_install_mode: "master" }
+    - { role: mesos, mesos_install_mode: "master", tags: ["mesos_masters"] }
     - marathon
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_slaves
   roles:
-    - { role: mesos, mesos_install_mode: "slave" }
+    - { role: mesos, mesos_install_mode: "slave", tags: ["mesos_slaves"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 

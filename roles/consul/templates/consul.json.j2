@@ -5,6 +5,7 @@
   "domain": "{{ consul_domain }}",
   "rejoin_after_leave": true,
   "bind_addr": "{{ consul_bind_addr }}",
+  "statsd_addr": "127.0.0.1:8125",
   "client_addr": "{{ consul_client_addr }}",
 {% if consul_bootstrap_expect > 1 %}
   "retry_join": [ {{ consul_retry_join }} ],

@@ -23,6 +23,21 @@ datadog_checks:
         # Collect images stats
         # Number of available active images and intermediate images as gauges. Default: true.
         collect_images_stats: false
+  consul:
+    init_config:
+    instances:
+      - url: http://localhost:8500
+        catalog_checks: yes
+        new_leader_checks: yes
+
+        # Services to restrict catalog querying to
+        # The default settings query up to 50 services. So if you have more than
+        # this many in your Consul service catalog, you will want to fill in the
+        # whitelist
+        #service_whitelist:
+        #  - zookeeper
+        #  - haproxy
+        #  - redis
   mesos_slave:
     init_config:
       default_timeout: 10

@@ -6,6 +6,7 @@ sudo sh -c "echo 'deb http://apt.datadoghq.com/ stable main' > /etc/apt/sources.
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52
 sudo apt-get update -y
 sudo apt-get install datadog-agent
+sudo usermod -a -G docker dd-agent
 
 sudo service datadog-agent stop
 echo manual | sudo tee /etc/init/datadog-agent.override >/dev/null
