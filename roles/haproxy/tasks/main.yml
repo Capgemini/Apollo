@@ -61,7 +61,7 @@
     -v "{{ consul_template_dir }}/templates:/templates:rw"
     "{{ haproxy_image }}"
   register: command_result
-  failed_when: 'The name "haproxy" is already in use' in command_result.stderr
+  failed_when: 'The name "haproxy" is already in use' not in command_result.stderr
   tags:
     - haproxy
 
