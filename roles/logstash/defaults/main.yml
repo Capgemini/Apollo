@@ -15,8 +15,7 @@ logstash_syslog_host: "logstash-5000.service.consul"
 # Stdout
 logstash_output_stdout: no
 
+logstash_salesforce: yes
+
 # Logstash output Elasticsearch
 logstash_elasticsearch_output: "elasticsearch-9200.service.consul:9200"
-
-# logstash_plugins_list:
-#   - logstash-input-sfdc_elf

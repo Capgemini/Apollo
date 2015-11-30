@@ -12,14 +12,16 @@ input {
     port => 12201
     type => "gelf"
   }
+  {% if logstash_salesforce %}
   salesforce {
-    client_id        => '3MVG9rFJvQRVOvk43yJyr3Z73Sr_zeHXd9hJt5ljEzgK7vBZp5Q5wHwwUt7DRcI_RHRUaiX1iI36cCYcibl4l'
-    client_secret    => '4669348946349272643'
-    username         => 'cam.parry@capgemini.com'
-    password         => 'Freedom1'
-    security_token   => 'ruT4wwySkkKmJSAHL1jJtJFt'
+    client_id        => {{ salesforce_client_id }}
+    client_secret    => {{ salesforce_client_secret }}
+    username         => {{ salesforce_client_username }}
+    password         => {{ salesforce_client_password }}
+    security_token   => {{ salesforce_client_security_token }}
     sfdc_object_name => 'Opportunity'
   }
+  {% endif %}
 }
 
 # After the data has been parsed, if it containts a field called "CLIENT_IP" or "SOURCE_IP" then  
