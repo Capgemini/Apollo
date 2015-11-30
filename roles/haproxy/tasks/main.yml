@@ -37,27 +37,31 @@
     name: haproxy
     image: "{{ haproxy_image }}"
     state: absent
-
-- name: run haproxy container
-  docker:
-    name: haproxy
-    image: "{{ haproxy_image }}"
-    state: started
-    net: host
-    restart_policy: always
-    ports:
-      - "80:80"
-      - "34180:34180"
-    env:
-      HAPROXY_DOMAIN: "{{ haproxy_domain }}"
-      CONSUL_TEMPLATE_VERSION: "{{ consul_template_version }}"
-      CONSUL_LOGLEVEL: "{{ consul_template_loglevel }}"
-      CONSUL_CONNECT: "{{ consul_backend }}"
-      CONSUL_CONFIG: "/config"
-      SERVICE_NAME: haproxy
-    volumes:
-    - "/dev/log:/dev/log"
-    - "{{ consul_template_dir }}/config:/config"
-    - "{{ consul_template_dir }}/templates:/templates"
   tags:
     - haproxy
+
+- name: run haproxy container
+  # NOTE: Using command until we update to Ansible 2.0 which supports --log-driver
+  command: >
+    docker run -d 
+    --name=haproxy
+    --net=host 
+    --restart=always 
+    --log-driver=syslog
+    -p 0.0.0.0:80:80/tcp
+    -p 0.0.0.0:34180:34180/tcp
+    -e HAPROXY_DOMAIN="{{ haproxy_domain }}"
+    -e CONSUL_TEMPLATE_VERSION="{{ consul_template_version }}"
+    -e CONSUL_LOGLEVEL="{{ consul_template_loglevel }}"
+    -e CONSUL_CONNECT="{{ consul_backend }}"
+    -e CONSUL_CONFIG="/config"
+    -e SERVICE_NAME=haproxy
+    -v "/dev/log:/dev/log:rw"
+    -v "{{ consul_template_dir }}/config:/config:rw"
+    -v "{{ consul_template_dir }}/templates:/templates:rw"
+    "{{ haproxy_image }}"
+  register: command_result
+  failed_when: 'The name "haproxy" is already in use' in command_result.stderr
+  tags:
+    - haproxy
+
