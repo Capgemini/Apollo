@@ -41,7 +41,7 @@
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master", tags: ["mesos_masters"] }
-    - marathon
+    - { role: marathon, tags: ["marathon"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
@@ -64,8 +64,6 @@
   roles:
     - { role: datadog-agent, tags: ["monitoring"] }
 
-# MANUAL MAGIC HAPPENS HERE
-# 1. launch logstash collector on marathon ... needs marathon module to automate
 - hosts: all:!bastion:!elasticsearch
   roles:
     - { role: monitored, tags: ["monitoring"] }
@@ -81,7 +79,7 @@
 # Installing DCOS frameworks and apps from one master.
 - hosts: mesos_masters
   roles:
-    - dcos_cli
+    - { role: dcos_cli, tags: ["apps"] }
   vars_files:
     - roles/prometheus/defaults/main.yml
   environment:
