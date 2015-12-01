@@ -1,17 +1,19 @@
 global
-    maxconn {{or (key "service/haproxy/maxconn") 256}}
+    maxconn {{or (key "service/haproxy/maxconn") 2048}}
     log /dev/log local0
     debug
+    tune.ssl.default-dh-param 2048
 
 defaults
     mode http
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+    timeout connect {{or (key "service/haproxy/timeouts/connect") "5s"}}
+    timeout client {{or (key "service/haproxy/timeouts/client") "50s"}}
+    timeout server {{or (key "service/haproxy/timeouts/server") "50s"}}
+    timeout http-request 5s
 
 # frontend used to return health status without requiring SSL
 frontend haproxy_status
-    bind 0.0.0.0:34180      # 34180 means EALTH ;)
+    bind 0.0.0.0:34180      # 34180 means HEALTH ;)
     # create a status URI in /haproxy_status that will return
     # a 200 is backend is healthy, and 503 if it isn't. This
     # URI is queried by the ELB.
@@ -27,24 +29,50 @@ listen stats 127.0.0.1:9000
     stats auth admin:admin
     option httpclose
 
-frontend www
+frontend www-http:
     bind *:80
 
-    acl is_http hdr(X-Forwarded-Proto) http
-    redirect scheme https code 301 if is_http
+    # Force HTTPS
+    redirect scheme https if !{ ssl_fc }
+
+frontend www-https:
+    bind *:443 ssl crt {{ ssl_cert }} {{ ssl_cipher_suite }}
+
+    option forwardfor
+    option http-server-close
+
+    reqadd X-Forwarded-Proto:\ https
+
+    # X-Unique-ID header in requests
+    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
+    unique-id-header X-Unique-ID
+
+    acl is_websocket hrd(Upgrade) -i WebSocket
+    # TODO: Add gae_paths for proxying to the outside world
+    # acl is_gae_path path -f 
 
     # Generated automatically by consul-template
-{{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
+    {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
     acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
     use_backend {{.Name}}_backend if host_{{.Name}}
-{{end}}{{end}}{{end}}
+    {{end}}{{end}}{{end}}
+
+    # Generated automatically by consul-template
+    {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
+    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
+    use_backend {{.Name}}_backend if host_{{.Name}}
+    {{end}}{{end}}{{end}}
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
 {{range service .Name}}
+   reqadd x-forwarded-proto:\ https
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
 {{end}}{{end}}{{end}}
 
 backend consul_backend
 {{range service "consul"}}
+   reqadd x-forwarded-proto:\ https
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
+
+
