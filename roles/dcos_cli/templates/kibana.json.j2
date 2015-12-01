@@ -1,0 +1,36 @@
+{
+  "id": "kibana",
+  "cpus": 0.1,
+  "mem": 128.0,
+  "instances": 1,
+  "env": {
+    "ELASTICSEARCH_URL": "http://elasticsearch.service.consul:9200",
+    "SERVICE_NAME": "kibana",
+    "SERVICE_TAGS": "elasticsearch,kibana,monitoring"
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "kibana:4.1.1",
+      "network": "BRIDGE",
+      "parameters": [
+        { "key": "log-driver", "value": "json-file" },
+        { "key": "log-opt", "value": "max-size=64m" },
+        { "key": "log-opt", "value": "max-file=8" }
+      ],
+      "portMappings": [
+        { "containerPort": 5601, "hostPort": 0, "servicePort": 5601, "protocol": "tcp" }
+      ]
+    }
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "path": "/",
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}

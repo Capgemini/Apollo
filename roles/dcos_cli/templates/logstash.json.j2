@@ -1,0 +1,40 @@
+{
+  "id": "logstash",
+  "cpus": 0.1,
+  "mem": {{ dcos_cli_app_logstash_mem }},
+  "instances": {{ dcos_cli_app_logstash_instances }},
+  "env": {
+    "SERVICE_NAME": "logstash",
+    "SERVICE_TAGS": "elasticsearch,logstash,monitoring"
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "logstash:1.5.2",
+      "network": "BRIDGE",
+      "parameters": [
+        { "key": "log-opt", "value": "max-size=64m" },
+        { "key": "log-opt", "value": "max-file=8" }
+      ],
+      "portMappings": [
+        { "containerPort": 5500, "hostPort": 0, "servicePort": 5500, "protocol": "tcp" },
+        { "containerPort": 5544, "hostPort": 0, "servicePort": 5544, "protocol": "udp" }
+      ]
+    }
+  },
+  "args": [
+    "logstash", "-f", "/mnt/mesos/sandbox/logstash.conf"
+  ],
+  "storeUrls": [
+    "{{ dcos_cli_app_logstash_conf_url }}"
+  ],
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}

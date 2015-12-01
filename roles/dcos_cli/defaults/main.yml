@@ -9,6 +9,8 @@ dcos_cli_frameworks_list:
   - cassandra
   - chronos
 dcos_cli_apps_list:
+  - logstash
+  - kibana
   - prometheus
 
 # apps
