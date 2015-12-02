@@ -29,27 +29,34 @@ listen stats 127.0.0.1:9000
     stats auth admin:admin
     option httpclose
 
-frontend www-http:
+frontend www-http
     bind *:80
 
     # Force HTTPS
     redirect scheme https if !{ ssl_fc }
 
-frontend www-https:
-    bind *:443 ssl crt {{ ssl_cert }} {{ ssl_cipher_suite }}
+frontend www-https
+    bind *:443 
+    # TODO: Add SSL termination
+    # ssl crt {{ env "UDACITY_SSL_PEM" }}
 
     option forwardfor
     option http-server-close
-
     reqadd X-Forwarded-Proto:\ https
 
     # X-Unique-ID header in requests
     unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
     unique-id-header X-Unique-ID
 
-    acl is_websocket hrd(Upgrade) -i WebSocket
-    # TODO: Add gae_paths for proxying to the outside world
-    # acl is_gae_path path -f 
+    # Websockets
+    acl is_websocket hdr(Upgrade) -i WebSocket
+
+    # GAE Proxy
+    acl is_www_host hdr(host) -i berlioz-dev.{{env "HAPROXY_DOMAIN"}}
+    # TODO (Angel): Update routes file. 
+    # See: https://docs.google.com/a/knowlabs.com/spreadsheets/d/1Nv7rOYJXzz3BjrE7wKtrm9ei8c6tiq7YF1CkpOnjL2w/edit?usp=sharing_eid&ts=565f7554
+    #acl is_gae_path path -f {{env "GAE_ROUTES_FILE"}}
+    use_backend gae_backend if is_www_host
 
     # Generated automatically by consul-template
     {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
@@ -57,11 +64,13 @@ frontend www-https:
     use_backend {{.Name}}_backend if host_{{.Name}}
     {{end}}{{end}}{{end}}
 
-    # Generated automatically by consul-template
-    {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
-    use_backend {{.Name}}_backend if host_{{.Name}}
-    {{end}}{{end}}{{end}}
+backend gae_backend
+    http-request set-header Host www.udacity.com
+    reqirep ^([^\ :]*)\ berlioz-dev.udacity.com/(.*) \1\ www.udacity.com/\2
+    acl hdr_location res.hdr(Location) -m found
+    rspirep ^Location:\ (http|https)://www.udacity.com(.*) Location:\ \1://berlioz-dev.udacity.com\2
+    # TODO: Proxy pass cookies
+    server gae www.udacity.com:443 ssl verify none
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
