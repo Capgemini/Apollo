@@ -1,3 +1,5 @@
+dcos_cli_app_prometheus_image: prom/prometheus
+dcos_cli_app_prometheus_image_tag: 0.16.1
 dcos_cli_app_prometheus_enabled: "{{ prometheus_enabled }}"
 dcos_cli_app_prometheus_mem: 128
 dcos_cli_app_prometheus_cpus: 0.5

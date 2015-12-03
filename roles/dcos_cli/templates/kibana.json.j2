@@ -3,7 +3,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "{{ kibana_image }}:{{ kibana_image_tag }}",
+      "image": "{{ dcos_cli_app_kibana_image }}:{{ dcos_cli_app_kibana_image_tag }}",
       "network": "BRIDGE",
       "portMappings": [{ 
         "containerPort": 5601,

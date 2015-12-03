@@ -1,4 +1,6 @@
 dcos_cli_app_logstash_enabled: "{{ elk_enabled }}"
+dcos_cli_app_logstash_image: logstash
+dcos_cli_app_logstash_image_tag: 2.1.0
 dcos_cli_app_logstash_mem: 512
 dcos_cli_app_logstash_cpus: 0.5
 dcos_cli_app_logstash_instances: 1
