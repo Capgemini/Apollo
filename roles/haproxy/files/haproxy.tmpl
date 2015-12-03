@@ -52,11 +52,11 @@ frontend www-https
     acl is_websocket hdr(Upgrade) -i WebSocket
 
     # GAE Proxy
-    acl is_www_host hdr(host) -i berlioz-dev.{{env "HAPROXY_DOMAIN"}}
     # TODO (Angel): Update routes file. 
     # See: https://docs.google.com/a/knowlabs.com/spreadsheets/d/1Nv7rOYJXzz3BjrE7wKtrm9ei8c6tiq7YF1CkpOnjL2w/edit?usp=sharing_eid&ts=565f7554
-    #acl is_gae_path path -f {{env "GAE_ROUTES_FILE"}}
-    use_backend gae_backend if is_www_host
+    acl is_www_host hdr(host) -i berlioz-dev.{{env "HAPROXY_DOMAIN"}}
+    acl is_gae_path path_beg -f {{env "GAE_ROUTES_FILE"}}
+    use_backend gae_backend if is_www_host is_gae_path
 
     # Generated automatically by consul-template
     {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
@@ -64,12 +64,15 @@ frontend www-https
     use_backend {{.Name}}_backend if host_{{.Name}}
     {{end}}{{end}}{{end}}
 
+# ProxyPass / ReverseProxyPass to GAE
 backend gae_backend
     http-request set-header Host www.udacity.com
     reqirep ^([^\ :]*)\ berlioz-dev.udacity.com/(.*) \1\ www.udacity.com/\2
+
     acl hdr_location res.hdr(Location) -m found
     rspirep ^Location:\ (http|https)://www.udacity.com(.*) Location:\ \1://berlioz-dev.udacity.com\2
-    # TODO: Proxy pass cookies
+
+    # TODO (Angel): Proxy pass cookies
     server gae www.udacity.com:443 ssl verify none
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}

@@ -29,7 +29,7 @@
   with_items:
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
-    - { src: proxy-routes.lst, dst: 'routes/proxy-routes.lst' }
+    - { src: gae-proxy-routes.lst, dst: 'routes/gae-proxy-routes.lst' }
   tags:
     - haproxy
 
@@ -58,7 +58,7 @@
     -e CONSUL_CONNECT="{{ consul_backend }}"
     -e CONSUL_CONFIG="/config"
     -e SERVICE_NAME=haproxy
-    -e GAE_ROUTES_FILE=/routes/proxy-routes.lst
+    -e GAE_ROUTES_FILE=/routes/gae-proxy-routes.lst
     -v "/dev/log:/dev/log:rw"
     -v "{{ consul_template_dir }}/config:/config:rw"
     -v "{{ consul_template_dir }}/templates:/templates:rw"
