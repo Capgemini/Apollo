@@ -39,8 +39,3 @@
     - restart consul
   tags:
     - prometheus
-
-- name: Create SQLite3 databse in a shared local Docker volume on the host
-  command: "docker run --rm -v {{ promdash_volume }}:{{ promdash_volume }} -e DATABASE_URL={{ promdash_database_url }} {{ promdash_image }} ./bin/rake db:migrate"
-  tags:
-    - prometheus

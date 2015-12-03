@@ -8,9 +8,11 @@ dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.z
 dcos_cli_frameworks_list:
   - cassandra
   - chronos
+# Type flag allows you to set up a command which you want to use to run an app.
+# To run one app use "type: app" and to run group of apps use "type: group".
 dcos_cli_apps_list:
-  - prometheus
-  - promdash
+  - { name: prometheus, type: app }
+  - { name: promdash, type: group }
 
 # apps
 prometheus_image: prom/prometheus
