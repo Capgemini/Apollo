@@ -81,7 +81,7 @@ variable "masters" {
 variable "slave_block_device" {
   description = "Block device for OSD."
   default = {
-    volume_size = 30
+    volume_size = 60
   }
 }
 
