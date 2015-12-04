@@ -7,3 +7,6 @@ prometheus_node_exporter_port: 9100
 prometheus_node_exporter_hostname: "{{ ansible_ssh_host }}"
 prometheus_node_exporter_consul_service_id: "{{ ansible_hostname }}:node-exporter:9100"
 prometheus_consul_dir: /etc/consul.d
+# promdash settings
+promdash_database_url: "mysql2://promdash:promdash@promdash.mysql.service.consul/promdash"
+promdash_image: "capgemini/promdash"

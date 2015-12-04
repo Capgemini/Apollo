@@ -1,0 +1,70 @@
+{
+  "id": "promdash-group",
+  "apps": [
+    {
+      "id": "mysql",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "mysql:latest",
+          "network": "BRIDGE",
+          "portMappings": [{"containerPort": 3306, "hostPort": 0, "protocol": "tcp"}]
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "mysql",
+        "SERVICE_TAGS": "promdash",
+        "MYSQL_DATABASE": "promdash",
+        "MYSQL_USER": "promdash",
+        "MYSQL_PASSWORD": "promdash",
+        "MYSQL_ROOT_PASSWORD": "password"
+      },
+      "cpus": 0.5,
+      "mem": 1024.0,
+      "instances": 1,
+      "healthChecks": [{
+        "path": "/",
+        "portIndex": 0,
+        "protocol": "TCP",
+        "gracePeriodSeconds": 30,
+        "intervalSeconds": 10,
+        "timeoutSeconds": 20,
+        "maxConsecutiveFailures": 3
+      }]
+    },
+    {
+      "id": "promdash",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "{{ promdash_image }}",
+          "network": "BRIDGE",
+          "portMappings": [{"containerPort": 3000, "hostPort": 0, "protocol": "tcp"}]
+        }
+      },
+      "env": {
+        "SERVICE_NAME": "promdash",
+        "DATABASE_URL": "{{ promdash_database_url }}",
+        "RAILS_ENV": "production"
+      },
+      "cpus": {{ dcos_cli_app_promdash_cpus }},
+      "mem": {{ dcos_cli_app_promdash_mem }},
+      "instances": {{ dcos_cli_app_promdash_instances }},
+      "healthChecks": [{
+        "protocol": "HTTP",
+        "path": "/",
+        "portIndex": 0,
+        "gracePeriodSeconds": 30,
+        "intervalSeconds": 30,
+        "timeoutSeconds": 10,
+        "maxConsecutiveFailures": 2,
+        "ignoreHttp1xx": false
+      }],
+      "dependencies": ["/promdash-group/mysql"],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.0
+      }
+    }
+  ]
+}
