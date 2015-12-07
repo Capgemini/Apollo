@@ -82,7 +82,7 @@
     -v "{{ consul_template_dir }}/etc/ssl/private:/etc/ssl/private:rw"
     "{{ haproxy_image }}"
   register: command_result
-  failed_when: "'The name \"haproxy\" is already in use' not in command_result.stderr"
+  failed_when: "'The name \"haproxy\" is already in use' not in command_result.stderr and command_result.rc != 0"
   tags:
     - haproxy
 

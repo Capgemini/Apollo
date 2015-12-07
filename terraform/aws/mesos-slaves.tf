@@ -39,7 +39,6 @@ resource "aws_elb" "app" {
     instance_protocol = "tcp"
     lb_port = 443
     lb_protocol = "tcp"
-    /* ssl_certificate_id = "${var.ssl_certificate_arn}" */
   }
 
   listener {

@@ -71,8 +71,7 @@
 - hosts: load_balancers
   roles:
     - { role: haproxy, tags: ["haproxy"] }
-  # NOTE: enable for rolling updates
-  #serial: 1
+  serial: 1
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
