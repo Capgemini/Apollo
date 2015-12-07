@@ -1,0 +1,9 @@
+---
+traefik_marathon_endpoint: http://marathon.service.consul:8080
+traefik_marathon_domain: marathon.localhost
+traefik_image: emilevauge/traefik
+traefik_config_dir: /etc/traefik
+traefik_rebuild_container: false
+traefik_frontend_port: 80
+traefik_webui_port: 8888
+traefik_log_level: DEBUG

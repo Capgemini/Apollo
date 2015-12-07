@@ -1,0 +1,44 @@
+---
+- name: destroy old traefik container
+  when: traefik_rebuild_container|bool
+  docker:
+    name: traefik
+    image: "{{ traefik_image }}"
+    state: absent
+
+- name: create traefik config directory
+  file:
+    path: "{{ traefik_config_dir }}"
+    state: directory
+    mode: 0755
+  sudo: yes
+  tags:
+    - traefik
+
+- name: configure traefik
+  sudo: yes
+  template:
+    src: traefik.toml.j2
+    dest: "{{ traefik_config_dir }}/traefik.toml"
+    mode: 0644
+    backup: yes
+  tags:
+    - traefik
+
+- name: run traefik container
+  docker:
+    name: traefik
+    image: "{{ traefik_image }}"
+    state: started
+    restart_policy: always
+    ports:
+      - "{{ traefik_frontend_port }}:{{ traefik_frontend_port }}"
+      - "{{ traefik_webui_port }}:{{ traefik_webui_port }}"
+    expose:
+      - "{{ traefik_frontend_port }}"
+      - "{{ traefik_webui_port }}"
+    volumes:
+      - "{{ traefik_config_dir }}/traefik.toml:/traefik.toml"
+  environment: proxy_env
+  tags:
+    - traefik
