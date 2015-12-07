@@ -1,17 +1,19 @@
 global
-    maxconn {{or (key "service/haproxy/maxconn") 256}}
+    maxconn {{or (key "service/haproxy/maxconn") 2048}}
     log /dev/log local0
     debug
+    tune.ssl.default-dh-param 2048
 
 defaults
     mode http
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+    timeout connect {{or (key "service/haproxy/timeouts/connect") "5s"}}
+    timeout client {{or (key "service/haproxy/timeouts/client") "50s"}}
+    timeout server {{or (key "service/haproxy/timeouts/server") "50s"}}
+    timeout http-request 5s
 
 # frontend used to return health status without requiring SSL
 frontend haproxy_status
-    bind 0.0.0.0:34180      # 34180 means EALTH ;)
+    bind 0.0.0.0:34180      # 34180 means HEALTH ;)
     # create a status URI in /haproxy_status that will return
     # a 200 is backend is healthy, and 503 if it isn't. This
     # URI is queried by the ELB.
@@ -27,17 +29,47 @@ listen stats 127.0.0.1:9000
     stats auth admin:admin
     option httpclose
 
-frontend www
+frontend www-http
     bind *:80
 
-    acl is_http hdr(X-Forwarded-Proto) http
-    redirect scheme https code 301 if is_http
+    # Force HTTPS
+    redirect scheme https if !{ ssl_fc }
+
+frontend www-https
+    bind *:443 ssl crt {{ env "SSL_CERT" }}
+
+    option forwardfor
+    option http-server-close
+    reqadd X-Forwarded-Proto:\ https
+
+    # X-Unique-ID header in requests
+    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
+    unique-id-header X-Unique-ID
+
+    # Websockets
+    acl is_websocket hdr(Upgrade) -i WebSocket
+
+    # GAE Proxy
+    acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
+    acl is_gae_path path_beg -f {{env "GAE_ROUTES_FILE"}}
+    use_backend gae_backend if is_www_host is_gae_path
 
     # Generated automatically by consul-template
-{{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
+    {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
     acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
     use_backend {{.Name}}_backend if host_{{.Name}}
-{{end}}{{end}}{{end}}
+    {{end}}{{end}}{{end}}
+
+# ProxyPass / ReverseProxyPass to GAE
+backend gae_backend
+    http-request set-header Host {{env "GAE_SUBDOMAIN"}}.udacity.com
+    reqirep ^([^\ :]*)\ {{env "ENDOR_SUBDOMAIN"}}.udacity.com/(.*) \1\ {{env "GAE_SUBDOMAIN"}}.udacity.com/\2
+
+    acl hdr_location res.hdr(Location) -m found
+    rspirep ^Location:\ (http|https)://{{env "GAE_SUBDOMAIN"}}.udacity.com(.*) Location:\ \1://{{env "ENDOR_SUBDOMAIN"}}.udacity.com\2
+
+    # TODO (Angel): Proxy pass cookies
+    server gae {{env "GAE_SUBDOMAIN"}}.udacity.com:443 ssl verify none
 
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
@@ -48,3 +80,5 @@ backend {{.Name}}_backend
 backend consul_backend
 {{range service "consul"}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
+
+

@@ -1,0 +1,55 @@
+# The following paths should be routed to GAE
+# NOTE: We use `path_beg` to match, so anything under the path will route.
+
+/account
+/admin
+/api
+/callbacks/sendgrid
+/career-paths/data-analyst
+/career-paths/front-end-web-developer
+/career-paths/ios-developer
+/catalog-api
+/certificate/
+/checkout
+/coach/scheduled-chat
+/content/exam
+/content/frame/grade
+/course/progress
+/course/thanks-for-enrolling
+/course/viewer
+/cron
+
+# NOTE: '-' vs '_' 
+/danger_editor
+/danger-editor
+
+/georgia-tech
+/georgia-tech/faq
+/georgia-tech/welcome
+/georgiatech
+/GeorgiaTech
+/georgiatech/
+/georgiatech/faq
+/georgiatech/welcome
+# TODO (Angel): Final decision on this one
+#/grader<:.*>,GAE?,
+/hangout
+/instructor
+/lti
+/lti/
+/me
+/my_courses
+/oauth2callback
+/openid
+/proxy/requisitions
+/quiz
+/quiz_instructions
+/quiz/instructions
+/teacher/
+/teams
+/templates
+/tools/reports/client
+/tools/reports/user
+/upgrade
+/verified-certificate
+/wiki

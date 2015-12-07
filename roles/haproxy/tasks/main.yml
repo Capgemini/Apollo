@@ -7,6 +7,8 @@
   with_items:
     - { path: 'config' }
     - { path: 'templates' }
+    - { path: 'routes' }
+    - { path: 'etc/ssl/private' }
   tags:
     - haproxy
 
@@ -28,6 +30,19 @@
   with_items:
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
+    - { src: gae-proxy-routes.lst, dst: 'routes/gae-proxy-routes.lst' }
+  tags:
+    - haproxy
+
+- name: upload SSL cert
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ consul_template_dir }}/{{ item.dst }}"
+    mode: 0644
+  sudo: yes
+  with_items:
+    - { src: star_udacity_com.pem, dst: 'etc/ssl/private/star_udacity_com.pem' }
+  when: haproxy_ssl_enabled
   tags:
     - haproxy
 
@@ -51,17 +66,23 @@
     -p 0.0.0.0:80:80/tcp
     -p 0.0.0.0:34180:34180/tcp
     -e HAPROXY_DOMAIN="{{ haproxy_domain }}"
+    -e GAE_SUBDOMAIN="{{ haproxy_gae_subdomain }}"
+    -e ENDOR_SUBDOMAIN="{{ haproxy_endor_subdomain }}"
     -e CONSUL_TEMPLATE_VERSION="{{ consul_template_version }}"
     -e CONSUL_LOGLEVEL="{{ consul_template_loglevel }}"
     -e CONSUL_CONNECT="{{ consul_backend }}"
     -e CONSUL_CONFIG="/config"
     -e SERVICE_NAME=haproxy
+    -e GAE_ROUTES_FILE=/routes/gae-proxy-routes.lst
+    -e SSL_CERT=/etc/ssl/private/star_udacity_com.pem
     -v "/dev/log:/dev/log:rw"
     -v "{{ consul_template_dir }}/config:/config:rw"
     -v "{{ consul_template_dir }}/templates:/templates:rw"
+    -v "{{ consul_template_dir }}/routes:/routes:rw"
+    -v "{{ consul_template_dir }}/etc/ssl/private:/etc/ssl/private:rw"
     "{{ haproxy_image }}"
   register: command_result
-  failed_when: 'The name "haproxy" is already in use' not in command_result.stderr
+  failed_when: "'The name \"haproxy\" is already in use' not in command_result.stderr"
   tags:
     - haproxy
 

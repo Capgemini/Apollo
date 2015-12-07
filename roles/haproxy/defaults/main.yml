@@ -14,3 +14,8 @@ consul_template_dir: /mnt/consul-template.d
 consul_template_loglevel: debug
 consul_backend: consul.service.consul:8500
 consul_template_version: 0.10.0
+
+# Proxy / www
+haproxy_endor_subdomain: www
+haproxy_gae_subdomain: gae
+

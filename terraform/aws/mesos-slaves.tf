@@ -35,11 +35,11 @@ resource "aws_elb" "app" {
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
 
   listener {
-    instance_port = 80
-    instance_protocol = "http"
+    instance_port = 443 
+    instance_protocol = "tcp"
     lb_port = 443
-    lb_protocol = "https"
-    ssl_certificate_id = "${var.ssl_certificate_arn}"
+    lb_protocol = "tcp"
+    /* ssl_certificate_id = "${var.ssl_certificate_arn}" */
   }
 
   listener {
