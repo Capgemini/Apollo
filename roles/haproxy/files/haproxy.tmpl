@@ -36,9 +36,7 @@ frontend www-http
     redirect scheme https if !{ ssl_fc }
 
 frontend www-https
-    bind *:443 
-    # TODO: Add SSL termination
-    # ssl crt {{ env "UDACITY_SSL_PEM" }}
+    bind *:443 ssl crt {{ env "SSL_CERT" }}
 
     option forwardfor
     option http-server-close
