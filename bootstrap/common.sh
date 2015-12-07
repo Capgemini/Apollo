@@ -69,16 +69,16 @@ get_apollo_variables() {
 apollo_launch() {
   if [[ "$@" == "-i" ]]; then
     get_terraform_modules
-    terraform_apply
+    run_terraform apply
     run_if_exist "ansible_ssh_config"
     ansible_playbook_run
     run_if_exist "set_vpn"
     open_urls
-  elif [ "$@" ]; then
+  elif [[ "$@" != "" ]]; then
     eval $@
   else
     get_terraform_modules
-    terraform_apply
+    run_terraform apply
     run_if_exist "ansible_ssh_config"
     ansible_playbook_run
     run_if_exist "set_vpn"
@@ -162,10 +162,15 @@ get_terraform_modules() {
   popd
 }
 
-terraform_apply() {
+run_terraform() {
+  if [ ! "${1:-}" ]; then
+    echo "run_terraform requires an argument (plan, apply)"
+    exit 1
+  fi
+  local terraform_action=${1}
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
-    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
+    terraform ${terraform_action} -var "instance_type.master=${TF_VAR_master_size}" \
       -var "instance_type.slave=${TF_VAR_slave_size}" \
       -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
       -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
