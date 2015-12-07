@@ -1,9 +1,6 @@
 # The following paths should be routed to GAE
 # NOTE: We use `path_beg` to match, so anything under the path will route.
 
-# /<:.*>,Endor if no match on GAE?,
-# TODO (Angel): Delete '/' and allow Endor to take over
-/
 /account
 /admin
 /api

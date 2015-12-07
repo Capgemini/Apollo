@@ -66,6 +66,8 @@
     -p 0.0.0.0:80:80/tcp
     -p 0.0.0.0:34180:34180/tcp
     -e HAPROXY_DOMAIN="{{ haproxy_domain }}"
+    -e GAE_SUBDOMAIN="{{ haproxy_gae_subdomain }}"
+    -e ENDOR_SUBDOMAIN="{{ haproxy_endor_subdomain }}"
     -e CONSUL_TEMPLATE_VERSION="{{ consul_template_version }}"
     -e CONSUL_LOGLEVEL="{{ consul_template_loglevel }}"
     -e CONSUL_CONNECT="{{ consul_backend }}"
