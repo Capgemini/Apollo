@@ -3,6 +3,7 @@
 
 /account
 /admin
+/android-career-summit
 /api
 /callbacks/sendgrid
 /career-paths/data-analyst
@@ -32,13 +33,22 @@
 /lti
 /lti/
 /me
+/mobile
 /my_courses
+/nanodegree/50-back
+/nanodegree/android-expectation-quiz
+/nanodegree/data-analyst-expectation-quiz
+/open-ed
+/opened
 /oauth2callback
 /openid
+/programming-languages/python
+/programming-languages/swift
 /proxy/requisitions
 /quiz
 /quiz_instructions
 /quiz/instructions
+/success
 /teacher/
 /teams
 /templates
