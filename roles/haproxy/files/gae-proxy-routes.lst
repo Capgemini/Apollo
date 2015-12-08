@@ -2,6 +2,7 @@
 # NOTE: We use `path_beg` to match, so anything under the path will route.
 
 /account
+/admin
 /api
 /callbacks/sendgrid
 /career-paths/data-analyst
