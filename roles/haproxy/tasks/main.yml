@@ -31,6 +31,7 @@
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
     - { src: gae-proxy-routes.lst, dst: 'routes/gae-proxy-routes.lst' }
+    - { src: www-url-rewrites.map, dst: 'routes/www-url-rewrites.map' }
   tags:
     - haproxy
 
@@ -74,6 +75,7 @@
     -e CONSUL_CONFIG="/config"
     -e SERVICE_NAME=haproxy
     -e GAE_ROUTES_FILE=/routes/gae-proxy-routes.lst
+    -e WWW_URL_REWRITES=/routes/www-url-rewrites.map
     -e SSL_CERT=/etc/ssl/private/star_udacity_com.pem
     -v "/dev/log:/dev/log:rw"
     -v "{{ consul_template_dir }}/config:/config:rw"
