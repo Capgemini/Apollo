@@ -2,7 +2,6 @@
 # NOTE: We use `path_beg` to match, so anything under the path will route.
 
 /account
-/admin
 /api
 /callbacks/sendgrid
 /career-paths/data-analyst
@@ -23,13 +22,7 @@
 /danger_editor
 /danger-editor
 
-/georgia-tech
-/georgia-tech/faq
 /georgia-tech/welcome
-/georgiatech
-/GeorgiaTech
-/georgiatech/
-/georgiatech/faq
 /georgiatech/welcome
 # TODO (Angel): Final decision on this one
 #/grader<:.*>,GAE?,
