@@ -1,0 +1,32 @@
+datadog_checks:
+  docker:
+    init_config:
+      socket_timeout: 100
+    instances:
+      - url: "unix://var/run/docker.sock"
+        new_tag_names: true
+        collect_events: true
+        collect_container_size: true
+        collect_images_stats: false
+  consul:
+    init_config:
+    instances:
+      - url: http://localhost:8500
+        catalog_checks: yes
+        new_leader_checks: yes
+  mesos_master:
+    init_config:
+      default_timeout: 10
+    instances:
+      - url: "http://{{ ansible_default_ipv4.address }}:5050"
+  marathon:
+    init_config:
+      default_timeout: 10
+    instances:
+      - url: "http://{{ ansible_default_ipv4.address }}:8080"
+  zk:
+    init_config:
+    instances:
+      - host: localhost
+        port: 2181
+        timeout: 10
