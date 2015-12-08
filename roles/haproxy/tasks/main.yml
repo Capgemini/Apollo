@@ -42,7 +42,7 @@
   sudo: yes
   with_items:
     - { src: star_udacity_com.pem, dst: 'etc/ssl/private/star_udacity_com.pem' }
-  when: haproxy_ssl_enabled
+  when: "haproxy_ssl_enabled is defined and haproxy_ssl_enabled"
   tags:
     - haproxy
 
