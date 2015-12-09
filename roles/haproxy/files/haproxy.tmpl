@@ -6,6 +6,7 @@ global
 
 defaults
     mode http
+    option redispatch
     timeout connect {{or (key "service/haproxy/timeouts/connect") "5s"}}
     timeout client {{or (key "service/haproxy/timeouts/client") "50s"}}
     timeout server {{or (key "service/haproxy/timeouts/server") "50s"}}
