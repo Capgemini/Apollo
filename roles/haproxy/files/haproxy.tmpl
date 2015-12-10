@@ -50,14 +50,9 @@ frontend www-https
     # Websockets
     acl is_websocket hdr(Upgrade) -i WebSocket
 
-    # Endor
+    # GAE Proxy
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
     acl is_gae_path path_beg -f {{env "GAE_ROUTES_FILE"}}
-
-    # WWW 301s
-    http-request redirect location %[capture.req.uri,map({{env "WWW_URL_REWRITES"}})] code 301 if { capture.req.uri,map({{env "WWW_URL_REWRITES"}}) -m found } is_www_host
-
-    # GAE Proxy
     use_backend gae_backend if is_www_host is_gae_path
 
     # Generated automatically by consul-template
