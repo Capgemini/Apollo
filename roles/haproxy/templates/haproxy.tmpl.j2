@@ -11,13 +11,13 @@ defaults
 
 # https://www.datadoghq.com/blog/how-to-collect-haproxy-metrics/
 listen stats :9000
-  mode http
-  stats enable
-  stats hide-version
-  stats realm Haproxy\ Statistics
-  stats uri /haproxy_stats
-{% endraw %}
-  stats auth {{ haproxy_username }}:{{ haproxy_password }}
+    mode http
+    stats enable
+    stats hide-version
+    stats realm Haproxy\ Statistics
+    stats uri /haproxy_stats
+  {% endraw %}
+    stats auth {{ haproxy_username }}:{{ haproxy_password }}
 
 {% raw %}
 # frontend used to return health status without requiring SSL
@@ -29,6 +29,11 @@ frontend haproxy_status
     acl backend_dead nbsrv(consul_backend) lt 1
     monitor-uri /haproxy_status
     monitor fail if backend_dead
+
+frontend voting-demo-nodejs
+  bind *:90
+  mode http
+  default_backend voting-demo-nodejs_backend
 
 frontend www
     bind *:80
