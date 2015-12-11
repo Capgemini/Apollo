@@ -12,5 +12,5 @@ haproxy_rebuild_container: False
 
 consul_template_dir: /mnt/consul-template.d
 consul_template_loglevel: debug
-consul_backend: consul.service.consul:8500
-consul_template_version: 0.10.0
+consul_backend: "consul.service.{{ consul_domain }}:8500"
+consul_template_version: 0.11.1

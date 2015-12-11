@@ -33,7 +33,6 @@
     - registrator
     - dnsmasq
     - { role: cadvisor, when: cadvisor_enabled|bool }
-    - { role: logstash, when: elk_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
@@ -66,6 +65,12 @@
     - roles/prometheus/defaults/main.yml
   environment:
     DOCKER_HOST: "{{ docker_host }}"
+
+- hosts: log_servers
+  roles:
+    - { role: logstash, when: elk_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}" 
 
 - include: tests/test.yml
   vars_files:

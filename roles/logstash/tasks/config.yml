@@ -1,0 +1,48 @@
+- name: create configuration and ssl directory
+  sudo: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    recurse: yes
+  with_items:
+    - "{{ logstash_config_dir }}/ssl"
+    - "{{ logstash_config_dir }}/lumberjack"
+  tags:
+    - logstash
+
+- name: configure logstash
+  sudo: yes
+  template:
+    src: logstash.conf.j2
+    dest: "{{ logstash_config_dir }}/logstash.conf"
+  tags:
+    - logstash
+
+- name: upload lumberjack template service
+  template:
+    src: lumberjack.conf.j2
+    dest: /etc/init/lumberjack.conf
+    mode: 0755
+  sudo: yes
+  tags:
+    - lumberjack
+
+- name: upload lumberjack config files
+  template:
+    src: logstash-forwarder.conf.j2
+    dest: "{{ logstash_config_dir }}/lumberjack/logstash-forwarder.conf"
+  tags:
+    - lumberjack
+
+- name: upload lumberjack ssl files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ logstash_config_dir }}/ssl/{{ item }}"
+    mode: 0644
+  sudo: yes
+  with_items:
+    - "{{ lumberjack_ssl_certificate_file }}"
+    - "{{ lumberjack_ssl_key_file }}"
+  tags:
+    - haproxy

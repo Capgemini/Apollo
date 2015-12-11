@@ -5,6 +5,11 @@
     "docker": {
       "image": "{{ dcos_cli_app_kibana_image }}:{{ dcos_cli_app_kibana_image_tag }}",
       "network": "BRIDGE",
+      "parameters": [
+        { "key": "log-driver", "value": "json-file" },
+        { "key": "log-opt", "value": "max-size=64m" },
+        { "key": "log-opt", "value": "max-file=8" }
+      ],
       "portMappings": [{ 
         "containerPort": 5601,
         "servicePort": 5601,
@@ -33,7 +38,6 @@
     }
   ],
   "env": {
-    "ELASTICSEARCH_URL": "http://elasticsearch-9200.service.{{ consul_domain }}:9200",
-    "SERVICE_NAME": "elasticsearch"
+    "ELASTICSEARCH_URL": "http://elasticsearch-9200.service.{{ consul_domain }}:9200"
   }
 }

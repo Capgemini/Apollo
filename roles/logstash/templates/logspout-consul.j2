@@ -1,9 +1,0 @@
-{
-  "check": {
-    "id": "logspout",
-    "name": "logspout status",
-    "service_id": "{{ logspout_consul_service_id }}",
-    "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ logspout_container_ip.stdout }}:8000",
-    "interval": "10s"
-  }
-}
