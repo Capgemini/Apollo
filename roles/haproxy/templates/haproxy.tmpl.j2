@@ -1,3 +1,4 @@
+{% raw %}
 global
     maxconn {{or (key "service/haproxy/maxconn") 256}}
     debug
@@ -9,6 +10,17 @@ defaults
     timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
     timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
 
+# https://www.datadoghq.com/blog/how-to-collect-haproxy-metrics/
+listen stats :9000
+  mode http
+  stats enable
+  stats hide-version
+  stats realm Haproxy\ Statistics
+  stats uri /haproxy_stats
+{% endraw %}
+  stats auth {{ haproxy_username }}:{{ haproxy_password }}
+
+{% raw %}
 # frontend used to return health status without requiring SSL
 frontend haproxy_status
     bind 0.0.0.0:34180      # 34180 means EALTH ;)
@@ -33,3 +45,4 @@ backend {{.Name}}_backend
 {{range service .Name}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
 {{end}}
+{% endraw %}
