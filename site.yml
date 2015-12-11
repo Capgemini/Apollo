@@ -70,7 +70,7 @@
   roles:
     - { role: logstash, when: elk_enabled|bool }
   environment:
-    DOCKER_HOST: "{{ docker_host }}" 
+    DOCKER_HOST: "{{ docker_host }}"
 
 - include: tests/test.yml
   vars_files:
