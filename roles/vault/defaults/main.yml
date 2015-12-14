@@ -1,8 +1,8 @@
 ---
 # defaults settings for vault
 vault_consul_dir: /etc/consul.d
-vault_version: '0.3.1'
-vault_url: "https://dl.bintray.com/mitchellh/vault/vault_{{ vault_version }}_linux_amd64.zip"
+vault_version: '0.4.0'
+vault_url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
 vault_config_folder: '/etc/vault'
 vault_port: 8200
 vault_addr: "http://127.0.0.1:{{ vault_port }}"

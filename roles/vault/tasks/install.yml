@@ -20,30 +20,16 @@
   tags:
     - vault
 
-- name: upload vault template service
+- name: upload vault template config files
   template:
-    src: vault.conf.j2
-    dest: /etc/init/vault.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
     mode: 0755
   sudo: yes
-  tags:
-    - vault
-
-- name: upload vault default template
-  template:
-    src: default.j2
-    dest: /etc/default/vault
-    mode: 0755
-  sudo: yes
-  tags:
-    - vault
-
-- name: upload vault config template
-  template:
-    src: config.hcl.j2
-    dest: "{{ vault_config_folder }}/config.hcl"
-    mode: 0755
-  sudo: yes
+  with_items:
+  - { src: vault.conf.j2, dst: '/etc/init/vault.conf' }
+  - { src: default.j2, dst: '/etc/default/vault' }
+  - { src: config.hcl.j2, dst: "{{ vault_config_folder }}/config.hcl" }
   tags:
     - vault
 
