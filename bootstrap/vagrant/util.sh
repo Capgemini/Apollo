@@ -12,6 +12,7 @@ verify_prereqs() {
 }
 
 apollo_launch() {
+  install_contributed_roles
   vagrant up --provision
   open_urls
 }

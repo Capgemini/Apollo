@@ -6,7 +6,7 @@
     delay: 10
 
 - name: destroy old marathon container
-  when: registrator_rebuild_container
+  when: registrator_rebuild_container|bool
   docker:
     name: registrator
     image: "{{ registrator_image }}"

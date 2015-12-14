@@ -7,7 +7,7 @@
     dest: "{{ serverspec_tests_path }}"
     recursive: yes
     delete: yes
-  when: serverspec_run_tests and serverspec_install_bundler and serverspec_upload_folder
+  when: serverspec_install_bundler|bool and serverspec_upload_folder|bool
   tags:
     - serverspec
 
@@ -17,7 +17,7 @@
     dest: "{{ serverspec_tests_path }}/tests/spec/marathon/marathon_runtime_spec.rb"
     mode: 0755
   sudo: yes
-  when: serverspec_run_tests and serverspec_upload_folder
+  when: serverspec_upload_folder|bool
   tags:
     - serverspec
 
@@ -26,7 +26,7 @@
   command: gem install bundler --no-ri --no-rdoc
   args:
     creates: /usr/local/bin/bundler
-  when: serverspec_run_tests and serverspec_install_bundler
+  when: serverspec_install_bundler|bool
   tags:
     - serverspec
 
@@ -36,7 +36,6 @@
   args:
     chdir: "{{ serverspec_tests_path }}/tests"
     creates: "{{ serverspec_tests_path }}/tests/vendor"
-  when: serverspec_run_tests
   tags:
     - serverspec
 
@@ -45,6 +44,6 @@
   command: "bundle exec rake serverspec:{{ test_role }}"
   args:
     chdir: "{{ serverspec_tests_path }}/tests"
-  when: test_role is defined and serverspec_run_tests
+  when: test_role is defined
   tags:
     - serverspec

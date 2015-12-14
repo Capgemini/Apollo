@@ -1,0 +1,4 @@
+dcos_cli_app_promdash_enabled: "{{ prometheus_enabled }}"
+dcos_cli_app_promdash_mem: 128
+dcos_cli_app_promdash_cpus: 0.5
+dcos_cli_app_promdash_instances: 1

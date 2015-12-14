@@ -33,7 +33,7 @@
   roles:
     - registrator
     - dnsmasq
-    - cadvisor
+    - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
@@ -42,7 +42,7 @@
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
-    - marathon
+    - { role: marathon, when: marathon_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 

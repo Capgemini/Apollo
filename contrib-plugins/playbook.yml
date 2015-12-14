@@ -1,4 +1,10 @@
 # Sample plugins playbook.
-- hosts: mesos_masters
-#  roles:
-#    - aurora
+- hosts: all:!role=bastion
+  tasks:
+    # https://github.com/DataDog/dd-agent/blob/master/conf.d/docker.yaml.example
+    - name: add dd-agent to docker group
+      sudo: Yes
+      command: "usermod -a -G docker dd-agent"
+      when: datadog_enabled|bool
+  roles:
+    - { role: datadog, when: datadog_enabled|bool }
