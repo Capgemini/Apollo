@@ -1,4 +1,5 @@
 # The following whitelist enables routes to Endor
 
 /locomotive
+/_endor
 
