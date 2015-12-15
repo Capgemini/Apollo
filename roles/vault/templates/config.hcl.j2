@@ -1,5 +1,5 @@
 backend "consul" {
-	address = "consul.service.{{ consul_domain }}:8500"
+	address = "127.0.0.1:8500"
 	path = "vault"
 	scheme = "http"
 	advertise_addr = "http://{{ vault_advertise_addr }}:{{ vault_port }}"
