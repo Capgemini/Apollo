@@ -1,7 +1,10 @@
 # The following whitelist enables routes to Endor
 
 /locomotive
-/assets
+/assets/locomotive
+/assets/font-awesome
 /steam/dynamic
 /endor
 
+# Group 1
+/feedback
