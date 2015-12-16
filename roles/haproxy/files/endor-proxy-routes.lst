@@ -1,7 +1,7 @@
 # The following whitelist enables routes to Endor
 
 /locomotive
-/assets/locomotive
+/assets
 /steam/dynamic
-/_endor
+/endor
 
