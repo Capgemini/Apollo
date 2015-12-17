@@ -1,0 +1,84 @@
+---
+
+# Performance tuning for many concurrent requests
+
+- name: increase ip_local_port_range for high traffic
+  sudo: yes
+  command: sysctl -w net.ipv4.ip_local_port_range="10000 65000"
+  tags:
+    - haproxy
+
+- name: increase ip_local_port_range for high traffic permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.ipv4.ip_local_port_range = 1024 65000"
+
+# http://pc-freak.net/blog/resolving-nf_conntrack-table-full-dropping-packet-flood-message-in-dmesg-linux-kernel-log/
+# default  /sbin/sysctl -a|grep -i nf_conntrack_max = 65536
+- name: increase nf_conntrack_max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.netfilter.nf_conntrack_max=131072"
+
+# nf_conntrack_max hashsize
+- name: increase nf_conntrack_max hashsize
+  sudo: yes
+  command: echo "32768" > /sys/module/nf_conntrack/parameters/hashsize
+  tags:
+    - haproxy
+
+# conntrack_generic_timeout
+- name: increase conntrack_generic_timeout permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.netfilter.nf_conntrack_generic_timeout=120"
+
+# ip_conntrack_tcp_timeout_established
+- name: increase ip_conntrack_tcp_timeout_established permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.netfilter.nf_conntrack_tcp_timeout_established=54000"
+
+# Increase number of incoming connections that can queue up
+# before dropping
+- name: increase nf_conntrack_max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.core.somaxconn=50000"
+
+# Handle SYN floods and large numbers of valid HTTPS connections
+- name: increase nf_conntrack_max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.ipv4.tcp_max_syn_backlog=30000"
+
+# Increase the length of the network device input queue
+- name: increase nf_conntrack_max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.core.netdev_max_backlog=5000"
+
+# Increase system file descriptor limit so we will (probably)
+# never run out under lots of concurrent requests.
+# (Per-process limit is set in /etc/security/limits.conf)
+- name: increase nf_conntrack_max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "fs.file-max=100000"
+
+# sysctl reload
+- name: sysctl reload
+  sudo: yes
+  command: sysctl -p
+  tags:
+    - haproxy
+
+# TCP/UDP Tunning for high b bandwith required

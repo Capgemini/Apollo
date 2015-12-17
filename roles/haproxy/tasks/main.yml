@@ -1,4 +1,7 @@
 ---
+
+- include: sysctl-tunning.yml
+
 # tasks file for haproxy
 - name: "assures {{ consul_template_dir }} dirs exists"
   file:

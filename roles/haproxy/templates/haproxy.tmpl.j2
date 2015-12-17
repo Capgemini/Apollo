@@ -1,13 +1,23 @@
 {% raw %}
 global
-    maxconn {{or (key "service/haproxy/maxconn") 256}}
-    debug
+    log /dev/log local0
+    maxconn {{or (key "service/haproxy/maxconn") 100000}}
+    tune.bufsize 16384
+    tune.maxrewrite 1024 #https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#3.2-tune.maxrewrite
 
 defaults
     mode http
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+    log global
+    option httplog
+    timeout connect {{or (key "service/haproxy/timeouts/connect") "15s"}}
+    timeout client {{or (key "service/haproxy/timeouts/client") "30s"}}
+    timeout server {{or (key "service/haproxy/timeouts/server") "30s"}}
+    timeout queue {{or (key "service/haproxy/timeouts/queue") "60s"}}
+    timeout tunnel {{or (key "service/haproxy/timeouts/tunnel") "15s"}}
+    timeout http-request {{or (key "service/haproxy/timeouts/http-request") "15s"}}
+    timeout http-keep-alive {{or (key "service/haproxy/timeouts/http-keep-alive") "15s"}}
+    option redispatch
+    balance roundrobin
 
 # https://www.datadoghq.com/blog/how-to-collect-haproxy-metrics/
 listen stats :9000
@@ -30,10 +40,10 @@ frontend haproxy_status
     monitor-uri /haproxy_status
     monitor fail if backend_dead
 
-frontend voting-demo-nodejs
+frontend nodejs-express
   bind *:90
   mode http
-  default_backend voting-demo-nodejs_backend
+  default_backend nodejs-express_backend
 
 frontend www
     bind *:80
