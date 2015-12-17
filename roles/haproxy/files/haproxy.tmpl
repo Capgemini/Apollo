@@ -10,7 +10,7 @@ defaults
     timeout connect {{or (key "service/haproxy/timeouts/connect") "5s"}}
     timeout client {{or (key "service/haproxy/timeouts/client") "50s"}}
     timeout server {{or (key "service/haproxy/timeouts/server") "50s"}}
-    timeout http-request 5s
+    timeout http-request {{or (key "service/haproxy/timeouts/http-request") "5s"}}
 
 # frontend used to return health status without requiring SSL
 frontend haproxy_status
