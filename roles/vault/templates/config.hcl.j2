@@ -1,0 +1,11 @@
+backend "consul" {
+	address = "127.0.0.1:8500"
+	path = "vault"
+	scheme = "http"
+	advertise_addr = "http://{{ vault_advertise_addr }}:{{ vault_port }}"
+}
+
+listener "tcp" {
+	address = "0.0.0.0:{{ vault_port }}"
+	tls_disable = 1
+}

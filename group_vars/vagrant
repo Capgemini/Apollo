@@ -9,6 +9,7 @@ frameworks_marathon_url: "http://{{ ansible_eth1.ipv4.address }}:8080"
 frameworks_mesos_master_url: "http://{{ ansible_eth1.ipv4.address }}:5050"
 
 registrator_uri: "consul://{{ ansible_eth1.ipv4.address }}:8500"
+vault_advertise_addr: "{{ ansible_eth1.ipv4.address }}"
 weave_launch_peers: "
   {%- set weave_peers = [] -%}
   {%- for host in groups[weave_server_group] -%}

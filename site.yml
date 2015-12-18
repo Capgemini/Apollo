@@ -25,6 +25,7 @@
         line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
+    - vault
     - docker
     - weave
 

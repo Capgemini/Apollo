@@ -1,0 +1,25 @@
+---
+- name: restart vault
+  sudo: yes
+  service:
+    name: vault
+    state: restarted
+    enabled: yes
+  tags:
+    - vault
+
+- name: reload vault
+  sudo: yes
+  service:
+    name: vault
+    state: reload
+    enabled: yes
+  tags:
+    - vault
+  notify:
+    - wait for vault to listen
+
+
+- name: wait for vault to listen
+  wait_for:
+    port: "{{ vault_default_port }}"

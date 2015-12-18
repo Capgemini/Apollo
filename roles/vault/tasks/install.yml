@@ -1,0 +1,51 @@
+- name: download vault binary
+  sudo: yes
+  get_url:
+    url: "{{ vault_url }}"
+    dest: /tmp/vault.zip
+    mode: 0755
+
+- name: uncompress vault
+  unarchive:
+    src: /tmp/vault.zip
+    dest: /usr/bin
+    copy: no
+
+- name: create vault config directory
+  file:
+    path: "{{ vault_config_folder }}"
+    state: directory
+    mode: 0755
+  sudo: yes
+  tags:
+    - vault
+
+- name: upload vault template config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    mode: 0755
+  sudo: yes
+  with_items:
+  - { src: vault.conf.j2, dst: '/etc/init/vault.conf' }
+  - { src: default.j2, dst: '/etc/default/vault' }
+  - { src: config.hcl.j2, dst: "{{ vault_config_folder }}/config.hcl" }
+  tags:
+    - vault
+
+- name: upload wait for vault leader script
+  sudo: yes
+  template:
+    src: wait-for-vault-leader.sh.j2
+    dest: "{{ vault_config_folder }}/wait-for-vault-leader.sh"
+    mode: 0755
+  tags:
+    - vault
+
+- name: Set vault consul service definition
+  sudo: yes
+  template:
+    src: vault-consul.j2
+    dest: "{{ vault_consul_dir }}/vault.json"
+  notify:
+    - restart consul
