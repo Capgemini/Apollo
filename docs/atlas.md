@@ -39,3 +39,16 @@ The build will probably fail first time, this will be due to Atlas not having yo
 Once your build is completed there should be a new artifact under https://atlas.hashicorp.com/YOUR_ORGANISATION/artifacts/apollo-ubuntu-14.04-amd64
 
 The same steps apply if you want to create your own build configuration / artifacts for AWS/Google.
+
+### Consul integration
+
+For integrating your Consul cluster with Atlas you need to export these environment variables before deploying Apollo.
+
+```
+export APOLLO_consul_atlas_infrastructure=your-infrastrucutre-name
+export APOLLO_consul_atlas_join=true
+export APOLLO_consul_atlas_token=${ATLAS_TOKEN}
+```
+
+See https://www.consul.io/docs/guides/atlas.html
+
