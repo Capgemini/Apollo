@@ -3,6 +3,8 @@ resource "aws_elb" "web" {
 
   subnets = ["${aws_subnet.public.*.id}"]
 
+  security_groups = ["${aws_security_group.default.id}"]
+
   listener {
     instance_port     = 80
     instance_protocol = "http"
