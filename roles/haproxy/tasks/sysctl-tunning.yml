@@ -1,78 +1,31 @@
 ---
 
 # Performance tuning for many concurrent requests
-
-- name: increase ip_local_port_range for high traffic
-  sudo: yes
-  command: sysctl -w net.ipv4.ip_local_port_range="10000 65000"
-  tags:
-    - haproxy
-
+# http://pc-freak.net/blog/resolving-nf_conntrack-table-full-dropping-packet-flood-message-in-dmesg-linux-kernel-log/
 - name: increase ip_local_port_range for high traffic permanently
   sudo: yes
   lineinfile:
     dest: /etc/sysctl.conf
-    line: "net.ipv4.ip_local_port_range = 1024 65000"
-
-# http://pc-freak.net/blog/resolving-nf_conntrack-table-full-dropping-packet-flood-message-in-dmesg-linux-kernel-log/
-# default  /sbin/sysctl -a|grep -i nf_conntrack_max = 65536
-- name: increase nf_conntrack_max permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.netfilter.nf_conntrack_max=131072"
-
-# nf_conntrack_max hashsize
-- name: increase nf_conntrack_max hashsize
-  sudo: yes
-  command: echo "32768" > /sys/module/nf_conntrack/parameters/hashsize
-  tags:
-    - haproxy
-
-# conntrack_generic_timeout
-- name: increase conntrack_generic_timeout permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.netfilter.nf_conntrack_generic_timeout=120"
-
-# ip_conntrack_tcp_timeout_established
-- name: increase ip_conntrack_tcp_timeout_established permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.netfilter.nf_conntrack_tcp_timeout_established=54000"
-
-# Increase number of incoming connections that can queue up
-# before dropping
-- name: increase nf_conntrack_max permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.core.somaxconn=50000"
-
-# Handle SYN floods and large numbers of valid HTTPS connections
-- name: increase nf_conntrack_max permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.ipv4.tcp_max_syn_backlog=30000"
-
-# Increase the length of the network device input queue
-- name: increase nf_conntrack_max permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "net.core.netdev_max_backlog=5000"
-
-# Increase system file descriptor limit so we will (probably)
-# never run out under lots of concurrent requests.
-# (Per-process limit is set in /etc/security/limits.conf)
-- name: increase nf_conntrack_max permanently
-  sudo: yes
-  lineinfile:
-    dest: /etc/sysctl.conf
-    line: "fs.file-max=100000"
+    line: "{{ item }}"
+  with_items:
+    - net.ipv4.ip_local_port_range=1024 65000
+    - net.netfilter.nf_conntrack_max=500000
+    - net.netfilter.nf_conntrack_generic_timeout=120
+    - net.netfilter.nf_conntrack_tcp_timeout_established=54000
+    # - net.core.somaxconn=50000
+    # - net.ipv4.tcp_max_syn_backlog=30000
+    # - net.core.netdev_max_backlog=5000
+    - fs.file-max=1000000
+    - fs.nr_open= 1000000
+    # - net.core.rmem_max = 33554432
+    # - net.core.wmem_max = 33554432
+    - net.ipv4.tcp_rmem = 4096 16384 33554432
+    - net.ipv4.tcp_wmem = 4096 16384 33554432
+    - net.ipv4.tcp_mem = 786432 1048576 26777216
+    # - net.ipv4.tcp_max_tw_buckets = 360000
+    # - net.core.netdev_max_backlog = 2500
+    # - vm.min_free_kbytes = 65536
+    # - vm.swappiness = 0
 
 # sysctl reload
 - name: sysctl reload
@@ -81,4 +34,23 @@
   tags:
     - haproxy
 
+# nf_conntrack_max hashsize
+- name: increase nf_conntrack_max hashsize
+  sudo: yes
+  command: echo 262144 > /sys/module/nf_conntrack/parameters/hashsize
+  tags:
+    - haproxy
+
+- name: increase file-max permanently
+  sudo: yes
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: "{{ item }}"
+  with_items:
+    - root soft nofile 1000000
+    - root hard nofile 1000000
+    - "* soft nofile 1000000"
+    - "* hard nofile 1000000"
+
 # TCP/UDP Tunning for high b bandwith required
+

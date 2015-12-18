@@ -1,21 +1,25 @@
 {% raw %}
 global
     log /dev/log local0
-    maxconn {{or (key "service/haproxy/maxconn") 100000}}
-    tune.bufsize 16384
-    tune.maxrewrite 1024 #https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#3.2-tune.maxrewrite
+    maxconn {{or (key "service/haproxy/maxconn") 1000000}}
+    nbproc 4
+    cpu-map 1 0
+    cpu-map 2 1
+    cpu-map 3 2
+    cpu-map 4 3
 
 defaults
     mode http
+    maxconn 2000
     log global
     option httplog
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "15s"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "30s"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "30s"}}
+    timeout connect {{or (key "service/haproxy/timeouts/connect") "30s"}}
+    timeout client {{or (key "service/haproxy/timeouts/client") "60s"}}
+    timeout server {{or (key "service/haproxy/timeouts/server") "60s"}}
     timeout queue {{or (key "service/haproxy/timeouts/queue") "60s"}}
-    timeout tunnel {{or (key "service/haproxy/timeouts/tunnel") "15s"}}
-    timeout http-request {{or (key "service/haproxy/timeouts/http-request") "15s"}}
-    timeout http-keep-alive {{or (key "service/haproxy/timeouts/http-keep-alive") "15s"}}
+    timeout tunnel {{or (key "service/haproxy/timeouts/tunnel") "30s"}}
+    timeout http-request {{or (key "service/haproxy/timeouts/http-request") "30s"}}
+    timeout http-keep-alive {{or (key "service/haproxy/timeouts/http-keep-alive") "30s"}}
     option redispatch
     balance roundrobin
 
@@ -40,13 +44,12 @@ frontend haproxy_status
     monitor-uri /haproxy_status
     monitor fail if backend_dead
 
-frontend nodejs-express
-  bind *:90
-  mode http
-  default_backend nodejs-express_backend
-
 frontend www
     bind *:80
+    maxconn 30000
+    mode http
+    bind-process 1 2 3 4
+    default_backend nodejs-express_backend
 
     # Generated automatically by consul-template
 {{range services}}
