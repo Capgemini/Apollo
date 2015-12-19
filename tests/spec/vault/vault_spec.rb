@@ -9,11 +9,11 @@ describe service('vault') do
 end
 
 describe command("curl -L -k http://localhost:8200/v1/sys/init") do
-  its(:stdout) { should match '.*"initialized":"true".*' }
+  its(:stdout) { should match '{\"initialized\":true}\n' }
   its(:exit_status) { should eq 0 }
 end
 
 describe command("curl -L -k http://localhost:8200/v1/sys/seal-status") do
-  its(:stdout) { should match '.*"sealed":"false".*' }
+  its(:stdout) { should match '{\"sealed\":false,\"t\":3,\"n\":5,\"progress\":0}\n' }
   its(:exit_status) { should eq 0 }
 end
