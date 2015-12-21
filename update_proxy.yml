@@ -1,5 +1,5 @@
 ---
-# deploy_haproxy.yml - A playbook for safely rolling out updates to HAProxy
+# update_proxy.yml - A playbook for safely rolling out updates to HAProxy
 - hosts: load_balancers
   serial: 1
   environment:
