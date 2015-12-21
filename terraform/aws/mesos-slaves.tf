@@ -62,6 +62,8 @@ resource "aws_elb" "app" {
 
   instances = ["${aws_instance.mesos-slave.*.id}"]
   cross_zone_load_balancing = true
+  connection_draining = true
+  connection_draining_timeout = 300
 }
 
 resource "aws_proxy_protocol_policy" "http" {
