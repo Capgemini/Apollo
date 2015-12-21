@@ -4,10 +4,8 @@
   serial: 1
   environment:
     DOCKER_HOST: "{{ docker_host }}"
-
   pre_tasks:
       - action: ec2_facts
-
       - name: "De-register slave with load balancer"
         local_action:
           module: ec2_elb
@@ -16,13 +14,9 @@
           wait: yes
         sudo: false
         register: old_ec2_elbs 
-
   roles:
     - { role: haproxy, tags: ["haproxy"] }
-
   post_tasks: 
-      - debug: msg="{{ old_ec2_elbs }}"
-
       - name: "Register slave with load balancer"
         local_action:
           module: ec2_elb
