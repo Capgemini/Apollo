@@ -134,7 +134,7 @@ ansible_playbook_run() {
       consul_atlas_token=${ATLAS_TOKEN} \
       $( get_apollo_variables  APOLLO_)" \
     ${ANSIBLE_EXARGS:-} \
-    --sudo site.yml
+    --sudo ${1-site.yml}
   popd
 }
 
