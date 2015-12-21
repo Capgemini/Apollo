@@ -1,0 +1,33 @@
+---
+# deploy_haproxy.yml - A playbook for safely rolling out updates to HAProxy
+- hosts: load_balancers
+  serial: 1
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+  pre_tasks:
+      - action: ec2_facts
+
+      - name: "De-register slave with load balancer"
+        local_action:
+          module: ec2_elb
+          instance_id: "{{ ansible_ec2_instance_id }}"
+          state: absent
+          wait: yes
+        sudo: false
+        register: old_ec2_elbs 
+
+  roles:
+    - { role: haproxy, tags: ["haproxy"] }
+
+  post_tasks: 
+      - debug: msg="{{ old_ec2_elbs }}"
+
+      - name: "Register slave with load balancer"
+        local_action:
+          module: ec2_elb
+          ec2_elbs: "{{ old_ec2_elbs.ansible_facts.ec2_elbs }}"
+          instance_id: "{{ ansible_ec2_instance_id }}"
+          state: present 
+          wait: yes
+        sudo: false 
