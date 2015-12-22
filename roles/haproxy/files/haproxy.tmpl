@@ -1,7 +1,6 @@
 global
     maxconn {{or (key "service/haproxy/maxconn") 2048}}
-    log /dev/log local0
-    debug
+    log /dev/log local0 debug
     tune.ssl.default-dh-param 2048
 
 defaults
@@ -39,6 +38,39 @@ frontend www-http
 
 frontend www-https
     bind *:443 ssl crt {{ env "SSL_CERT" }} ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK no-sslv3
+
+    # todo: route logs through a logging front/backend to capture all headers and cookies
+    # %pid: process ID of HAProxy
+    # %Ts.%ms: unix timestamp + milliseconds
+    # %ac: total number of concurrent connections
+    # %fc: total number of concurrent connections on the frontend
+    # %bc: total number of concurrent connections on the backend
+    # %bq: queue size of the backend
+    # %sc: total number of concurrent connections on the server
+    # %sq: queue size of the server
+    # %rc: connection retries to the server
+    # %Tq: total time to get the client request (HTTP mode only)
+    # %Tw: total time spent in the queues waiting for a connection slot
+    # %Tc: total time to establish the TCP connection to the server
+    # %Tr: server response time (HTTP mode only)
+    # %Tt: total session duration time, between the moment the proxy accepted it and the moment both ends were closed.
+    # %tsc: termination state (see 8.5. Session state at disconnection)
+    # %ci:%cp: client IP and Port
+    # %fi:%fp: frontend IP and Port
+    # %si:%sp: server IP and Port
+    # %ft: transport type of the frontend (with a ~ suffix for SSL)
+    # %sslc %sslv: SSL cipher and version
+    # %{+Q}r: HTTP request, between double quotes
+    # %ST: HTTP status code
+    # %b:%s: backend name and server name
+    # %CC: captured request cookies
+    # %hr: captured request headers
+    # %CS: captured response cookies
+    # %hs: captured response headers
+    # %U: bytes read from the client (request size)
+    # %B: bytes read from server to client (response size)
+    log-format [%pid]\ [%Ts.%ms]\ %ac/%fc/%bc/%bq/%sc/%sq/%rc\ %Tq/%Tw/%Tc/%Tr/%Tt\ %tsc\ %ci:%cp\ %fi:%fp\ %si:%sp\ %ft\ %sslc\ %sslv\ %{+Q}r\ %ST\ %b:%s\ "%CC"\ "%hr"\ "%CS"\ "%hs"\ req_size=%U\ resp_size=%B
+    log global
 
     option forwardfor
     option http-server-close

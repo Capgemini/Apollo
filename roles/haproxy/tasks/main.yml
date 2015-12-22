@@ -64,6 +64,8 @@
     --net=host 
     --restart=always 
     --log-driver=syslog
+    --log-opt syslog-facility=daemon
+    --log-opt tag=haproxy
     -p 0.0.0.0:80:80/tcp
     -p 0.0.0.0:34180:34180/tcp
     -e HAPROXY_DOMAIN="{{ haproxy_domain }}"
