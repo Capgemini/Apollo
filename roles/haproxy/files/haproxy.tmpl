@@ -37,9 +37,24 @@ frontend www-http
     redirect scheme https if !{ ssl_fc }
 
 frontend www-https
-    bind *:443 ssl crt {{ env "SSL_CERT" }} ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK no-sslv3
+    bind *:443 accept-proxy ssl crt {{ env "SSL_CERT" }} ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK no-sslv3
 
-    # todo: route logs through a logging front/backend to capture all headers and cookies
+    option forwardfor
+    option http-server-close
+    reqadd X-Forwarded-Proto:\ https
+
+    # X-Unique-ID header in requests
+    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
+    unique-id-header X-Unique-ID
+
+# TAG: UNCOMMENT TO TURN ON FULL LOGGING
+#    # route through logger
+#    no log
+#    default_backend logger
+#
+#frontend logger
+#    bind localhost:55555 accept-proxy
+
     # %pid: process ID of HAProxy
     # %Ts.%ms: unix timestamp + milliseconds
     # %ac: total number of concurrent connections
@@ -56,7 +71,6 @@ frontend www-https
     # %Tt: total session duration time, between the moment the proxy accepted it and the moment both ends were closed.
     # %tsc: termination state (see 8.5. Session state at disconnection)
     # %ci:%cp: client IP and Port
-    # %fi:%fp: frontend IP and Port
     # %si:%sp: server IP and Port
     # %ft: transport type of the frontend (with a ~ suffix for SSL)
     # %sslc %sslv: SSL cipher and version
@@ -69,17 +83,15 @@ frontend www-https
     # %hs: captured response headers
     # %U: bytes read from the client (request size)
     # %B: bytes read from server to client (response size)
-    log-format [%pid]\ [%Ts.%ms]\ %ac/%fc/%bc/%bq/%sc/%sq/%rc\ %Tq/%Tw/%Tc/%Tr/%Tt\ %tsc\ %ci:%cp\ %fi:%fp\ %si:%sp\ %ft\ %sslc\ %sslv\ %{+Q}r\ %ST\ %b:%s\ "%CC"\ "%hr"\ "%CS"\ "%hs"\ req_size=%U\ resp_size=%B
+    log-format [%pid]\ [%Ts.%ms]\ %ac/%fc/%bc/%bq/%sc/%sq/%rc\ %Tq/%Tw/%Tc/%Tr/%Tt\ %tsc\ %ci:%cp\ %si:%sp\ %ft\ %sslc\ %sslv\ %{+Q}r\ %ST\ %b:%s\ "%CC"\ "%hr"\ "%CS"\ "%hs"\ req_size=%U\ resp_size=%B
     log global
 
-    option forwardfor
-    option http-server-close
-    reqadd X-Forwarded-Proto:\ https
-
-    # X-Unique-ID header in requests
-    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
-    unique-id-header X-Unique-ID
-
+# TAG: UNCOMMENT TO TURN ON FULL LOGGING
+#    capture request header Referrer len 64
+#    capture request header Content-Length len 10
+#    capture request header User-Agent len 64
+#    capture request header X-Haproxy-ACL len 256
+#    capture request header X-Unique-ID len 64
 
     # GAE Proxy
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
@@ -100,6 +112,9 @@ frontend www-https
     use_backend {{.Name}}_backend if host_{{.Name}}
     {{end}}{{end}}{{end}}
 
+# TAG: UNCOMMENT TO TURN ON FULL LOGGING
+#backend logger
+#    server localhost localhost:55555 send-proxy
 
 # ProxyPass / ReverseProxyPass to GAE
 backend gae_backend

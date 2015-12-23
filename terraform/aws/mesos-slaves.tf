@@ -68,5 +68,5 @@ resource "aws_elb" "app" {
 
 resource "aws_proxy_protocol_policy" "http" {
   load_balancer = "${aws_elb.app.name}"
-  instance_ports = ["80"]
+  instance_ports = ["80", "443"]
 }
