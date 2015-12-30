@@ -23,8 +23,8 @@ frontend haproxy_status
     monitor-uri /haproxy_status
     monitor fail if backend_dead
 
-listen stats 127.0.0.1:9000
-    mode http
+listen stats
+    bind 127.0.0.1:9000
     stats enable
     stats uri /haproxy?stats
     stats realm Haproxy\ Statistics
@@ -48,6 +48,9 @@ frontend www-https
     unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
     unique-id-header X-Unique-ID
 
+    # Gzip
+    compression algo gzip
+    compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
 
     # GAE Proxy
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
@@ -67,7 +70,6 @@ frontend www-https
     acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
     use_backend {{.Name}}_backend if host_{{.Name}}
     {{end}}{{end}}{{end}}
-
 
 # ProxyPass / ReverseProxyPass to GAE
 backend gae_backend
