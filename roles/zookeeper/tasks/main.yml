@@ -1,6 +1,3 @@
----
-
-# Generate config files in the host
 - name: create zookeeper config directory
   file:
     path: "{{ zookeeper_config_dir }}"
@@ -11,31 +8,20 @@
   tags:
     - zookeeper
 
-- name: Create zookeeper config file
+- name: Create zookeeper config files
   template:
-    src: zoo.cfg.j2
-    dest: "{{ zookeeper_config_dir }}/zoo.cfg"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
   sudo: yes
-  notify:
-    - restart zookeeper
-  tags:
-    - zookeeper
-
-- name: Create zookeeper environments file
-  template:
-    src: environment.j2
-    dest: "{{ zookeeper_config_dir }}/environment"
-  sudo: yes
-  notify:
-    - restart zookeeper
-  tags:
-    - zookeeper
-
-- name: Create zookeeper configuration.xsl file
-  template:
-    src: configuration.xsl.j2
-    dest: "{{ zookeeper_config_dir }}/configuration.xsl"
-  sudo: yes
+  with_items:
+    - src: zoo.cfg.j2
+      dest: "{{ zookeeper_config_dir }}/zoo.cfg"
+    - src: environment.j2
+      dest: "{{ zookeeper_config_dir }}/environment"
+    - src: configuration.xsl.j2
+      dest: "{{ zookeeper_config_dir }}/configuration.xsl"
+    - src: log4j.properties.j2
+      dest: "{{ zookeeper_config_dir }}/log4j.properties"
   notify:
     - restart zookeeper
   tags:
@@ -52,66 +38,22 @@
   tags:
     - zookeeper
 
-- name: Create zookeeper log4j file
-  template:
-    src: log4j.properties.j2
-    dest: "{{ zookeeper_config_dir }}/log4j.properties"
+- name: deploy zookeeper service
   sudo: yes
+  sudo_user: root
+  template:
+    src: zookeeper.service.j2
+    dest: /etc/systemd/system/zookeeper.service
   notify:
     - restart zookeeper
   tags:
     - zookeeper
 
-- name: Set Zookeeper consul service definition
-  sudo: yes
-  template:
-    src: zookeeper-consul.j2
-    dest: "{{ consul_dir }}/zookeeper.json"
-  notify:
-    - restart consul
-  tags:
-    - zookeeper
-
-- name: destroy old zookeeper container
-  when: zookeeper_rebuild_container|bool
-  docker:
-    name: zookeeper
-    image: "{{ zookeeper_image }}"
-    state: absent
-  tags:
-    - zookeeper
-
-- name: run zookeeper container
-  docker:
-    name: zookeeper
-    image: "{{ zookeeper_image }}"
-    state: started
-    volumes:
-    - "{{ zookeeper_config_dir }}/:{{ zookeeper_config_dir }}/"
-    ports:
-    - "{{ zookeeper_client_port }}:{{ zookeeper_client_port }}"
-    - "{{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_connect_port }}"
-    - "{{ zookeeper_leader_election_port }}:{{ zookeeper_leader_election_port }}"
-    net: "host"
-    command: /usr/share/zookeeper/bin/zkServer.sh start-foreground
-  tags:
-    - zookeeper
-
-- name: upload zookeeper template service
-  template:
-    src: zookeeper.conf.j2
-    dest: /etc/init/zookeeper.conf
-    mode: 0755
-  sudo: yes
-  tags:
-    - zookeeper
-
-- name: ensure zookeeper is running (and enable it at boot)
+- name: enable zookeeper
   sudo: yes
   service:
     name: zookeeper
-    state: started
     enabled: yes
+    state: started
   tags:
     - zookeeper
-

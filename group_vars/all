@@ -35,4 +35,4 @@ datadog_config:
   tags: "{{ mesos_cluster_name }}"
   log_level: INFO
 
-
+coreos_timezone: 'Europe/London'

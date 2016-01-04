@@ -1,18 +1,6 @@
 ---
 # Tasks for Master nodes
-- name: set mesos-master consul service definition
-  when: mesos_install_mode == "master"
-  sudo: yes
-  template:
-    src: mesos-master-consul.j2
-    dest: "{{ consul_dir }}/mesos-master.json"
-  notify:
-    - restart consul
-  tags:
-    - mesos-master
-
 - name: create mesos-master work directory
-  when: mesos_install_mode == "master"
   file:
     path: "{{ mesos_master_work_dir }}"
     state: directory
@@ -21,49 +9,18 @@
   tags:
     - mesos-master
 
-- name: destroy old mesos-master container
-  when: mesos_master_rebuild_container|bool
-  docker:
-    name: mesos-master
-    image: "{{ mesos_master_image }}"
-    state: absent
-  tags:
-    - mesos-master
-
-- name: run mesos-master container
-  when: mesos_install_mode == "master"
-  docker:
-    name: mesos-master
-    image: "{{ mesos_master_image }}"
-    state: started
-    volumes:
-    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
-    ports:
-    - "{{ mesos_master_port }}:{{ mesos_master_port }}"
-    net: "host"
-    env:
-      MESOS_HOSTNAME: "{{ mesos_hostname }}"
-      MESOS_IP: "{{ mesos_ip }}"
-      MESOS_CLUSTER: "{{ mesos_cluster_name }}"
-      MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
-      MESOS_LOG_DIR: "/var/log/mesos"
-      MESOS_QUORUM: "{{ mesos_quorum }}"
-      MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
-  tags:
-    - mesos-master
-
-- name: upload mesos-master template service
-  when: mesos_install_mode == "master"
-  template:
-    src: mesos-master.conf.j2
-    dest: /etc/init/mesos-master.conf
-    mode: 0755
+- name: deploy mesos-master service
   sudo: yes
+  sudo_user: root
+  template:
+    src: mesos-master.service.j2
+    dest: "/etc/systemd/system/mesos-master.service"
+  notify:
+    - restart mesos master
   tags:
     - mesos-master
 
 - name: ensure mesos-master is running (and enable it at boot)
-  when: mesos_install_mode == "master"
   sudo: yes
   service:
     name: mesos-master
@@ -72,29 +29,29 @@
   tags:
     - mesos-master
 
-- name: run prometheus mesos master exporter container
-  when: mesos_install_mode == "master" and prometheus_enabled|bool
-  docker:
-    name: mesos-exporter
-    image: "{{ prometheus_mesos_exporter_image }}"
-    command: "-exporter.scrape-mode=master -exporter.url=http://{{ mesos_hostname }}:{{ mesos_master_port }}"
-    state: started
-    restart_policy: always
-    ports:
-    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
-  environment: proxy_env
-  tags:
-    - prometheus
-    - mesos_master
+#- name: run prometheus mesos master exporter container
+#  when: mesos_install_mode == "master" and prometheus_enabled|bool
+#  docker:
+#    name: mesos-exporter
+#    image: "{{ prometheus_mesos_exporter_image }}"
+#    command: "-exporter.scrape-mode=master -exporter.url=http://{{ mesos_hostname }}:{{ mesos_master_port }}"
+#    state: started
+#    restart_policy: always
+#    ports:
+#    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
+#  environment: proxy_env
+#  tags:
+#    - prometheus
+#    - mesos_master
 
-- name: Set mesos-exporter consul service definition
-  when: mesos_install_mode == "master" and prometheus_enabled|bool
-  sudo: yes
-  template:
-    src: mesos-exporter-consul.j2
-    dest: "{{ consul_dir }}/mesos-exporter.json"
-  notify:
-    - restart consul
-  tags:
-    - prometheus
-    - mesos_master
+#- name: Set mesos-exporter consul service definition
+#  when: mesos_install_mode == "master" and prometheus_enabled|bool
+#  sudo: yes
+#  template:
+#    src: mesos-exporter-consul.j2
+#    dest: "{{ consul_dir }}/mesos-exporter.json"
+#  notify:
+#    - restart consul
+#  tags:
+#    - prometheus
+#    - mesos_master
