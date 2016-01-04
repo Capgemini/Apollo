@@ -1,10 +1,27 @@
 ---
-- name: upload weave template service
-  template:
-    src: weave.conf.j2
-    dest: "/etc/init/weave.conf"
-    mode: 0755
+- name: download weave
   sudo: yes
+  sudo_user: root
+  get_url:
+    url: "{{ weave_url }}"
+    dest: "{{ weave_bin }}"
+    mode: 0755
+    validate_certs: no
+  environment: proxy_env
+  tags:
+    - weave
+
+- name: deploy weave service
+  sudo: yes
+  sudo_user: root
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: "weave.service.j2"
+      dest: "/etc/systemd/system/weave.service"
+    - src: "weaveproxy.service.j2"
+      dest: "/etc/systemd/system/weaveproxy.service"
   tags:
     - weave
 
@@ -14,14 +31,22 @@
     name: weave
     state: started
     enabled: yes
+  tags:
+    - weave
+
+- name: ensure weaveproxy service is running.
+  sudo: yes
+  service:
+    name: weaveproxy
+    state: started
+    enabled: yes
+  tags:
+    - weave
 
 - name: wait for weave socket to be ready.
   wait_for:
     port: 6783
     delay: 10
-
-- include: scope.yml
-  when: weave_scope_enabled|bool
 
 # Flush handlers so we restart the Docker process here with the weave network
 # enabled and containers correctly start in the weave network.

@@ -1,5 +1,6 @@
 ---
 # handlers file for consul
+# @todo - handle restarts properly (choose one approach here)
 - name: restart consul
   service:
     name: consul
@@ -12,3 +13,7 @@
   wait_for:
     host: "{{ consul_bind_addr }}"
     port: 8500
+
+- name: restart consul systemd
+  sudo: yes
+  command: systemctl restart consul

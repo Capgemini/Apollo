@@ -1,2 +1,5 @@
 - include: master.yml
+  when: mesos_install_mode == "master"
+
 - include: slave.yml
+  when: mesos_install_mode == "slave"

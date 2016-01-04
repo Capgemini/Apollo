@@ -1,7 +1,7 @@
 masters:
   # Memory and Cpus setting
   ##########################
-  mem: 512
+  mem: 1024
   cpus: 1
   # Actual instances
   ##################
@@ -25,3 +25,5 @@ mesos_master_quorum: 2
 # Expected number of server nodes
 # For standalone mode is always 1
 consul_bootstrap_expect: 3
+
+coreos_update_channel: stable

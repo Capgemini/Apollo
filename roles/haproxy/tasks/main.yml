@@ -1,6 +1,7 @@
 ---
 # tasks file for haproxy
 - name: "assures {{ consul_template_dir }} dirs exists"
+  sudo: yes
   file:
     path: "{{ consul_template_dir }}/{{ item.path }}"
     state: directory
