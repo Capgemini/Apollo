@@ -22,11 +22,8 @@ describe service('marathon') do
   it { should be_running.under('upstart') }
 end
 
-describe command("curl -s -XPOST 127.0.0.1:8080/v2/apps -d@spec/marathon/sample.json -H \"Content-Type: application/json\" && sleep 10") do
+describe command("curl -s -XPOST 127.0.0.1:8080/v2/apps -d@spec/marathon/sample.json -H \"Content-Type: application/json\" && sleep 240") do
   its(:exit_status) { should eq 0 }
-  it {
-    sleep(240) #Wait for the task to execute
-  }
 end
 
 describe command("curl -s 127.0.0.1:8080/v2/apps/serverspecs-app") do
