@@ -1,7 +1,2 @@
 ---
-# handlers file for docker
-- name: restart zookeeper
-  service:
-    name: zookeeper
-    state: restarted
-  sudo: yes
+# handlers

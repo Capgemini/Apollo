@@ -1,8 +1,7 @@
 {% raw %}
 global
     maxconn {{or (key "service/haproxy/maxconn") 256}}
-    debug
-    log 127.0.0.1 local0
+    log /dev/log local0 info
 
 defaults
     mode http

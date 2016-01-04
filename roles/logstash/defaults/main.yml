@@ -5,7 +5,7 @@ lumberjack_restart_policy: 'always'
 lumberjack_version: latest
 lumberjack_net: 'bridge'
 lumberjack_hostname: "{{ ansible_ssh_host }}"
-lumberjack_image: "wallies/logstash-forwarder:{{ lumberjack_version }}"
+lumberjack_image: "digitalwonderland/logstash-forwarder:{{ lumberjack_version }}"
 lumberjack_host_port: 5043
 lumberjack_consul_service_id: "{{ ansible_hostname }}:lumberjack:{{ lumberjack_host_port }}"
 lumberjack_rebuild_container: false
@@ -24,5 +24,5 @@ dcos_cli_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
 dcos_cli_marathon_url: "http://{{ ansible_ssh_host }}:8080"
 dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip", "https://github.com/mesosphere/multiverse/archive/version-1.x.zip"]'
 dcos_cli_apps_list:
-  - logstash
-  - kibana
+  - { name: logstash, type: app }
+  - { name: kibana, type: app }

@@ -22,3 +22,10 @@
   wait_for:
     port: 6783
     delay: 10
+
+- name: restart zookeeper
+  service:
+    name: zookeeper
+    state: restarted
+  sudo: yes
+
