@@ -23,3 +23,4 @@ zookeeper_id: "
 "
 consul_dir: /etc/consul.d
 zookeeper_rebuild_container: false
+syslog_host: logstash-4560.service.{{ consul_domain }}

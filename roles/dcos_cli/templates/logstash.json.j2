@@ -1,0 +1,57 @@
+{
+  "id": "logstash",
+  "cmd": "/bin/bash -c \"/opt/logstash/bin/plugin install logstash-input-salesforce; logstash -f {{ dcos_cli_app_logstash_config_dir }}/logstash.conf\"",
+  "instances": {{ dcos_cli_app_logstash_instances }},
+  "cpus": {{ dcos_cli_app_logstash_cpus }},
+  "mem": {{ dcos_cli_app_logstash_mem }},
+  "labels": {
+    "DCOS_PACKAGE_NAME": "logstash",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "true"
+  },
+  "env": {
+    "SERVICE_NAME": "logstash"
+  },
+  "healthChecks": [
+    {
+      "portIndex": 0,
+       "protocol": "COMMAND",
+       "command": { "value": "nc -z {{ logstash_lumberjack_host }} 5043" },
+       "gracePeriodSeconds": 50,
+       "intervalSeconds": 60,
+       "timeoutSeconds": 20,
+       "maxConsecutiveFailures": 3
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "{{ dcos_cli_app_logstash_config_dir }}",
+        "hostPath": "{{ dcos_cli_app_logstash_config_dir }}",
+        "mode": "RO"
+      }
+    ],
+    "docker": {
+      "image": "{{ dcos_cli_app_logstash_image }}:{{ dcos_cli_app_logstash_image_tag }}",
+      "network": "BRIDGE",
+      "parameters": [
+        {"key":"publish", "value": "5043:5043"},
+        {"key":"publish", "value": "4560:4560"}
+      ],
+      "portMappings": [
+        {
+          "containerPort": 5043,
+          "servicePort": 5043,
+          "hostPort": 0,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 4560,
+          "servicePort": 4560,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  }
+}

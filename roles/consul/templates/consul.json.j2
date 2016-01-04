@@ -13,6 +13,10 @@
   "server": true,
   "bootstrap_expect": {{ consul_bootstrap_expect }},
 {% endif %}
+{% if consul_syslog %}
+  "enable_syslog": true
+{% endif %}
   "data_dir": "/var/lib/consul",
-  "ui_dir": "/opt/consul-ui"
+  "ui_dir": "/opt/consul-ui",
+  "recursors": [ {{ consul_retry_join }} ]
 }

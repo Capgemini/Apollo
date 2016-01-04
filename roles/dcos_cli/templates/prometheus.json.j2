@@ -3,7 +3,7 @@
     "type": "DOCKER",
     "docker": {
       "network": "BRIDGE",
-      "image": "{{ prometheus_image }}:{{ prometheus_image_tag }}",
+      "image": "{{ dcos_cli_app_prometheus_image }}:{{ dcos_cli_app_prometheus_image_tag }}",
       "portMappings": [{"containerPort": 9090, "hostPort": 0, "protocol": "tcp"}]
     },
     "volumes": [{

@@ -67,6 +67,12 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
+- hosts: log_servers
+  roles:
+    - { role: logstash, when: elk_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
 - include: tests/test.yml
   vars_files:
     - ../roles/marathon/defaults/main.yml
