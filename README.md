@@ -76,6 +76,15 @@ to help you get familiar with the codebase.
 
 If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
 
+**NOTE**
+
+Master branch is currently only be receiving bugfixes and minor changes. We are in the process of moving the platform operating system from Ubuntu to CoreOS.
+Major changes and feature updates will be going into the devel branch.
+
+You can track the latest development changes via the [coreos label](https://github.com/Capgemini/Apollo/labels/coreos)
+
+Once the devel branch has been stabilised on CoreOS we will plan to merge that into master.
+
 ## Keep up to date...
 
 Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to find out more about how Apollo works and its new features.
@@ -83,4 +92,3 @@ Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to fi
 * [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
 * [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
 * [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
-
