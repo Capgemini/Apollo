@@ -82,6 +82,9 @@ backend gae_backend
     # TODO (Angel): Proxy pass cookies
     server gae {{env "GAE_SUBDOMAIN"}}.udacity.com:443 ssl verify none
 
+    # Inject X-Berlioz-Country header with two-letter country code (see NI-461)
+    http-request set-header X-Berlioz-Country %[src,map_ip(/etc/haproxy/geolocation.txt)]
+
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
 {{range service .Name}}
