@@ -16,4 +16,4 @@ marathon_rebuild_container: False
 marathon_image: "mesosphere/marathon:v{{ marathon_version }}"
 marathon_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 marathon_zk_peers: "zk://{{ zookeeper_peers_nodes }}/marathon"
-marathon_command: "--artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"
+marathon_command: "--event_subscriber http_callback --artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"

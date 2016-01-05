@@ -4,7 +4,6 @@
   "node_name": "{{ consul_node_name }}",
   "domain": "{{ consul_domain }}",
   "rejoin_after_leave": true,
-  "bind_addr": "{{ consul_bind_addr }}",
   "client_addr": "{{ consul_client_addr }}",
 {% if consul_bootstrap_expect > 1 %}
   "retry_join": [ {{ consul_retry_join }} ],
@@ -12,7 +11,21 @@
 {% if inventory_hostname in groups[consul_servers_group] %}
   "server": true,
   "bootstrap_expect": {{ consul_bootstrap_expect }},
+  "dns_config": {
+    "allow_stale": false
+  },
+{% else %}
+  "leave_on_terminate": true,
+  "dns_config": {
+    "allow_stale": true,
+    "max_stale": "1s"
+  },
 {% endif %}
-  "data_dir": "/var/lib/consul",
-  "ui_dir": "/opt/consul-ui"
+{% if consul_atlas_join|bool %}
+  "atlas_join": true,
+  "atlas_token": "{{ consul_atlas_token }}",
+  "atlas_infrastructure": "{{ consul_atlas_infrastructure }}",
+{% endif %}
+  "data_dir": "{{ consul_data_dir }}",
+  "ui_dir": "/ui"
 }

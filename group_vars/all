@@ -1,6 +1,4 @@
 mesos_cluster_name: "Cluster01"
-haproxy_username: "admin"
-haproxy_password: "admin"
 zookeeper_client_port: "2181"
 zookeeper_server_group: zookeeper_servers
 zookeeper_peers_nodes: "
@@ -35,4 +33,4 @@ datadog_config:
   tags: "{{ mesos_cluster_name }}"
   log_level: INFO
 
-
+coreos_timezone: 'Europe/London'

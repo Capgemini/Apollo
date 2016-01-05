@@ -1,0 +1,14 @@
+- name: bootstrap coreos hosts
+  hosts: all
+  gather_facts: False
+  roles:
+    - coreos_bootstrap
+    - coreos_timezone
+
+- name: Install docker-py
+  hosts: all
+  gather_facts: False
+  tasks:
+    - pip:
+        name: docker-py
+        version: 1.5.0

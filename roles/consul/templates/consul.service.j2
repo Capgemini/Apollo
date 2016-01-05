@@ -1,0 +1,36 @@
+[Unit]
+Description=Consul
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+# make sure /etc/systemd/resolved.conf.d dir exists so we can add Consul's DNS resolver to system
+ExecStartPre=/usr/bin/mkdir -p /etc/systemd/resolved.conf.d
+ExecStartPre=-/usr/bin/docker kill consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStartPre=-/bin/bash -c 'rm /etc/systemd/resolved.conf.d/00-consul-dns.conf && systemctl restart systemd-resolved'
+ExecStartPre=/usr/bin/docker pull {{ consul_image }}
+ExecStartPre=-/usr/bin/etcdctl mk /consul $COREOS_PUBLIC_IPV4
+
+ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name consul \
+-h $(/usr/bin/cat /etc/hostname) \
+-v {{ consul_data_dir }}:/data \
+-v {{ consul_config_dir }}:/config \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-p 8300:8300 \
+-p 8301:8301 \
+-p 8301:8301/udp \
+-p 8302:8302 \
+-p 8302:8302/udp \
+-p 8400:8400 \
+-p 8500:8500 \
+-p 8600:8600/udp \
+{{ consul_image }}"
+
+ExecStop=/usr/bin/docker stop consul
+
+[Install]
+WantedBy=multi-user.target

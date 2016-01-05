@@ -1,0 +1,24 @@
+[Unit]
+Description=Zookeeper
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill zookeeper
+ExecStartPre=-/usr/bin/docker rm zookeeper
+ExecStartPre=/usr/bin/docker pull {{ zookeeper_image }}
+ExecStart=/usr/bin/docker run --rm --net=host --name=zookeeper \
+-v {{ zookeeper_config_dir }}/:{{ zookeeper_config_dir }}/ \
+-p {{ zookeeper_client_port }}:{{ zookeeper_client_port }} \
+-p {{ zookeeper_leader_connect_port }}:{{ zookeeper_leader_connect_port }} \
+-p {{ zookeeper_leader_election_port }}:{{ zookeeper_leader_election_port }} \
+{{ zookeeper_image }} \
+/usr/share/zookeeper/bin/zkServer.sh start-foreground
+
+ExecStop=/usr/bin/docker stop zookeeper
+
+[Install]
+WantedBy=multi-user.target

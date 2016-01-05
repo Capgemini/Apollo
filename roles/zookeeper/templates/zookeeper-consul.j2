@@ -4,7 +4,9 @@
     "port": {{ zookeeper_client_port }},
     "tags": [ "zookeeper" ],
     "check": {
-      "script": "echo ruok | nc {{ ansible_ssh_host }} {{ zookeeper_client_port }} | grep imok",
+      "docker_container_id": "zookeeper",
+      "shell": "/bin/bash",
+      "script": "echo ruok | nc 127.0.0.1 {{ zookeeper_client_port }} | grep imok",
       "interval": "10s"
     }
   }

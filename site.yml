@@ -16,23 +16,18 @@
       sudo: False
       when: bastion_ip is not defined
 
+- include: playbooks/coreos-bootstrap.yml
+
 - hosts: all:!role=bastion
-  tasks:
-    - name: set hostname to local ipv4 address
-      sudo: Yes
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
     - consul
-    - vault
+    # @todo - fix vault integration with coreOS
+    #- vault
     - docker
     - weave
 
 - hosts: all:!role=bastion
   roles:
-    - registrator
-    - dnsmasq
     - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
@@ -54,7 +49,7 @@
 
 - hosts: load_balancers
   roles:
-    - { role: haproxy, tags: ["haproxy"] }
+    - { role: traefik, tags: ["traefik"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
@@ -71,4 +66,5 @@
   vars_files:
     - ../roles/marathon/defaults/main.yml
 
-- include: contrib-plugins/playbook.yml
+# @todo - fix contrib plugins
+#- include: contrib-plugins/playbook.yml
