@@ -76,3 +76,9 @@ EOF
     prevent_destroy = true
   }
 }
+
+resource "aws_s3_bucket_object" "logstash_config" {
+  bucket = "${aws_s3_bucket.state.id}"
+  key = "etc/logstash.conf"
+  source = "s3/etc_logstash.conf"
+}
