@@ -1,22 +1,6 @@
 ---
 - include: config.yml
 
-- name: deploy consul service
-  sudo: yes
-  sudo_user: root
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  with_items:
-    - src: consul.service.j2
-      dest: /etc/systemd/system/consul.service
-    - src: consul-discovery.service.j2
-      dest: /etc/systemd/system/consul-discovery.service
-  notify:
-    - restart consul systemd
-  tags:
-    - consul
-
 - name: enable consul
   sudo: yes
   service:
@@ -24,9 +8,16 @@
     enabled: yes
     state: started
   notify:
-    - restart consul systemd
+    - restart consul
   tags:
     - consul
+
+- name: enable dnsmasq
+  sudo: yes
+  service:
+    name: dnsmasq
+    enabled: yes
+    state: started
 
 #- name: enable consul-discovery
 #  sudo: yes

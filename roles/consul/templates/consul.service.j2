@@ -27,13 +27,10 @@ ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name consul \
 -p 8302:8302/udp \
 -p 8400:8400 \
 -p 8500:8500 \
--p 53:8600/udp \
+-p 8600:8600/udp \
 {{ consul_image }}"
 
-ExecStartPost=/usr/bin/bash -c 'sleep 1; echo -e "[Resolve]\nDNS=$(docker inspect --format \'{% raw %}{{ .NetworkSettings.IPAddress }}{% endraw %}\' consul)" > /etc/systemd/resolved.conf.d/00-consul-dns.conf && systemctl restart systemd-resolved'
-
 ExecStop=/usr/bin/docker stop consul
-ExecStopPost=/usr/bin/bash -c 'rm /etc/systemd/resolved.conf.d/00-consul-dns.conf && systemctl restart systemd-resolved'
 
 [Install]
 WantedBy=multi-user.target

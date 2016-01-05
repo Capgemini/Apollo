@@ -20,3 +20,22 @@
     - restart consul
   tags:
     - consul
+
+- name: deploy consul service
+  sudo: yes
+  sudo_user: root
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: consul.service.j2
+      dest: /etc/systemd/system/consul.service
+    - src: dnsmasq.service.j2
+      dest: /etc/systemd/system/dnsmasq.service
+    - src: consul-discovery.service.j2
+      dest: /etc/systemd/system/consul-discovery.service
+  notify:
+    - reload systemd
+    - restart consul
+  tags:
+    - consul
