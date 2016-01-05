@@ -1,6 +1,5 @@
 ---
 consul_dir: /etc/consul.d
-zookeeper_rebuild_container: false
 zookeeper_config_dir: /etc/zookeeper/conf
 zookeeper_image: "mesosphere/mesos:0.26.0-0.2.145.ubuntu1404"
 zookeeper_client_port: 2181
