@@ -30,3 +30,7 @@ export TF_VAR_availability_zones=${TF_VAR_availability_zones:-'eu-west-1a,eu-wes
 export TF_VAR_public_subnet_availability_zone=${TF_VAR_public_subnet_availability_zone:-'eu-west-1a'}
 export APOLLO_consul_dc=${APOLLO_consul_dc:-$TF_VAR_region}
 export APOLLO_mesos_cluster_name=${APOLLO_mesos_cluster_name:-$TF_VAR_region}
+
+pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+  export APOLLO_bastion_ip=$( terraform output bastion.ip )
+popd
