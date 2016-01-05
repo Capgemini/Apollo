@@ -136,3 +136,9 @@ variable "amis" {
     us-west-2      = "ami-9ef6e1ff"
   }
 }
+
+variable "cloudwatch_vpc_flow_log_group" {
+  description = "Name of the Cloudwatch log group for VPC Flow Logs"
+  default = ""
+}
+
