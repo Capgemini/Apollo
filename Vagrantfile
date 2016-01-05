@@ -21,7 +21,7 @@ Vagrant.require_version ">= 1.8.0"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box              = "coreos-%s" % conf['coreos_update_channel']
-  #config.vm.box_version      = ">= 877.1.0"
+  config.vm.box_version      = ">= %s" % conf["coreos_#{conf['coreos_update_channel']}_min_version"]
   config.vm.box_url          = "http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json" % conf['coreos_update_channel']
 
   if Vagrant.has_plugin?('vagrant-vbguest') then
