@@ -14,7 +14,7 @@
   sudo_user: root
   template:
     src: mesos-master.service.j2
-    dest: "/etc/systemd/system/mesos-master.service"
+    dest: /etc/systemd/system/mesos-master.service
   notify:
     - restart mesos master
   tags:
