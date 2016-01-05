@@ -32,6 +32,7 @@ check_terraform_version() {
 
   if [[ ${current_version} != ${required_version} ]]; then
     echo -e "${color_red}Terraform ${required_version} is required, please fix and retry.${color_norm}"
+    exit 1
   fi
 }
 
