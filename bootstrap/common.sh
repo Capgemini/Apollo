@@ -141,7 +141,7 @@ ansible_playbook_run() {
 get_ansible_inventory() {
     pushd $APOLLO_ROOT
     if [ ! -f inventory/terraform.py ]; then
-      curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/master/terraform.py -o inventory/terraform.py
+      curl -sS https://raw.githubusercontent.com/Udacity/terraform.py/master/terraform.py -o inventory/terraform.py
       chmod 755 inventory/terraform.py
     fi
     popd
