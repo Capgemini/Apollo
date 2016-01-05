@@ -2,33 +2,8 @@ box: wercker/python
 no-response-timeout: 15
 build:
   steps:
-    - install-packages:
-        packages: wget unzip
     - pip-install:
         requirements_file: "requirements-test.txt"
-    - script:
-        name: install packer
-        cwd: packer/
-        code: |
-          wget https://dl.bintray.com/mitchellh/packer/packer_0.8.6_linux_amd64.zip
-          unzip packer_0.8.6_linux_amd64.zip
-          ./packer version
-    - script:
-        cwd: packer/
-        name: validate packer template for AMI
-        code: ./packer validate ubuntu-14.04_amd64-amis.json
-    - script:
-        cwd: packer/
-        name: validate packer template for Digitalocean
-        code: ./packer validate ubuntu-14.04_amd64-droplet.json
-    - script:
-        cwd: packer/
-        name: validate packer template for Vagrant
-        code: ./packer validate ubuntu-14.04_amd64.json
-    - script:
-        cwd: packer/
-        name: validate packer template for Google
-        code: ./packer validate ubuntu-14.04_amd64-google.json
     - capgemini/ansible-lint:
         name: run ansible-lint against the site.yml playbook
         playbook: site.yml
@@ -37,6 +12,7 @@ build:
         code: |
           echo localhost > wercker_inventory
           ansible-galaxy install --force -r contrib-plugins/plugins.yml
+          ansible-galaxy install --force -r requirements.yml
           ansible-playbook -i wercker_inventory --syntax-check site.yml
     - script:
         name: scripts testing
