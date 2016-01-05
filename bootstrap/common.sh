@@ -13,7 +13,7 @@ verify_prereqs() {
     exit 1
   fi
 
-  check_terraform_version
+  check_terraform_version 0.6.9-dev
 
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
@@ -26,27 +26,12 @@ verify_prereqs() {
 }
 
 check_terraform_version() {
-  local IFS='.'
-  local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.6.6}
-  local -a current_version=( ${current_version_string#'v'} )
-  local -a requirement_version=( ${requirement_version_string} )
-  local n diff
-  local result=0
+  local required_version=${1:-0.6.9}
+  local current_version_string="$( terraform --version | awk 'NR==1 {print $2}' )"
+  local current_version=${current_version_string#'v'}
 
-  for (( n=0; n<${#requirement_version[@]}; n+=1 )); do
-    diff=$((current_version[n]-requirement_version[n]))
-    if [ $diff -ne 0 ] ; then
-      [ $diff -le 0 ] && result=1 || result=0
-      break
-    fi
-
-  done
-
-  echo "You are running Terraform ${current_version_string}..."
-  if [ $result -eq 1 ]; then
-    echo -e "${color_red}Terraform >= ${requirement_version_string} is required, please fix and retry.${color_norm}"
-    exit 1
+  if [[ ${current_version} != ${required_version} ]]; then
+    echo -e "${color_red}Terraform ${required_version} is required, please fix and retry.${color_norm}"
   fi
 }
 
