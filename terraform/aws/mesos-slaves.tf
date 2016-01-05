@@ -34,6 +34,10 @@ resource "aws_elb" "app" {
   subnets = ["${aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
 
+  access_logs {
+    bucket = "${aws_s3_bucket.state.id}"
+  }
+
   listener {
     instance_port = 443 
     instance_protocol = "tcp"
