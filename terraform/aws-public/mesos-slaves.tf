@@ -1,6 +1,6 @@
 module "slave_amitype" {
   source        = "github.com/terraform-community-modules/tf_aws_virttype"
-  instance_type = "${var.instance_type.slave}"
+  instance_type = "${var.slave_instance_type}"
 }
 
 module "slave_ami" {
@@ -20,7 +20,7 @@ resource "template_file" "slave_cloud_init" {
 }
 
 resource "aws_instance" "mesos-slave" {
-  instance_type     = "${var.instance_type.slave}"
+  instance_type     = "${var.slave_instance_type}"
   ami               = "${module.slave_ami.ami_id}"
   count             = "${var.slaves}"
   key_name          = "${aws_key_pair.deployer.key_name}"
@@ -33,9 +33,4 @@ resource "aws_instance" "mesos-slave" {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
   }
-  /*ebs_block_device {
-    device_name           = "/dev/sda1"
-    volume_size           = "${var.slave_block_device.volume_size}"
-    delete_on_termination = true
-  }*/
 }

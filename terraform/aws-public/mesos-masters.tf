@@ -1,6 +1,6 @@
 module "master_amitype" {
   source        = "github.com/terraform-community-modules/tf_aws_virttype"
-  instance_type = "${var.instance_type.master}"
+  instance_type = "${var.master_instance_type}"
 }
 
 module "master_ami" {
@@ -20,7 +20,7 @@ resource "template_file" "master_cloud_init" {
 }
 
 resource "aws_instance" "mesos-master" {
-  instance_type     = "${var.instance_type.master}"
+  instance_type     = "${var.master_instance_type}"
   ami               = "${module.master_ami.ami_id}"
   count             = "${var.masters}"
   key_name          = "${aws_key_pair.deployer.key_name}"

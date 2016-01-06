@@ -166,9 +166,7 @@ get_terraform_modules() {
 
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
-    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
-      -var "instance_type.slave=${TF_VAR_slave_size}"
+    terraform apply
   popd
 }
 

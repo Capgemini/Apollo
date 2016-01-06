@@ -12,7 +12,7 @@ resource "aws_elb" "web" {
     lb_protocol       = "http"
   }
 
-  /* Traefik health check */
+  # Traefik health check
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
