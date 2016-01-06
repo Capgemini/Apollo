@@ -33,14 +33,6 @@
 /nanodegrees
 
 # chalk 8 (replaces 5-7)
-/course/
-/courses/bi
-/courses/cs046
-/courses/de
-/courses/ep
-/courses/gt
-/courses/ma
-/courses/ph
-/courses/ps
-/courses/st
-/courses/ud
+/course
+/courses
+/catalog
