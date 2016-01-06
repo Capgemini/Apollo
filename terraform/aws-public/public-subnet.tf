@@ -1,9 +1,9 @@
-/* Internet gateway for the public subnet */
+# Internet gateway for the public subnet
 resource "aws_internet_gateway" "public" {
   vpc_id = "${aws_vpc.default.id}"
 }
 
-/* Public subnet */
+# Public subnet
 resource "aws_subnet" "public" {
   vpc_id                  = "${aws_vpc.default.id}"
   count                   = "${length(split(",", var.availability_zones))}"
@@ -16,7 +16,7 @@ resource "aws_subnet" "public" {
   }
 }
 
-/* Routing table for public subnet */
+# Routing table for public subnet
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.default.id}"
   route {
@@ -29,11 +29,11 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_main_route_table_association" "public" {
-    vpc_id         = "${aws_vpc.default.id}"
-    route_table_id = "${aws_route_table.public.id}"
+  vpc_id         = "${aws_vpc.default.id}"
+  route_table_id = "${aws_route_table.public.id}"
 }
 
-/* Associate the routing table to public subnet */
+# Associate the routing table to public subnet
 resource "aws_route_table_association" "public" {
   subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
