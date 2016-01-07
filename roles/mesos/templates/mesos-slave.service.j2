@@ -17,7 +17,7 @@ ExecStart=/usr/bin/docker run --rm --name mesos_slave \
 -p {{ mesos_slave_port }}:{{ mesos_slave_port }} \
 -v /sys:/sys \
 -v /proc:/host/proc:ro \
--v /lib/libgcrypt.so.20:/lib/libgcrypt.so.20:ro \
+-v /lib/libgcrypt.so:/lib/libgcrypt.so:ro \
 -v /lib/libsystemd.so.0:/lib/libsystemd.so.0:ro \
 -v /lib/libpthread.so.0:/lib/libpthread.so.0:ro \
 -v /lib64/libdevmapper.so.1.02:/lib/libdevmapper.so.1.02:ro \

@@ -1,20 +1,11 @@
-resource "aws_key_pair" "deployer" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.key_file)}"
-}
-
-/*
-   Terraform module to get the current set of publicly available ubuntu AMIs.
-   https://github.com/terraform-community-modules/tf_aws_ubuntu_ami
-*/
+# Bastion server
 module "ami_bastion" {
-  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
-  region = "${var.region}"
-  distribution = "trusty"
+  source        = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
+  region        = "${var.region}"
+  distribution  = "trusty"
   instance_type = "${var.bastion_instance_type}"
 }
 
-/* NAT/VPN server */
 resource "aws_instance" "bastion" {
   ami               = "${module.ami_bastion.ami_id}"
   instance_type     = "${var.bastion_instance_type}"
@@ -28,8 +19,8 @@ resource "aws_instance" "bastion" {
     role = "bastion"
   }
   connection {
-    user     = "ubuntu"
-    key_file = "${var.private_key_file}"
+    user        = "ubuntu"
+    private_key = "${var.ssh_private_key}"
   }
   provisioner "remote-exec" {
     inline = [
@@ -53,8 +44,8 @@ resource "aws_instance" "bastion" {
   }
 }
 
-/* NAT elastic IP */
+# Bastion elastic IP
 resource "aws_eip" "bastion" {
   instance = "${aws_instance.bastion.id}"
-  vpc = true
+  vpc      = true
 }

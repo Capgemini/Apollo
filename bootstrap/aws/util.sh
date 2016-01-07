@@ -40,7 +40,7 @@ ansible_ssh_config() {
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
-    User                   ubuntu
+    User                   core
     IdentityFile           $TF_VAR_private_key_file
     UserKnownHostsFile     /dev/null
 EOF
