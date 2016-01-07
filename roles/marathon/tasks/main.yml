@@ -13,7 +13,7 @@
   sudo_user: root
   template:
     src: marathon.service.j2
-    dest: "/etc/systemd/system/marathon.service"
+    dest: /etc/systemd/system/marathon.service
   notify:
     - restart marathon
   tags:

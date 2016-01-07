@@ -1,4 +1,4 @@
-/* Default security group */
+# Default security group
 resource "aws_security_group" "default" {
   name        = "default-apollo-mesos"
   description = "Default security group that allows all traffic"

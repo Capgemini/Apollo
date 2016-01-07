@@ -14,16 +14,9 @@ export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/aws-public"
 
 export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -q"
 
-# Terraform mappings needs to be statically passed as -var parameters
-# so no really needed to export them. Exporting for consitency.
-export TF_VAR_atlas_artifact_master=${TF_VAR_atlas_artifact_master:-capgemini/apollo-ubuntu-14.04-amd64}
-export TF_VAR_atlas_artifact_slave=${TF_VAR_atlas_artifact_slave:-capgemini/apollo-ubuntu-14.04-amd64}
-export TF_VAR_atlas_artifact_version_master=${TF_VAR_atlas_artifact_version_master:-20}
-export TF_VAR_atlas_artifact_version_slave=${TF_VAR_atlas_artifact_version_slave:-20}
-
 export TF_VAR_region=${TF_VAR_region:-eu-west-1}
-export TF_VAR_master_size=${TF_VAR_master_size:-m3.medium}
-export TF_VAR_slave_size=${TF_VAR_slave_size:-m3.medium}
+export TF_VAR_master_instance_type=${TF_VAR_master_instance_type:-m3.medium}
+export TF_VAR_slave_instance_type=${TF_VAR_slave_instance_type:-m3.medium}
 export TF_VAR_slaves=${TF_VAR_slaves:-1}
 export TF_VAR_availability_zones=${TF_VAR_availability_zones:-'eu-west-1a,eu-west-1b,eu-west-1c'}
 
