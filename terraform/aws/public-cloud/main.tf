@@ -1,3 +1,16 @@
+variable "access_key" {}
+variable "secret_key" {}
+variable "public_key_file" { default = "~/.ssh/id_rsa_aws.pub" }
+variable "region" { default = "eu-west-1" }
+variable "availability_zones" { default = "eu-west-1a,eu-west-1b,eu-west-1c" }
+variable "coreos_channel" { default = "stable" }
+variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt" }
+variable "masters" { default = "3" }
+variable "master_instance_type" { default = "m3.medium" }
+variable "slaves" { default = "1" }
+variable "slave_instance_type" { default = "m3.medium" }
+variable "vpc_cidr_block" { default = "10.0.0.0/16" }
+
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
@@ -15,7 +28,7 @@ resource "aws_vpc" "default" {
 
 # ssh keypair for instances
 module "aws-keypair" {
-  source = "./keypair"
+  source = "../keypair"
 
   public_key_filename = "${var.public_key_file}"
 }
@@ -41,13 +54,13 @@ module "public_subnet" {
 
 # security group to allow all traffic in and out of the instances
 module "sg-default" {
-  source = "./sg-all-traffic"
+  source = "../sg-all-traffic"
 
   vpc_id = "${aws_vpc.default.id}"
 }
 
 module "elb" {
-  source = "./elb"
+  source = "../elb"
 
   security_groups = "${module.sg-default.security_group_id}"
   instances       = "${join(\",\", aws_instance.mesos-slave.*.id)}"

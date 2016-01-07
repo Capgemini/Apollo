@@ -2,7 +2,7 @@ variable "security_group_name" { default = "default-apollo-mesos" }
 variable "vpc_id" {}
 variable "source_cidr_block" { default = "0.0.0.0/0" }
 
-# Security group that allows all traffic everywhere
+# Security group that allows all traffic
 resource "aws_security_group" "default" {
   name        = "${var.security_group_name}"
   description = "Default security group that allows all traffic"
@@ -16,7 +16,7 @@ resource "aws_security_group" "default" {
     self      = true
   }
 
-  # Allows all inbound traffic from the internet.
+  # Allows all inbound traffic
   ingress {
     from_port   = "0"
     to_port     = "0"

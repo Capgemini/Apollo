@@ -23,11 +23,11 @@ resource "aws_instance" "mesos-master" {
   instance_type     = "${var.master_instance_type}"
   ami               = "${module.master_ami.ami_id}"
   count             = "${var.masters}"
-  key_name          = "${aws_key_pair.deployer.key_name}"
+  key_name          = "${module.aws-keypair.keypair_name}"
   source_dest_check = false
   subnet_id         = "${element(aws_subnet.private.*.id, count.index)}"
-  security_groups   = ["${aws_security_group.default.id}"]
-  depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public"]
+  security_groups   = ["${module.sg-default.security_group_id}"]
+  depends_on        = ["aws_instance.bastion"]
   user_data         = "${template_file.master_cloud_init.rendered}"
   tags = {
     Name = "apollo-mesos-master-${count.index}"

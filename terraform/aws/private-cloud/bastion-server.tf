@@ -9,10 +9,9 @@ module "ami_bastion" {
 resource "aws_instance" "bastion" {
   ami               = "${module.ami_bastion.ami_id}"
   instance_type     = "${var.bastion_instance_type}"
-  subnet_id         = "${aws_subnet.public.id}"
-  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
-  depends_on        = ["aws_internet_gateway.public", "aws_key_pair.deployer"]
-  key_name          = "${aws_key_pair.deployer.key_name}"
+  subnet_id         = "${module.vpc.public_subnets}"
+  security_groups   = ["${module.sg-default.security_group_id}", "${aws_security_group.bastion.id}"]
+  key_name          = "${module.aws-keypair.keypair_name}"
   source_dest_check = false
   tags = {
     Name = "apollo-mesos-bastion"
@@ -20,7 +19,7 @@ resource "aws_instance" "bastion" {
   }
   connection {
     user        = "ubuntu"
-    private_key = "${var.ssh_private_key}"
+    private_key = "${var.private_key_file}"
   }
   provisioner "remote-exec" {
     inline = [

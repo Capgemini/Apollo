@@ -11,7 +11,7 @@ export TF_VAR_key_file=${TF_VAR_key_file:-$HOME/.ssh/apollo_aws_rsa}
 export TF_VAR_key_name=${TF_VAR_key_name:-apollo}
 
 # Overrides default folder in Terraform.py inventory.
-export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/aws"
+export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
 
 export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -q"
 

@@ -1,31 +1,7 @@
-resource "aws_security_group" "default" {
-  name        = "default-apollo-mesos"
-  description = "Default security group that allows inbound and outbound traffic from all instances in the VPC"
-  vpc_id      = "${aws_vpc.default.id}"
-
-  ingress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
-  }
-
-  tags {
-    Name = "apollo-mesos-default-vpc"
-  }
-}
-
 resource "aws_security_group" "bastion" {
   name        = "bastion-apollo-mesos"
   description = "Security group for bastion instances that allows SSH and VPN traffic from internet"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${module.vpc.vpc_id}"
 
   ingress {
     from_port   = 22
@@ -63,7 +39,7 @@ resource "aws_security_group" "bastion" {
 resource "aws_security_group" "web" {
   name = "web-apollo-mesos"
   description = "Security group that allows web traffic from the internet"
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id      = "${module.vpc.vpc_id}"
 
   ingress {
     from_port   = 80
