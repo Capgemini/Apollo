@@ -1,4 +1,3 @@
 ---
 # defaults file for docker
-docker_graph_dir: /var/lib/docker
 docker_tmp_dir: /var/lib/docker/tmp

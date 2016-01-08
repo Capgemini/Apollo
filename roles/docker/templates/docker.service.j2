@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.com
+After=docker.socket early-docker.target network.target
+Requires=docker.socket early-docker.target
+
+[Service]
+EnvironmentFile=-/run/flannel_docker_opts.env
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+ExecStart=/usr/lib/coreos/dockerd daemon --storage-driver=overlay --dns 172.17.0.1 --dns 8.8.8.8 --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
+
+[Install]
+WantedBy=multi-user.target
