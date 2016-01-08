@@ -8,6 +8,7 @@ Restart=on-failure
 RestartSec=20
 TimeoutStartSec=0
 EnvironmentFile=-/etc/environment
+Environment="DOCKER_HOST={{ cadvisor_docker_socket }}"
 ExecStartPre=-/usr/bin/docker kill cadvisor
 ExecStartPre=-/usr/bin/docker rm cadvisor
 ExecStartPre=/usr/bin/docker pull {{ cadvisor_image }}
