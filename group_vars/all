@@ -30,6 +30,7 @@ datadog_api_key: "{{ lookup('env','DD_API_KEY') }}"
 datadog_config:
   tags: "{{ mesos_cluster_name }},berlioz"
   log_level: INFO
+  bind_host: "0.0.0.0"
 datadog_checks:
   docker:
     init_config:
