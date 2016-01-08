@@ -11,6 +11,7 @@
 /course/viewer
 /cron
 /me
+/
 
 #/callbacks/sendgrid
 #/coach/scheduled-chat
