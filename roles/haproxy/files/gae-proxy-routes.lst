@@ -1,27 +1,25 @@
 # The following paths should be routed to GAE
-# The following paths should be routed to GAE
-# NOTE: We use `path_beg` to match, so anything under the path will route.
-/
-#/account
-#/admin
-#/android-career-summit
-#/api
+# NOTE: We use `path_beg` to match, so anything under the path will route. Put
+# NOTE: important routes here that absolutely must remain protected, as this ACL
+# NOTE: is evaluated first in a guard clause.
+
+# important route prefixes
+/account
+/admin
+/api
+/checkout
+/course/viewer
+/cron
+/me
+
 #/callbacks/sendgrid
-#/career-paths/data-analyst
-#/career-paths/front-end-web-developer
-#/career-paths/ios-developer
-#/catalog-api
-#/certificate/
-#/checkout
 #/coach/scheduled-chat
 #/content/exam
 #/content/frame/grade
 #/course/progress
 #/course/thanks-for-enrolling
-#/course/viewer
-#/cron
 #
-## NOTE: '-' vs '_' 
+## NOTE: '-' vs '_'
 #/danger_editor
 #/danger-editor
 #
@@ -33,28 +31,20 @@
 #/instructor
 #/lti
 #/lti/
-#/me
 #/mobile
 #/my_courses
-#/nanodegree/50-back
 #/nanodegree/android-expectation-quiz
 #/nanodegree/data-analyst-expectation-quiz
-#/open-ed
-#/opened
 #/oauth2callback
 #/openid
-#/programming-languages/python
-#/programming-languages/swift
 #/proxy/requisitions
 #/quiz
 #/quiz_instructions
 #/quiz/instructions
-#/success
-#/teacher/
+#/teacher
 #/teams
 #/templates
 #/tools/reports/client
 #/tools/reports/user
-#/upgrade
 #/verified-certificate
 #/wiki
