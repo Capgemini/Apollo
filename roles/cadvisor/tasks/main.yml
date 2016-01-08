@@ -20,21 +20,12 @@
   tags:
     - cadvisor
 
-- name: get cadvisor container ip
+- name: Set cadvisor consul service definition
   sudo: yes
-  command: >
-    docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} cadvisor
-  register: cadvisor_container_ip
+  template:
+    src: cadvisor-consul.j2
+    dest: "{{ cadvisor_consul_dir }}/cadvisor.json"
+  notify:
+    - restart consul
   tags:
     - cadvisor
-
-#- name: Set cadvisor consul service definition
-#  sudo: yes
-#  template:
-#   src: cadvisor-consul.j2
-#    dest: "{{ cadvisor_consul_dir }}/cadvisor.json"
-#  notify:
-#    - restart consul
-#  when: cadvisor_enabled
-#  tags:
-#    - cadvisor

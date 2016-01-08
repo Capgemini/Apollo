@@ -57,3 +57,13 @@
     state: started
   tags:
     - zookeeper
+
+- name: set zookeeper consul service definition
+  sudo: yes
+  template:
+    src: zookeeper-consul.j2
+    dest: "{{ consul_dir }}/zookeeper.json"
+  notify:
+    - restart consul
+  tags:
+    - zookeeper
