@@ -1,12 +1,12 @@
 - name: bootstrap coreos hosts
-  hosts: all
+  hosts: all:!role=bastion
   gather_facts: False
   roles:
     - coreos_bootstrap
     - coreos_timezone
 
 - name: Install docker-py
-  hosts: all
+  hosts: all:!role=bastion
   gather_facts: False
   tasks:
     - pip:

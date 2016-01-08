@@ -11,7 +11,7 @@ module "slave_ami" {
 }
 
 resource "template_file" "slave_cloud_init" {
-  filename   = "cloud-config.yml.tpl"
+  template   = "cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
@@ -23,10 +23,10 @@ resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.slave_instance_type}"
   ami               = "${module.slave_ami.ami_id}"
   count             = "${var.slaves}"
-  key_name          = "${aws_key_pair.deployer.key_name}"
-  subnet_id         = "${element(aws_subnet.public.*.id, count.index)}"
+  key_name          = "${module.aws-keypair.keypair_name}"
+  subnet_id         = "${element(split(",", module.public_subnet.subnet_ids), count.index)}"
   source_dest_check = false
-  security_groups   = ["${aws_security_group.default.id}"]
+  security_groups   = ["${module.sg-default.security_group_id}"]
   depends_on        = ["aws_instance.mesos-master"]
   user_data         = "${template_file.slave_cloud_init.rendered}"
   tags = {

@@ -1,6 +1,6 @@
 ---
 - hosts: all:!role=bastion
-  gather_facts: no
+  gather_facts: False
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:

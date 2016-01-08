@@ -11,7 +11,7 @@ module "master_ami" {
 }
 
 resource "template_file" "master_cloud_init" {
-  filename   = "cloud-config.yml.tpl"
+  template   = "cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
@@ -23,10 +23,10 @@ resource "aws_instance" "mesos-master" {
   instance_type     = "${var.master_instance_type}"
   ami               = "${module.master_ami.ami_id}"
   count             = "${var.masters}"
-  key_name          = "${aws_key_pair.deployer.key_name}"
-  subnet_id         = "${element(aws_subnet.public.*.id, count.index)}"
+  key_name          = "${module.aws-keypair.keypair_name}"
+  subnet_id         = "${element(split(",", module.public_subnet.subnet_ids), count.index)}"
   source_dest_check = false
-  security_groups   = ["${aws_security_group.default.id}"]
+  security_groups   = ["${module.sg-default.security_group_id}"]
   user_data         = "${template_file.master_cloud_init.rendered}"
   tags = {
     Name = "apollo-mesos-master-${count.index}"

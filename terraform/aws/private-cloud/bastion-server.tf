@@ -1,35 +1,27 @@
-resource "aws_key_pair" "deployer" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.key_file)}"
-}
-
-/*
-   Terraform module to get the current set of publicly available ubuntu AMIs.
-   https://github.com/terraform-community-modules/tf_aws_ubuntu_ami
-*/
+# Bastion server
 module "ami_bastion" {
-  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
-  region = "${var.region}"
-  distribution = "trusty"
+  source        = "github.com/terraform-community-modules/tf_aws_ubuntu_ami/ebs"
+  region        = "${var.region}"
+  distribution  = "trusty"
   instance_type = "${var.bastion_instance_type}"
 }
 
-/* NAT/VPN server */
 resource "aws_instance" "bastion" {
   ami               = "${module.ami_bastion.ami_id}"
   instance_type     = "${var.bastion_instance_type}"
-  subnet_id         = "${aws_subnet.public.id}"
-  security_groups   = ["${aws_security_group.default.id}", "${aws_security_group.bastion.id}"]
-  depends_on        = ["aws_internet_gateway.public", "aws_key_pair.deployer"]
-  key_name          = "${aws_key_pair.deployer.key_name}"
+  # Just put the bastion in the first public subnet
+  subnet_id         = "${element(split(",", module.vpc.public_subnets), 0)}"
+  # @todo - this allows bastion connection on any port which is not ideal but was like this previously.
+  security_groups   = ["${module.sg-default.security_group_id}", "${aws_security_group.bastion.id}"]
+  key_name          = "${module.aws-keypair.keypair_name}"
   source_dest_check = false
   tags = {
     Name = "apollo-mesos-bastion"
     role = "bastion"
   }
   connection {
-    user     = "ubuntu"
-    key_file = "${var.private_key_file}"
+    user        = "ubuntu"
+    private_key = "${var.private_key_file}"
   }
   provisioner "remote-exec" {
     inline = [
@@ -53,8 +45,8 @@ resource "aws_instance" "bastion" {
   }
 }
 
-/* NAT elastic IP */
+# Bastion elastic IP
 resource "aws_eip" "bastion" {
   instance = "${aws_instance.bastion.id}"
-  vpc = true
+  vpc      = true
 }
