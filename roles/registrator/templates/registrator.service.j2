@@ -1,0 +1,21 @@
+[Unit]
+Description=Registrator
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill registrator
+ExecStartPre=-/usr/bin/docker rm registrator
+ExecStartPre=/usr/bin/docker pull {{ registrator_image }}
+
+ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name registrator \
+-v "{{ registrator_docker_socket }}:/tmp/docker.sock" \
+{{ registrator_image }} {{ registrator_command }}"
+
+ExecStop=/usr/bin/docker stop registrator
+
+[Install]
+WantedBy=multi-user.target
