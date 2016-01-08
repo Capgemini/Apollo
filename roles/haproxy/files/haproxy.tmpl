@@ -54,9 +54,11 @@ frontend www-https
 
     # GAE Proxy
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
-    acl is_gae_path path_beg -f {{env "GAE_ROUTES_FILE"}}
-    acl is_endor_path path_beg -f {{env "ENDOR_ROUTES_FILE"}}
-    use_backend gae_backend if is_www_host is_gae_path !is_endor_path
+    acl is_gae_prefix_path    path_beg -i -f {{env "GAE_ROUTES_FILE"}}
+    acl is_endor_match_path   path     -i -f {{env "ENDOR_MATCH_ROUTES_FILE"}}
+    acl is_endor_prefix_path  path_beg -i -f {{env "ENDOR_PREFIX_ROUTES_FILE"}}
+    use_backend gae_backend if is_www_host is_gae_prefix_path
+    use_backend gae_backend if is_www_host !is_endor_match_path !is_endor_prefix_path
 
     # Websockets enabled backends
     acl is_websocket hdr(Upgrade) -i WebSocket
@@ -98,5 +100,3 @@ backend {{.Name}}_backend_ws
 backend consul_backend
 {{range service "consul"}}
    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
-
-
