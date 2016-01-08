@@ -12,13 +12,6 @@
   tags:
     - consul
 
-- name: enable dnsmasq
-  sudo: yes
-  service:
-    name: dnsmasq
-    enabled: yes
-    state: started
-
 #- name: enable consul-discovery
 #  sudo: yes
 #  service:

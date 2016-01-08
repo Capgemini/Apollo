@@ -5,6 +5,7 @@
   "domain": "{{ consul_domain }}",
   "rejoin_after_leave": true,
   "client_addr": "{{ consul_client_addr }}",
+  "ports": {"dns": 53},
 {% if consul_bootstrap_expect > 1 %}
   "retry_join": [ {{ consul_retry_join }} ],
 {% endif %}
