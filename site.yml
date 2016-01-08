@@ -20,10 +20,10 @@
 
 - hosts: all:!role=bastion
   roles:
+    - docker
     - consul
     # @todo - fix vault integration with coreOS
     #- vault
-    - docker
     - weave
 
 - hosts: all:!role=bastion

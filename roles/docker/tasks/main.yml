@@ -1,34 +1,22 @@
 ---
 # tasks file for docker
-- name: configure docker consul dns
+- name: deploy docker service
   sudo: yes
-  lineinfile:
-    dest: /etc/sysconfig/docker
-    regexp: ^OPTIONS=
-    line: 'OPTIONS=\"--storage-driver=overlay --graph={{ docker_graph_dir }} --dns 172.17.0.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }} \"'
-    state: present
-    create: yes
+  sudo_user: root
+  template:
+    src: docker.service.j2
+    dest: /etc/systemd/system/docker.service
   notify:
+    - reload systemd
     - restart docker
   tags:
     - docker
 
-#- name: configure docker temporary directory
-#  sudo: yes
-#  lineinfile:
-#    dest: /etc/sysconfig/docker
-#    state: present
-#    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
-#  notify:
-#    - restart docker
-
-#- name: configure docker proxy
-#  sudo: yes
-#  lineinfile:
-#    dest: /etc/sysconfig/docker
-#    state: present
-#    line: 'export http_proxy=\"{{ http_proxy }}\"'
-#  when: http_proxy is defined and http_proxy != ''
+- name: reload systemd
+  sudo: yes
+  command: systemctl daemon-reload
+  notify:
+    - restart docker
 
 - name: ensure docker is running (and enable it at boot)
   sudo: yes
