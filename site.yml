@@ -28,6 +28,7 @@
 
 - hosts: all:!role=bastion
   roles:
+    - registrator
     - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
