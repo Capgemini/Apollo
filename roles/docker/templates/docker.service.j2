@@ -6,6 +6,11 @@ Requires=docker.socket early-docker.target
 
 [Service]
 EnvironmentFile=-/run/flannel_docker_opts.env
+{% if http_proxy is defined and http_proxy != '' %}
+Environment="HTTP_PROXY={{ http_proxy }}"
+{% endif %}
+Environment="DOCKER_TMPDIR={{ docker_tmp_dir }}"
+
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576
