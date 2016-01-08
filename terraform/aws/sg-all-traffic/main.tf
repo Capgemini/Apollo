@@ -32,7 +32,7 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["${var.source_cidr_block}"]
   }
   tags {
-    Name = "apollo-mesos-default-security-group"
+    Name = "apollo-default-sg"
   }
 }
 

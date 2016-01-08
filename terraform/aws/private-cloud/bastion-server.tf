@@ -9,7 +9,9 @@ module "ami_bastion" {
 resource "aws_instance" "bastion" {
   ami               = "${module.ami_bastion.ami_id}"
   instance_type     = "${var.bastion_instance_type}"
-  subnet_id         = "${module.vpc.public_subnets}"
+  # Just put the bastion in the first public subnet
+  subnet_id         = "${element(split(",", module.vpc.public_subnets), 0)}"
+  # @todo - this allows bastion connection on any port which is not ideal but was like this previously.
   security_groups   = ["${module.sg-default.security_group_id}", "${aws_security_group.bastion.id}"]
   key_name          = "${module.aws-keypair.keypair_name}"
   source_dest_check = false

@@ -18,7 +18,7 @@ ansible_ssh_config() {
     export APOLLO_bastion_ip=$( terraform output bastion.ip )
 
     # Virtual private cloud CIDR IP.
-    ip=$( terraform output vpc_cidr_block.ip )
+    ip=$( terraform output -module=vpc vpc_cidr_block )
     export APOLLO_network_identifier=$( get_network_identifier "${ip}" )
 
     cat <<EOF > ssh.config

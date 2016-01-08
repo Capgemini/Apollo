@@ -21,15 +21,16 @@ provider "aws" {
 }
 
 module "vpc" {
-  source          = "github.com/terraform-community-modules/tf_aws_vpc"
+  source              = "./vpc"
 
-  name            = "default"
+  name                = "default"
 
-  cidr            = "${var.vpc_cidr_block}"
-  private_subnets = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
-  public_subnets  = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
+  cidr                = "${var.vpc_cidr_block}"
+  private_subnets     = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
+  public_subnets      = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
+  bastion_instance_id = "${aws_instance.bastion.id}"
 
-  azs             = "${var.availability_zones}"
+  azs                 = "${var.availability_zones}"
 }
 
 # ssh keypair for instances
@@ -79,7 +80,9 @@ output "master_ips" {
 output "slave_ips" {
   value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
 }
-/*
+output "vpc_cidr_block_ip" {
+ value = "${module.vpc.vpc_cidr_block}"
+}
 output "elb.hostname" {
   value = "${module.elb.elb_dns_name}"
-}*/
+}
