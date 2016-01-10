@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export VAULT_ADDR="{{ vault_addr }}"
+while ! vault status {{ vault_addr }} | grep 'Leader: http://.*:{{ vault_port }}'
+do
+sleep 1
+done

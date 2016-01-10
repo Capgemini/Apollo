@@ -30,7 +30,7 @@
   tags:
     - prometheus
 
-- name: Set node-exporter consul service definition
+- name: set node-exporter consul service definition
   sudo: yes
   template:
     src: node-exporter-consul.j2

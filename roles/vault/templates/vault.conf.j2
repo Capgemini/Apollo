@@ -1,0 +1,22 @@
+description "Vault server"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+script
+  . /etc/default/vault
+  exec /usr/bin/vault server -config="${VAULT_CONFIG_FILE}"
+end script
+
+post-start script
+  . /etc/default/vault
+  while ! nc -w 1 127.0.0.1 "{{ vault_port }}"
+  do
+    sleep 1
+  done
+  exec ${VAULT_UNSEAL_FILE}
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10

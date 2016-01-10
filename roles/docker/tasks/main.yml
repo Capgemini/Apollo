@@ -1,42 +1,25 @@
 ---
 # tasks file for docker
-- name: remove docker override
-  file:
-    path: /etc/init/docker.override
-    state: absent
+- name: deploy docker service
+  sudo: yes
+  sudo_user: root
+  template:
+    src: docker.service.j2
+    dest: /etc/systemd/system/docker.service
   notify:
+    - reload systemd
     - restart docker
   tags:
     - docker
 
-- name: configure docker graph directory
+- name: reload systemd
   sudo: yes
-  lineinfile:
-    dest: /etc/default/docker
-    state: present
-    regexp: ^DOCKER_OPTS=.*--graph.*
-    line: 'DOCKER_OPTS=\"$DOCKER_OPTS --storage-driver=overlay --graph={{ docker_graph_dir }} --dns 172.17.0.1 --dns 8.8.8.8 --dns-search service.{{ consul_domain }} \"'
+  command: systemctl daemon-reload
   notify:
     - restart docker
-
-- name: configure docker temporary directory
-  sudo: yes
-  lineinfile:
-    dest: /etc/default/docker
-    state: present
-    line: 'DOCKER_TMPDIR=\"{{ docker_tmp_dir }}\"'
-  notify:
-    - restart docker
-
-- name: configure docker proxy
-  sudo: yes
-  lineinfile:
-    dest: /etc/default/docker
-    state: present
-    line: 'export http_proxy=\"{{ http_proxy }}\"'
-  when: http_proxy is defined and http_proxy != ''
 
 - name: ensure docker is running (and enable it at boot)
+  sudo: yes
   service:
     name: docker
     state: started

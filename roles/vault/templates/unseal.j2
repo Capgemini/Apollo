@@ -1,0 +1,5 @@
+#!/bin/bash
+export VAULT_ADDR="http://127.0.0.1:{{ vault_port }}"
+{% for key in vault_keys %}
+vault unseal {{ key }}
+{% endfor %}

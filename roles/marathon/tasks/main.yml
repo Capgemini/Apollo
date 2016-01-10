@@ -1,12 +1,3 @@
-- name: install wait script
-  sudo: yes
-  template:
-    src: marathon-wait-for-listen.sh.j2
-    dest: /usr/local/bin/marathon-wait-for-listen.sh
-    mode: 0755
-  tags:
-    - marathon
-
 - name: create marathon artifact store directory
   when: marathon_artifact_store_dir is defined
   file:
@@ -17,39 +8,14 @@
   tags:
     - marathon
 
-- name: destroy old marathon container
-  when: marathon_rebuild_container|bool
-  docker:
-    name: marathon
-    image: "{{ marathon_image }}"
-    state: absent
-
-- name: run marathon container
-  docker:
-    name: marathon
-    image: "{{ marathon_image }}"
-    state: started
-    restart_policy: "{{ marathon_restart_policy }}"
-    ports:
-    - "{{ marathon_port }}:{{ marathon_port }}"
-    expose:
-    - "{{ marathon_port }}"
-    net: "{{ marathon_net }}"
-    command: "{{ marathon_command }}"
-    volumes:
-    - "{{ marathon_artifact_store_dir }}:/store"
-    memory_limit: "{{ marathon_container_memory_limit }}"
-    env:
-      JAVA_OPTS: "{{ marathon_java_settings }}"
-  notify:
-    - wait for marathon to listen
-
-- name: upload marathon template service
-  template:
-    src: marathon.conf.j2
-    dest: /etc/init/marathon.conf
-    mode: 0755
+- name: deploy marathon service
   sudo: yes
+  sudo_user: root
+  template:
+    src: marathon.service.j2
+    dest: /etc/systemd/system/marathon.service
+  notify:
+    - restart marathon
   tags:
     - marathon
 
@@ -72,3 +38,5 @@
     dest: "{{ marathon_consul_dir }}/marathon.json"
   notify:
     - restart consul
+  tags:
+    - marathon

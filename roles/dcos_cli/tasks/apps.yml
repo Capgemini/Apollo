@@ -26,7 +26,7 @@
     state: started
     command: "marathon {{ item.type }} add /config/{{ item.name }}.json"
     volumes:
-    - "/etc/marathon:/config"
+      - "/etc/marathon:/config"
     env:
       MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
       MARATHON_URL: "{{ dcos_cli_marathon_url }}"

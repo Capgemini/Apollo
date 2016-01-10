@@ -1,3 +1,7 @@
+- name: reload systemd
+  sudo: yes
+  command: systemctl daemon-reload
+
 - name: restart consul
   service:
     name: consul

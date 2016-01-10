@@ -1,43 +1,65 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 require 'yaml'
+require 'fileutils'
 
 base_dir = File.expand_path(File.dirname(__FILE__))
 conf = YAML.load_file(File.join(base_dir, "vagrant.yml"))
 groups = YAML.load_file(File.join(base_dir, "ansible-groups.yml"))
 
-require File.join(base_dir, "vagrant_helper")
+CONFIG_HELPER = File.join(base_dir, "vagrant_helper.rb")
+CLOUD_CONFIG_PATH = File.join(base_dir, "user-data")
+
+if File.exist?(CONFIG_HELPER)
+  require CONFIG_HELPER
+end
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-Vagrant.require_version ">= 1.7.0"
+Vagrant.require_version ">= 1.8.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # if you want to use vagrant-cachier,
-  # please install vagrant-cachier plugin.
-  if Vagrant.has_plugin?("vagrant-cachier")
-    config.cache.enable :apt
-    config.cache.scope = :box
+
+  config.vm.box              = "coreos-%s" % conf['coreos_update_channel']
+  config.vm.box_version      = ">= %s" % conf["coreos_#{conf['coreos_update_channel']}_min_version"]
+  config.vm.box_url          = "http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json" % conf['coreos_update_channel']
+
+  if Vagrant.has_plugin?('vagrant-vbguest') then
+    config.vbguest.auto_update = false
   end
 
-  # throw error if vagrant-hostmanager not installed
-  unless Vagrant.has_plugin?("vagrant-hostmanager")
-    raise "vagrant-hostmanager plugin not installed"
+  config.hostmanager.enabled = false
+
+  config.vm.provider :virtualbox do |vb|
+    # On VirtualBox, we don't have guest additions or a functional vboxsf
+    # in CoreOS, so tell Vagrant that so it can be smarter.
+    vb.check_guest_additions = false
+    vb.functional_vboxsf     = false
   end
 
-  config.vm.box = "capgemini/apollo"
-  config.hostmanager.enabled = true
-  config.hostmanager.manage_host = true
-  config.hostmanager.include_offline = true
   config.ssh.insert_key = false
 
   # Common ansible groups.
   ansible_groups = groups['ansible_groups']
+  # We need to use a custom python interpreter for CoreOS because there is no
+  # python installed on the system.
+  ansible_groups["all:vars"] = {
+    "ansible_python_interpreter" => "\"PATH=/home/core/bin:$PATH python\""
+  }
   ansible_groups["mesos_masters"] = []
 
   masters_conf = conf['masters']
   masters_n    = masters_conf['ips'].count
   master_infos = []
+
+  # Mesos slave nodes
+  slaves_conf = conf['slaves']
+  ansible_groups["mesos_slaves"] = []
+  slave_n = slaves_conf['ips'].count
+
+  # etcd discovery token
+  total_instances = slave_n + masters_n
+  etcd_discovery_token(total_instances)
 
   # Mesos master nodes
   (1..masters_n).each { |i|
@@ -61,7 +83,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         machine.vm.hostname = node[:hostname]
         machine.vm.network :private_network, :ip => node[:ip]
 
-        vb.name = 'vagrant-mesos-' + node[:hostname]
+        vb.name = 'coreos-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
       end
     end
@@ -83,18 +105,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     consul_join: consul_join,
     consul_retry_join: consul_retry_join,
     mesos_master_quorum: conf['mesos_master_quorum'],
-    consul_bootstrap_expect: conf['consul_bootstrap_expect']
+    consul_bootstrap_expect: conf['consul_bootstrap_expect'],
+    ansible_python_interpreter: 'PATH=/home/core/bin:$PATH python'
   }
   # Apollo environment variables
   apollo_vars = get_apollo_variables(ENV)
   # Add apollo variables to ansible ones
   ansible_extra_vars.merge!(apollo_vars)
-
-  # Mesos slave nodes
-  slaves_conf = conf['slaves']
-  ansible_groups["mesos_slaves"] = []
-
-  slave_n = slaves_conf['ips'].count
 
   (1..slave_n).each { |i|
 
@@ -109,39 +126,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Add the node to the correct ansible group.
     ansible_groups["mesos_slaves"].push(node[:hostname])
 
+    # Bootstrap the machines for CoreOS first
+    if File.exist?(CLOUD_CONFIG_PATH)
+      config.vm.provision :file, :source => "#{CLOUD_CONFIG_PATH}", :destination => "/tmp/vagrantfile-user-data"
+      config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
+    end
+
+    config.vm.provision :hostmanager
+
     config.vm.define node[:hostname] do |cfg|
       cfg.vm.provider :virtualbox do |vb, machine|
         machine.vm.hostname = node[:hostname]
         machine.vm.network :private_network, :ip => node[:ip]
 
-        vb.name = 'vagrant-mesos-' + node[:hostname]
+        vb.name = 'coreos-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
         # We invoke ansible on the last slave with ansible.limit = 'all'
         # this runs the provisioning across all masters and slaves in parallel.
         if node[:hostname] == "slave#{slave_n}"
+
           machine.vm.provision :ansible do |ansible|
             ansible.playbook = "site.yml"
-            ansible.sudo = true
             unless ENV['ANSIBLE_LOG'].nil? || ENV['ANSIBLE_LOG'].empty?
-              ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
+             ansible.verbose = "#{ENV['ANSIBLE_LOG'].delete('-')}"
             end
-            ansible.groups = ansible_groups
-            ansible.limit = 'all'
+            ansible.groups     = ansible_groups
+            ansible.limit      = 'all'
             ansible.extra_vars = ansible_extra_vars
           end
         end
       end
     end
   }
-
-  # If you want to use a custom `.dockercfg` file simply place it
-  # in this directory.
-  if File.exist?(".dockercfg")
-    config.vm.provision :shell, :priviledged => true, :inline => <<-SCRIPT
-      cp /vagrant/.dockercfg /root/.dockercfg
-      chmod 600 /root/.dockercfg
-      chown root /root/.dockercfg
-    SCRIPT
-  end
 end

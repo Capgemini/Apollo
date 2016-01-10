@@ -1,37 +1,34 @@
 ---
 - hosts: all:!role=bastion
-  gather_facts: no
+  gather_facts: False
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
         port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
-        timeout: 60
+        timeout: 90
       delegate_to: "{{ bastion_ip }}"
       sudo: False
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=60"
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=90"
       sudo: False
       when: bastion_ip is not defined
 
+- include: playbooks/coreos-bootstrap.yml
+
 - hosts: all:!role=bastion
-  tasks:
-    - name: set hostname to local ipv4 address
-      sudo: Yes
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
-    - consul
     - docker
+    - consul
+    # @todo - fix vault integration with coreOS
+    #- vault
     - weave
 
 - hosts: all:!role=bastion
   roles:
     - registrator
-    - dnsmasq
     - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
@@ -53,7 +50,7 @@
 
 - hosts: load_balancers
   roles:
-    - { role: haproxy, tags: ["haproxy"] }
+    - { role: traefik, tags: ["traefik"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
@@ -76,4 +73,5 @@
   vars_files:
     - ../roles/marathon/defaults/main.yml
 
-- include: contrib-plugins/playbook.yml
+# @todo - fix contrib plugins
+#- include: contrib-plugins/playbook.yml

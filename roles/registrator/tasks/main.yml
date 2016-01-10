@@ -1,28 +1,28 @@
 ---
 
-- name: wait for weave socket to be ready.
-  wait_for:
-    port: 6783
-    delay: 10
-
-- name: destroy old marathon container
-  when: registrator_rebuild_container|bool
-  docker:
-    name: registrator
-    image: "{{ registrator_image }}"
-    state: absent
-
-# tasks file for docker registrator
-- name: run registrator container
-  docker:
-    name: registrator
-    image: "{{ registrator_image }}"
-    state: started
-    restart_policy: always
-    net: host
-    command: "-internal -resync=10 {{ registrator_uri }}"
-    volumes:
-    - "{{ registrator_docker_socket }}:/tmp/docker.sock"
-  environment: proxy_env
+- name: deploy registrator service
+  sudo: yes
+  sudo_user: root
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: registrator.service.j2
+      dest: /etc/systemd/system/registrator.service
+  notify:
+    - reload systemd
+    - restart registrator
   tags:
     - registrator
+
+- name: enable registrator
+  sudo: yes
+  service:
+    name: registrator
+    enabled: yes
+    state: started
+  notify:
+    - restart registrator
+  tags:
+    - registrator
+

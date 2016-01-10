@@ -6,7 +6,7 @@ mesos_cluster_name: "{{ mesos_cluster_name }}"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_ssh_host }}"
 mesos_docker_socket: "/var/run/weave/weave.sock"
-mesos_version: "0.25.0-0.2.70.ubuntu1404"
+mesos_version: "0.26.0-0.2.145.ubuntu1404"
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
@@ -14,14 +14,12 @@ mesos_containerizers: "docker,mesos"
 mesos_resources: "ports(*):[31000-32000]"
 mesos_slave_work_dir: "/tmp/mesos"
 mesos_slave_image: "mesosphere/mesos-slave:{{ mesos_version }}"
-mesos_slave_rebuild_container: false
 
 # Defaults file for mesos-master
 mesos_zookeeper_group: zookeeper_servers
 mesos_master_port: 5050
 mesos_master_work_dir: "/var/lib/mesos"
 mesos_master_image: "mesosphere/mesos-master:{{ mesos_version }}"
-mesos_master_rebuild_container: false
 
 prometheus_mesos_exporter_image: "prom/mesos-exporter:latest"
 prometheus_mesos_exporter_port: 9105

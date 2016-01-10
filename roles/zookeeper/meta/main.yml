@@ -69,7 +69,7 @@ galaxy_info:
   #  - 9.1
   #  - 9.1
   #  - 9.2
-  - name: Ubuntu
+  - name: CoreOS
     versions:
   #  - all
   #  - lucid
@@ -80,7 +80,7 @@ galaxy_info:
   #  - quantal
   #  - raring
   #  - saucy
-     - trusty
+  #- trusty
   #- name: SLES
   #  versions:
   #  - all

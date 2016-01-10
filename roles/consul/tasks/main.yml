@@ -1,36 +1,5 @@
 ---
-# tasks file for consul
-- name: remove consul override
-  file:
-    path: /etc/init/consul.override
-    state: absent
-
-- name: configure consul
-  sudo: yes
-  template:
-    src: consul.json.j2
-    dest: /etc/consul.d/consul.json
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart consul
-  tags:
-    - consul
-
-- name: configure atlas for consul
-  sudo: yes
-  template:
-    src: atlas.json.j2
-    dest: /etc/consul.d/atlas.json
-    owner: root
-    group: root
-    mode: 0644
-  when: consul_atlas_join|bool
-  notify:
-    - restart consul
-  tags:
-    - consul
+- include: config.yml
 
 - name: enable consul
   sudo: yes
@@ -38,53 +7,18 @@
     name: consul
     enabled: yes
     state: started
-  tags:
-    - consul
-
-# Give some time for leader election to occur
-- name: wait for leader
-  wait_for:
-    host: "{{ consul_bind_addr }}"
-    port: 8301
-    delay: 10
-  tags:
-    - consul
-
-- name: remove consul-join override
-  file:
-    path: /etc/init/consul-join.override
-    state: absent
-  when: consul_join is defined
-  tags:
-    - consul
-
-- name: configure consul-join
-  sudo: yes
-  template:
-    src: consul-join.j2
-    dest: /etc/service/consul-join
-    owner: root
-    group: root
-    mode: 0644
   notify:
     - restart consul
-  when: consul_join is defined
   tags:
     - consul
 
-# We need to force reload here because sometimes Consul gets in a weird
-# state where it cannot elect a cluster leader. Simply restarting the service
-# seems to allow it to recover automatically.
-- name: force reload consul
-  sudo: yes
-  command: /sbin/restart consul
-  tags:
-    - consul
-
-- name: force wait for leader
-  wait_for:
-    host: "{{ consul_bind_addr }}"
-    port: 8301
-    delay: 10
-  tags:
-    - consul
+#- name: enable consul-discovery
+#  sudo: yes
+#  service:
+#    name: consul-discovery
+#    enabled: yes
+#    state: started
+#  notify:
+#    - restart consul systemd
+#  tags:
+#    - consul

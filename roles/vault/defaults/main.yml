@@ -1,0 +1,17 @@
+---
+# defaults settings for vault
+vault_consul_dir: /etc/consul.d
+vault_version: '0.4.0'
+vault_url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
+vault_config_folder: '/etc/vault'
+vault_port: 8200
+vault_addr: "http://127.0.0.1:{{ vault_port }}"
+vault_health_status_command: 'curl -k http://localhost:{{ vault_port }}/v1/sys/health'
+vault_initialize_status_command: 'curl -k http://localhost:{{ vault_port }}/v1/sys/init'
+vault_initialize_command: "curl -1 -X PUT -d '{{ vault_init_json }}' -k http://localhost:{{ vault_port }}/v1/sys/init"
+vault_advertise_addr: "{{ ansible_ssh_host }}"
+
+vault_init_json: '{
+	"secret_shares": 5,
+	"secret_threshold": 3
+}'

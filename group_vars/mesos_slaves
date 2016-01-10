@@ -19,10 +19,3 @@ datadog_checks:
       default_timeout: 10
     instances:
       - url: "http://{{ ansible_default_ipv4.address }}:5051"
-  haproxy:
-    init_config:
-      default_timeout: 10
-    instances:
-      - url: "http://{{ ansible_default_ipv4.address }}:9000/haproxy_stats"
-        username: "{{ haproxy_username }}"
-        password: "{{ haproxy_password }}"

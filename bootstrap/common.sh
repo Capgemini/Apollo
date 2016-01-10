@@ -129,18 +129,16 @@ ansible_playbook_run() {
     get_ansible_inventory
     install_contributed_roles
     ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
-    ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
-      consul_atlas_join=true \
-      consul_atlas_token=${ATLAS_TOKEN} \
-      $( get_apollo_variables  APOLLO_)" \
+    ${ANSIBLE_LOG} --extra-vars "$( get_apollo_variables  APOLLO_)" \
     ${ANSIBLE_EXARGS:-} \
-    --sudo site.yml
+    site.yml
   popd
 }
 
 install_contributed_roles() {
   pushd "${APOLLO_ROOT}"
     ansible-galaxy install --force -r contrib-plugins/plugins.yml
+    ansible-galaxy install --force -r requirements.yml
   popd
 }
 
@@ -157,18 +155,18 @@ get_terraform_modules() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # Downloads terraform modules.
     terraform get
+
+    # Make any dependencies
+    for dir in .terraform/modules/*/Makefile;
+    do
+      make -C $(/usr/bin/dirname $dir)
+    done
   popd
 }
 
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
-    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
-      -var "instance_type.slave=${TF_VAR_slave_size}" \
-      -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
-      -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
-      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
-      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
+    terraform apply
   popd
 }
 

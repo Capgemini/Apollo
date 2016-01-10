@@ -13,3 +13,7 @@ mesos_master_quorum: 1
 # Expected number of server nodes
 # For standalone mode is always 1
 consul_bootstrap_expect: 1
+
+coreos_update_channel: stable
+coreos_stable_min_version: 835.9.0
+coreos_beta_min_version: 877.1.0
