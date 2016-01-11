@@ -9,4 +9,4 @@ address = ":{{ traefik_webui_port }}"
 endpoint = "{{ traefik_marathon_endpoint }}"
 domain = "{{ traefik_marathon_domain }}"
 watch = true
-networkInterface = "eth0"
+networkInterface = "{{ traefik_network_interface }}"

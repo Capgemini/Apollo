@@ -34,3 +34,4 @@ datadog_config:
   log_level: INFO
 
 coreos_timezone: 'Europe/London'
+traefik_network_interface: "eth0"
