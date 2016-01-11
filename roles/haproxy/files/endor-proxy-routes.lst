@@ -1,9 +1,6 @@
 # The following whitelist enables routes to Endor
 # NOTE: We use `path` to match, so an exact match (case-insensitive) is needed
 
-#--------------------------- home page ----------------------------#
-/
-
 #--------------------------- deployed static pages ----------------------------#
 /business
 /contact
@@ -28,6 +25,8 @@
 /legal/employers
 /legal/privacy
 /nanodegree
+/nanodegree/plus
+/nanodegreeplus
 /organizations
 /podcasts/linear-digressions
 /press
@@ -599,7 +598,6 @@
 #/catalog-api
 #/handbook
 #/nanodegree/50-back
-#/nanodegree/plus
 #/open-ed
 #/opened
 #/programming-languages/python
