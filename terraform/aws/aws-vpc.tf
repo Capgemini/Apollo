@@ -13,7 +13,7 @@ resource "aws_vpc" "default" {
 
 /* VPC Flow Logs Role and Policy */
 resource "aws_iam_role" "vpc_flow_logs" {
-  name = "vpc-flow-logs"
+  name = "${var.cluster_name}-vpc-flow-logs"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -32,7 +32,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "cloudwatch_logs" {
-  name = "cloudwatch-logs"
+  name = "${var.cluster_name}-cloudwatch-logs"
   role = "${aws_iam_role.vpc_flow_logs.id}"
   policy = <<EOF
 {
@@ -56,7 +56,7 @@ EOF
 
 /* Cloudwatch Log Group */
 resource "aws_cloudwatch_log_group" "vpc" {
-  name = "${var.cloudwatch_vpc_flow_log_group}" 
+  name = "/aws/ec2/${var.cluster_name}/vpc" 
 }
 
 /* VPC Flow Logs */
