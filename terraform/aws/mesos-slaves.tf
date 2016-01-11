@@ -57,7 +57,7 @@ resource "aws_elb" "app" {
     unhealthy_threshold = 2
     timeout             = 3
     target              = "HTTP:34180/haproxy_status"
-    interval            = 30
+    interval            = 10
   }
 
   tags {
