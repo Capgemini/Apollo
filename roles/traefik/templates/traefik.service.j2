@@ -13,6 +13,7 @@ EnvironmentFile=-/etc/environment
 ExecStartPre=-/usr/bin/docker kill traefik
 ExecStartPre=-/usr/bin/docker rm traefik
 ExecStartPre=/usr/bin/docker pull {{ traefik_image }}
+ExecStartPre={{ traefik_config_dir }}/wait-for-marathon.sh {{ traefik_marathon_hostname }}
 ExecStart=/usr/bin/docker run --rm --name traefik \
 --net=host \
 -v {{ traefik_config_dir }}/traefik.toml:/traefik.toml \
