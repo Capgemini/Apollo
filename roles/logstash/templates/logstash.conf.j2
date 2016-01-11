@@ -5,10 +5,6 @@ input {
     ssl_certificate => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_certificate_file }}"
     ssl_key => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
   }
-  log4j {
-    port => 4560
-    type => "log4j"
-  }
 {% if logstash_salesforce %}
   salesforce {
     client_id        => '{{ salesforce_client_id }}'

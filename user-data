@@ -7,7 +7,7 @@ coreos:
     initial-advertise-peer-urls: http://$private_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
     listen-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
-    discovery: https://discovery.etcd.io/8d003e688d682aa1e67938391e13cae3
+    discovery: https://discovery.etcd.io/dc8cacc03ddf4c235bab78e70e4885c0
   fleet:
     public-ip: "$public_ipv4"
   units:
@@ -16,5 +16,5 @@ coreos:
   - name: fleet.service
     command: start
   update:
-    reboot-strategy: "reboot"
+    reboot-strategy: reboot
 manage_etc_hosts: localhost
