@@ -1,2 +1,4 @@
 ---
 # vars file for haproxy
+
+geolocation_txt: https://s3-us-west-2.amazonaws.com/berlioz-etc/haproxy/geolocation.txt

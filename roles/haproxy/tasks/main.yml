@@ -47,6 +47,15 @@
   tags:
     - haproxy
 
+- name: upload geolocation data
+  copy:
+    src: "{{ geolocation_txt }}"
+    dest: "/etc/haproxy/geolocation.txt"
+    mode: 0644
+  sudo: yes
+  tags:
+    - haproxy
+
 - name: destroy old haproxy container
   when: haproxy_rebuild_container
   docker:
