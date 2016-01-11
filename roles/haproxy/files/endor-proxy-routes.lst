@@ -2,7 +2,8 @@
 # NOTE: We use `path` to match, so an exact match (case-insensitive) is needed
 
 #--------------------------------- home page ----------------------------------#
-/
+# hold on root until ready
+#/
 
 #--------------------------- deployed static pages ----------------------------#
 /business
