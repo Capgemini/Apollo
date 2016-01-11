@@ -3,4 +3,4 @@
 registrator_image: "gliderlabs/registrator:master"
 registrator_uri: "consul://{{ ansible_default_ipv4.address }}:8500"
 registrator_command: "-internal -resync=10 {{ registrator_uri }}"
-registrator_docker_socket: "/var/run/weave/weave.sock"
+registrator_docker_socket: "{{ docker_host }}"
