@@ -1,6 +1,9 @@
 # The following whitelist enables routes to Endor
 # NOTE: We use `path` to match, so an exact match (case-insensitive) is needed
 
+#--------------------------------- home page ----------------------------------#
+/
+
 #--------------------------- deployed static pages ----------------------------#
 /business
 /contact
