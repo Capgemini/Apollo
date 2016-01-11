@@ -21,3 +21,4 @@ weave_launch_peers: "
   {%- endfor -%}
   {{ weave_peers|join(' ') }}
 "
+traefik_network_interface: "eth1"

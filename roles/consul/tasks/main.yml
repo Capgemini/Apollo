@@ -12,6 +12,11 @@
   tags:
     - consul
 
+- name: wait for consul to listen
+  wait_for:
+    host: "{{ consul_bind_addr }}"
+    port: 8500
+
 #- name: enable consul-discovery
 #  sudo: yes
 #  service:
