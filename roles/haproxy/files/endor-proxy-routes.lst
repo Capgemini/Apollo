@@ -15,11 +15,11 @@
 /feedback/faq
 /feedback/signup
 /for-credit-tech-requirements
-/georgiatech
-/georgia-tech
+#/georgiatech
+#/georgia-tech
 /georgia-tech/faq
 /georgiatech/faq
-/google
+#/google
 /hire-our-students
 /india
 /intersect
