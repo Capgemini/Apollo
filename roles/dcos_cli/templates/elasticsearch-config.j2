@@ -1,0 +1,13 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "elasticsearch": {
+    "zookeeper-framework-url": "{{ zookeeper_peers_nodes }}",
+    "mem": {{ dcos_cli_framework_elasticsearch_mem }},
+    "cpus": {{ dcos_cli_framework_elasticsearch_cpus }}
+    "executor": {
+      "ram": "{{ dcos_cli_framework_elasticsearch_executor_mem }}",
+      "cpu": "{{ dcos_cli_framework_elasticsearch_executor_cpu }}",
+      "image": "{{ dcos_cli_framework_elasticsearch_executor_image }}",
+    }
+  }
+}

@@ -7,67 +7,6 @@
   tags:
     - logstash
 
-- name: Notify Zookeeper to know how to log to logstash
-  action: command echo zookeeper logging to syslog
-  when: "'mesos_slaves' not in group_names"
-  notify:
-    - restart zookeeper
-  tags:
-    - logstash
-
-- name: destroy old lumberjack container
-  when: lumberjack_rebuild_container|bool
-  docker:
-    name: lumberjack
-    image: "{{ lumberjack_image }}"
-    state: absent
-  tags:
-    - lumberjack
-
-- name: destroy old logs container
-  when: lumberjack_rebuild_container|bool
-  docker:
-    name: logs
-    image: "busybox:latest"
-    state: absent
-  tags:
-    - lumberjack
-
-- name: run logs container
-  docker:
-    name: logs
-    image: "busybox:latest"
-    state: started
-    restart_policy: "{{ lumberjack_restart_policy }}"
-    net: "{{ lumberjack_net }}"
-    hostname: "{{ lumberjack_hostname }}"
-    volumes:
-    - "/var/log/syslog:/var/log/syslog:ro"
-    - "/var/log/consul.log:/var/log/consul.log:ro"
-  tags:
-    - lumberjack
-
-- name: run lumberjack container
-  docker:
-    name: lumberjack
-    image: "{{ lumberjack_image }}"
-    state: started
-    restart_policy: "{{ lumberjack_restart_policy }}"
-    net: "{{ lumberjack_net }}"
-    hostname: "{{ lumberjack_hostname }}"
-    volumes:
-    - "/var/lib/docker:/var/lib/docker:ro"
-    - "/var/run/docker.sock:/var/run/docker.sock"
-    - "{{ logstash_config_dir }}/lumberjack/logstash-forwarder.conf:/etc/logstash-forwarder.conf:rw"
-    - "{{ logstash_config_dir }}/ssl:/mnt/logstash-forwarder"
-    volumes_from:
-    - logs
-    env:
-      LOGSTASH_HOST: "{{ logstash_lumberjack_host }}:5043"
-      SERVICE_NAME: lumberjack
-  tags:
-    - lumberjack
-
 # Attach to the running container, or start it if needed
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
@@ -79,3 +18,14 @@
     enabled: yes
   tags:
     - lumberjack
+
+# - name: Set lumberjack consul service definition
+#   sudo: yes
+#   template:
+#     src: lumberjack-consul.j2
+#     dest: "{{ lumberjack_consul_dir }}/lumberjack.json"
+#   notify:
+#     - restart consul
+#   tags:
+#     - lumberjack
+

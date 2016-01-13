@@ -13,13 +13,11 @@
   },
   "healthChecks": [
     {
+      "protocol": "TCP",
       "portIndex": 0,
-       "protocol": "COMMAND",
-       "command": { "value": "nc -z {{ logstash_lumberjack_host }} 5043" },
-       "gracePeriodSeconds": 50,
-       "intervalSeconds": 60,
-       "timeoutSeconds": 20,
-       "maxConsecutiveFailures": 3
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
     }
   ],
   "container": {
@@ -35,19 +33,12 @@
       "image": "{{ dcos_cli_app_logstash_image }}:{{ dcos_cli_app_logstash_image_tag }}",
       "network": "BRIDGE",
       "parameters": [
-        {"key":"publish", "value": "5043:5043"},
-        {"key":"publish", "value": "4560:4560"}
+        {"key":"publish", "value": "5043:5043"}
       ],
       "portMappings": [
         {
           "containerPort": 5043,
           "servicePort": 5043,
-          "hostPort": 0,
-          "protocol": "tcp"
-        },
-        {
-          "containerPort": 4560,
-          "servicePort": 4560,
           "hostPort": 0,
           "protocol": "tcp"
         }

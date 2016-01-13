@@ -6,6 +6,15 @@ variable "instances" {}
 variable "subnets" {}
 variable "security_groups" {}
 
+resource "aws_s3_bucket" "elb" {
+  bucket = "elb_logs"
+  acl = "private"
+
+  tags {
+    Name = "${var.elb_name}"
+  }
+}
+
 resource "aws_elb" "elb" {
   name                      = "${var.elb_name}"
   cross_zone_load_balancing = true
@@ -18,6 +27,11 @@ resource "aws_elb" "elb" {
     instance_protocol = "${var.backend_protocol}"
     lb_port           = 80
     lb_protocol       = "http"
+  }
+
+  access_logs {
+    bucket        = "${aws_s3_bucket.elb.id}"
+    bucket_prefix = "elb"
   }
 
   # Traefik health check
@@ -43,3 +57,4 @@ resource "aws_proxy_protocol_policy" "http" {
 output "elb_id" { value = "${aws_elb.elb.id}" }
 output "elb_name" { value = "${aws_elb.elb.name}" }
 output "elb_dns_name" { value = "${aws_elb.elb.dns_name}" }
+output "elb_s3" { value = "${aws_s3_bucket.elb.id}" }

@@ -19,16 +19,18 @@
   tags:
     - logstash
 
-- name: upload lumberjack template service
-  template:
-    src: lumberjack.conf.j2
-    dest: /etc/init/lumberjack.conf
-    mode: 0755
+# tasks for running lumberjack
+- name: deploy lumberjack service
   sudo: yes
+  sudo_user: root
+  template:
+    src: lumberjack.service.j2
+    dest: /etc/systemd/system/lumberjack.service
   tags:
     - lumberjack
 
 - name: upload lumberjack config files
+  sudo: yes
   template:
     src: logstash-forwarder.conf.j2
     dest: "{{ logstash_config_dir }}/lumberjack/logstash-forwarder.conf"

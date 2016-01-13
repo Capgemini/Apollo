@@ -22,7 +22,7 @@ proxy_env:
   HTTP_PROXY: ''
   HTTPS_PROXY: ''
 http_proxy: ''
-prometheus_enabled: true
+prometheus_enabled: false
 elk_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true

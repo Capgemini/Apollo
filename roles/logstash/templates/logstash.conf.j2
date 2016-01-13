@@ -5,6 +5,10 @@ input {
     ssl_certificate => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_certificate_file }}"
     ssl_key => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
   }
+  s3 {
+    bucket => "elb_logs"
+    prefix => "elb"
+  }
 {% if logstash_salesforce %}
   salesforce {
     client_id        => '{{ salesforce_client_id }}'
