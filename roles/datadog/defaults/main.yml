@@ -1,0 +1,12 @@
+---
+datadog_enabled: yes
+
+# default datadog.conf options
+datadog_config: {}
+
+# default checks enabled
+datadog_checks: {}
+
+# default user/group
+datadog_user: dd-agent
+datadog_group: root

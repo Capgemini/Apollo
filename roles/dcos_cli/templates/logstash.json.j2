@@ -1,6 +1,6 @@
 {
   "id": "logstash",
-  "cmd": "/bin/bash -c \"/opt/logstash/bin/plugin install logstash-input-salesforce; logstash -f {{ dcos_cli_app_logstash_config_dir }}/logstash.conf\"",
+  "cmd": "/bin/bash -c \"logstash -f {{ dcos_cli_app_logstash_config_dir }}/logstash.conf\"",
   "instances": {{ dcos_cli_app_logstash_instances }},
   "cpus": {{ dcos_cli_app_logstash_cpus }},
   "mem": {{ dcos_cli_app_logstash_mem }},
@@ -9,7 +9,9 @@
     "DCOS_PACKAGE_IS_FRAMEWORK": "true"
   },
   "env": {
-    "SERVICE_NAME": "logstash"
+    "SERVICE_NAME": "logstash",
+    "SERVICE_5043_NAME": "logstash",
+    "SERVICE_19532_NAME": "journald-upload"
   },
   "healthChecks": [
     {
@@ -32,13 +34,16 @@
     "docker": {
       "image": "{{ dcos_cli_app_logstash_image }}:{{ dcos_cli_app_logstash_image_tag }}",
       "network": "BRIDGE",
-      "parameters": [
-        {"key":"publish", "value": "5043:5043"}
-      ],
       "portMappings": [
         {
           "containerPort": 5043,
           "servicePort": 5043,
+          "hostPort": 0,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 19532,
+          "servicePort": 19532,
           "hostPort": 0,
           "protocol": "tcp"
         }

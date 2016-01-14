@@ -1,14 +1,28 @@
 input {
   lumberjack {
-    codec => "json"
-    port => 5043
+    codec           => "json"
+    port            => 5043
     ssl_certificate => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_certificate_file }}"
-    ssl_key => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
+    ssl_key         => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
   }
+  tcp {
+    port  => 19532
+    type  => journald
+    codec => plain {
+      charset => "ISO-8859-1"
+    }
+  }
+{% if logstash_s3 %}
   s3 {
-    bucket => "elb_logs"
-    prefix => "elb"
+    bucket            => "elb_logs"
+    prefix            => "elb"
+    delete            => true
+    region            => "eu-west-1"
+    region_endpoint   => "eu-west-1"
+    access_key_id     => "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    secret_access_key => "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
   }
+{% endif %}
 {% if logstash_salesforce %}
   salesforce {
     client_id        => '{{ salesforce_client_id }}'

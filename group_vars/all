@@ -22,11 +22,11 @@ proxy_env:
   HTTP_PROXY: ''
   HTTPS_PROXY: ''
 http_proxy: ''
-prometheus_enabled: false
+prometheus_enabled: true
 elk_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true
-chronos_enabled: false
+chronos_enabled: true
 datadog_enabled: false
 docker_host: 'unix:///var/run/weave/weave.sock'
 

@@ -1,4 +1,4 @@
-Unit]
+[Unit]
 Description=lumberjack
 After=docker.service
 Requires=docker.service
@@ -20,8 +20,7 @@ ExecStart=/usr/bin/docker run --name lumberjack \
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 -v "{{ logstash_config_dir }}/lumberjack/logstash-forwarder.conf:/etc/logstash-forwarder.conf:rw" \
 -v "{{ logstash_config_dir }}/ssl:/mnt/logstash-forwarder" \
--e "LOGSTASH_HOST: {{ logstash_lumberjack_host }}:5043" \
--e "SERVICE_NAME: lumberjack" \
+-e "LOGSTASH_HOST={{ logstash_lumberjack_host }}:5043" \
 {{ lumberjack_image }}
 
 ExecStop=/usr/bin/docker stop lumberjack

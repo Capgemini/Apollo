@@ -18,14 +18,3 @@
     enabled: yes
   tags:
     - lumberjack
-
-# - name: Set lumberjack consul service definition
-#   sudo: yes
-#   template:
-#     src: lumberjack-consul.j2
-#     dest: "{{ lumberjack_consul_dir }}/lumberjack.json"
-#   notify:
-#     - restart consul
-#   tags:
-#     - lumberjack
-
