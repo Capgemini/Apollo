@@ -18,7 +18,7 @@ logstash_lumberjack_host: "logstash.service.{{ consul_domain }}"
 logstash_journald_host: "journald-upload.service.{{ consul_domain }}"
 logstash_output_stdout: false
 logstash_salesforce: false
-logstash_s3: true
+logstash_s3: false
 logstash_elasticsearch_output: "elasticsearch.service.{{ consul_domain }}:9200"
 
 dcos_cli_image: capgemini/dcos-cli
