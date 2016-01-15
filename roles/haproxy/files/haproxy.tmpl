@@ -52,8 +52,12 @@ frontend www-https
     compression algo gzip
     compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
 
-    # GAE Proxy
+    # Remove trailing slashes
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
+    acl has_trailing_slash path_end /
+    http-request set-path %[path,regsub(/$,)] if has_trailing_slash is_www_host
+
+    # GAE Proxy
     acl is_gae_path path_beg -i -f {{env "GAE_ROUTES_FILE"}}
     acl is_endor_path path -i -f {{env "ENDOR_ROUTES_FILE"}}
     acl is_endor_path path_beg -i -f {{env "ENDOR_PREFIX_ROUTES_FILE"}}
