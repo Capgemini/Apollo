@@ -55,7 +55,8 @@ frontend www-https
     # Remove trailing slashes
     acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
     acl has_trailing_slash path_end /
-    http-request set-path %[path,regsub(/$,)] if has_trailing_slash is_www_host
+    acl is_root path /
+    http-request set-path %[path,regsub(/$,)] if has_trailing_slash is_www_host !is_root
 
     # GAE Proxy
     acl is_gae_path path_beg -i -f {{env "GAE_ROUTES_FILE"}}
