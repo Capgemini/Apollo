@@ -9,6 +9,7 @@
     - { path: 'templates' }
     - { path: 'routes' }
     - { path: 'etc/ssl/private' }
+    - { path: 'etc/haproxy' }
   tags:
     - haproxy
 
@@ -49,9 +50,9 @@
     - haproxy
 
 - name: upload geolocation data
-  copy:
-    src: "{{ geolocation_txt }}"
-    dest: "/etc/haproxy/geolocation.txt"
+  get_url:
+    url: "{{ geolocation_txt }}"
+    dest: "{{ consul_template_dir }}/etc/haproxy/geolocation.txt"
     mode: 0644
   sudo: yes
   tags:
