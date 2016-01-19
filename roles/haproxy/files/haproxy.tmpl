@@ -53,6 +53,7 @@ frontend www-https
     compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
 
     # GAE Proxy
+    acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
     acl is_gae_path path_beg -i -f {{env "GAE_ROUTES_FILE"}}
     acl is_endor_path path_beg -i -f {{env "ENDOR_ROUTES_FILE"}}
     acl is_endor_path path_beg -i -f {{env "ENDOR_PREFIX_ROUTES_FILE"}}
