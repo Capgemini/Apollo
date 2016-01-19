@@ -32,6 +32,7 @@
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
     - { src: gae-proxy-routes.lst, dst: 'routes/gae-proxy-routes.lst' }
     - { src: endor-proxy-routes.lst, dst: 'routes/endor-proxy-routes.lst' }
+    - { src: endor-proxy-prefix-routes.lst, dst: 'routes/endor-proxy-prefix-routes.lst' }
   tags:
     - haproxy
 
@@ -68,10 +69,10 @@
 - name: run haproxy container
   # NOTE: Using command until we update to Ansible 2.0 which supports --log-driver
   command: >
-    docker run -d 
+    docker run -d
     --name=haproxy
-    --net=host 
-    --restart=always 
+    --net=host
+    --restart=always
     --log-driver=syslog
     -p 0.0.0.0:80:80/tcp
     -p 0.0.0.0:34180:34180/tcp
@@ -85,6 +86,7 @@
     -e SERVICE_NAME=haproxy
     -e GAE_ROUTES_FILE=/routes/gae-proxy-routes.lst
     -e ENDOR_ROUTES_FILE=/routes/endor-proxy-routes.lst
+    -e ENDOR_PREFIX_ROUTES_FILE=/routes/endor-proxy-prefix-routes.lst
     -e SSL_CERT=/etc/ssl/private/star_udacity_com.pem
     -v "/dev/log:/dev/log:rw"
     -v "{{ consul_template_dir }}/config:/config:rw"
@@ -96,4 +98,3 @@
   failed_when: "'The name \"haproxy\" is already in use' not in command_result.stderr and command_result.rc != 0"
   tags:
     - haproxy
-

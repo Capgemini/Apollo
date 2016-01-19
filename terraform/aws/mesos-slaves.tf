@@ -34,6 +34,10 @@ resource "aws_elb" "app" {
   subnets = ["${aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.web.id}"]
 
+  access_logs {
+    bucket = "${aws_s3_bucket.state.id}"
+  }
+
   listener {
     instance_port = 443 
     instance_protocol = "tcp"
@@ -53,7 +57,7 @@ resource "aws_elb" "app" {
     unhealthy_threshold = 2
     timeout             = 3
     target              = "HTTP:34180/haproxy_status"
-    interval            = 30
+    interval            = 10
   }
 
   tags {
@@ -63,7 +67,7 @@ resource "aws_elb" "app" {
   instances = ["${aws_instance.mesos-slave.*.id}"]
   cross_zone_load_balancing = true
   connection_draining = true
-  connection_draining_timeout = 300
+  connection_draining_timeout = 60
 }
 
 resource "aws_proxy_protocol_policy" "http" {

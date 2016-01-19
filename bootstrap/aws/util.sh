@@ -14,7 +14,6 @@ function set_vpn() {
 
 ansible_ssh_config() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    export APOLLO_bastion_ip=$( terraform output bastion.ip )
 
     # Virtual private cloud CIDR IP.
     ip=$( terraform output vpc_cidr_block.ip )

@@ -11,15 +11,27 @@ resource "aws_subnet" "private" {
   }
 }
 
-/* Routing table for private subnet */
+resource "aws_eip" "nat_gateway" {
+  count = "${length(split(",", var.availability_zones))}"
+  vpc   = true
+}
+
+resource "aws_nat_gateway" "gateway" {
+  count         = "${length(split(",", var.availability_zones))}"
+  subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
+  allocation_id = "${element(aws_eip.nat_gateway.*.id, count.index)}"
+}
+
+/* Routing tables for private subnets */
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
+  count  = "${length(split(",", var.availability_zones))}"
   route {
     cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.bastion.id}"
+    nat_gateway_id = "${element(aws_nat_gateway.gateway.*.id, count.index)}"
   }
   tags {
-    Name = "private"
+    Name = "private-${element(split(",", var.availability_zones), count.index)}"
   }
 }
 
@@ -27,5 +39,5 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count          = "${length(split(",", var.availability_zones))}"
   subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
-  route_table_id = "${aws_route_table.private.id}"
+  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }

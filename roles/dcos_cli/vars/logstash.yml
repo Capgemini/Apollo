@@ -1,4 +1,4 @@
 dcos_cli_app_logstash_enabled: true
 dcos_cli_app_logstash_mem: 2048
 dcos_cli_app_logstash_instances: 1
-dcos_cli_app_logstash_conf_url: https://s3-us-west-2.amazonaws.com/berlioz-etc/logstash/logstash.conf
+dcos_cli_app_logstash_conf_url: "https://s3-{{ lookup('env','AWS_DEFAULT_REGION') }}.amazonaws.com/udacity-{{ mesos_cluster_name }}/etc/logstash.conf"
