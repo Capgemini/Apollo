@@ -10,8 +10,11 @@ output "master.1.ip" {
 output "master_ips" {
    value = "${join(",", aws_instance.mesos-master.*.private_ip)}"
 }
-output "slave_ips" {
+output "slave-a_ips" {
    value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
+}
+output "slave-b_ips" {
+   value = "${join(",", aws_instance.mesos-slave-b.*.private_ip)}"
 }
 output "elasticsearch_ips" {
    value = "${join(",", aws_instance.elasticsearch.*.private_ip)}"

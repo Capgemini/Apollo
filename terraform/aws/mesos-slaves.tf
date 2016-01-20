@@ -5,6 +5,12 @@ resource "atlas_artifact" "mesos-slave" {
   type    = "aws.ami"
 }
 
+resource "atlas_artifact" "mesos-slave-b" {
+  name    = "${var.atlas_artifact.slave}"
+  version = "30"
+  type    = "aws.ami"
+}
+
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
   instance_type     = "${var.instance_type.slave}"
@@ -22,9 +28,49 @@ resource "aws_instance" "mesos-slave" {
     delete_on_termination = true
   }
   tags = {
+    Name = "apollo-mesos-slave-docker-${count.index}"
+    role = "mesos_slaves_docker"
+    monitoring = "datadog"
+  }
+}
+
+resource "aws_instance" "mesos-slave-b" {
+  instance_type     = "m4.2xlarge"
+  ami               = "${atlas_artifact.mesos-slave-b.metadata_full.ami_id}"
+  count             = "${var.slaves}"
+  key_name          = "${aws_key_pair.deployer.key_name}"
+  source_dest_check = false
+  subnet_id         = "${element(aws_subnet.private.*.id, count.index)}"
+  security_groups   = ["${aws_security_group.default.id}"]
+  depends_on        = ["aws_instance.bastion", "aws_internet_gateway.public", "aws_instance.mesos-master"]
+  tags = {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
     monitoring = "datadog"
+  }
+  root_block_device {
+    volume_size           = "${var.slave_block_device.volume_size}"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
+  ebs_block_device {
+    device_name = "/dev/sde"
+    volume_size = "${var.slave_block_device.volume_size}"
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+  connection {
+    user         = "ubuntu"
+    key_file     = "${var.private_key_file}"
+    bastion_host = "${aws_eip.bastion.public_ip}"
+    agent        = false
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkfs -t ext4 -i 4096 -b 4096 -I 128 /dev/xvde",
+      "sudo mount /dev/xvde /var/lib/docker/overlay",
+      "echo '/dev/xvde	/var/lib/docker/overlay	ext4	defaults,nofail,nobootwait	0	2' | sudo tee -a /etc/fstab",
+    ]
   }
 }
 
@@ -64,7 +110,7 @@ resource "aws_elb" "app" {
     monitoring = "datadog"
   }
 
-  instances = ["${aws_instance.mesos-slave.*.id}"]
+  instances = ["${aws_instance.mesos-slave.*.id}", "${aws_instance.mesos-slave-b.*.id}"]
   cross_zone_load_balancing = true
   connection_draining = true
   connection_draining_timeout = 60
