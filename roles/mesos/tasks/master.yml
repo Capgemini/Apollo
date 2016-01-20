@@ -1,0 +1,44 @@
+- name: remove mesos-master override
+  sudo: yes
+  file:
+    path: /etc/init/mesos-master.override
+    state: absent
+
+- name: Set ZooKeeper URL
+  sudo: yes
+  copy:
+    dest: /etc/mesos/zk
+    content: "zk://{{ zookeeper_peers_nodes }}/mesos"
+  notify:
+    - restart mesos master
+
+- name: Create config file keys
+  sudo: yes
+  file:
+    path: /etc/mesos-master/{{item.name}}
+    state: touch
+  changed_when: False
+  with_items: mesos_master_config
+
+- name: Configure master
+  sudo: yes
+  copy:
+    dest: /etc/mesos-master/{{item.name}}
+    content: "{{item.value}}"
+  with_items: mesos_master_config
+  notify:
+    - restart mesos master
+
+- name: Set Mesos Master consul service definition
+  sudo: yes
+  template:
+    src: mesos-master-consul.j2
+    dest: "{{ consul_dir }}/mesos-master.json"
+  notify:
+    - restart consul
+
+- name: start mesos-master (and enable it at boot)
+  service:
+    name: mesos-master
+    state: started
+    enabled: yes

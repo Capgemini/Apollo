@@ -1,0 +1,12 @@
+---
+- name: Set Docker host
+  lineinfile:
+    dest: /etc/default/mesos
+    line: "DOCKER_HOST={{ docker_host }}"
+  sudo: yes
+
+- include: master.yml
+  when: mesos_install_mode == "master"
+
+- include: slave.yml
+  when: mesos_install_mode == "slave"

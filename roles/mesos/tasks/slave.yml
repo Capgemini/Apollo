@@ -1,0 +1,69 @@
+- name: remove mesos-slave override
+  sudo: yes
+  file:
+    path: /etc/init/mesos-slave.override
+    state: absent
+
+- name: Set ZooKeeper URL
+  sudo: yes
+  copy:
+    dest: /etc/mesos/zk
+    content: "zk://{{ zookeeper_peers_nodes }}/mesos"
+  notify:
+    - restart mesos slave
+
+- name: Create Mesos Slave work area
+  sudo: yes
+  file:
+    dest: "{{ mesos_slave_work_dir }}"
+    mode: 0755
+    state: directory
+  notify:
+    - restart mesos slave
+
+- name: Create config file keys
+  sudo: yes
+  file:
+    path: /etc/mesos-slave/{{item.name}}
+    state: touch
+  changed_when: False
+  with_items: mesos_slave_config
+
+- name: Configure slave
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/{{item.name}}
+    content: "{{item.value}}"
+  with_items: mesos_slave_config
+  notify:
+    - restart mesos slave
+
+- name: Create attributes folder
+  sudo: yes
+  file:
+    path: /etc/mesos-slave/attributes
+    mode: 0755
+    state: directory
+
+- name: Create attributes file keys
+  sudo: yes
+  file:
+    path: /etc/mesos-slave/attributes/{{item.name}}
+    state: touch
+  changed_when: False
+  with_items: mesos_slave_attributes
+
+- name: Set slave attributes
+  copy:
+    dest: /etc/mesos-slave/attributes/{{item.name}}
+    content: "{{item.value}}"
+  sudo: yes
+  with_items: mesos_slave_attributes
+  notify:
+    - restart mesos slave
+
+- name: start mesos-slave (and enable it at boot)
+  service:
+    name: mesos-slave
+    state: started
+    enabled: yes
