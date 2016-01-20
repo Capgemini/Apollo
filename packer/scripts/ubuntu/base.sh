@@ -21,6 +21,7 @@ sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 1
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 sudo apt-get install -y oracle-java8-installer
+echo 'networkaddress.cache.ttl=60' | sudo tee -a /usr/lib/jvm/java-8-oracle/jre/lib/security/java.security
 
 cat << EOF > /etc/security/limits.conf
 * soft nofile 64000
