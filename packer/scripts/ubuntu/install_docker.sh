@@ -20,20 +20,17 @@ sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C
 # Install docker-engine
 sudo apt-get update
 sudo apt-get install -y docker-engine=${DOCKER_VERSION}
+echo 'DOCKER_OPTS="$DOCKER_OPTS --storage-driver=overlay"' | sudo tee -a /etc/default/docker
+sudo service docker restart
+sleep 5
 
 # Download docker containers to the machine to save download time on
 # provisioning later
-docker pull mesosphere/mesos:${MESOS_VERSION}
-docker pull mesosphere/mesos-master:${MESOS_VERSION}
-docker pull mesosphere/mesos-slave:${MESOS_VERSION}
-docker pull udacity/registrator:latest
-docker pull udacity/haproxy-consul:latest
-docker pull weaveworks/weave:${WEAVE_VERSION}
-docker pull weaveworks/weaveexec:${WEAVE_VERSION}
+docker pull udacity/registrator:388bc36
+docker pull udacity/haproxy-consul:1.6.2_0.10.0
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 docker pull capgemini/dcos-cli:latest
 docker pull andyshinn/dnsmasq:latest
 
-sudo service docker stop
 echo manual | sudo tee /etc/init/docker.override >/dev/null
