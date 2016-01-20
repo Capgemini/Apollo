@@ -59,8 +59,9 @@
 
 - name: run haproxy container
   # NOTE: Using command until we update to Ansible 2.0 which supports --log-driver
-  command: >
-    docker run -d
+  shell: >
+    docker pull {{ haproxy_image }}:{{ haproxy_image_tag }};
+    docker run -d 
     --name=haproxy
     --net=host
     --restart=always

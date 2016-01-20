@@ -1,4 +1,10 @@
 ---
+- name: ensure weave images are downloaded
+  sudo: yes
+  shell: docker pull weaveworks/weaveexec:{{ weave_version }}; weave setup
+  changed_when: false
+  tags:
+    - weave
 
 - name: upload weave template service
   template:
