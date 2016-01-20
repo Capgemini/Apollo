@@ -1,0 +1,18 @@
+- include: site.yml
+  vars:
+    haproxy_ssl_enabled: True
+
+- hosts: mesos_slaves_docker
+  name: remove slave from pool
+  serial: 1
+  tasks:
+    - shell: >
+        echo 'stopping mesos slave';
+        docker stop mesos-slave | xargs docker rm -v -f;
+        echo 'stopping tasks';
+        docker ps | grep mesos-[0-9a-f];
+        docker ps | grep mesos-[0-9a-f] | awk '{print $1}' | xargs -r docker stop | xargs -r docker rm -v -f;
+    - debug: 
+        msg: "slave on {{ ansible_ssh_host }} is down. Pausing for up to 5 minutes."
+    - pause:
+        minutes: 5
