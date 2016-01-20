@@ -1,6 +1,6 @@
 # -*- mode: yaml; -*-
 datadog_checks:
-  docker:
+  docker_daemon:
     init_config:
 
       # Timeout on Docker socket connection. You may have to increase it if you have many containers.

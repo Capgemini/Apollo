@@ -67,6 +67,15 @@
       file:
         path: /etc/init/datadog-agent.override
         state: absent
+  post_tasks:
+    - name: remove deprecated docker.conf
+      file:
+        path: /etc/dd-agent/conf.d/docker.yaml
+        state: absent
+      tags:
+        - monitoring
+      notify:
+        - restart datadog-agent
   roles:
     - { role: datadog-agent, tags: ["monitoring"] }
 
