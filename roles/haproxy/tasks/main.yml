@@ -36,14 +36,13 @@
   tags:
     - haproxy
 
+- include_vars: secrets.yml
 - name: upload SSL cert
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ consul_template_dir }}/{{ item.dst }}"
+    content: "{{ wildcard_pem }}"
+    dest: "{{ consul_template_dir }}/etc/ssl/private/star_udacity_com.pem"
     mode: 0644
   sudo: yes
-  with_items:
-    - { src: star_udacity_com.pem, dst: 'etc/ssl/private/star_udacity_com.pem' }
   when: "haproxy_ssl_enabled is defined and haproxy_ssl_enabled"
   tags:
     - haproxy
