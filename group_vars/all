@@ -25,7 +25,7 @@ http_proxy: ''
 prometheus_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true
-datadog_enabled: false
+datadog_enabled: true
 docker_host: 'unix:///var/run/weave/weave.sock'
 
 datadog_api_key: "{{ DD_API_KEY }}"
