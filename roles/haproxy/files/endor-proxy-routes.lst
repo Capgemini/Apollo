@@ -560,8 +560,9 @@
 /course/nd000
 /course/intro-to-programming-nanodegree--nd000
 
-/course/nd001
-/course/front-end-web-developer-nanodegree--nd001
+# (ANGEL): Disabled on 1/20/2016 due to 'Notify Me' button bug
+#/course/nd001
+#/course/front-end-web-developer-nanodegree--nd001
 
 /course/nd002
 /course/data-analyst-nanodegree--nd002
