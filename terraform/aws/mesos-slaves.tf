@@ -1,19 +1,19 @@
 /* Base packer build we use for provisioning slave instances */
 resource "atlas_artifact" "mesos-slave" {
   name    = "${var.atlas_artifact.slave}"
-  version = "${var.atlas_artifact_version.slave}"
+  version = "26"
   type    = "aws.ami"
 }
 
 resource "atlas_artifact" "mesos-slave-b" {
   name    = "${var.atlas_artifact.slave}"
-  version = "30"
+  version = "${var.atlas_artifact_version.slave}"
   type    = "aws.ami"
 }
 
 /* Mesos slave instances */
 resource "aws_instance" "mesos-slave" {
-  instance_type     = "${var.instance_type.slave}"
+  instance_type     = "m4.large"
   /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
   ami               = "${atlas_artifact.mesos-slave.metadata_full.ami_id}"
   count             = "${var.slaves}"
@@ -35,7 +35,7 @@ resource "aws_instance" "mesos-slave" {
 }
 
 resource "aws_instance" "mesos-slave-b" {
-  instance_type     = "m4.2xlarge"
+  instance_type     = "${var.instance_type.slave}"
   ami               = "${atlas_artifact.mesos-slave-b.metadata_full.ami_id}"
   count             = "${var.slaves}"
   key_name          = "${aws_key_pair.deployer.key_name}"
