@@ -12,7 +12,7 @@ sudo apt-get upgrade -y
 sudo apt-get update -y
 
 sudo apt-get -y install git curl auditd audispd-plugins libcurl3 bridge-utils bundler unzip wget python-setuptools python-protobuf cgroup-bin ruby2.0
-sudo easy_install pip
+sudo easy_install pip==7.1.2
 
 sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 1
 sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 1
