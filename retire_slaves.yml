@@ -4,15 +4,23 @@
 
 - hosts: mesos_slaves_docker
   name: remove slave from pool
+  sudo: yes
   serial: 1
   tasks:
-    - shell: >
-        echo 'stopping mesos slave';
-        docker stop mesos-slave | xargs docker rm -v -f;
-        echo 'stopping tasks';
-        docker ps | grep mesos-[0-9a-f];
+    - name: collect running tasks
+      shell: >
+        docker ps | grep mesos-[0-9a-f] | awk '{print $1, $2, $NF}'
+      register: running_tasks
+    - name: The following will be terminated
+      debug: msg="{{ item }}"
+      with_items: running_tasks.stdout_lines
+    - pause:
+        minutes: 1
+    - name: stop mesos-slave and tasks
+      shell: >
+        docker stop mesos-slave;
         docker ps | grep mesos-[0-9a-f] | awk '{print $1}' | xargs -r docker stop | xargs -r docker rm -v -f;
     - debug: 
         msg: "slave on {{ ansible_ssh_host }} is down. Pausing for up to 5 minutes."
     - pause:
-        minutes: 5
+        minutes: 4
