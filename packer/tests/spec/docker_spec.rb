@@ -12,10 +12,6 @@ describe package('docker-py') do
   it { should be_installed.by('pip').with_version('1.5.0') }
 end
 
-describe package("linux-image-extra-#{`uname -r`.strip}") do
-  it { should be_installed }
-end
-
 describe file('/etc/init/docker.override') do
   it { should be_file }
 end

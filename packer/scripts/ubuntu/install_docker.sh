@@ -4,9 +4,7 @@ set -o pipefail
 
 sudo apt-get -y update
 
-sudo pip install docker-py==1.5.0
-
-sudo apt-get install -y linux-image-extra-$(uname -r)
+sudo -H pip install docker-py==1.5.0
 
 # enable memory and swap cgroup
 perl -p -i -e 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g'  /etc/default/grub
