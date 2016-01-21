@@ -9,7 +9,7 @@
     "docker_version": "1.9.1-0~trusty",
     "version": "{{env `APOLLO_VERSION`}}",
     "aws_region": "us-west-2",
-    "aws_source_ami": "ami-274f5146",
+    "aws_source_ami": "ami-4a47a22a",
     "aws_instance_type": "m4.large",
     "timestamp": "{{isotime \"20060102150405\"}}"
   },
