@@ -2,6 +2,11 @@
   vars:
     haproxy_ssl_enabled: True
 
+- hosts: localhost
+  connection: local
+  tasks:
+    - pause: prompt="Continue?"
+
 - hosts: mesos_slaves_docker
   name: remove slave from pool
   sudo: yes
