@@ -36,6 +36,7 @@ mesos_slave_config:
   - { name: "containerizers", value: "{{ mesos_slave_containerizers }}" }
   - { name: "resources", value: "{{ mesos_slave_resources }}" }
   - { name: "work_dir", value: "{{ mesos_slave_work_dir }}" }
+  - { name: "docker_socket", value: "{{ mesos_docker_socket }}" }
 
 mesos_slave_attributes:
   - { name: "az", value: "{{ availability_zone }}" }

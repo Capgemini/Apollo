@@ -2,7 +2,7 @@
 - name: Set Docker host
   lineinfile:
     dest: /etc/default/mesos
-    line: "DOCKER_HOST={{ docker_host }}"
+    line: "DOCKER_HOST=unix://{{ mesos_docker_socket }}"
   sudo: yes
 
 - include: master.yml
