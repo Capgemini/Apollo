@@ -16,7 +16,7 @@ resource "aws_instance" "mesos-slave" {
   instance_type     = "m4.large"
   /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
   ami               = "${atlas_artifact.mesos-slave.metadata_full.ami_id}"
-  count             = "${var.slaves}"
+  count             = 0
   key_name          = "${aws_key_pair.deployer.key_name}"
   source_dest_check = false
   subnet_id         = "${element(aws_subnet.private.*.id, count.index)}"
@@ -110,7 +110,7 @@ resource "aws_elb" "app" {
     monitoring = "datadog"
   }
 
-  instances = ["${aws_instance.mesos-slave.*.id}", "${aws_instance.mesos-slave-b.*.id}"]
+  instances = ["${aws_instance.mesos-slave-b.*.id}"]
   cross_zone_load_balancing = true
   connection_draining = true
   connection_draining_timeout = 60
