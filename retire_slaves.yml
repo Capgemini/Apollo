@@ -48,7 +48,7 @@
         msg: "slave on {{ ansible_ssh_host }} is down. Pausing for up to 5 minutes."
     - pause:
         minutes: 4
-  post_tasks:
+  pre_tasks:
     - action: ec2_facts
     - name: "De-register slave with load balancer"
       local_action:
