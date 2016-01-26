@@ -1,97 +1,69 @@
----
-# Tasks for Slave nodes
-
-- name: create mesos-slave work directory
-  when: mesos_install_mode == "slave"
-  file:
-    path: "{{ mesos_slave_work_dir }}"
-    state: directory
-    mode: 0755
+- name: remove mesos-slave override
   sudo: yes
-  tags:
-    - mesos-slave
-
-- name: destroy old slave container
-  when: mesos_slave_rebuild_container
-  docker:
-    name: mesos-slave
-    image: "{{ mesos_slave_image }}"
+  file:
+    path: /etc/init/mesos-slave.override
     state: absent
 
-- name: run mesos-slave container
-  when: mesos_install_mode == "slave"
-  docker:
-    name: mesos-slave
-    image: "{{ mesos_slave_image }}"
-    state: started
-    privileged: true
-    volumes:
-    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
-    - "/proc:/host/proc:ro"
-    - "/cgroup:/cgroup"
-    - "/sys:/sys"
-    - "/lib/libpthread.so.0:/lib/libpthread.so.0:ro"
-    - "/usr/bin/docker:/usr/bin/docker:ro"
-    - "/usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/usr/lib/x86_64-linux-gnu/libapparmor.so.1"
-    - "{{ mesos_docker_socket }}:/var/run/docker.sock"
-    ports:
-    - "{{ mesos_slave_port }}:{{ mesos_slave_port }}"
-    net: "host"
-    env:
-      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
-      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
-      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
-      MESOS_RESOURCES: "{{ mesos_resources }}"
-      MESOS_IP: "{{ mesos_ip }}"
-      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
-      MESOS_HOSTNAME: "{{ mesos_hostname }}"
-      SERVICE_IGNORE: yes
-  tags:
-    - mesos-slave
+- name: Set ZooKeeper URL
+  sudo: yes
+  copy:
+    dest: /etc/mesos/zk
+    content: "zk://{{ zookeeper_peers_nodes }}/mesos"
+  notify:
+    - restart mesos slave
 
-- name: upload mesos-slave template service
-  when: mesos_install_mode == "slave"
-  template:
-    src: mesos-slave.conf.j2
-    dest: /etc/init/mesos-slave.conf
+- name: Create Mesos Slave work area
+  sudo: yes
+  file:
+    dest: "{{ mesos_slave_work_dir }}"
     mode: 0755
-  sudo: yes
-  tags:
-    - mesos-slave
+    state: directory
+  notify:
+    - restart mesos slave
 
-- name: ensure mesos-slave is running (and enable it at boot)
-  when: mesos_install_mode == "slave"
+- name: Create config file keys
   sudo: yes
+  file:
+    path: /etc/mesos-slave/{{item.name}}
+    state: touch
+  changed_when: False
+  with_items: mesos_slave_config
+
+- name: Configure slave
+  sudo: yes
+  copy:
+    dest: /etc/mesos-slave/{{item.name}}
+    content: "{{item.value}}"
+  with_items: mesos_slave_config
+  notify:
+    - restart mesos slave
+
+- name: Create attributes folder
+  sudo: yes
+  file:
+    path: /etc/mesos-slave/attributes
+    mode: 0755
+    state: directory
+
+- name: Create attributes file keys
+  sudo: yes
+  file:
+    path: /etc/mesos-slave/attributes/{{item.name}}
+    state: touch
+  changed_when: False
+  with_items: mesos_slave_attributes
+
+- name: Set slave attributes
+  copy:
+    dest: /etc/mesos-slave/attributes/{{item.name}}
+    content: "{{item.value}}"
+  sudo: yes
+  with_items: mesos_slave_attributes
+  notify:
+    - restart mesos slave
+
+- name: start mesos-slave (and enable it at boot)
   service:
     name: mesos-slave
     state: started
     enabled: yes
-  tags:
-    - mesos-slave
-
-- name: run prometheus mesos slave exporter container
-  when: mesos_install_mode == "slave" and prometheus_enabled|bool
-  docker:
-    name: mesos-exporter
-    image: "{{ prometheus_mesos_exporter_image }}"
-    command: "-exporter.scrape-mode=slave -exporter.url=http://{{ mesos_hostname }}:{{ mesos_slave_port }}"
-    state: started
-    restart_policy: always
-    ports:
-    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
-  environment: proxy_env
-  tags:
-    - prometheus
-    - mesos_slave
-
-- name: Set mesos-exporter consul service definition
-  when: mesos_install_mode == "slave" and prometheus_enabled|bool
-  sudo: yes
-  template:
-    src: mesos-exporter-consul.j2
-    dest: "{{ consul_dir }}/mesos-exporter.json"
-  notify:
-    - restart consul
-  tags:
-    - prometheus
-    - mesos_slave

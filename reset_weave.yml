@@ -1,0 +1,20 @@
+##
+## resets weave peers in upstart scripts
+##
+
+- hosts: all
+  sudo: yes
+  serial: 1
+  roles:
+    - weave
+  post_tasks:
+    - name: restart weave service
+      sudo: yes
+      service:
+        name: weave
+        state: restarted
+        enabled: yes
+    - name: wait for weave socket to be ready.
+      wait_for:
+        port: 6783
+        delay: 10

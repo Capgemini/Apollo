@@ -296,6 +296,10 @@
 /courses/ud406
 /course/how-to-make-a-platformer-using-libgdx--ud406
 
+/course/ud407
+/courses/ud407
+/course/engagement-monetization-mobile-games--ud407
+
 /course/ud409
 /courses/ud409
 /course/knowledge-based-ai-cognitive-systems--ud409
@@ -367,6 +371,10 @@
 /course/ud723
 /courses/ud723
 /course/rapid-prototyping--ud723
+
+/course/ud730
+/courses/ud730
+/course/deep-learning--ud730
 
 /course/ud774
 /courses/ud774
@@ -505,6 +513,10 @@
 /courses/ud882
 /course/responsive-images--ud882
 
+/course/ud898
+/courses/ud898
+/course/javascript-promises--ud898
+
 /course/ud884
 /courses/ud884
 /course/website-performance-optimization--ud884
@@ -520,6 +532,10 @@
 /course/ud893
 /courses/ud893
 /course/responsive-web-design-fundamentals--ud893
+
+/course/ud899
+/courses/ud899
+/course/offline-web-applications--ud899
 
 /course/ud902
 /courses/ud902
@@ -557,11 +573,24 @@
 /course/ca001
 /course/career-advisor-front-end-web-developer--ca001
 
+/course/ca002
+/course/career-advisor-data-analyst--ca002
+
+/course/ca003
+/course/career-advisor-ios-developer--ca003
+
+/course/ca004
+/course/career-advisor-full-stack-developer--ca004
+
+/course/ca801
+/course/career-advisor-android-developer--ca801
+
 /course/nd000
 /course/intro-to-programming-nanodegree--nd000
 
-/course/nd001
-/course/front-end-web-developer-nanodegree--nd001
+# (ANGEL): Disabled on 1/20/2016 due to 'Notify Me' button bug
+#/course/nd001
+#/course/front-end-web-developer-nanodegree--nd001
 
 /course/nd002
 /course/data-analyst-nanodegree--nd002

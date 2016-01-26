@@ -23,5 +23,3 @@
   service:
     name: mesos-slave
     state: restarted
-  tags:
-    - mesos_slaves

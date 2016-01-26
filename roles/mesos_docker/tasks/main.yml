@@ -1,0 +1,2 @@
+- include: master.yml
+- include: slave.yml

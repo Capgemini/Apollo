@@ -1,0 +1,59 @@
+### 1. update Apollo to include new slave changes
+### 2. update Makefile vars
+### 
+###    TF_VAR_slave_size := m4.2xlarge
+###    TF_VAR_atlas_artifact_version_slave := 31
+### 
+### 3. Run: make plan
+### 4. Run 2x:
+###      make update CMD='run_terraform apply'
+###    first time: creates slaves, will error on elb edits, terraform bug
+###    second run will apply elb changes, note this just adds the instances to the elb in innactive state
+### 5. Run:
+###      make run_playbook PLAYBOOK=retire_slaves.yml ANSIBLE_EXARGS='--ask-vault-pass'
+### 
+### 6. update terraform, zero out old slave group and remove old slave group from ELB
+### 7. Run:
+###      make update CMD='run_terraform apply'
+###      make run_playbook PLAYBOOK=reset_weave.yml
+- include: site.yml
+  vars:
+    haproxy_ssl_enabled: True
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - pause: prompt="Continue?"
+
+- hosts: mesos_slaves_docker
+  name: remove slave from pool
+  sudo: yes
+  serial: 1
+  tasks:
+    - name: collect running tasks
+      shell: >
+        docker ps | grep mesos-[0-9a-f] | awk '{print $1, $2, $NF}'
+      register: running_tasks
+    - name: The following will be terminated
+      debug: msg="{{ item }}"
+      with_items: running_tasks.stdout_lines
+    - pause:
+        minutes: 1
+    - name: stop mesos-slave and tasks
+      shell: >
+        stop mesos-slave;
+        docker stop mesos-slave | xargs docker rm -v -f;
+        docker ps | grep mesos-[0-9a-f] | awk '{print $1}' | xargs -r docker stop | xargs -r docker rm -v -f;
+    - debug: 
+        msg: "slave on {{ ansible_ssh_host }} is down. Pausing for up to 5 minutes."
+    - pause:
+        minutes: 4
+  pre_tasks:
+    - action: ec2_facts
+    - name: "De-register slave with load balancer"
+      local_action:
+        module: ec2_elb
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        state: absent
+        wait: yes
+      sudo: false
