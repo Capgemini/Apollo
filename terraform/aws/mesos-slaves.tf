@@ -84,6 +84,8 @@ resource "aws_elb" "app" {
     bucket = "${aws_s3_bucket.state.id}"
   }
 
+  /* STEP 2 - Set instance_port == 444 (temporary) */
+  /* STEP 4 - Set instance_port == 443 (final) */
   listener {
     instance_port = 443 
     instance_protocol = "tcp"
@@ -116,6 +118,7 @@ resource "aws_elb" "app" {
   connection_draining_timeout = 60
 }
 
+/* STEP 4 - Add "443" to instance_ports */
 resource "aws_proxy_protocol_policy" "http" {
   load_balancer = "${aws_elb.app.name}"
   instance_ports = ["80"]
