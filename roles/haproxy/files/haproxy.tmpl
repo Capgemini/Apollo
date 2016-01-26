@@ -1,7 +1,6 @@
 global
     maxconn {{or (key "service/haproxy/maxconn") 2048}}
-    log /dev/log local0
-    debug
+    log /dev/log local0 debug
     tune.ssl.default-dh-param 2048
 
 defaults
@@ -37,49 +36,10 @@ frontend www-http
     # Force HTTPS
     redirect scheme https if !{ ssl_fc }
 
-## STEP 1 - Temporary ssl frontend (REMOVE AT THE END)
-#frontend www-https-444
-#    bind *:444 ssl crt {{ env "SSL_CERT" }} ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK no-sslv3
-#
-#    option forwardfor
-#    option http-server-close
-#    reqadd X-Forwarded-Proto:\ https
-#
-#    # X-Unique-ID header in requests
-#    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
-#    unique-id-header X-Unique-ID
-#
-#    # Gzip
-#    compression algo gzip
-#    compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
-#
-#    # GAE Proxy
-#    acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
-#    acl is_gae_path path_beg -i -f {{env "GAE_ROUTES_FILE"}}
-#    acl is_endor_path path -i -f {{env "ENDOR_ROUTES_FILE"}}
-#    acl is_endor_path path_beg -i -f {{env "ENDOR_PREFIX_ROUTES_FILE"}}
-#    use_backend gae_backend if is_www_host is_gae_path !is_endor_path
-#
-#    # Websockets enabled backends
-#    acl is_websocket hdr(Upgrade) -i WebSocket
-#    {{range $tag, $services := services | byTag}}{{ if eq $tag "websockets" }}{{range $services}}
-#    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
-#    use_backend {{.Name}}_backend_ws if host_{{.Name}} is_websocket
-#    {{end}}{{end}}{{end}}
-#
-#    # Generated automatically by consul-template
-#    {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
-#    acl host_{{.Name}} hdr(host) -i {{.Name}}.{{env "HAPROXY_DOMAIN"}}
-#    use_backend {{.Name}}_backend if host_{{.Name}}
-#    {{end}}{{end}}{{end}}
-## END STEP 1
-
 frontend www-https
     bind *:443 ssl crt {{ env "SSL_CERT" }} ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK no-sslv3
 
-#    # STEP 3 - Enable proxy-protocol
-#    tcp-request connection expect-proxy layer4
-#    # END STEP 3
+    tcp-request connection expect-proxy layer4
 
     option forwardfor
     option http-server-close
@@ -89,52 +49,50 @@ frontend www-https
     unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
     unique-id-header X-Unique-ID
 
-#    # STEP 3 
-#    # route through logger
-#    no log
-#    default_backend logger
-#
-## Logging frontend
-#frontend logger
-#    bind localhost:55555 accept-proxy
-#
-#    # %pid: process ID of HAProxy
-#    # %Ts.%ms: unix timestamp + milliseconds
-#    # %ac: total number of concurrent connections
-#    # %fc: total number of concurrent connections on the frontend
-#    # %bc: total number of concurrent connections on the backend
-#    # %bq: queue size of the backend
-#    # %sc: total number of concurrent connections on the server
-#    # %sq: queue size of the server
-#    # %rc: connection retries to the server
-#    # %Tq: total time to get the client request (HTTP mode only)
-#    # %Tw: total time spent in the queues waiting for a connection slot
-#    # %Tc: total time to establish the TCP connection to the server
-#    # %Tr: server response time (HTTP mode only)
-#    # %Tt: total session duration time, between the moment the proxy accepted it and the moment both ends were closed.
-#    # %tsc: termination state (see 8.5. Session state at disconnection)
-#    # %ci:%cp: client IP and Port
-#    # %si:%sp: server IP and Port
-#    # %ft: transport type of the frontend (with a ~ suffix for SSL)
-#    # %sslc %sslv: SSL cipher and version
-#    # %{+Q}r: HTTP request, between double quotes
-#    # %ST: HTTP status code
-#    # %b:%s: backend name and server name
-#    # %CC: captured request cookies
-#    # %hr: captured request headers
-#    # %CS: captured response cookies
-#    # %hs: captured response headers
-#    # %U: bytes read from the client (request size)
-#    # %B: bytes read from server to client (response size)
-#    log-format [%pid]\ [%Ts.%ms]\ %ac/%fc/%bc/%bq/%sc/%sq/%rc\ %Tq/%Tw/%Tc/%Tr/%Tt\ %tsc\ %ci:%cp\ %si:%sp\ %ft\ %sslc\ %sslv\ %{+Q}r\ %ST\ %b:%s\ "%CC"\ "%hr"\ "%CS"\ "%hs"\ req_size=%U\ resp_size=%B
-#    log global
-#
-#    capture request header Referrer len 64
-#    capture request header Content-Length len 10
-#    capture request header User-Agent len 64
-#    capture request header X-Haproxy-ACL len 256
-#    capture request header X-Unique-ID len 64
-#    # END STEP 3
+    # route through logger
+    no log
+    default_backend logger
+
+# Logging frontend
+frontend logger
+    bind localhost:55555 accept-proxy
+
+    # %pid: process ID of HAProxy
+    # %Ts.%ms: unix timestamp + milliseconds
+    # %ac: total number of concurrent connections
+    # %fc: total number of concurrent connections on the frontend
+    # %bc: total number of concurrent connections on the backend
+    # %bq: queue size of the backend
+    # %sc: total number of concurrent connections on the server
+    # %sq: queue size of the server
+    # %rc: connection retries to the server
+    # %Tq: total time to get the client request (HTTP mode only)
+    # %Tw: total time spent in the queues waiting for a connection slot
+    # %Tc: total time to establish the TCP connection to the server
+    # %Tr: server response time (HTTP mode only)
+    # %Tt: total session duration time, between the moment the proxy accepted it and the moment both ends were closed.
+    # %tsc: termination state (see 8.5. Session state at disconnection)
+    # %ci:%cp: client IP and Port
+    # %si:%sp: server IP and Port
+    # %ft: transport type of the frontend (with a ~ suffix for SSL)
+    # %sslc %sslv: SSL cipher and version
+    # %{+Q}r: HTTP request, between double quotes
+    # %ST: HTTP status code
+    # %b:%s: backend name and server name
+    # %CC: captured request cookies
+    # %hr: captured request headers
+    # %CS: captured response cookies
+    # %hs: captured response headers
+    # %U: bytes read from the client (request size)
+    # %B: bytes read from server to client (response size)
+    log-format [%pid]\ [%Ts.%ms]\ %ac/%fc/%bc/%bq/%sc/%sq/%rc\ %Tq/%Tw/%Tc/%Tr/%Tt\ %tsc\ %ci:%cp\ %si:%sp\ %ft\ %sslc\ %sslv\ %{+Q}r\ %ST\ %b:%s\ "%CC"\ "%hr"\ "%CS"\ "%hs"\ req_size=%U\ resp_size=%B
+    log global
+
+    capture request header Referrer len 64
+    capture request header Content-Length len 10
+    capture request header User-Agent len 64
+    capture request header X-Haproxy-ACL len 256
+    capture request header X-Unique-ID len 64
 
     # Gzip
     compression algo gzip
