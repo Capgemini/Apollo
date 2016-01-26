@@ -85,6 +85,7 @@ resource "aws_elb" "app" {
   }
 
   /* STEP 2 - Set instance_port == 444 (temporary) */
+  /* STEP 4 - Set instance_port == 443 (final) */
   listener {
     instance_port = 443 
     instance_protocol = "tcp"
