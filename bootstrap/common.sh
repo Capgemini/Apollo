@@ -115,7 +115,8 @@ ansible_playbook_run() {
     get_ansible_inventory
     get_ansible_requirements
     ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
-    ${ANSIBLE_LOG} --extra-vars "consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
+      ${ANSIBLE_LOG} --extra-vars "${ANSIBLE_VARS:-} \
+      consul_atlas_infrastructure=${ATLAS_INFRASTRUCTURE} \
       consul_atlas_join=true \
       consul_atlas_token=${ATLAS_TOKEN} \
       $( get_apollo_variables  APOLLO_)" \

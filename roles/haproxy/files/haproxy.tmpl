@@ -41,6 +41,7 @@ frontend www-https
 
     tcp-request connection expect-proxy layer4
 
+    # Forwarding
     option forwardfor
     option http-server-close
     reqadd X-Forwarded-Proto:\ https
@@ -48,9 +49,6 @@ frontend www-https
     # X-Unique-ID header in requests
     unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
     unique-id-header X-Unique-ID
-
-    # Inject X-Berlioz-Country header with two-letter country code (see NI-461)
-    http-request set-header X-Berlioz-Country %[req.hdr(X-Forwarded-For),map_ip(/etc/haproxy/geolocation.txt)]
 
     # route through logger
     no log
@@ -96,6 +94,9 @@ frontend logger
     capture request header User-Agent len 64
     capture request header X-Haproxy-ACL len 256
     capture request header X-Unique-ID len 64
+
+    # Inject X-Berlioz-Country header with two-letter country code (see NI-461)
+    http-request set-header X-Berlioz-Country %[req.hdr(X-Forwarded-For,-1),map_ip(/etc/haproxy/geolocation.txt)]
 
     # Gzip
     compression algo gzip

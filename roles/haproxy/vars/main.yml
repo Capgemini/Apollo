@@ -1,4 +1,2 @@
 ---
 # vars file for haproxy
-
-geolocation_txt: https://s3-{{ lookup('env','AWS_DEFAULT_REGION') }}.amazonaws.com/udacity-{{ mesos_cluster_name }}/etc/haproxy/geolocation.txt

@@ -53,6 +53,7 @@
     url: "{{ geolocation_txt }}"
     dest: "{{ consul_template_dir }}/etc/haproxy/geolocation.txt"
     mode: 0644
+    force: yes
   sudo: yes
   tags:
     - haproxy
