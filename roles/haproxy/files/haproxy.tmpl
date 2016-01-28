@@ -98,6 +98,9 @@ frontend logger
     # Inject X-Berlioz-Country header with two-letter country code (see NI-461)
     http-request set-header X-Berlioz-Country %[req.hdr(X-Forwarded-For,-1),map_ip(/etc/haproxy/geolocation.txt)]
 
+    # http://blog.haproxy.com/2014/05/26/haproxy-and-http-errors-408-in-chrome/
+    errorfile 408 /dev/null
+
     # Gzip
     compression algo gzip
     compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
