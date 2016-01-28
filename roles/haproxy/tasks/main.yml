@@ -9,6 +9,7 @@
     - { path: 'templates' }
     - { path: 'routes' }
     - { path: 'etc/ssl/private' }
+    - { path: 'etc/haproxy' }
   tags:
     - haproxy
 
@@ -44,6 +45,16 @@
     mode: 0644
   sudo: yes
   when: "haproxy_ssl_enabled is defined and haproxy_ssl_enabled"
+  tags:
+    - haproxy
+
+- name: upload geolocation data
+  get_url:
+    url: "{{ geolocation_txt }}"
+    dest: "{{ consul_template_dir }}/etc/haproxy/geolocation.txt"
+    mode: 0644
+    force: yes
+  sudo: yes
   tags:
     - haproxy
 
@@ -84,6 +95,7 @@
     -v "{{ consul_template_dir }}/templates:/templates:rw"
     -v "{{ consul_template_dir }}/routes:/routes:rw"
     -v "{{ consul_template_dir }}/etc/ssl/private:/etc/ssl/private:rw"
+    -v "{{ consul_template_dir }}/etc/haproxy:/etc/haproxy:rw"
     "{{ haproxy_image }}:{{ haproxy_image_tag }}"
   register: command_result
   failed_when: "'The name \"haproxy\" is already in use' not in command_result.stderr and command_result.rc != 0"

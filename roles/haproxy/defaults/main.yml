@@ -19,3 +19,4 @@ consul_template_version: 0.10.0
 haproxy_endor_subdomain: www
 haproxy_gae_subdomain: gae
 
+geolocation_txt: https://s3-{{ lookup('env','AWS_DEFAULT_REGION') }}.amazonaws.com/udacity-{{ mesos_cluster_name }}/etc/haproxy/geolocation.txt
