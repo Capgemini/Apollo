@@ -45,15 +45,10 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-- hosts: mesos_slaves_docker
-  roles:
-    - { role: mesos_docker, mesos_install_mode: "slave", tags: ["mesos_slaves"] }
-  environment:
-    DOCKER_HOST: "{{ docker_host }}"
-
 - hosts: mesos_slaves
   roles:
     - { role: mesos, mesos_install_mode: "slave", tags: ["mesos_slaves"] }
+    - { role: weavescope, tags: ["weavescope"] }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 

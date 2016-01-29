@@ -3,13 +3,13 @@ description "Weave Scope Docker Service"
 start on started docker
 stop on stopping docker
 
-env WEAVESCOPE="{{ weave_scope_dest }}"
+env WEAVESCOPE="{{ weavescope_dest }}"
 
 pre-start exec ${WEAVESCOPE} stop
 
 script
  [ -e /etc/default/weavescope ] && . /etc/default/weavescope
- ${WEAVESCOPE} launch {{ weave_launch_peers }}
+ ${WEAVESCOPE} launch {{ weavescope_peers }}
  exec /usr/bin/docker logs -f weavescope
 end script
 

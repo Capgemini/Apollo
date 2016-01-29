@@ -1,2 +1,9 @@
 ---
 # handlers file for weave
+- name: restart weave
+  sudo: yes
+  service:
+    name: weave
+    state: restarted
+  tags:
+    - weave

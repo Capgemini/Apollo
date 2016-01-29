@@ -1,0 +1,11 @@
+---
+# defaults file for weavescope
+
+# change to weave_servers after masters are upgraded
+#weavescope_server_group: weave_servers
+weavescope_server_group: mesos_slaves
+weavescope_peers: "{% for host in groups[weavescope_server_group] %}{{ hostvars[host].ansible_default_ipv4.address }} {% endfor %}"
+
+weavescope_url: https://github.com/weaveworks/scope/releases/download/v0.11.1/scope
+weavescope_dest: /usr/local/bin/scope
+weavescope_enabled: true

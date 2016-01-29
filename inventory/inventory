@@ -2,8 +2,6 @@
 
 [role=mesos_slaves]
 
-[role=mesos_slaves_docker]
-
 [role=elasticsearch]
 
 [role=bastion]
@@ -14,9 +12,6 @@ role=mesos_masters
 [mesos_slaves:children]
 role=mesos_slaves
 
-[mesos_slaves_docker:children]
-role=mesos_slaves_docker
-
 [elasticsearch:children]
 role=elasticsearch
 
@@ -24,7 +19,6 @@ role=elasticsearch
 role=bastion
 
 [load_balancers:children]
-mesos_slaves_docker
 mesos_slaves
 
 [all:children]

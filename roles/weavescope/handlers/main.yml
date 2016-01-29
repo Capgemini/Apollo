@@ -1,0 +1,9 @@
+---
+# handlers file for weavescope
+- name: restart weavescope
+  sudo: yes
+  service:
+    name: weavescope
+    state: restarted
+  tags:
+    - weavescope

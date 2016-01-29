@@ -1,0 +1,42 @@
+---
+- name: download weave scope
+  get_url:
+    url: "{{ weavescope_url }}"
+    dest: "{{ weavescope_dest }}"
+    mode: 0755
+    validate_certs: no
+  environment: proxy_env
+  when: weavescope_enabled | bool
+  notify: restart weavescope
+  tags:
+    - weave
+
+- name: upload weave scope template service
+  template:
+    src: weavescope.conf.j2
+    dest: "/etc/init/weavescope.conf"
+    mode: 0755
+  sudo: yes
+  when: weavescope_enabled | bool
+  notify: restart weavescope
+  tags:
+    - weave
+
+- name: ensure weavescope service is running.
+  sudo: yes
+  when: weavescope_enabled | bool
+  service:
+    name: weavescope
+    state: started
+    enabled: yes
+  tags:
+    - weave
+
+- name: set weavscope consul service definition
+  sudo: yes
+  when: weavescope_enabled | bool
+  template:
+    src: weavescope-consul.json.j2
+    dest: "/etc/consul.d/weavescope.json"
+  notify:
+    - reload consul
