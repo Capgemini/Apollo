@@ -7,7 +7,8 @@
       "docker_container_id": "zookeeper",
       "shell": "/bin/bash",
       "script": "echo ruok | nc 127.0.0.1 {{ zookeeper_client_port }} | grep imok",
-      "interval": "10s"
+      "interval": "10s",
+      "timeout": "3s"
     }
   }
 }

@@ -5,7 +5,8 @@
     "tags": [ "mesos" ],
     "check": {
       "script": "curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 http://{{ mesos_hostname }}:{{ mesos_master_port }}/master/health",
-      "interval": "10s"
+      "interval": "10s",
+      "timeout": "3s"
     }
   }
 }

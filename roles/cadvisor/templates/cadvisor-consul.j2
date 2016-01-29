@@ -6,7 +6,8 @@
       "docker_container_id": "cadvisor",
       "shell": "/bin/sh",
       "script": "wget -q --spider 127.0.0.1:8080/containers/ -O /dev/null",
-      "interval": "10s"
+      "interval": "10s",
+      "timeout": "3s"
     }
   }
 }
