@@ -5,6 +5,6 @@
     "service_id": "{{ cadvisor_consul_service_id }}",
     "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ cadvisor_container_ip.stdout }}:8080",
     "interval": "10s",
-    "timeout": "2s"
+    "timeout": "3s"
   }
 }

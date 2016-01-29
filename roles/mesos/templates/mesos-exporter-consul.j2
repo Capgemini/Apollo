@@ -5,6 +5,6 @@
     "service_id": "{{ prometheus_mesos_exporter_consul_service_id }}",
     "script": "curl --silent --show-error  --fail --dump-header /dev/stderr --retry 2 http://{{ mesos_hostname }}:{{ prometheus_mesos_exporter_port }}",
     "interval": "10s",
-    "timeout": "2s"
+    "timeout": "3s"
   }
 }
