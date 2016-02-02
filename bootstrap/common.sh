@@ -13,7 +13,7 @@ verify_prereqs() {
     exit 1
   fi
 
-  check_terraform_version
+#  check_terraform_version
 
   if [[ "$(which ansible-playbook)" == "" ]]; then
     echo -e "${color_red}Can't find ansible-playbook in PATH, please fix and retry.${color_norm}"
@@ -120,6 +120,7 @@ open_urls() {
   if [ -a ${open_cmd} ]; then
     "${open_cmd}" "${master_url}:5050"
     "${open_cmd}" "${master_url}:8080"
+    "${open_cmd}" "${master_url}:8500"
     "${open_cmd}" "${master_url}:8500"
   fi
 }

@@ -41,7 +41,7 @@
   sudo: yes
   service:
     name: traefik
-    state: started
+    state: restarted
     enabled: yes
   tags:
     - traefik
