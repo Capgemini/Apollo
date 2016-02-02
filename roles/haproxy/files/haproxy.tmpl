@@ -104,13 +104,6 @@ frontend logger
     compression algo gzip
     compression type text/html text/plain text/javascript application/javascript application/xml text/css application/json application/x-javascript image/svg+xml
 
-    # GAE Proxy
-    acl is_www_host hdr(host) -i {{env "ENDOR_SUBDOMAIN" }}.{{env "HAPROXY_DOMAIN"}}
-    acl is_gae_path path_beg -i -f {{env "GAE_ROUTES_FILE"}}
-    acl is_endor_path path -i -f {{env "ENDOR_ROUTES_FILE"}}
-    acl is_endor_path path_beg -i -f {{env "ENDOR_PREFIX_ROUTES_FILE"}}
-    use_backend gae_backend if is_www_host is_gae_path !is_endor_path
-
     # Websockets enabled backends
     acl is_websocket hdr(Upgrade) -i WebSocket
     {{range $tag, $services := services | byTag}}{{ if eq $tag "websockets" }}{{range $services}}
@@ -127,17 +120,6 @@ frontend logger
 # Logger backend
 backend logger
     server localhost localhost:55555 send-proxy
-
-# ProxyPass / ReverseProxyPass to GAE
-backend gae_backend
-    http-request set-header Host {{env "GAE_SUBDOMAIN"}}.udacity.com
-    reqirep ^([^\ :]*)\ {{env "ENDOR_SUBDOMAIN"}}.udacity.com/(.*) \1\ {{env "GAE_SUBDOMAIN"}}.udacity.com/\2
-
-    acl hdr_location res.hdr(Location) -m found
-    rspirep ^Location:\ (http|https)://{{env "GAE_SUBDOMAIN"}}.udacity.com(.*) Location:\ \1://{{env "ENDOR_SUBDOMAIN"}}.udacity.com\2
-
-    # TODO (Angel): Proxy pass cookies
-    server gae {{env "GAE_SUBDOMAIN"}}.udacity.com:443 ssl verify none
 
 # Public service backends
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
