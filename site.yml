@@ -91,8 +91,6 @@
     - { role: dcos_cli, tags: ["apps"] }
   vars_files:
     - roles/prometheus/defaults/main.yml
-  environment:
-    DOCKER_HOST: "{{ docker_host }}"
 
 - include: tests/test.yml
   vars_files:
