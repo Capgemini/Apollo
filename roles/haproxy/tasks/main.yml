@@ -47,7 +47,7 @@
 
 - name: upload geolocation data
   get_url:
-    url: "{{ geolocation_txt }}"
+    url: "{{ haproxy_geolocation_txt_url }}"
     dest: "{{ consul_template_dir }}/etc/haproxy/geolocation.txt"
     mode: 0644
     force: yes
