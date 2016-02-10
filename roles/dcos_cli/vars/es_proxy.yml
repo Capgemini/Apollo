@@ -1,0 +1,6 @@
+dcos_cli_app_es_proxy_enabled: false
+dcos_cli_app_es_proxy_mem: 128
+dcos_cli_app_es_proxy_instances: 1
+dcos_cli_app_es_proxy_client_id: "undefined"
+dcos_cli_app_es_proxy_client_secret: "undefined"
+dcos_cli_app_es_proxy_cookie_secret: "undefined"

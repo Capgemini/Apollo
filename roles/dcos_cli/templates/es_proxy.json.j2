@@ -1,0 +1,50 @@
+{
+  "id": "/proxy/elasticsearch",
+  "cpus": 0.1,
+  "mem": {{ dcos_cli_app_es_proxy_mem }},
+  "instances": {{ dcos_cli_app_es_proxy_instances }},
+  "env": {
+    "SERVICE_4180_NAME": "esp",
+    "SERVICE_4180_TAGS": "public"
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "skippy/oauth2_proxy:2.0.1",
+      "network": "BRIDGE",
+      "parameters": [
+        { "key": "log-opt", "value": "max-size=64m" },
+        { "key": "log-opt", "value": "max-file=8" }
+      ],
+      "portMappings": [
+        { "containerPort": 4180, "protocol": "tcp" }
+      ]
+    }
+  },
+  "args": [
+    "--redirect-url=https://esp.udacity.com/oauth2/callback",
+    "--upstream=https://{{ dcos_cli_app_es_proxy_upstream }}",
+    "--http-address=0.0.0.0:4180",
+    "--client-id={{ dcos_cli_app_es_proxy_client_id }}",
+    "--client-secret={{ dcos_cli_app_es_proxy_client_secret }}",
+    "--cookie-secret={{ dcos_cli_app_es_proxy_cookie_secret }}",
+    "--provider=github",
+    "--github-org=udacity",
+    "--github-team=engineering",
+    "--email-domain=*",
+    "--cookie-secure=false",
+    "--cookie-httponly=false",
+    "--cookie-expire=168h0m0s",
+    "--pass-basic-auth=false",
+    "--request-logging=false"
+  ],
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}
