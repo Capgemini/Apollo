@@ -1,0 +1,6 @@
+dcos_cli_app_marathon_proxy_enabled: false
+dcos_cli_app_marathon_proxy_mem: 128
+dcos_cli_app_marathon_proxy_instances: 1
+dcos_cli_app_marathon_proxy_client_id: "undefined"
+dcos_cli_app_marathon_proxy_client_secret: "undefined"
+dcos_cli_app_marathon_proxy_cookie_secret: "undefined"
