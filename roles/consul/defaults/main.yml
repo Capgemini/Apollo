@@ -9,3 +9,4 @@ consul_bootstrap_expect: "{{ groups[consul_servers_group] | length }}"
 consul_client_addr: "0.0.0.0"
 consul_atlas_join: false
 consul_node_name: "{{ ansible_hostname }}"
+consul_external_dns: ["8.8.8.8", "8.8.4.4"]

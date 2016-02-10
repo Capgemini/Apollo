@@ -3,6 +3,7 @@
   "cpus": 0.1,
   "mem": {{ dcos_cli_app_logstash_mem }},
   "instances": {{ dcos_cli_app_logstash_instances }},
+  "constraints": [["hostname", "UNIQUE"], ["az", "GROUP_BY", "3"]],
   "env": {
     "SERVICE_NAME": "logstash",
     "SERVICE_TAGS": "elasticsearch,logstash,monitoring"
@@ -23,7 +24,7 @@
     }
   },
   "args": [
-    "logstash", "-f", "/mnt/mesos/sandbox/logstash.conf"
+    "logstash", "-f", "/mnt/mesos/sandbox/{{ dcos_cli_app_logstash_conf_file }}"
   ],
   "uris": [
     "{{ dcos_cli_app_logstash_conf_url }}"

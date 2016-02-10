@@ -82,3 +82,9 @@ resource "aws_s3_bucket_object" "logstash_config" {
   key = "etc/logstash.conf"
   source = "s3/etc_logstash.conf"
 }
+
+resource "aws_s3_bucket_object" "logstash_config_prod" {
+  bucket = "${aws_s3_bucket.state.id}"
+  key = "etc/logstash_prod.conf"
+  source = "s3/etc_logstash_prod.conf"
+}
