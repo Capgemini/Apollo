@@ -12,6 +12,8 @@ dcos_cli_apps_list:
   - logstash
   - kibana
   - prometheus
+  - marathon_proxy
+  - es_proxy
 
 # apps
 prometheus_image: prom/prometheus
