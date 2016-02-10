@@ -3,6 +3,7 @@
   "cpus": 0.1,
   "mem": {{ dcos_cli_app_logstash_mem }},
   "instances": {{ dcos_cli_app_logstash_instances }},
+  "constraints": [["hostname", "UNIQUE"], ["az", "GROUP_BY", "3"]],
   "env": {
     "SERVICE_NAME": "logstash",
     "SERVICE_TAGS": "elasticsearch,logstash,monitoring"
