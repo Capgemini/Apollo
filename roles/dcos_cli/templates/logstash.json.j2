@@ -24,7 +24,7 @@
     }
   },
   "args": [
-    "logstash", "-f", "/mnt/mesos/sandbox/logstash.conf"
+    "logstash", "-f", "/mnt/mesos/sandbox/{{ dcos_cli_app_logstash_conf_file }}"
   ],
   "uris": [
     "{{ dcos_cli_app_logstash_conf_url }}"
