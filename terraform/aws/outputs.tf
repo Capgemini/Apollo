@@ -22,3 +22,6 @@ output "elasticsearch_ips" {
 output "elb.hostname" {
   value = "${aws_elb.app.dns_name}"
 }
+output "nat_ips" {
+  value = "${join(",", aws_eip.nat_gateway.*.public_ip)}"
+}
