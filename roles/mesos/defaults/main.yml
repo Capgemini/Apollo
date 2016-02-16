@@ -20,6 +20,7 @@ mesos_zookeeper_group: zookeeper_servers
 mesos_master_port: 5050
 mesos_master_work_dir: "/var/lib/mesos"
 mesos_master_image: "mesosphere/mesos-master:{{ mesos_version }}"
+mesos_master_command: "--registry=replicated_log"
 
 prometheus_mesos_exporter_image: "prom/mesos-exporter:latest"
 prometheus_mesos_exporter_port: 9105
