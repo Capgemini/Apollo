@@ -1,6 +1,7 @@
 - name: bootstrap coreos hosts
   hosts: all:!role=bastion
   gather_facts: False
+  environment: proxy_env
   roles:
     - coreos_bootstrap
     - coreos_timezone
@@ -8,6 +9,7 @@
 - name: Install docker-py
   hosts: all:!role=bastion
   gather_facts: False
+  environment: proxy_env
   tasks:
     - pip:
         name: docker-py
