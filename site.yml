@@ -74,4 +74,4 @@
     - ../roles/marathon/defaults/main.yml
 
 # @todo - fix contrib plugins
-#- include: contrib-plugins/playbook.yml
+- include: contrib-plugins/playbook.yml

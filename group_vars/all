@@ -16,12 +16,12 @@ zookeeper_peers_nodes: "
 	{%- endif -%}
 "
 consul_domain: consul
-proxy_env:
-  http_proxy: ''
-  https_proxy: ''
-  HTTP_PROXY: ''
-  HTTPS_PROXY: ''
 http_proxy: ''
+proxy_env:
+  http_proxy: "{{ http_proxy }}"
+  https_proxy: "{{ http_proxy }}"
+  HTTP_PROXY: "{{ http_proxy }}"
+  HTTPS_PROXY: "{{ http_proxy }}"
 prometheus_enabled: true
 elk_enabled: true
 cadvisor_enabled: true
