@@ -20,3 +20,4 @@ tests/spec/*/*runtime_spec.rb
 contrib-plugins/*
 terraform/*/.terraform
 roles/datadog-agent
+roles/ntp

@@ -2,4 +2,8 @@
   version: f00e6c6ab1ba697bef8f6d5bc4f2752323339744
   name: datadog-agent
   path: roles
-      
+
+- src: https://github.com/resmo/ansible-role-ntp
+  version: 290d67fe8b1f14e9f1d72dc3e130eb4fc2d7f9d5
+  name: ntp
+  path: roles

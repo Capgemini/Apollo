@@ -136,7 +136,8 @@ get_ansible_inventory() {
 
 get_ansible_requirements() {
     pushd $APOLLO_ROOT
-    if [ ! -d roles/datadog-agent ]; then
+    if [ ! -d roles/datadog-agent ] \
+    || [ ! -d roles/ntp ]; then
         ansible-galaxy install -r requirements.yml --ignore-errors --force
     fi
     popd
