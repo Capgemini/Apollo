@@ -78,6 +78,11 @@ variable "masters" {
   default = "3"
 }
 
+variable "elasticsearch_instances" {
+  description = "The number of ES hosts to provision."
+  default = "1"
+}
+
 variable "slave_block_device" {
   description = "Block device for OSD."
   default = {

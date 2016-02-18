@@ -8,7 +8,7 @@ resource "aws_instance" "elasticsearch" {
   instance_type     = "${var.instance_type.master}"
   /* waiting for https://github.com/hashicorp/terraform/issues/2731 so we don't have to hard-code the region */
   ami               = "${atlas_artifact.elasticsearch.metadata_full.ami_id}"
-  count             = "1"
+  count             = "${var.elasticsearch_instances}"
   source_dest_check = false
   subnet_id         = "${aws_subnet.private.0.id}"
   security_groups   = ["${aws_security_group.default.id}"]
