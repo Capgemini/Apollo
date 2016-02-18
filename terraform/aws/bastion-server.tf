@@ -49,7 +49,7 @@ resource "aws_instance" "bastion" {
       "sudo mkdir -p /etc/openvpn",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
       /* Generate OpenVPN server config */
-      "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -D -p 'route 10.0.0.0 255.0.0.0 vpn_gateway' -p \"dhcp-option DNS $(ec2metadata --local-ipv4)\" -p push \"dhcp-option DOMAIN service.consul\" -u udp://${aws_instance.bastion.public_ip}"
+      "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -D -p 'route 10.0.0.0 255.0.0.0 vpn_gateway' -p \"dhcp-option DNS $(ec2metadata --local-ipv4)\" -p \"dhcp-option DOMAIN service.consul\" -u udp://${aws_instance.bastion.public_ip}"
     ]
   }
 }
