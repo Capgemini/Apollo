@@ -19,6 +19,7 @@
 - include: playbooks/coreos-bootstrap.yml
 
 - hosts: all:!role=bastion
+  gather_facts: true
   roles:
     - docker
     - consul
@@ -27,6 +28,7 @@
     - weave
 
 - hosts: all:!role=bastion
+  gather_facts: true
   roles:
     - registrator
     - { role: cadvisor, when: cadvisor_enabled|bool }
@@ -35,6 +37,7 @@
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_masters
+  gather_facts: true
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
@@ -43,12 +46,14 @@
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_slaves
+  gather_facts: true
   roles:
     - { role: mesos, mesos_install_mode: "slave" }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: load_balancers
+  gather_facts: true
   roles:
     - { role: traefik, tags: ["traefik"] }
   environment:

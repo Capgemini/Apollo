@@ -1,6 +1,6 @@
 dcos_cli_app_kibana_enabled: "{{ elk_enabled }}"
 dcos_cli_app_kibana_image: kibana
-dcos_cli_app_kibana_image_tag: 4.3.1
+dcos_cli_app_kibana_image_tag: 4.4.1
 dcos_cli_app_kibana_mem: 512
 dcos_cli_app_kibana_cpus: 0.5
 dcos_cli_app_kibana_instances: 1

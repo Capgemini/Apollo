@@ -10,8 +10,7 @@
   },
   "env": {
     "SERVICE_NAME": "logstash",
-    "SERVICE_5043_NAME": "logstash",
-    "SERVICE_19532_NAME": "journald-upload"
+    "SERVICE_5043_NAME": "logstash"
   },
   "healthChecks": [
     {
@@ -38,12 +37,6 @@
         {
           "containerPort": 5043,
           "servicePort": 5043,
-          "hostPort": 0,
-          "protocol": "tcp"
-        },
-        {
-          "containerPort": 19532,
-          "servicePort": 19532,
           "hostPort": 0,
           "protocol": "tcp"
         }

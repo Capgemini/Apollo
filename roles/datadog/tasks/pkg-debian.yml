@@ -1,8 +1,0 @@
----
-- apt: name=apt-transport-https state=latest
-
-- apt_key: id=C7A7DA52 keyserver=hkp://keyserver.ubuntu.com:80 state=present
-
-- apt_repository: repo='deb http://apt.datadoghq.com/ stable main' state=present update_cache=yes
-
-- apt: name=datadog-agent state=latest
