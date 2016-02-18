@@ -1,0 +1,15 @@
+[Unit]
+After=docker.service
+Description=Weave Network Router
+Documentation=http://docs.weave.works/
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+ExecStart={{ scope_bin }} launch {{ weave_launch_peers }}
+
+ExecStop={{ scope_bin }} stop
+
+[Install]
+WantedBy=multi-user.target

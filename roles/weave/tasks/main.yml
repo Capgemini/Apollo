@@ -51,3 +51,7 @@
 # Flush handlers so we restart the Docker process here with the weave network
 # enabled and containers correctly start in the weave network.
 - meta: flush_handlers
+
+# scope
+- include: scope.yml
+  when: scope_enabled|bool
