@@ -24,6 +24,7 @@
         dest: /etc/hosts
         line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
+    - ntp
     - consul
     - docker
     - weave

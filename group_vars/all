@@ -25,6 +25,7 @@ proxy_env:
 http_proxy: ''
 prometheus_enabled: true
 docker_host: 'unix:///var/run/weave/weave.sock'
+ntp_config_server: [0.us.pool.ntp.org, 1.us.pool.ntp.org, 2.us.pool.ntp.org, 3.us.pool.ntp.org]
 
 datadog_api_key: "{{ lookup('env','DD_API_KEY') }}"
 datadog_config:
