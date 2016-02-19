@@ -3,6 +3,7 @@ After=docker.service
 Description=Weave proxy for Docker API
 Documentation=http://docs.weave.works/
 Requires=docker.service
+Requires=weave.service
 
 [Service]
 EnvironmentFile=-/etc/weave.%H.env
