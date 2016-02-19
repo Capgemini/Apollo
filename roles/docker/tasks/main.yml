@@ -1,5 +1,22 @@
 ---
 # tasks file for docker
+- name: ensure docker config dir exists
+  sudo: yes
+  file:
+    path: /root/.docker
+    state: directory
+  tags:
+    - docker
+
+- name: setup private docker registry credentials
+  sudo: yes
+  when: private_docker_registry|bool
+  template:
+    src: config.json.j2
+    dest: /root/.docker/config.json
+  tags:
+    - docker
+
 - name: deploy docker service
   sudo: yes
   sudo_user: root
