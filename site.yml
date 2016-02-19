@@ -63,9 +63,4 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-- include: tests/test.yml
-  vars_files:
-    - ../roles/marathon/defaults/main.yml
-
-# @todo - fix contrib plugins
 - include: contrib-plugins/playbook.yml
