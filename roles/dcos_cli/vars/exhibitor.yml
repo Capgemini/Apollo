@@ -1,0 +1,4 @@
+dcos_cli_framework_exhibitor_enabled: false
+dcos_cli_framework_exhibitor_mem: 3072.0
+dcos_cli_framework_exhibitor_cpus: 1
+dcos_cli_framework_exhibitor_image: mesosphere/exhibitor-dcos
