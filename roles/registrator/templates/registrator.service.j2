@@ -1,7 +1,7 @@
 [Unit]
 Description=Registrator
-After=docker.service
-Requires=docker.service
+After=weaveproxy.service
+Requires=weaveproxy.service
 
 [Service]
 Restart=on-failure
