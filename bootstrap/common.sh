@@ -157,10 +157,12 @@ get_terraform_modules() {
     terraform get
 
     # Make any dependencies
-    for dir in .terraform/modules/*/Makefile;
-    do
-      make -C $(/usr/bin/dirname $dir)
-    done
+    if [ -f .terraform/modules/*/Makefile ]; then
+      for dir in .terraform/modules/*/Makefile;
+      do
+        make -C $(/usr/bin/dirname $dir)
+      done
+    fi
   popd
 }
 

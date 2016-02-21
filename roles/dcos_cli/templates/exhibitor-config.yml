@@ -1,0 +1,9 @@
+{
+  "exhibitor": {
+    "zk_servers": "{{ zookeeper_peers_nodes }}",
+    "app-id": "exhibitor",
+    "cpus": {{ dcos_cli_framework_exhibitor_cpus }},
+    "mem": {{ dcos_cli_framework_exhibitor_mem }},
+    "docker-image": "{{ dcos_cli_framework_exhibitor_image }}"
+  }
+}

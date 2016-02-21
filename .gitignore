@@ -20,4 +20,5 @@ vault-security.yaml
 terraform/**/.terraform
 roles/coreos_bootstrap
 roles/coreos_timezone
-terraform/aws/public-cloud/etcd_discovery_url.txt 
+roles/datadog
+terraform/aws/public-cloud/etcd_discovery_url.txt
