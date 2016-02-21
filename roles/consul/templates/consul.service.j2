@@ -13,7 +13,6 @@ ExecStartPre=-/usr/bin/docker kill consul
 ExecStartPre=-/usr/bin/docker rm consul
 ExecStartPre=-/bin/bash -c 'rm /etc/systemd/resolved.conf.d/00-consul-dns.conf && systemctl restart systemd-resolved'
 ExecStartPre=/usr/bin/docker pull {{ consul_image }}
-ExecStartPre=-/usr/bin/etcdctl mk /consul $COREOS_PUBLIC_IPV4
 
 ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name consul \
 -h $(/usr/bin/cat /etc/hostname) \
@@ -27,7 +26,7 @@ ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name consul \
 -p 8302:8302/udp \
 -p 8400:8400 \
 -p 8500:8500 \
--p {{ consul_docker_bridge_ip }}:53:53/udp \
+-p {{ ansible_default_ipv4.address }}:53:53/udp \
 {{ consul_image }}"
 
 {% raw %}
