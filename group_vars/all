@@ -22,6 +22,7 @@ proxy_env:
   https_proxy: "{{ http_proxy }}"
   HTTP_PROXY: "{{ http_proxy }}"
   HTTPS_PROXY: "{{ http_proxy }}"
+
 prometheus_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true
