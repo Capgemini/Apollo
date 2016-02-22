@@ -17,5 +17,5 @@ coreos:
     - name: fleet.service
       command: start
   update:
-    reboot-strategy: "reboot"
+    reboot-strategy: best-effort
 manage_etc_hosts: localhost
