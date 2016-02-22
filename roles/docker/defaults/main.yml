@@ -7,3 +7,4 @@ docker_endpoints: "-H=tcp://{{ ansible_default_ipv4.address }}:2376 -H=unix:///v
 docker_bridge_ip: ''
 docker_proxy_exceptions: ''
 docker_registry: ''
+private_docker_registry: false

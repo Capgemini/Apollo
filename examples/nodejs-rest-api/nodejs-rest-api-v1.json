@@ -1,5 +1,5 @@
 {
-  "id": "nodejs-rest-api.v1",
+  "id": "nodejs-rest-api",
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -13,10 +13,6 @@
         }
       ]
     }
-  },
-  "env": {
-    "SERVICE_NAME": "nodejs-rest-api",
-    "SERVICE_TAGS": "v1"
   },
   "healthChecks": [
     {

@@ -1,5 +1,5 @@
 {
-  "id": "nodejs-rest-api.v2",
+  "id": "nodejs-rest-api-v2",
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -14,10 +14,10 @@
       ]
     }
   },
-  "env": {
-    "SERVICE_NAME": "nodejs-rest-api",
-    "SERVICE_TAGS": "v2"
+  "labels": {
+    "traefik.backend": "backend-nodejs-rest-api"
   },
+  "ports": [0],
   "healthChecks": [
     {
     "path": "/",
@@ -31,7 +31,7 @@
   ],
   "cpus": 0.3,
   "mem": 64.0,
-  "instances": 2,
+  "instances": 1,
   "upgradeStrategy": {
     "minimumHealthCapacity": 1,
     "maximumOverCapacity": 0.1
