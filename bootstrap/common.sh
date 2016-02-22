@@ -140,6 +140,15 @@ ansible_playbook_run() {
 
 ansible_dcos_install() {
   export APOLLO_PLAYBOOK='dcos.yml'
+}
+
+ansible_upgrade_mesoscluster() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-mesoscluster.yml'
+  ansible_playbook_run
+}
+
+ansible_upgrade_maintenance() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-maintenance.yml'
   ansible_playbook_run
 }
 

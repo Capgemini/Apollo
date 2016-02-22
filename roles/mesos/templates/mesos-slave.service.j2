@@ -25,6 +25,7 @@ ExecStart=/usr/bin/docker run --rm --name mesos_slave \
 -v /lib64/libdevmapper.so.1.02:/lib/libdevmapper.so.1.02:ro \
 -v /usr/bin/docker:/usr/bin/docker:ro \
 -v {{ mesos_docker_socket }}:/var/run/docker.sock \
+-v {{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }} \
 -e "MESOS_MASTER=zk://{{ zookeeper_peers_nodes }}/mesos" \
 -e "MESOS_EXECUTOR_REGISTRATION_TIMEOUT={{ mesos_executor_registration_timeout }}" \
 -e "MESOS_CONTAINERIZERS={{ mesos_containerizers }}" \
