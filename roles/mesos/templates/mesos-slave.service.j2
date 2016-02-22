@@ -2,6 +2,7 @@
 Description=MesosSlave
 After=docker.service
 Requires=docker.service
+Requires=weaveproxy.service
 
 [Service]
 Restart=on-failure
