@@ -1,0 +1,11 @@
+---
+- hosts: mesos_masters
+  serial: "{{ serial | default(1) }}"
+  roles:
+    - { role: mesos, mesos_install_mode: "master" }
+    - { role: marathon, when: marathon_enabled|bool }
+
+- hosts: mesos_slaves
+  serial: "{{ serial | default(1) }}"
+  roles:
+    - { role: mesos, mesos_install_mode: "slave" }
