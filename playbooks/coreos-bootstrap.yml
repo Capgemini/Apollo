@@ -5,6 +5,7 @@
   roles:
     - coreos_bootstrap
     - coreos_timezone
+  environment: proxy_env
 
 - name: Install docker-py
   hosts: all:!role=bastion
