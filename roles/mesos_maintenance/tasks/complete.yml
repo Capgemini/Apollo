@@ -1,0 +1,10 @@
+# complete maintenance
+- name: complete maintenance
+  command: "curl -XPOST -x '' http://{{ mesos_maintenance_master_url }}/master/machine/up -d@/tmp/machines.json -H 'Content-type: application/json'"
+  register: complete_content
+  when: mesos_maintenance_complete
+
+- name: wait for agent to be healthy
+  sudo: yes
+  command: /tmp/wait-for-agent.sh
+  when: mesos_maintenance_complete
