@@ -1,7 +1,7 @@
 ---
 - include: config.yml
 
-- name: resload systemd
+- name: reload systemd
   sudo: yes
   command: systemctl daemon-reload
 
