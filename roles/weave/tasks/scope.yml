@@ -1,6 +1,6 @@
 - name: download scope
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   get_url:
     url: "{{ scope_url }}"
     dest: "{{ scope_bin }}"
@@ -11,8 +11,8 @@
     - scope
 
 - name: deploy scope service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: scope.service.j2
     dest: /etc/systemd/system/scope.service
@@ -20,7 +20,7 @@
     - scope
 
 - name: ensure scope service is running.
-  sudo: yes
+  become: yes
   service:
     name: scope
     state: started

@@ -2,7 +2,7 @@
 - include: config.yml
 
 - name: enable consul
-  sudo: yes
+  become: yes
   service:
     name: consul
     enabled: yes

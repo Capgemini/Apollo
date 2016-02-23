@@ -1,6 +1,6 @@
 ---
 - name: create traefik config directory
-  sudo: yes
+  become: yes
   file:
     path: "{{ traefik_config_dir }}"
     state: directory
@@ -9,7 +9,7 @@
     - traefik
 
 - name: configure traefik
-  sudo: yes
+  become: yes
   template:
     src: traefik.toml.j2
     dest: "{{ traefik_config_dir }}/traefik.toml"
@@ -19,7 +19,7 @@
     - traefik
 
 - name: install check scripts
-  sudo: yes
+  become: yes
   copy:
     src: wait-for-marathon.sh
     dest: "{{ traefik_config_dir }}"
@@ -28,7 +28,7 @@
     - traefik
 
 - name: deploy traefik service
-  sudo: yes
+  become: yes
   template:
     src: traefik.service.j2
     dest: /etc/systemd/system/traefik.service
@@ -38,7 +38,7 @@
     - traefik
 
 - name: enable traefik
-  sudo: yes
+  become: yes
   service:
     name: traefik
     state: started
@@ -47,7 +47,7 @@
     - traefik
 
 - name: Set traefik consul service definition
-  sudo: yes
+  become: yes
   template:
     src: traefik-consul.json.j2
     dest: "{{ traefik_consul_dir }}/traefik.json"

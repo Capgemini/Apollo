@@ -10,7 +10,7 @@
     src: '{{ item.name }}.json.j2'
     dest: "/etc/marathon/{{ item.name }}.json"
     mode: 0755
-  sudo: yes
+  become: yes
   tags:
     - "{{ item.name }}"
     - dcos_cli

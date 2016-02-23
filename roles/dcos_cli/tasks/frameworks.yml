@@ -11,7 +11,7 @@
     src: "{{ item }}-config.j2"
     dest: "/tmp/{{ item }}-config"
     mode: 0755
-  sudo: yes
+  become: yes
   tags:
     - "{{ item }}"
   with_items:
