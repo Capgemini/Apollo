@@ -4,10 +4,10 @@
   service:
     name: zookeeper
     state: restarted
-  sudo: yes
+  become: yes
 
 - name: start zookeeper
   service:
     name: zookeeper
     state: started
-  sudo: yes
+  become: yes

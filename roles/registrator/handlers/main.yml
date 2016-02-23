@@ -1,7 +1,7 @@
 ---
 # handlers file for registrator
 - name: restart registrator
-  sudo: yes
+  become: yes
   service:
    name: registrator
    state: restarted

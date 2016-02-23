@@ -4,7 +4,7 @@
   command: /usr/local/bin/marathon-wait-for-listen.sh
 
 - name: restart marathon
-  sudo: yes
+  become: yes
   service:
     name: marathon
     state: restarted

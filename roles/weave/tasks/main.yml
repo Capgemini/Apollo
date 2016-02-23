@@ -1,19 +1,19 @@
 ---
 - name: download weave
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   get_url:
     url: "{{ weave_url }}"
     dest: "{{ weave_bin }}"
     mode: 0755
     validate_certs: no
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
   tags:
     - weave
 
 - name: deploy weave service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -26,7 +26,7 @@
     - weave
 
 - name: ensure weave service is running.
-  sudo: yes
+  become: yes
   service:
     name: weave
     state: started
@@ -35,7 +35,7 @@
     - weave
 
 - name: ensure weaveproxy service is running.
-  sudo: yes
+  become: yes
   service:
     name: weaveproxy
     state: started

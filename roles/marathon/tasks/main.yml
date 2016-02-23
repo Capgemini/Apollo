@@ -4,13 +4,13 @@
     path: "{{ marathon_artifact_store_dir }}"
     state: directory
     mode: 0755
-  sudo: yes
+  become: yes
   tags:
     - marathon
 
 - name: deploy marathon service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: marathon.service.j2
     dest: /etc/systemd/system/marathon.service
@@ -23,7 +23,7 @@
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
 - name: ensure marathon is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: marathon
     state: started
@@ -32,7 +32,7 @@
     - marathon
 
 - name: Set marathon consul service definition
-  sudo: yes
+  become: yes
   template:
     src: marathon-consul.j2
     dest: "{{ marathon_consul_dir }}/marathon.json"

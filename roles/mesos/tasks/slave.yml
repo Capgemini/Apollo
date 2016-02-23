@@ -5,13 +5,13 @@
     path: "{{ mesos_slave_work_dir }}"
     state: directory
     mode: 0755
-  sudo: yes
+  become: yes
   tags:
     - mesos-slave
 
 - name: deploy mesos-slave service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: mesos-slave.service.j2
     dest: /etc/systemd/system/mesos-slave.service
@@ -21,7 +21,7 @@
     - mesos-slave
 
 - name: ensure mesos-slave is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: mesos-slave
     state: started
@@ -39,14 +39,14 @@
     restart_policy: always
     ports:
     - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
   tags:
     - prometheus
     - mesos_slave
 
 - name: Set mesos-exporter consul service definition
   when: prometheus_enabled|bool
-  sudo: yes
+  become: yes
   template:
     src: mesos-exporter-consul.j2
     dest: "{{ consul_dir }}/mesos-exporter.json"

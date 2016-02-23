@@ -1,8 +1,8 @@
 ---
 
 - name: deploy registrator service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -16,7 +16,7 @@
     - registrator
 
 - name: enable registrator
-  sudo: yes
+  become: yes
   service:
     name: registrator
     enabled: yes

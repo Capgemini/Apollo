@@ -6,7 +6,7 @@
     port: 8500
 
 - name: restart consul
-  sudo: yes
+  become: yes
   command: systemctl restart consul
   notify:
     - wait for consul to listen
