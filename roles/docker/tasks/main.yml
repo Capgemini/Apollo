@@ -29,12 +29,6 @@
   tags:
     - docker
 
-- name: reload systemd
-  become: yes
-  command: systemctl daemon-reload
-  notify:
-    - restart docker
-
 - name: ensure docker is running (and enable it at boot)
   become: yes
   service:
