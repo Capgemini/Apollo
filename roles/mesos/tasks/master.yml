@@ -49,7 +49,7 @@
     restart_policy: always
     ports:
     - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
   tags:
     - prometheus
     - mesos_master

@@ -157,7 +157,7 @@ get_terraform_modules() {
     terraform get
 
     # Make any dependencies
-    if [ -f .terraform/modules/*/Makefile ]; then
+    if ls -1 .terraform/modules/*/Makefile >/dev/null 2>&1; then
       for dir in .terraform/modules/*/Makefile;
       do
         make -C $(/usr/bin/dirname $dir)
