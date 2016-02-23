@@ -19,11 +19,17 @@ coreos:
         Description=Mount ephemeral to /var/lib/docker
         Requires=format-ebs-volume.service
         After=format-ebs-volume.service
-        Before=docker.service
         [Mount]
         What=/dev/xvdb
         Where=/var/lib/docker
         Type=ext4
+     - name: docker.service
+       drop-ins:
+        - name: 10-wait-docker.conf
+          content: |
+            [Unit]
+            After=var-lib-docker.mount
+            Requires=var-lib-docker.mount
   etcd2:
     # $public_ipv4 and $private_ipv4 are populated by the cloud provider
     advertise-client-urls: http://$public_ipv4:2379
