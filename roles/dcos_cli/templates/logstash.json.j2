@@ -10,12 +10,20 @@
   },
   "env": {
     "SERVICE_NAME": "logstash",
-    "SERVICE_5043_NAME": "logstash"
+    "SERVICE_5043_NAME": "logstash",
+    "SERVICE_19532_NAME": "journald-upload"
   },
   "healthChecks": [
     {
       "protocol": "TCP",
       "portIndex": 0,
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
+    },
+    {
+      "protocol": "TCP",
+      "portIndex": 1,
       "gracePeriodSeconds": 5,
       "intervalSeconds": 20,
       "maxConsecutiveFailures": 3
@@ -39,7 +47,13 @@
           "servicePort": 5043,
           "hostPort": 0,
           "protocol": "tcp"
-        }
+        },
+        {
+          "containerPort": 19532,
+          "servicePort": 19532,
+          "hostPort": 0,
+          "protocol": "tcp"
+         }
       ]
     }
   }

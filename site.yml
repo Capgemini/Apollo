@@ -1,18 +1,18 @@
 ---
 - hosts: all:!role=bastion
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
         port: "{{ ansible_ssh_port }}"
         host: "{{ ansible_ssh_host }}"
         delay: 10
-        timeout: 90
+        timeout: 180
       delegate_to: "{{ bastion_ip }}"
       sudo: False
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=90"
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=180"
       sudo: False
       when: bastion_ip is not defined
 
@@ -59,14 +59,7 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-# Installing DCOS frameworks and apps from one master.
-- hosts: mesos_masters
-  roles:
-    - dcos_cli
-  vars_files:
-    - roles/prometheus/defaults/main.yml
-  environment:
-    DOCKER_HOST: "{{ docker_host }}"
+- include: playbooks/dcos.yml
 
 - hosts: log_servers
   roles:

@@ -29,6 +29,15 @@
   tags:
     - lumberjack
 
+- name: deploy systemd-journal-upload service
+  sudo: yes
+  sudo_user: root
+  template:
+    src: systemd-journal-upload.service.j2
+    dest: /etc/systemd/system/systemd-journal-upload.service
+  tags:
+    - lumberjack
+
 - name: upload lumberjack config files
   sudo: yes
   template:

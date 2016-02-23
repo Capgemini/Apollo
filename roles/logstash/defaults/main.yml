@@ -3,7 +3,6 @@
 lumberjack_enabled: "{{ elk_enabled }}"
 lumberjack_restart_policy: 'always'
 lumberjack_version: latest
-lumberjack_restart_policy: 'always'
 lumberjack_net: 'bridge'
 lumberjack_hostname: "{{ ansible_ssh_host }}"
 lumberjack_image: "digitalwonderland/logstash-forwarder:{{ lumberjack_version }}"
@@ -16,7 +15,7 @@ lumberjack_docker_socket: "{{ docker_host }}"
 logstash_config_dir: "/opt/logstash/conf.d"
 logstash_lumberjack_host: "logstash.service.{{ consul_domain }}"
 logstash_journald_host: "journald-upload.service.{{ consul_domain }}"
-logstash_output_stdout: false
+logstash_output_stdout: true
 logstash_salesforce: false
 logstash_s3: false
 logstash_elasticsearch_output: "elasticsearch.service.{{ consul_domain }}:9200"

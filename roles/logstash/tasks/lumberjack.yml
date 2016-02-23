@@ -18,3 +18,12 @@
     enabled: yes
   tags:
     - lumberjack
+
+- name: ensure systemd-journal-upload is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: systemd-journal-upload
+    state: started
+    enabled: yes
+  tags:
+    - logstash

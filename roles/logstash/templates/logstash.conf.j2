@@ -5,6 +5,12 @@ input {
     ssl_certificate => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_certificate_file }}"
     ssl_key         => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
   }
+  http {
+    port  => 19532
+    type  => journald
+    threads => 10
+    codec => json_lines
+  }
 {% if logstash_s3 %}
   s3 {
     bucket            => "elb_logs"

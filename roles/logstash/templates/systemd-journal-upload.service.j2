@@ -1,0 +1,18 @@
+[Unit]
+Description=Send journald entries to a remote logstash instance
+After=systemd-journald.service
+Requires=systemd-journald.service
+Documentation=man:systemd-journal-upload(8)
+
+
+[Service]
+Restart=always
+RestartSec=0
+
+ExecStartPre=/usr/bin/journalctl
+
+# By default systemd-journal-upload wants to connect using SSL on port 19532
+# The following line will connect to example.com on port 19532 using HTTP
+# vs HTTPS.  Refer to 
+# http://www.freedesktop.org/software/systemd/man/systemd-journal-upload.html
+ExecStart=/bin/bash -c "/usr/bin/journalctl -b -o json -f | /usr/lib/systemd/systemd-journal-upload -u http://{{ logstash_journald_host }}"
