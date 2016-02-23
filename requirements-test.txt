@@ -1,2 +1,2 @@
-ansible-lint==2.1.3
+ansible-lint==2.3.8
 -r requirements.txt
