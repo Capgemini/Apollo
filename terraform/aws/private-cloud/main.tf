@@ -11,6 +11,7 @@ variable "masters" { default = "3" }
 variable "master_instance_type" { default = "m3.medium" }
 variable "slaves" { default = "1" }
 variable "slave_instance_type" { default = "m3.medium" }
+variable "slave_ebs_volume_size" { default = "30" }
 variable "bastion_instance_type" { default = "t2.micro" }
 variable "docker_version" { default = "1.9.1-0~trusty" }
 
