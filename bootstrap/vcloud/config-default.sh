@@ -1,0 +1,9 @@
+export APOLLO_INVENTORY=inventory/onpremise-inventory
+export APOLLO_ansible_ssh_port=22
+export APOLLO_ansible_ssh_user=core
+export APOLLO_http_proxy='http://94.126.104.207:8080'
+export APOLLO_traefik_network_interface='ens192'
+export APOLLO_traefik_marathon_domain='service.vcloud'
+export APOLLO_docker_registry='--insecure-registry=docker-registry.service.tmp.vcloud:5000'
+export APOLLO_docker_proxy_exceptions='localhost,127.0.0.1,docker-registry.service.tmp.vcloud'
+export APOLLO_docker_bridge_ip='--bip=172.17.42.1/16'

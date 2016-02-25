@@ -1,0 +1,54 @@
+{% raw %}
+global
+    maxconn {{or (key "service/haproxy/maxconn") 256}}
+    debug
+
+defaults
+    mode http
+    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
+    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
+    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+{% endraw %}
+
+{% raw %}
+frontend qa_mailcatcher_smtp
+    bind :1025 name smtp
+    mode tcp
+    default_backend qa_mailcatcher_smtp
+
+frontend qt_mailcatcher_smtp
+    bind :1026 name smtp
+    mode tcp
+    default_backend qt_mailcatcher_smtp
+
+frontend www
+    bind *:80
+    default_backend mesos_slaves
+
+    acl acl_qa_mailhog hdr(host) -i mailcatcher.qa.service.vcloud
+    use_backend qa_mailhog if acl_qa_mailhog
+
+    acl acl_qt_mailhog hdr(host) -i mailcatcher.qt.service.vcloud
+    use_backend qt_mailhog if acl_qt_mailhog
+
+backend qa_mailhog
+    {{range service "qa.mailhog-http" }}
+    server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
+
+backend qt_mailhog
+    {{range service "qt.mailhog-http" }}
+    server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
+
+backend qa_mailcatcher_smtp
+    {{range service "qa.mailhog-smtp" }}
+    server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
+
+backend qt_mailcatcher_smtp
+    {{range service "qt.mailhog-smtp" }}
+    server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
+
+backend mesos_slaves
+    server coreos04 10.66.1.158:80 check
+    server coreos05 10.66.1.159:80 check
+    server coreos06 10.66.1.160:80 check
+{% endraw %}

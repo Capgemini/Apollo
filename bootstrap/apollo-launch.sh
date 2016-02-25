@@ -13,7 +13,7 @@ main() {
   echo "Starting cluster using provider: $APOLLO_PROVIDER" >&2
 
   echo "... calling verify-prereqs" >&2
-  verify_prereqs
+  #verify_prereqs
 
   echo "... calling apollo-launch" >&2
   apollo_launch $@

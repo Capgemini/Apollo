@@ -47,6 +47,11 @@
     enabled: yes
   tags:
     - weave
+  notify:
+    - reload systemd
+    - restart consul
+    - restart mesos-slave
+    - restart registrator
 
 - name: wait for weave socket to be ready.
   wait_for:
@@ -55,7 +60,7 @@
 
 # Flush handlers so we restart the Docker process here with the weave network
 # enabled and containers correctly start in the weave network.
-- meta: flush_handlers
+#- meta: flush_handlers
 
 # scope
 - include: scope.yml

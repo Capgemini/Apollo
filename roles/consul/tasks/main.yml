@@ -1,6 +1,10 @@
 ---
 - include: config.yml
 
+- name: resload systemd
+  sudo: yes
+  command: systemctl daemon-reload
+
 - name: enable consul
   become: yes
   service:

@@ -154,7 +154,26 @@ ansible_upgrade_maintenance() {
   ansible_playbook_run
 }
 
+ansible_upgrade_mesoscluster() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-mesoscluster.yml'
+  ansible_playbook_run
+}
+
+ansible_upgrade_maintenance() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-maintenance.yml'
+  ansible_playbook_run
+}
+
+ansible_provision_slaves_lb() {
+  export APOLLO_PLAYBOOK='slaves-lb.yml'
+  ansible_playbook_run
+}
+
 install_contributed_roles() {
+  export http_proxy=http://94.126.104.207:8080
+  export https_proxy=http://94.126.104.207:8080
+  export HTTP_PROXY=http://94.126.104.207:8080
+  export HTTPS_PROXY=http://94.126.104.207:8080
   pushd "${APOLLO_ROOT}"
     ansible-galaxy install --force -r contrib-plugins/plugins.yml
     ansible-galaxy install --force -r requirements.yml

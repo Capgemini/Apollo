@@ -1,0 +1,55 @@
+coreos01 ansible_ssh_host=10.66.1.155
+coreos02 ansible_ssh_host=10.66.1.156
+coreos03 ansible_ssh_host=10.66.1.157
+coreos04 ansible_ssh_host=10.66.1.158
+coreos05 ansible_ssh_host=10.66.1.159
+coreos06 ansible_ssh_host=10.66.1.160
+coreoslb01 ansible_ssh_host=10.66.1.161
+
+[role=mesos_masters]
+coreos[01:03]
+
+[role=mesos_slaves]
+coreos[04:06]
+
+[role=slaves_load_balancers]
+coreoslb01
+
+[mesos_masters:children]
+role=mesos_masters
+
+[mesos_slaves:children]
+role=mesos_slaves
+
+[load_balancers:children]
+mesos_slaves
+
+[slaves_load_balancers:children]
+role=slaves_load_balancers
+
+[all:children]
+mesos_masters
+mesos_slaves
+load_balancers
+slaves_load_balancers
+
+[role=mesos_masters:vars]
+ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
+
+[all:vars]
+ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
+
+[zookeeper_servers:children]
+mesos_masters
+
+[consul_servers:children]
+mesos_masters
+
+[weave_servers:children]
+mesos_masters
+mesos_slaves
+load_balancers
+
+[marathon_servers:children]
+mesos_masters
+

@@ -37,3 +37,6 @@ datadog_config:
 
 coreos_timezone: 'Europe/London'
 traefik_network_interface: "eth0"
+
+haproxy_username: admin
+haproxy_password: admin

@@ -26,3 +26,15 @@
   wait_for:
     port: 6783
     delay: 10
+
+- name: restart mesos-slave
+  service:
+   name: mesos-slave
+   state: restarted
+  sudo: yes
+
+- name: restart registrator
+  service:
+   name: registrator
+   state: restarted
+  sudo: yes

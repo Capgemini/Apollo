@@ -1,0 +1,18 @@
+---
+- hosts: all:!role=bastion
+  gather_facts: True
+  tasks:
+    - name: Wait for port 22 to become available from local server.
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=90"
+      sudo: False
+      when: bastion_ip is not defined
+
+- include: playbooks/coreos-bootstrap.yml
+
+- hosts: slaves_load_balancers:!role=bastion
+  roles:
+    - docker
+    - weave
+    - consul
+    - registrator
+    - haproxy
