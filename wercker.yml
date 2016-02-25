@@ -2,11 +2,22 @@ box: wercker/python
 no-response-timeout: 15
 build:
   steps:
+    - install-packages:
+        packages: unzip
     - pip-install:
         requirements_file: "requirements-test.txt"
     - capgemini/ansible-lint:
         name: run ansible-lint against the site.yml playbook
         playbook: site.yml
+    - capgemini/terraform-install:
+        version: 0.6.12
+    - script:
+        name: terraform validate
+        code: |
+          find terraform/aws/private-cloud/ -type d \( -path terraform/aws/private-cloud/bin -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
+          find terraform/aws/public-cloud/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
+          find terraform/digitalocean/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
+          find terraform/gce/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
     - script:
         name: syntax-check ansible playbook
         code: |
