@@ -130,7 +130,7 @@ open_urls() {
 ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
-    #install_contributed_roles
+    install_contributed_roles
     ansible-playbook --inventory-file="${APOLLO_ROOT}/${APOLLO_INVENTORY}" \
     --tags "${ANSIBLE_TAGS:-all}" \
     ${ANSIBLE_LOG} --extra-vars "$( get_apollo_variables  APOLLO_)" \

@@ -24,7 +24,7 @@ ansible_ssh_config() {
     cat <<EOF > ssh.config
   Host bastion $APOLLO_bastion_ip
     StrictHostKeyChecking  no
-    User                   core
+    User                   ubuntu
     HostName               $APOLLO_bastion_ip
     ProxyCommand           none
     IdentityFile           $TF_VAR_private_key_file
