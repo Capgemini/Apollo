@@ -36,11 +36,11 @@ ansible_ssh_config() {
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config core@$APOLLO_bastion_ip nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config ubuntu@$APOLLO_bastion_ip nc %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
-    User                   core
+    User                   ubuntu
     IdentityFile           $TF_VAR_private_key_file
     UserKnownHostsFile     /dev/null
 EOF
