@@ -9,12 +9,9 @@ dcos_cli_frameworks_list:
   - cassandra
   - chronos
   - exhibitor
+
 # Type flag allows you to set up a command which you want to use to run an app.
 # To run one app use "type: app" and to run group of apps use "type: group".
 dcos_cli_apps_list:
   - { name: prometheus, type: app }
   - { name: promdash, type: group }
-
-# apps
-prometheus_image: prom/prometheus
-prometheus_image_tag: 0.16.1

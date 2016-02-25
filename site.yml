@@ -55,6 +55,6 @@
     DOCKER_HOST: "{{ docker_host }}"
 
 # Installing DCOS frameworks and apps from one master.
-- include: playbooks/dcos.yml
+- include: dcos.yml
 
 - include: contrib-plugins/playbook.yml

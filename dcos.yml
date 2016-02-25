@@ -2,6 +2,6 @@
   roles:
     - dcos_cli
   vars_files:
-    - ../roles/prometheus/defaults/main.yml
+    - roles/prometheus/defaults/main.yml
   environment:
     DOCKER_HOST: "{{ docker_host }}"

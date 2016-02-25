@@ -1,8 +1,5 @@
----
-# tasks file for frameworks
 - include_vars: "{{ item }}.yml"
-  with_items:
-    - "{{ dcos_cli_frameworks_list }}"
+  with_items: "{{ dcos_cli_frameworks_list }}"
 
 - name: create config directory
   when: "dcos_cli_framework_{{ item }}_enabled | bool"

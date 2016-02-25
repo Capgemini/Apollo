@@ -3,6 +3,9 @@
 # Util functions cloud reusable.
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
 DEFAULT_CONFIG="${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/${APOLLO_CONFIG_FILE-"config-default.sh"}"
+APOLLO_INVENTORY="${APOLLO_INVENTORY-inventory}"
+APOLLO_PLAYBOOK="${APOLLO_PLAYBOOK-site.yml}"
+
 if [ -f "${DEFAULT_CONFIG}" ]; then
   source "${DEFAULT_CONFIG}"
 fi
@@ -128,11 +131,16 @@ ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
     install_contributed_roles
-    ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
+    ansible-playbook --inventory-file="${APOLLO_ROOT}/${APOLLO_INVENTORY}" \
+    --tags "${ANSIBLE_TAGS:-all}" \
     ${ANSIBLE_LOG} --extra-vars "$( get_apollo_variables  APOLLO_)" \
-    ${ANSIBLE_EXARGS:-} \
-    site.yml
+    ${APOLLO_PLAYBOOK}
   popd
+}
+
+ansible_dcos_install() {
+  export APOLLO_PLAYBOOK='dcos.yml'
+  ansible_playbook_run
 }
 
 install_contributed_roles() {
