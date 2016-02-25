@@ -1,3 +1,9 @@
+HTTP/1.0 503 Service Unavailable
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,9 +93,8 @@
     <div class="content">
       <div class="content-body">
         <img src="https://s3-us-west-1.amazonaws.com/udacity-content/images/rocket-ship.svg" alt="rocket-ship"/>
-        <div class="header-text">Udacity is currently undergoing maintenance</div>
+        <div class="header-text">{{or (key "service/haproxy/maintenance-header") "Udacity is currently undergoing maintenance"}}</div>
         <div class="body-text">{{or (key "service/haproxy/maintenance-text") "We'll be right back. Check for updates <a href=\"http://status.udacity.com/\">here</a>."}}</div>
-
       </div>
     </div>
     <div class="footer">

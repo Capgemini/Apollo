@@ -8,9 +8,6 @@ defaults
     option redispatch
     # http://blog.haproxy.com/2014/05/26/haproxy-and-http-errors-408-in-chrome/
     errorfile 408 /dev/null
-    errorfile 500 /etc/haproxy/maintenance.http
-    errorfile 502 /etc/haproxy/maintenance.http
-    errorfile 504 /etc/haproxy/maintenance.http
     errorfile 503 /etc/haproxy/maintenance.http
     timeout connect {{or (key "service/haproxy/timeouts/connect") "5s"}}
     timeout client {{or (key "service/haproxy/timeouts/client") "50s"}}
