@@ -5,6 +5,9 @@
   template:
     src: cadvisor.service.j2
     dest: /etc/systemd/system/cadvisor.service
+  notify:
+    - reload systemd
+    - restart cadvisor
   tags:
     - cadvisor
 
