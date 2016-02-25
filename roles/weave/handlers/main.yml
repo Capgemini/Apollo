@@ -1,14 +1,14 @@
 ---
 # handlers file for weave
 - name: reload systemd
-  sudo: yes
+  become: True
   command: systemctl daemon-reload
   notify:
     - restart weave service
     - restart weaveproxy service
 
 - name: restart weave service
-  sudo: yes
+  become: True
   service:
     name: weave
     state: restarted
@@ -17,7 +17,7 @@
     - weave
 
 - name: restart weaveproxy service
-  sudo: yes
+  become: True
   service:
     name: weaveproxy
     state: restarted

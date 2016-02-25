@@ -16,6 +16,7 @@
     src: mesos-slave.service.j2
     dest: /etc/systemd/system/mesos-slave.service
   notify:
+    - reload systemd
     - restart mesos slave
   tags:
     - mesos-slave
