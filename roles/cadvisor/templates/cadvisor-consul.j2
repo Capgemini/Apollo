@@ -5,7 +5,7 @@
     "check": {
       "docker_container_id": "cadvisor",
       "shell": "/bin/sh",
-      "script": "wget -q --spider 127.0.0.1:8080/containers/ -O /dev/null",
+      "script": "wget -q -s {{ cadvisor_container_ip }}:8080/containers/ -O /dev/null",
       "interval": "10s",
       "timeout": "3s"
     }
