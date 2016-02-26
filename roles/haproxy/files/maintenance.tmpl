@@ -1,0 +1,106 @@
+HTTP/1.0 503 Service Unavailable
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>Udacity</title>
+  <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic'>
+  <style media="screen" type="text/css">
+    body {
+      text-align: center;
+      height: 100vh;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      margin: 0;
+    }
+    header {
+      padding-top: 26px;
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 auto;
+          -ms-flex: 0 0 auto;
+              flex: 0 0 auto;
+    }
+    .container {
+      background-color: #f4f4ef;
+      margin: 25px;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 auto;
+          -ms-flex: 1 1 auto;
+              flex: 1 1 auto;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+    }
+    .content {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 auto;
+          -ms-flex: 1 1 auto;
+              flex: 1 1 auto;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+    }
+    .header-text {
+      font-family: OpenSans-Semibold;
+      font-size: 18px;
+      padding-top: 24px;
+    }
+    .body-text {
+      font-family: OpenSans;
+      font-size: 16px;
+      padding-top: 10px;
+    }
+    .footer {
+      font-family: OpenSans-Light;
+      font-size: 14px;
+      padding-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://s3-us-west-1.amazonaws.com/udacity-content/images/udacity-wordmark.svg" alt="Udacity"/>
+  </header>
+  <div class="container">
+    <div class="content">
+      <div class="content-body">
+        <img src="https://s3-us-west-1.amazonaws.com/udacity-content/images/rocket-ship.svg" alt="rocket-ship"/>
+        <div class="header-text">{{or (key "service/haproxy/maintenance-header") "Udacity is currently undergoing maintenance"}}</div>
+        <div class="body-text">{{or (key "service/haproxy/maintenance-text") "We'll be right back. Check for updates <a href=\"http://status.udacity.com/\">here</a>."}}</div>
+      </div>
+    </div>
+    <div class="footer">
+      Udacity's <a href="https://www.udacity.com/legal">Terms Of Service</a>
+    </div>
+  </div>
+</body>
+</html>
+

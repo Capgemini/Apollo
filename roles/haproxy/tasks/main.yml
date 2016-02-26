@@ -31,6 +31,7 @@
   with_items:
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
+    - { src: maintenance.tmpl, dst: 'templates/maintenance.tmpl' }
   tags:
     - haproxy
 
