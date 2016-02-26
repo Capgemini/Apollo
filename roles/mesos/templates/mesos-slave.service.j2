@@ -32,6 +32,7 @@ ExecStart=/usr/bin/docker run --rm --name mesos_slave \
 -e "MESOS_RESOURCES={{ mesos_resources }}" \
 -e "MESOS_IP={{ mesos_ip }}" \
 -e "MESOS_WORK_DIR={{ mesos_slave_work_dir }}" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
 -e "MESOS_HOSTNAME={{ mesos_hostname }}" \
 {{ mesos_slave_image }}
 
