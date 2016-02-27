@@ -32,6 +32,7 @@
     - { src: haproxy.cfg, dst: 'config/haproxy.cfg' }
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
     - { src: maintenance.tmpl, dst: 'templates/maintenance.tmpl' }
+    - { src: blacklist.tmpl, dst: 'templates/blacklist.tmpl' }
   tags:
     - haproxy
 
