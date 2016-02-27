@@ -1,0 +1,3 @@
+{{range $ip := key "haproxy/blacklist" | split ","}}
+{{$ip}}
+{{end}}
