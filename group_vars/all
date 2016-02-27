@@ -23,8 +23,9 @@ proxy_env:
   HTTP_PROXY: "{{ http_proxy }}"
   HTTPS_PROXY: "{{ http_proxy }}"
 
-prometheus_enabled: true
+prometheus_enabled: false
 cadvisor_enabled: true
+chronos_enabled: false
 marathon_enabled: true
 datadog_enabled: false
 scope_enabled: false

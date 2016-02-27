@@ -9,6 +9,7 @@ dcos_cli_frameworks_list:
   - cassandra
   - chronos
   - exhibitor
+  - kubernetes
 
 # Type flag allows you to set up a command which you want to use to run an app.
 # To run one app use "type: app" and to run group of apps use "type: group".

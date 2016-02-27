@@ -1,0 +1,14 @@
+{
+  "mesos": {"master": "{{ dcos_cli_zk_master_peers }}"},
+  "kubernetes": {
+    "docker-image": "{{ dcos_cli_framework_kubernetes_image }}",
+    "dns-suffix": ".service.consul",
+    "enable-deployments": false
+    "enable-daemonsets": false
+    "zk-hosts": "{{ zookeeper_peers_nodes }}",
+    "mem": {{ dcos_cli_framework_kubernetes_mem }},
+    "cpus": {{ dcos_cli_framework_kubernetes_cpus }},
+    "instances": {{ dcos_cli_framework_kubernetes_instances }},
+    "logging-verbosity": 1
+  }
+}

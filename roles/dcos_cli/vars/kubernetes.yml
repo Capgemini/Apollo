@@ -1,0 +1,5 @@
+dcos_cli_framework_kubernetes_enabled: false
+dcos_cli_framework_kubernetes_mem: 768.0
+dcos_cli_framework_kubernetes_cpus: 1.0
+dcos_cli_framework_kubernetes_image: mesosphere/kubernetes:v0.7.2-v1.1.5-alpha
+dcos_cli_framework_kubernetes_instances: 1
