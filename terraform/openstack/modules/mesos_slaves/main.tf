@@ -35,7 +35,7 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
     {
       uuid           = "${var.public_network_id}"
       name           = "${var.public_network_name}"
-      access_network = "true"
+      # access_network = "true"
     }
   network           =
     {
@@ -44,6 +44,11 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
     }
   config_drive      = "true"
   user_data         = "${template_file.slave_cloud_init.rendered}"
+  # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.
+  metadata {
+    role = "mesos_slaves"
+    dc   = "${var.region}"
+  }
 }
 
 # Outputs

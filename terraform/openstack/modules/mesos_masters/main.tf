@@ -33,9 +33,9 @@ resource "openstack_compute_instance_v2" "mesos-master" {
   key_pair          = "${var.key_pair}"
   network           =
     {
-      uuid           = "${var.public_network_id}"
-      name           = "${var.public_network_name}"
-      access_network = "true"
+      uuid          = "${var.public_network_id}"
+      name          = "${var.public_network_name}"
+      # access_network = "true"
     }
   network           =
     {
@@ -44,6 +44,11 @@ resource "openstack_compute_instance_v2" "mesos-master" {
     }
   config_drive      = "true"
   user_data         = "${template_file.master_cloud_init.rendered}"
+  # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.
+  metadata {
+    role = "mesos_masters"
+    dc   = "${var.region}"
+  }
 }
 
 # Outputs

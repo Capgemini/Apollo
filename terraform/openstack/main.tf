@@ -105,3 +105,7 @@ output "master_ips" {
 output "slave_ips" {
   value = "${module.mesos-slaves.slave_ips}"
 }
+# We need this for the open_urls function
+output "master.1.ip" {
+  value = "${element(split(",", module.mesos-masters.master_ips), 0)}"
+}
