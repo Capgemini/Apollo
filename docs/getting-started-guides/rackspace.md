@@ -1,6 +1,6 @@
-## Getting started on Rackspace / Openstack
+## Getting started on Rackspace 
 
-This page provides details on how to use the Openstack provider for Apollo. Please note that this implementation has been tested on Rackspace's implementation of Openstack. Some Openstack features (mainly related to networking and security resource provisioning) available by Terraform are NOT working in Rackspace, due to certain small differences in the Rackspace implementation of Openstack, as well as an existing Gophercloud bug. For more details, please visit [https://github.com/hashicorp/terraform/issues/1560](https://github.com/hashicorp/terraform/issues/1560)
+This page provides details on how to use the Rackspace provider for Apollo. Please note that this implementation has been tested on Rackspace's implementation of Openstack. Some Openstack features (mainly related to networking and security resource provisioning) available by Terraform are NOT working in Rackspace, due to certain small differences in the Rackspace implementation of Openstack, as well as an existing Gophercloud bug. For more details, please visit [https://github.com/hashicorp/terraform/issues/1560](https://github.com/hashicorp/terraform/issues/1560)
 
 ### Prerequisites
 
@@ -43,25 +43,25 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following pattern "APOLLO_" will be available for Apollo in ansible.
 
-Certain default config options for Openstack/Rackspace can be found in `bootstrap/openstack/config-default.sh`
+Certain default config options for Rackspace can be found in `bootstrap/openstack/config-default.sh`
 
 As a minimum you will need to set these environment variables, as they are initially unset in Terraform (using the defaults for the rest should work out of the box for Rackspace / London region) -
 
 ```
-APOLLO_PROVIDER=openstack
-TF_VAR_user_name   (your Openstack/Rackspace account username)
-TF_VAR_password    (your Openstack/Rackspace account password)
-TF_VAR_tenant_name (your Openstack/Rackspace tenant name/id, as described in step 2 in the Prerequisites section)
+APOLLO_PROVIDER=rackspace
+TF_VAR_user_name   (your Rackspace account username)
+TF_VAR_password    (your Rackspace account password)
+TF_VAR_tenant_name (your Rackspace tenant name/id, as described in step 2 in the Prerequisites section)
 ```
 
 An exhaustive list of variables for further customisation of Terraform is provided below (values shown are the current defaults):
 
 ```
-TF_VAR_region="LON" (the Openstack region for your account)
-TF_VAR_auth_url="https://identity.api.rackspacecloud.com/v2.0" (the Openstack base auth API URL)
+TF_VAR_region="LON" (the Rackspace region for your account)
+TF_VAR_auth_url="https://identity.api.rackspacecloud.com/v2.0" (the Rackspace base auth API URL)
 TF_VAR_coreos_stable_image="40155f16-21d4-4ac1-ad65-c409d94b8c7c" (a CoreOS stable image id)
-TF_VAR_key_name="apollo" (or another name of your choice for the ssh key assigned to the Openstack instances)
-TF_VAR_public_key_file="~/.ssh/id_rsa_rs.pub" (the public ssh key to be uploaded to your Openstack/Rackspace account and associated with your instances)
+TF_VAR_key_name="apollo" (or another name of your choice for the ssh key assigned to the Rackspace instances)
+TF_VAR_public_key_file="~/.ssh/id_rsa_rs.pub" (the public ssh key to be uploaded to your Rackspace account and associated with your instances)
 TF_VAR_mesos_masters="3" (The number of Mesos Master nodes)
 TF_VAR_mesos_master_instance_type="general1-4" (The flavour of the Mesos Master instances)
 TF_VAR_mesos_slaves="1" (The number of Mesos Slave nodes)
