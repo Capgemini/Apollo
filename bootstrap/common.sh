@@ -31,7 +31,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.6.10}
+  local requirement_version_string=${1:-0.6.10} # This is to support Rackspace. Access IPs are not properly exported by the Terraform Openstack provider in versions > 0.6.10. See https://github.com/hashicorp/terraform/issues/5358
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
