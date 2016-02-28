@@ -7,8 +7,9 @@ This page provides details on how to use the Openstack provider for Apollo. Plea
 To test the provider on Rackspace, please do the following:
 
 1. You need a Rackspace public cloud account. Visit [https://cart.rackspace.com/en-gb/cloud](https://cart.rackspace.com/en-gb/cloud) to get started
-2. After you create your account, take notice of your tenant name/id. You can find it as an 8-digit number in the URL you use to access the Rackspace console.
+2. After you create your account, take note of your tenant name/id. You can find it as an 8-digit number in the URL you use to access the Rackspace console.
 3. You need to have installed and configured Terraform (>= 0.6.10 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
+
 _NOTE: At the moment, it is highly recommended that you use Terraform 0.6.10 (and not a later version), due to a bug introduced in the Openstack provider (affecting Rackspace) in v0.6.11 which prevents Terraform from returning the access IPs for the intances it creates. Visit [https://github.com/hashicorp/terraform/issues/5358](https://github.com/hashicorp/terraform/issues/5358) for more info on this.
 4. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 5. You will need to have created an SSH RSA key pair for accessing your intances. You can create it as follows:
@@ -41,7 +42,7 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following pattern "APOLLO_" will be available for Apollo in ansible.
 
-For a full list of default config options for Openstack/Rackspace see `bootstrap/openstack/config-default.sh`
+Certain default config options for Openstack/Rackspace can be found in `bootstrap/openstack/config-default.sh`
 
 As a minimum you will need to set these environment variables, as they are initially unset in Terraform (using the defaults for the rest should work out of the box for Rackspace / London region) -
 
