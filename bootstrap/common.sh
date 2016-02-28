@@ -141,6 +141,7 @@ ansible_playbook_run() {
 
 ansible_dcos_install() {
   export APOLLO_PLAYBOOK='dcos.yml'
+  ansible_playbook_run
 }
 
 ansible_upgrade_mesoscluster() {
