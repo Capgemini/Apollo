@@ -24,7 +24,7 @@ Providers
 - [x] Digitalocean
 - [x] Google Cloud
 - [ ] Openstack
-- [ ] Microsoft Azure
+- [x] Microsoft Azure
 
 Operating Systems
 -----------------

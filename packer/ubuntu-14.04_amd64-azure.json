@@ -1,0 +1,60 @@
+{
+  "variables": {
+    "azure_settings_file": "{{env `AZURE_SETTINGS_FILE`}}",
+    "azure_subscription_name": "{{env `AZURE_SUBSCRIPTION_NAME`}}",
+    "azure_storage_account": "{{env `AZURE_STORAGE_ACCOUNT`}}",
+    "azure_storage_container": "{{env `AZURE_STORAGE_CONTAINER`}}",
+    "azure_location": "{{env `AZURE_LOCATION`}}",
+    "azure_source_image": "{{env `AZURE_SOURCE_IMAGE`}}",
+    "azure_instance_type": "{{env `AZURE_INSTANCE_TYPE`}}",
+    "mesos_version": "0.25.0-0.2.70.ubuntu1404",
+    "marathon_version": "v0.11.1",
+    "consul_version": "0.5.2",
+    "weave_version": "1.2.0",
+    "docker_version": "1.9.0-0~trusty",
+    "version": "{{env `APOLLO_VERSION`}}"
+  },
+  "builders": [{
+    "type": "azure",
+    "publish_settings_path": "{{user `azure_settings_file`}}",
+    "subscription_name": "{{user `azure_subscription_name`}}",
+    "storage_account": "{{user `azure_storage_account`}}",
+    "storage_account_container": "{{user `azure_storage_container`}}",
+    "os_type": "Linux",
+    "os_image_label": "{{user `azure_source_image`}}",
+    "location": "{{user `azure_location`}}",
+    "instance_size": "{{user `azure_instance_type`}}",
+    "user_image_label": "apollo-ubuntu-14.04-amd64-{{timestamp}}"
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/ubuntu/upstart/",
+      "destination": "/tmp"
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "WEAVE_VERSION={{user `weave_version`}}",
+        "MESOS_VERSION={{user `mesos_version`}}",
+        "MARATHON_VERSION={{user `marathon_version`}}",
+        "DOCKER_VERSION={{user `docker_version`}}"
+      ],
+      "scripts": [
+        "scripts/ubuntu/base.sh",
+        "scripts/common/sshd.sh",
+        "scripts/ubuntu/install_docker.sh",
+        "scripts/common/install_consul.sh",
+        "scripts/common/install_weave.sh",
+        "scripts/common/serverspec.sh"
+      ],
+      "execute_command": "{{ .Vars }} sudo  -E -S bash -c '{{ .Path }}'"
+    }
+  ]
+}

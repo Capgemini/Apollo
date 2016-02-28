@@ -2,6 +2,7 @@ IaaS Provider  | Config. Mgmt | OS     | Networking  | Docs                     
 -------------- | ------------ | ------ | ----------  | ----------------------------------------------------   | ---------------------------- | -----
 AWS            | Ansible       | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/aws.md)       | Project                      | AWS private VPC with NAT gateway server for SSH/VPN
 Vagrant        | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)    | Project                      |
+Azure   | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/azure.md)   | Project                      | Azure private VPC with NAT gateway server for SSH/VPN
 Digitalocean   | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/digitalocean.md)   | Project                      | Public cloud instances
 
 
