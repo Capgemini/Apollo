@@ -8,6 +8,7 @@ variable "public_network_id"       { default = "00000000-0000-0000-0000-00000000
 variable "public_network_name"     { default = "PublicNet" }
 variable "private_network_id"      { default = "11111111-1111-1111-1111-111111111111" }
 variable "private_network_name"    { default = "ServiceNet" }
+variable "security_groups"         { default = "default" }
 variable "etcd_discovery_url_file" {}
 variable "masters"                 { default = "3" }
 variable "slaves"                  { default = "1" }
@@ -35,15 +36,21 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
     {
       uuid           = "${var.public_network_id}"
       name           = "${var.public_network_name}"
-      access_network = "true"
+      # access_network = "true"
     }
   network           =
     {
       uuid          = "${var.private_network_id}"
       name          = "${var.private_network_name}"
     }
+  # security_groups   = ["${var.security_groups}"]
   config_drive      = "true"
   user_data         = "${template_file.slave_cloud_init.rendered}"
+  # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.
+  metadata {
+    role = "mesos_slaves"
+    dc   = "${var.region}"
+  }
 }
 
 # Outputs
