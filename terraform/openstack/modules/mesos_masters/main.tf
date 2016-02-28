@@ -33,8 +33,9 @@ resource "openstack_compute_instance_v2" "mesos-master" {
   key_pair          = "${var.key_pair}"
   network           =
     {
-      uuid          = "${var.public_network_id}"
-      name          = "${var.public_network_name}"
+      uuid           = "${var.public_network_id}"
+      name           = "${var.public_network_name}"
+      access_network = "true"
     }
   network           =
     {
