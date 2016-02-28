@@ -4,7 +4,7 @@
 # config-default.sh.
 apollo_down() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    terraform destroy -var "do_token=${TF_VAR_do_token}"
+    terraform destroy -var "tenant_name=${TF_VAR_tenant_name}" -var "user_name=${TF_VAR_user_name}" -var "password=${TF_VAR_password}"
   popd
 }
 

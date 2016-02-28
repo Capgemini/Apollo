@@ -17,8 +17,11 @@ variable "public_key_file" { default = "~/.ssh/id_rsa_rs.pub" } # The path to th
 #  Networking variables
 ## Private networks cannot be created in Rackspace via Terraform at the moment, due to a Gophercloud bug and slight differences between Openstack and Rackspace's implementation of it.
 ## See https://github.com/hashicorp/terraform/issues/1560 for more info.
-variable "public_network_id"    { default = "00000000-0000-0000-0000-000000000000" } # Default id for the Rackspace public network
+variable "public_network_id"    { default = "00000000-0000-0000-0000-000000000000" } # Default id for the Rackspace Public network
 variable "public_network_name"  { default = "PublicNet"} # Default name for the Rackspace public network
+## We need the eth1 adapter to be available, along with a non-public/private IP address, and this isn't possible just by attaching the resource to the PublicNet
+variable "private_network_id"    { default = "11111111-1111-1111-1111-111111111111" } # Default id for the Rackspace Service network
+variable "private_network_name"  { default = "ServiceNet"} # Default name for the Rackspace Service network
 
 # Mesos variables
 variable "mesos_masters"              { default = "3" }
@@ -57,27 +60,17 @@ module "etcd-discovery" {
   etcd_discovery_url_file = "${var.etcd_discovery_url_file}"
 }
 
-# resource "null_resource" "etcd_discovery" {
-#   # Changes to the specified variables will trigger the provisioner again
-#   triggers {
-#     mesos_masters = "${var.mesos_masters}"
-#     mesos_slaves  = "${var.mesos_slaves}"
-#   }
-
-#   provisioner "local-exec" {
-#     command = "curl https://discovery.etcd.io/new?size=${var.mesos_masters + var.mesos_slaves} > ${var.etcd_discovery_url_file}"
-#   }
-# }
-
 # Mesos Masters
 module "mesos-masters" {
   source                  = "./modules/mesos_masters"
   region                  = "${var.region}"
   instance_type           = "${var.mesos_master_instance_type}"
   image_id                = "${var.coreos_stable_image}"
-  key_pair                = "${var.key_name}"
-  network_id              = "${var.public_network_id}"
-  network_name            = "${var.public_network_name}"
+  key_pair                = "${module.keypair.keypair_name}"
+  public_network_id       = "${var.public_network_id}"
+  public_network_name     = "${var.public_network_name}"
+  private_network_id      = "${var.private_network_id}"
+  private_network_name    = "${var.private_network_name}"
   etcd_discovery_url_file = "${var.etcd_discovery_url_file}"
   masters                 = "${var.mesos_masters}"
   slaves                  = "${var.mesos_slaves}"
@@ -90,9 +83,11 @@ module "mesos-slaves" {
   region                  = "${var.region}"
   instance_type           = "${var.mesos_slave_instance_type}"
   image_id                = "${var.coreos_stable_image}"
-  key_pair                = "${var.key_name}"
-  network_id              = "${var.public_network_id}"
-  network_name            = "${var.public_network_name}"
+  key_pair                = "${module.keypair.keypair_name}"
+  public_network_id       = "${var.public_network_id}"
+  public_network_name     = "${var.public_network_name}"
+  private_network_id      = "${var.private_network_id}"
+  private_network_name    = "${var.private_network_name}"
   etcd_discovery_url_file = "${var.etcd_discovery_url_file}"
   masters                 = "${var.mesos_masters}"
   slaves                  = "${var.mesos_slaves}"
