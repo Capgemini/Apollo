@@ -8,6 +8,8 @@ Requires=weave.service
 [Service]
 EnvironmentFile=-/etc/weave.%H.env
 EnvironmentFile=-/etc/weave.env
+Environment=WEAVE_VERSION={{ weave_version }}
+
 ExecStartPre={{ weave_bin }} launch-proxy --rewrite-inspect --without-dns
 ExecStart=/usr/bin/docker attach weaveproxy
 Restart=on-failure

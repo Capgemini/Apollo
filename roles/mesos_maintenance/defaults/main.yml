@@ -1,0 +1,10 @@
+---
+# defaults file for mesos-maintenance
+mesos_maintenance_server_group: mesos_slaves
+mesos_maintenance_server_master_group: mesos_masters
+mesos_maintenance_master_url: ''
+mesos_maintenance_starting_time: ''
+mesos_maintenance_duration: ''
+mesos_maintenance_schedule: false
+mesos_maintenance_start: false
+mesos_maintenance_complete: false

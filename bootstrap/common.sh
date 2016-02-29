@@ -31,7 +31,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.6.6}
+  local requirement_version_string=${1:-0.6.12}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
@@ -134,12 +134,22 @@ ansible_playbook_run() {
     ansible-playbook --inventory-file="${APOLLO_ROOT}/${APOLLO_INVENTORY}" \
     --tags "${ANSIBLE_TAGS:-all}" \
     ${ANSIBLE_LOG} --extra-vars "$( get_apollo_variables  APOLLO_)" \
+    ${ANSIBLE_EXARGS:-} \
     ${APOLLO_PLAYBOOK}
   popd
 }
 
 ansible_dcos_install() {
   export APOLLO_PLAYBOOK='dcos.yml'
+}
+
+ansible_upgrade_mesoscluster() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-mesoscluster.yml'
+  ansible_playbook_run
+}
+
+ansible_upgrade_maintenance() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-maintenance.yml'
   ansible_playbook_run
 }
 

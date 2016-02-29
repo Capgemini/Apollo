@@ -17,7 +17,6 @@ ExecStart=/usr/bin/docker run --name marathon \
 --net={{ marathon_net }} \
 -p {{ marathon_port }}:{{ marathon_port }} \
 -v {{ marathon_artifact_store_dir }}:/store \
--e "LIBPROCESS_IP=${COREOS_PRIVATE_IPV4}" \
 -e "JAVA_OPTS={{ marathon_java_settings }}" \
 {{ marathon_image }} \
 {{ marathon_command }}

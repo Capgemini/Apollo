@@ -7,6 +7,7 @@
     dest: "{{ weave_bin }}"
     mode: 0755
     validate_certs: no
+    force: true
   environment: "{{ proxy_env }}"
   tags:
     - weave

@@ -1,0 +1,9 @@
+# schedule maintenance
+- name: deploy schedule template
+  sudo: yes
+  sudo_user: root
+  template:
+    src: schedule.json.j2
+    dest: /tmp/schedule.json
+  run_once: true
+  when: mesos_maintenance_schedule

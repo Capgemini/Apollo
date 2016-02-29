@@ -1,0 +1,9 @@
+---
+- include: schedule.yml
+  when: mesos_maintenance_schedule
+
+- include: start.yml
+  when: mesos_maintenance_start
+
+- include: complete.yml
+  when: mesos_maintenance_complete
