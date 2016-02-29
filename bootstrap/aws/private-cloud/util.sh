@@ -24,7 +24,7 @@ ansible_ssh_config() {
     cat <<EOF > ssh.config
   Host bastion $APOLLO_bastion_ip
     StrictHostKeyChecking  no
-    User                   ubuntu
+    User                   core
     HostName               $APOLLO_bastion_ip
     ProxyCommand           none
     IdentityFile           $TF_VAR_private_key_file
@@ -36,7 +36,7 @@ ansible_ssh_config() {
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config core@$APOLLO_bastion_ip nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config core@$APOLLO_bastion_ip ncat %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
