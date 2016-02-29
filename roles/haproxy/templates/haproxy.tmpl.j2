@@ -11,15 +11,15 @@ defaults
 {% endraw %}
 
 {% raw %}
-frontend qa_mailcatcher_smtp
+frontend qa_mailhog_smtp
     bind :1025 name smtp
     mode tcp
-    default_backend qa_mailcatcher_smtp
+    default_backend qa_mailhog_smtp
 
-frontend qt_mailcatcher_smtp
+frontend qt_mailhog_smtp
     bind :1026 name smtp
     mode tcp
-    default_backend qt_mailcatcher_smtp
+    default_backend qt_mailhog_smtp
 
 frontend www
     bind *:80
@@ -39,11 +39,11 @@ backend qt_mailhog
     {{range service "qt.mailhog-http" }}
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
-backend qa_mailcatcher_smtp
+backend qa_mailhog_smtp
     {{range service "qa.mailhog-smtp" }}
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
-backend qt_mailcatcher_smtp
+backend qt_mailhog_smtp
     {{range service "qt.mailhog-smtp" }}
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
