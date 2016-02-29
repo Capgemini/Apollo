@@ -5,9 +5,19 @@ global
 
 defaults
     mode http
-    timeout connect {{or (key "service/haproxy/timeouts/connect") "5000ms"}}
-    timeout client {{or (key "service/haproxy/timeouts/client") "50000ms"}}
-    timeout server {{or (key "service/haproxy/timeouts/server") "50000ms"}}
+    log     global
+    maxconn 8000
+    option  redispatch
+    option  http-server-close
+    retries 3
+    stats   enable
+    timeout http-request 10s
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 1m
+    timeout server 1m
+    timeout check 10s
+    option forwardfor except 127.0.0.1
 {% endraw %}
 
 {% raw %}
@@ -40,11 +50,11 @@ backend qt_mailhog
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
 backend qa_mailhog_smtp
-    {{range service "qa.mailhog-smtp" }}
+    mode tcp{{range service "qa.mailhog-smtp" }}
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
 backend qt_mailhog_smtp
-    {{range service "qt.mailhog-smtp" }}
+    mode tcp{{range service "qt.mailhog-smtp" }}
     server {{.ID}} {{.Address}}:{{.Port}} check{{end}}
 
 backend mesos_slaves
