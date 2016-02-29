@@ -16,6 +16,7 @@
     src: mesos-master.service.j2
     dest: /etc/systemd/system/mesos-master.service
   notify:
+    - reload systemd
     - restart mesos master
   tags:
     - mesos-master

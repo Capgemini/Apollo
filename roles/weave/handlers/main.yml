@@ -1,26 +1,20 @@
 ---
 # handlers file for weave
-- name: reload systemd
-  become: True
-  command: systemctl daemon-reload
-  notify:
-    - restart weave service
-    - restart weaveproxy service
-
-- name: restart weave service
-  become: True
+- name: restart weave
+  become: yes
   service:
     name: weave
     state: restarted
-    enabled: yes
-  tags:
-    - weave
+  notify:
+    - wait for weave socket
 
-- name: restart weaveproxy service
-  become: True
+- name: restart weaveproxy
+  become: yes
   service:
     name: weaveproxy
     state: restarted
-    enabled: yes
-  tags:
-    - weave
+
+- name: wait for weave socket
+  wait_for:
+    port: 6783
+    delay: 10

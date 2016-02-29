@@ -19,16 +19,16 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - src: "weave.service.j2"
-      dest: "/etc/systemd/system/weave.service"
-    - src: "weaveproxy.service.j2"
-      dest: "/etc/systemd/system/weaveproxy.service"
+    - src: weave.service.j2
+      dest: /etc/systemd/system/weave.service
+    - src: weaveproxy.service.j2
+      dest: /etc/systemd/system/weaveproxy.service
+  notify:
+    - systemd reload
+    - restart weave
+    - restart weaveproxy
   tags:
     - weave
-  notify:
-    - reload systemd
-    - restart weave service
-    - restart weaveproxy service
 
 - name: ensure weave service is running.
   become: yes

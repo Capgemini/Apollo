@@ -23,6 +23,7 @@
     - src: log4j.properties.j2
       dest: "{{ zookeeper_config_dir }}/log4j.properties"
   notify:
+    - reload systemd
     - restart zookeeper
   tags:
     - zookeeper
@@ -45,6 +46,7 @@
     src: zookeeper.service.j2
     dest: /etc/systemd/system/zookeeper.service
   notify:
+    - reload systemd
     - restart zookeeper
   tags:
     - zookeeper
