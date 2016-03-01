@@ -25,7 +25,7 @@ sleep 5
 # Download docker containers to the machine to save download time on
 # provisioning later
 docker pull udacity/registrator:388bc36
-docker pull udacity/haproxy-consul:1.6.2_0.10.0
+docker pull udacity/haproxy-consul:1.6.2_0.13.0
 docker pull weaveworks/scope:latest
 docker pull mesosphere/marathon:${MARATHON_VERSION}
 docker pull capgemini/dcos-cli:latest
