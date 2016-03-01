@@ -15,6 +15,7 @@
     src: marathon.service.j2
     dest: /etc/systemd/system/marathon.service
   notify:
+    - reload systemd
     - restart marathon
   tags:
     - marathon
