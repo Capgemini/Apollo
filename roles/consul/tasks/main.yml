@@ -1,5 +1,9 @@
 ---
-# tasks file for consul
+
+- include: install.yml
+  tags:
+    - install
+
 - name: remove consul override
   file:
     path: /etc/init/consul.override
@@ -9,9 +13,9 @@
   sudo: yes
   template:
     src: consul.json.j2
-    dest: /etc/consul.d/consul.json
-    owner: root
-    group: root
+    dest: "{{ consul_config_dir }}/consul.json"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0644
   notify:
     - restart consul
@@ -22,9 +26,9 @@
   sudo: yes
   template:
     src: atlas.json.j2
-    dest: /etc/consul.d/atlas.json
-    owner: root
-    group: root
+    dest: "{{ consul_config_dir }}/atlas.json"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0644
   when: consul_atlas_join
   notify:
@@ -63,8 +67,8 @@
   template:
     src: consul-join.j2
     dest: /etc/service/consul-join
-    owner: root
-    group: root
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0644
   notify:
     - restart consul

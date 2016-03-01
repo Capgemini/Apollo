@@ -1,0 +1,23 @@
+description "Consul"
+
+start on (local-filesystems and net-device-up IFACE=eth0)
+stop on runlevel [!12345]
+
+respawn
+
+setuid {{ consul_user }}
+setgid {{ consul_group }}
+
+script
+  if [ -f "/etc/default/consul" ]; then
+    . /etc/default/consul
+  fi
+
+  # Make sure to use all our CPUs, because Consul can block a scheduler thread
+  export GOMAXPROCS=`nproc`
+
+  exec /usr/bin/consul agent \
+   -data-dir="{{ consul_data_dir }}" \
+   -config-dir="{{ consul_config_dir }}" \
+   ${CONSUL_FLAGS}
+end script

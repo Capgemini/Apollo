@@ -1,0 +1,59 @@
+- name: install | create consul group
+  group: "name={{ consul_group }}"
+
+- name: install | create consul user
+  user: "name={{ consul_user }} group={{ consul_group }}"
+
+- name: install | create consul directories
+  file:
+    dest: "{{ item }}"
+    state: "directory"
+    recurse: yes
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+  with_items:
+    - "{{ consul_config_dir }}"
+    - "{{ consul_data_dir }}"
+
+- name: install | consul upstart service
+  sudo: yes
+  template:
+    src: consul.conf.j2
+    dest: /etc/init/consul.conf
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0644
+  notify:
+    - restart consul
+  tags:
+    - consul
+
+- name: install | download consul agent archive
+  get_url: "url={{ consul_agent_pkg_url }} dest=/tmp/{{ consul_agent_pkg }} sha256sum={{ consul_agent_pkg_sha256 }} timeout=74"
+  register: get_consul_agent
+
+- name: install | extract consul agent
+  sudo: True
+  unarchive:
+    copy: no
+    src: "/tmp/{{ consul_agent_pkg }}"
+    dest: "/usr/bin/"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0755
+  when: get_consul_agent|changed
+
+- name: install | download consul ui archive
+  get_url: "url={{ consul_ui_pkg_url }} dest=/tmp/{{ consul_ui_pkg }} sha256sum={{ consul_ui_pkg_sha256 }} timeout=74"
+  register: get_consul_ui
+
+- name: install | extract consul ui
+  sudo: True
+  unarchive:
+    copy: no
+    src: "/tmp/{{ consul_ui_pkg }}"
+    dest: "{{ consul_ui_dir }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0755
+  when: get_consul_ui|changed

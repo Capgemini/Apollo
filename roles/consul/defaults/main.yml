@@ -1,4 +1,18 @@
 ---
+# installation defaults
+consul_version: "0.6.3"
+consul_agent_pkg: "consul_{{ consul_version }}_linux_amd64.zip"
+consul_agent_pkg_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_agent_pkg }}"
+consul_agent_pkg_sha256: "b0532c61fec4a4f6d130c893fd8954ec007a6ad93effbe283a39224ed237e250"
+consul_ui_pkg: "consul_{{ consul_version }}_web_ui.zip"
+consul_ui_pkg_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_ui_pkg }}"
+consul_ui_pkg_sha256: "93bbb300cacfe8de90fb3bd5ede7d37ae6ce014898edc520b9c96a676b2bbb72"
+consul_ui_dir: "/opt/consul-ui"
+consul_user: consul
+consul_group: consul
+consul_data_dir: "/mnt/consul"
+consul_config_dir: "/etc/consul.d"
+
 # defaults file for consul
 consul_dc: dc1
 consul_servers_group: consul_servers
