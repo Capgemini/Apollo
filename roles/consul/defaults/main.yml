@@ -12,6 +12,7 @@ consul_retry_join: "{% for host in groups[consul_servers_group] %}\"{{ hostvars[
 consul_client_addr: "0.0.0.0"
 consul_node_name: "{{ ansible_hostname }}"
 consul_version: 0.6
+consul_docker_socket: "{{ docker_host }}"
 consul_image: "
   {%- if inventory_hostname in groups[consul_servers_group] -%}
     gliderlabs/consul-server:{{ consul_version }}
