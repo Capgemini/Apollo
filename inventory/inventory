@@ -34,6 +34,12 @@ mesos_masters
 [consul_servers:children]
 mesos_masters
 
+[consul_clients:children]
+mesos_slaves
+load_balancers
+elasticsearch
+bastion
+
 [weave_servers:children]
 mesos_masters
 mesos_slaves

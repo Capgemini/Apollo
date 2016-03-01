@@ -1,0 +1,17 @@
+###      make run_playbook PLAYBOOK=update_consul.yml
+- hosts: consul_servers
+  name: upgrade servers
+  sudo: yes
+  serial: 1
+  roles:
+    - consul
+  post_tasks:
+    - pause:
+        minutes: 1
+
+- hosts: consul_clients
+  name: upgrade clients
+  sudo: yes
+  serial: 1
+  roles:
+    - consul
