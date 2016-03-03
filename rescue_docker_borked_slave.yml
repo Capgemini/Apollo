@@ -17,6 +17,9 @@
       with_items: running_tasks.stdout_lines
     - pause:
         minutes: 1
+    - name: terminate mesos tasks
+      shell: >
+        ps xa | grep docker-executor | grep -v grep | sed 's/.*container=\([^ ]*\) .*/\1/g' | xargs -n 1 docker stop
     - name: stop mesos-slave
       service: name=mesos-slave state=stopped
     - name: restart docker
