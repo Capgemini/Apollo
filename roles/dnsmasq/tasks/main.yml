@@ -37,6 +37,8 @@
     - "53:53/tcp"
     - "53:53/udp"
     command: "-r {{ dnsmasq_resolvconf_file }} --conf-dir={{ dnsmasq_config_folder }}"
+  tags:
+    - dnsmasq
 
 - name: upload dnsmasq template service
   template:
