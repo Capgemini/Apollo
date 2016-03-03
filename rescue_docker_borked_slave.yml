@@ -28,9 +28,19 @@
         minutes: 5
     - name: disk usage
       debug: msg="{{ disk_usage.stdout }}"
-    - name: reclaim disk space (this will take awhile)
+    - name: reclaim disk space for recently terminated containers
+      shell: >
+        docker ps -a | grep Exited | awk '{print $1}' | xargs docker rm -v -f || true;
+        docker ps -a | grep Dead | awk '{print $1}' | xargs docker rm -v -f || true;
+      async: 120
+      poll: 10
+    - name: run spotify docker gc (this will take awhile)
       shell: >
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc
+      async: 1800
+      poll: 10
+    - pause:
+        seconds: 30
     - name: start mesos-slave
       service: name=mesos-slave state=started
   pre_tasks:
