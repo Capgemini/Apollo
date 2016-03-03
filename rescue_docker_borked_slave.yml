@@ -1,0 +1,51 @@
+###      make run_playbook PLAYBOOK=rescue_docker_borked_slave.yml ANSIBLE_EXARGS='--limit apollo-mesos-slave-2'
+- hosts: mesos_slaves
+  name: rescue docker-borked slave
+  sudo: yes
+  serial: 1
+  tasks:
+    - name: collect disk usage
+      shell: >
+        df -h | grep xv
+      register: disk_usage
+    - name: collect running tasks
+      shell: >
+        ps xa | grep docker-executor | grep -v grep | sed 's/.*executors\/\([^.]*\).*/\1/g'
+      register: running_tasks
+    - name: The following will be terminated
+      debug: msg="{{ item }}"
+      with_items: running_tasks.stdout_lines
+    - pause:
+        minutes: 1
+    - name: stop mesos-slave
+      service: name=mesos-slave state=stopped
+    - name: restart docker
+      service: name=docker state=restarted
+    - pause:
+        minutes: 5
+    - name: disk usage
+      debug: msg="{{ disk_usage.stdout }}"
+    - name: reclaim disk space (this will take awhile)
+      shell: >
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc
+    - name: start mesos-slave
+      service: name=mesos-slave state=started
+  pre_tasks:
+    - action: ec2_facts
+    - name: "De-register slave with load balancer"
+      local_action:
+        module: ec2_elb
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        state: absent
+        wait: yes
+      sudo: false
+      register: old_ec2_elbs 
+  post_tasks: 
+    - name: "Register slave with load balancer"
+      local_action:
+        module: ec2_elb
+        ec2_elbs: "{{ old_ec2_elbs.ansible_facts.ec2_elbs }}"
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        state: present 
+        wait: yes
+      sudo: false 
