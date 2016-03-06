@@ -7,6 +7,7 @@ Requires=docker.service
 Restart=on-failure
 TimeoutStartSec=0
 EnvironmentFile=/etc/environment
+Environment=DOCKER_HOST={{ consul_docker_socket }}
 # make sure /etc/systemd/resolved.conf.d dir exists so we can add Consul's DNS resolver to system
 ExecStartPre=/usr/bin/mkdir -p /etc/systemd/resolved.conf.d
 ExecStartPre=-/usr/bin/docker kill consul
