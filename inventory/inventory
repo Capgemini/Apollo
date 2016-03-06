@@ -17,8 +17,7 @@ mesos_slaves
 load_balancers
 
 [all:vars]
-# The only user able to ssh to a newly created Rackspace instance is root (at least initially), so we need to update the python PATH to accommodate for that.
-ansible_python_interpreter="PATH=/home/core/bin:/root/bin:$PATH python"
+ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
 
 [zookeeper_servers:children]
 mesos_masters
