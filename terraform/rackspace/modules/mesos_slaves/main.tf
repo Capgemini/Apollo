@@ -13,7 +13,10 @@ variable "etcd_discovery_url_file" {}
 variable "masters"                 { default = "3" }
 variable "slaves"                  { default = "1" }
 variable "etcd_discovery_ready"    { default = "" }
-
+variable "volume_size"             { default = 75 } # Minimum allowed size by Rackspace
+variable "volume_device"           { default = "/dev/xvdb" }
+variable "volume_type"             { default = "SSD" } # Can be either SATA or SSD
+ 
 # Resources
 
 resource "template_file" "slave_cloud_init" {
@@ -22,6 +25,18 @@ resource "template_file" "slave_cloud_init" {
     etcd_discovery_url   = "${file(var.etcd_discovery_url_file)}"
     etcd_discovery_ready = "${var.etcd_discovery_ready}"
     size                 = "${var.masters + var.slaves}"
+  }
+}
+
+resource "openstack_blockstorage_volume_v1" "mesos-slave-blockstorage" {
+  region         = "${var.region}"
+  name           = "mesos-slave-blockstorage-${count.index}"
+  description    = "mesos-slave-blockstorage-${count.index}"
+  size           = "${var.volume_size}"
+  count          = "${var.slaves}"
+  volume_type    = "${var.volume_type}"
+  metadata {
+    description  = "mesos-slave-blockstorage"
   }
 }
 
@@ -43,13 +58,17 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
       uuid          = "${var.private_network_id}"
       name          = "${var.private_network_name}"
     }
+  volume {
+    volume_id       = "${element(openstack_blockstorage_volume_v1.mesos-slave-blockstorage.*.id, count.index)}"
+    device          = "${var.volume_device}"
+  }
   # security_groups   = ["${var.security_groups}"]
   config_drive      = "true"
   user_data         = "${template_file.slave_cloud_init.rendered}"
   # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.
   metadata {
-    role = "mesos_slaves"
-    dc   = "${var.region}"
+    role            = "mesos_slaves"
+    dc              = "${var.region}"
   }
 }
 
