@@ -1,5 +1,19 @@
 #cloud-config
 
+# Disable login for root user, only allowing the core user to ssh
+write_files:
+  - path: /etc/ssh/sshd_config
+    permissions: 0600
+    owner: root:root
+    content: |
+      # Use most defaults for sshd configuration.
+      UsePrivilegeSeparation sandbox
+      Subsystem sftp internal-sftp
+
+      PermitRootLogin no
+      AllowUsers core
+      PasswordAuthentication no
+      ChallengeResponseAuthentication no
 coreos:
   units:
     - name: format-ebs-volume.service
