@@ -10,7 +10,7 @@ To test the provider on Rackspace, please do the following:
 2. After you create your account, take note of your tenant name/id. You can find it as an 8-digit number in the URL you use to access the Rackspace console.
 3. You need to have installed and configured Terraform (>= 0.6.10 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 
-_NOTE: At the moment, it is highly recommended that you use Terraform 0.6.10 (and not a later version), due to a bug introduced in the Openstack provider (affecting Rackspace) in v0.6.11 which prevents Terraform from returning the access IPs for the intances it creates. Visit [https://github.com/hashicorp/terraform/issues/5358](https://github.com/hashicorp/terraform/issues/5358) for more info on this.
+_NOTE: At the moment, it is highly recommended that you use Terraform 0.6.10 (and not 0.6.11 or 0.6.12), due to a bug introduced in the Openstack provider (affecting Rackspace) in v0.6.11 which prevents Terraform from returning the access IPs for the intances it creates. Visit [https://github.com/hashicorp/terraform/issues/5358](https://github.com/hashicorp/terraform/issues/5358) for more info on this. This should be fixed in v0.6.13
 
 4. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 5. You will need to have created an SSH RSA key pair for accessing your intances. You can create it as follows:
@@ -43,7 +43,7 @@ All variables following the pattern "TF_VAR_" will be available for Apollo in te
 
 All variables following pattern "APOLLO_" will be available for Apollo in ansible.
 
-Certain default config options for Rackspace can be found in `bootstrap/openstack/config-default.sh`
+Certain default config options for Rackspace can be found in `bootstrap/rackspace/config-default.sh`
 
 As a minimum you will need to set these environment variables, as they are initially unset in Terraform (using the defaults for the rest should work out of the box for Rackspace / London region) -
 
@@ -78,7 +78,7 @@ TF_VAR_private_network_id="11111111-1111-1111-1111-111111111111"
 TF_VAR_private_network_name="ServiceNet"
 ```
 
-_NOTE: For non-Rackspace Openstack implemenations, networking resources can be created dynamically through Terraform and assigned to compute resources (not currently implemented). In addition, please note that Rackspace's API's expect a call to /security-groups in order to create a security group, but Terraform uses the default Openstack endpoint /os-security-groups which does not exist in Rackspace. Currently there is a module in the openstack provider that creates a default security group (allowing all traffic), but this cannot be used with Rackspace due to the above issue and the implementation has been commented out both in the main tf file, as well as the references in the mesos compute resources within the related modules.
+_NOTE: For non-Rackspace Openstack implemenations, networking resources can be created dynamically through Terraform and assigned to compute resources (not currently implemented). In addition, please note that Rackspace's API's expect a call to /security-groups in order to create a security group, but Terraform uses the default Openstack endpoint /os-security-groups which does not exist in Rackspace. Currently there is a module in the rackspace provider that creates a default security group (allowing all traffic), but this cannot be used with Rackspace due to the above issue and the implementation has been commented out both in the main tf file, as well as the references in the mesos compute resources within the related modules.
 
 
 #### Turn up the cluster

@@ -57,8 +57,6 @@ coreos:
   units:
     - name: etcd2.service
       command: start
-    - name: fleet.service
-      command: start
   update:
     reboot-strategy: best-effort
 manage_etc_hosts: localhost

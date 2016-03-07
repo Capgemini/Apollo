@@ -36,14 +36,13 @@ resource "openstack_compute_instance_v2" "mesos-master" {
     {
       uuid          = "${var.public_network_id}"
       name          = "${var.public_network_name}"
-      # access_network = "true"
     }
   network           =
     {
       uuid          = "${var.private_network_id}"
       name          = "${var.private_network_name}"
     }
-  # security_groups   = ["${var.security_groups}"]
+  # security_groups   = ["${var.security_groups}"] # Comment this in for Openstack providers that support security groups via terraform.
   config_drive      = "true"
   user_data         = "${template_file.master_cloud_init.rendered}"
   # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.

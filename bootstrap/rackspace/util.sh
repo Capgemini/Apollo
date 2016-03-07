@@ -9,5 +9,3 @@ apollo_down() {
     > ${TF_VAR_etcd_discovery_url_file:-etcd_discovery_url.txt}
   popd
 }
-
-

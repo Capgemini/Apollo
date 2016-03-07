@@ -12,4 +12,3 @@ export TF_VAR_region=${TF_VAR_region:-LON}
 export APOLLO_consul_dc=${APOLLO_consul_dc:-$TF_VAR_region}
 export APOLLO_mesos_cluster_name=${APOLLO_mesos_cluster_name:-$TF_VAR_region}
 export APOLLO_ansible_ssh_user=core
-export APOLLO_traefik_network_interface=eth0

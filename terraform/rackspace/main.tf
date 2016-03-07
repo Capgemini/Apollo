@@ -61,6 +61,7 @@ module "etcd-discovery" {
 }
 
 ## Rackspace's API's expect a call to /security-groups in order to create a security group, but Terraform uses the default Openstack endpoint /os-security-groups which does not exist in Rackspace.
+## Comment this in for Openstack providers that support security groups via terraform.
 
 # # Default security group
 # module "default-security-group" {
@@ -79,7 +80,7 @@ module "mesos-masters" {
   public_network_name     = "${var.public_network_name}"
   private_network_id      = "${var.private_network_id}"
   private_network_name    = "${var.private_network_name}"
-  # security_groups         = "${module.default-security-group.security_group_name}"
+  # security_groups         = "${module.default-security-group.security_group_name}" # Comment this in for Openstack providers that support security groups via terraform.
   etcd_discovery_url_file = "${var.etcd_discovery_url_file}"
   masters                 = "${var.mesos_masters}"
   slaves                  = "${var.mesos_slaves}"
@@ -97,7 +98,7 @@ module "mesos-slaves" {
   public_network_name     = "${var.public_network_name}"
   private_network_id      = "${var.private_network_id}"
   private_network_name    = "${var.private_network_name}"
-  # security_groups         = "${module.default-security-group.security_group_name}"
+  # security_groups         = "${module.default-security-group.security_group_name}" # Comment this in for Openstack providers that support security groups via terraform.
   etcd_discovery_url_file = "${var.etcd_discovery_url_file}"
   masters                 = "${var.mesos_masters}"
   slaves                  = "${var.mesos_slaves}"
