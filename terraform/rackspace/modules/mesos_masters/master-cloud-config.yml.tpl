@@ -33,4 +33,3 @@ coreos:
   update:
     reboot-strategy: best-effort
 manage_etc_hosts: localhost
-

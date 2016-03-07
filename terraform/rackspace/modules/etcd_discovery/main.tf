@@ -18,6 +18,6 @@ resource "null_resource" "etcd_discovery" {
   }
 }
 
-# This won't work unfortunately
-# output "etcd_discovery_url" { value = "${file(var.etcd_discovery_url_file)}" }
+# This output is used to ensure that the provisioner above will be executed before TF tries to parse the file's contents.
+# At the moment referencing outputs is the only way that TF can handle cross-module dependencies.
 output "executed_check" { value = "${null_resource.etcd_discovery.id}" }

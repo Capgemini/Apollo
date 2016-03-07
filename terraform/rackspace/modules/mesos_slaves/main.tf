@@ -51,7 +51,6 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
     {
       uuid           = "${var.public_network_id}"
       name           = "${var.public_network_name}"
-      # access_network = "true"
     }
   network           =
     {
@@ -62,7 +61,7 @@ resource "openstack_compute_instance_v2" "mesos-slave" {
     volume_id       = "${element(openstack_blockstorage_volume_v1.mesos-slave-blockstorage.*.id, count.index)}"
     device          = "${var.volume_device}"
   }
-  # security_groups   = ["${var.security_groups}"]
+  # security_groups   = ["${var.security_groups}"] # Comment this in for Openstack providers that support security groups via terraform.
   config_drive      = "true"
   user_data         = "${template_file.slave_cloud_init.rendered}"
   # Metadata needed by the terraform.py script in order to populate our Ansible inventory properly.
