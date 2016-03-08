@@ -1,6 +1,8 @@
 ---
 - hosts: all:!role=bastion
-  gather_facts: False
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "PATH=/home/core/bin:$PATH python"
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
