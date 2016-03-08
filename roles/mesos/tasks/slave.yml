@@ -67,3 +67,10 @@
     name: mesos-slave
     state: started
     enabled: yes
+
+- name: setup Docker GC job
+  cron:
+    name: run Docker GC randomly between 7:00-10 AM GMT
+    minute: 0
+    hour: 7
+    job: "sleep $((60 * (RANDOM % 180))); docker ps -qf status=dead | xargs -r docker rm -v -f; docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc"
