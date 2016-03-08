@@ -28,16 +28,16 @@ Providers
 
 Operating Systems
 -----------------
-- [x] Ubuntu
+- [ ] Ubuntu
 - [ ] CentOS
 - [ ] Fedora
-- [ ] CoreOS
+- [x] CoreOS
 
 Features
 --------
 - [x] Easier pluggability for frameworks
-- [ ] Move all services to Docker containers
-- [ ] Monitoring and alerts(nodes/services)
+- [x] Move all services to Docker containers
+- [x] Monitoring and alerts(nodes/services)
 - [ ] Logging (nodes/services)
 - [ ] Metrics (nodes/services)
 - [ ] Distributed File storage (for nodes/services)
