@@ -12,6 +12,6 @@
 - hosts: consul_clients
   name: upgrade clients
   sudo: yes
-  serial: 1
+  serial: "{{ consul_update_batch_size | default(3) }}"
   roles:
     - consul
