@@ -3,8 +3,7 @@
 ### Prerequisites
 
 1. You need an Digital Ocean account. Visit [https://cloud.digitalocean.com/registrations/new](https://cloud.digitalocean.com/registrations/new) to get started
-4. You need to have installed and configured Terraform (>= 0.5.0 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
-4. You need to have [Packer](https://www.packer.io) installed.
+4. You need to have installed and configured Terraform (>= 0.6.10 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 6. You will need to have created an SSH RSA key pair for accessing your Digitalocean
 droplets. Execute `ssh-keygen -t rsa` to create a key pair.
@@ -43,7 +42,7 @@ To generate a v2 API token see [https://www.digitalocean.com/community/tutorials
 APOLLO_PROVIDER=digitalocean
 
 # Path to your public ssh key (created in prerequisite step 6 above).
-TF_VAR_key_file=
+TF_VAR_public_key_file=
 ```
 
 #### Start up the cluster
