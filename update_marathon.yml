@@ -1,0 +1,10 @@
+###      make run_playbook PLAYBOOK=update_marathon.yml
+###  NOTE:
+###    current masters use docker's aufs storage driver which is as flaky as a French pastry.
+###    may need to run multiple times
+- hosts: mesos_masters
+  serial: 1
+  vars:
+    - marathon_rebuild_container: true
+  roles:
+    - { role: marathon, tags: ["marathon"] }
