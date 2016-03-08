@@ -34,6 +34,9 @@ ExecStart=/usr/bin/docker run --rm --name mesos_slave \
 -e "MESOS_WORK_DIR={{ mesos_slave_work_dir }}" \
 -e "MESOS_LOG_DIR=/var/log/mesos" \
 -e "MESOS_HOSTNAME={{ mesos_hostname }}" \
+-e "MESOS_ISOLATION=cgroups/cpu,cgroups/mem" \
+-e "MESOS_CGROUPS_ROOT=system.slice/mesos-slave.service" \
+-e "MESOS_CGROUPS_HIERARCHY=/sys/fs/cgroup" \
 {{ mesos_slave_image }}
 
 ExecStop=/usr/bin/docker stop mesos_slave
