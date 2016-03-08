@@ -26,24 +26,25 @@
     state: absent
 
 - name: run marathon container
-  when: marathon_enabled | bool
-  docker:
-    name: marathon
-    image: "{{ marathon_image }}"
-    state: started
-    restart_policy: "{{ marathon_restart_policy }}"
-    ports:
-    - "{{ marathon_port }}:{{ marathon_port }}"
-    expose:
-    - "{{ marathon_port }}"
-    net: "{{ marathon_net }}"
-    command: "{{ marathon_command }}"
-    volumes:
-    - "{{ marathon_artifact_store_dir }}:/store"
-    memory_limit: "{{ marathon_container_memory_limit }}"
-    env:
-      JAVA_OPTS: "{{ marathon_java_settings }}"
-      SERVICE_IGNORE: yes
+  when: marathon_enabled|bool
+  # NOTE: Using command until we update to Ansible 2.0 which supports --log-driver
+  shell: >
+    docker run -d
+    --name=marathon
+    --net={{ marathon_net }}
+    --restart={{ marathon_restart_policy }}
+    --log-driver=syslog
+    --log-opt syslog-tag=marathon
+    -p 0.0.0.0:{{ marathon_port }}:{{ marathon_port }}/tcp
+    --expose {{ marathon_port }}
+    --memory {{ marathon_container_memory_limit }}
+    -v {{ marathon_artifact_store_dir }}:/store
+    -e JAVA_OPTS="{{ marathon_java_settings }}"
+    -e SERVICE_IGNORE=yes
+    {{marathon_image}}
+    {{marathon_command}}
+  register: command_result
+  failed_when: "'The name \"marathon\" is already in use' not in command_result.stderr and command_result.rc != 0"
   notify:
     - wait for marathon to listen
 
