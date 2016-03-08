@@ -1,10 +1,14 @@
 # Sample plugins playbook.
 - hosts: all:!role=bastion
+
   tasks:
-    # https://github.com/DataDog/dd-agent/blob/master/conf.d/docker.yaml.example
-    - name: add dd-agent to docker group
-      sudo: Yes
-      command: "usermod -a -G docker dd-agent"
+    - name: reload systemd
+      sudo: yes
+      command: systemctl daemon-reload
       when: datadog_enabled|bool
+      notify:
+        - restart datadog-agent
+
   roles:
     - { role: datadog, when: datadog_enabled|bool }
+

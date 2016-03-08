@@ -1,0 +1,41 @@
+---
+- hosts: all:!role=bastion
+  gather_facts: True
+  tasks:
+    - name: Wait for ssh port to become available from bastion server.
+      wait_for:
+        port: "{{ ansible_ssh_port }}"
+        host: "{{ ansible_ssh_host }}"
+        delay: 10
+        timeout: 90
+      delegate_to: "{{ bastion_ip }}"
+      sudo: False
+      when: bastion_ip is defined
+      tags: ["facts"]
+
+    - name: Wait for port 22 to become available from local server.
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=90"
+      sudo: False
+      when: bastion_ip is not defined
+      tags: ["facts"]
+
+- hosts: mesos_masters
+  serial: "{{ serial | default(1) }}"
+  roles:
+    - { role: zookeeper, tags: ["zookeeper"] }
+    - { role: docker, tags: ["docker"] }
+    - { role: weave, tags: ["weave"], meta: "flush_handlers" }
+    - { role: consul, tags: ["consul"] }
+    - { role: registrator, tags: ["registrator"] }
+
+- hosts: mesos_slaves
+  serial: "{{ serial | default(1) }}"
+
+  roles:
+    - { role: mesos_maintenance, tags: ["mesos_maintenance"], mesos_maintenance_start: true }
+    - { role: docker, tags: ["docker"] }
+    - { role: weave, tags: ["weave"] }
+    - { role: consul, tags: ["consul"] }
+    - { role: registrator, tags: ["registrator"] }
+    - { role: traefik, tags: ["traefik"] }
+    - { role: mesos_maintenance, tags: ["mesos_maintenance"], mesos_maintenance_complete: true }

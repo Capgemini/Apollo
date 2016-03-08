@@ -1,0 +1,19 @@
+[Unit]
+After=docker.service
+Description=Weave proxy for Docker API
+Documentation=http://docs.weave.works/
+Requires=docker.service
+Requires=weave.service
+
+[Service]
+EnvironmentFile=-/etc/weave.%H.env
+EnvironmentFile=-/etc/weave.env
+Environment=WEAVE_VERSION={{ weave_version }}
+
+ExecStartPre={{ weave_bin }} launch-proxy --rewrite-inspect --without-dns
+ExecStart=/usr/bin/docker attach weaveproxy
+Restart=on-failure
+ExecStop={{ weave_bin }} stop-proxy
+
+[Install]
+WantedBy=multi-user.target

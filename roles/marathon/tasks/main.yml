@@ -1,55 +1,22 @@
-- name: install wait script
-  sudo: yes
-  template:
-    src: marathon-wait-for-listen.sh.j2
-    dest: /usr/local/bin/marathon-wait-for-listen.sh
-    mode: 0755
-  tags:
-    - marathon
-
 - name: create marathon artifact store directory
   when: marathon_artifact_store_dir is defined
   file:
     path: "{{ marathon_artifact_store_dir }}"
     state: directory
     mode: 0755
-  sudo: yes
+  become: yes
   tags:
     - marathon
 
-- name: destroy old marathon container
-  when: marathon_rebuild_container|bool
-  docker:
-    name: marathon
-    image: "{{ marathon_image }}"
-    state: absent
-
-- name: run marathon container
-  docker:
-    name: marathon
-    image: "{{ marathon_image }}"
-    state: started
-    restart_policy: "{{ marathon_restart_policy }}"
-    ports:
-    - "{{ marathon_port }}:{{ marathon_port }}"
-    expose:
-    - "{{ marathon_port }}"
-    net: "{{ marathon_net }}"
-    command: "{{ marathon_command }}"
-    volumes:
-    - "{{ marathon_artifact_store_dir }}:/store"
-    memory_limit: "{{ marathon_container_memory_limit }}"
-    env:
-      JAVA_OPTS: "{{ marathon_java_settings }}"
-  notify:
-    - wait for marathon to listen
-
-- name: upload marathon template service
+- name: deploy marathon service
+  become: yes
+  become_user: root
   template:
-    src: marathon.conf.j2
-    dest: /etc/init/marathon.conf
-    mode: 0755
-  sudo: yes
+    src: marathon.service.j2
+    dest: /etc/systemd/system/marathon.service
+  notify:
+    - reload systemd
+    - restart marathon
   tags:
     - marathon
 
@@ -57,7 +24,7 @@
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
 - name: ensure marathon is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: marathon
     state: started
@@ -66,9 +33,11 @@
     - marathon
 
 - name: Set marathon consul service definition
-  sudo: yes
+  become: yes
   template:
     src: marathon-consul.j2
     dest: "{{ marathon_consul_dir }}/marathon.json"
   notify:
     - restart consul
+  tags:
+    - marathon

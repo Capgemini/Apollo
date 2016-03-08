@@ -17,4 +17,9 @@ inventory/terraform.py
 tests/spec/*/*runtime_spec.rb
 contrib-plugins/*
 vault-security.yaml
-terraform/*/.terraform
+terraform/**/.terraform
+roles/coreos_bootstrap
+roles/coreos_timezone
+roles/datadog
+terraform/aws/public-cloud/etcd_discovery_url.txt
+/_book/

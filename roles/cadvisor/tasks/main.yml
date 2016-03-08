@@ -1,35 +1,13 @@
 # tasks for running cadvisor
-- name: destroy old cadvisor container
-  when: cadvisor_rebuild_container|bool
-  docker:
-    name: cadvisor
-    image: "{{ cadvisor_image }}"
-    state: absent
-  tags:
-    - cadvisor
-
-- name: run cadvisor container
-  docker:
-    name: cadvisor
-    image: "{{ cadvisor_image }}"
-    state: started
-    restart_policy: "{{ cadvisor_restart_policy }}"
-    net: "{{ cadvisor_net }}"
-    hostname: "{{ cadvisor_hostname }}"
-    volumes:
-    - "/var/lib/docker/:/var/lib/docker:ro"
-    - "/:/rootfs:ro"
-    - "/var/run:/var/run:rw"
-    - "/sys:/sys:ro"
-  tags:
-    - cadvisor
-
-- name: upload cadvisor template service
+- name: deploy cadvisor service
+  become: yes
+  become_user: root
   template:
-    src: cadvisor.conf.j2
-    dest: /etc/init/cadvisor.conf
-    mode: 0755
-  sudo: yes
+    src: cadvisor.service.j2
+    dest: /etc/systemd/system/cadvisor.service
+  notify:
+    - reload systemd
+    - restart cadvisor
   tags:
     - cadvisor
 
@@ -37,7 +15,7 @@
 # and forward all signals so that the process manager can detect
 # when a container stops and correctly restart it.
 - name: ensure cadvisor is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: cadvisor
     state: started
@@ -46,7 +24,7 @@
     - cadvisor
 
 - name: get cadvisor container ip
-  sudo: yes
+  become: yes
   command: >
     docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} cadvisor
   register: cadvisor_container_ip
@@ -54,12 +32,11 @@
     - cadvisor
 
 - name: Set cadvisor consul service definition
-  sudo: yes
+  become: yes
   template:
     src: cadvisor-consul.j2
     dest: "{{ cadvisor_consul_dir }}/cadvisor.json"
   notify:
     - restart consul
-  when: cadvisor_enabled
   tags:
     - cadvisor

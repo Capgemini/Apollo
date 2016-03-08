@@ -1,0 +1,23 @@
+[Unit]
+Description=Registrator
+After=weaveproxy.service
+Requires=weaveproxy.service
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+Environment="DOCKER_HOST={{ registrator_docker_socket }}"
+
+ExecStartPre=-/usr/bin/docker kill registrator
+ExecStartPre=-/usr/bin/docker rm registrator
+ExecStartPre=/usr/bin/docker pull {{ registrator_image }}
+
+ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name registrator \
+-v /var/run/weave/weave.sock:/tmp/docker.sock \
+{{ registrator_image }} {{ registrator_command }}"
+
+ExecStop=/usr/bin/docker stop registrator
+
+[Install]
+WantedBy=multi-user.target

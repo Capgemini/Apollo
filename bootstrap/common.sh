@@ -3,6 +3,9 @@
 # Util functions cloud reusable.
 APOLLO_ROOT=$(dirname "${BASH_SOURCE}")/..
 DEFAULT_CONFIG="${APOLLO_ROOT}/bootstrap/${APOLLO_PROVIDER}/${APOLLO_CONFIG_FILE-"config-default.sh"}"
+APOLLO_INVENTORY="${APOLLO_INVENTORY-inventory}"
+APOLLO_PLAYBOOK="${APOLLO_PLAYBOOK-site.yml}"
+
 if [ -f "${DEFAULT_CONFIG}" ]; then
   source "${DEFAULT_CONFIG}"
 fi
@@ -28,7 +31,7 @@ verify_prereqs() {
 check_terraform_version() {
   local IFS='.'
   local current_version_string="${2:-$( terraform --version | awk 'NR==1 {print $2}' )}"
-  local requirement_version_string=${1:-0.6.6}
+  local requirement_version_string=${1:-0.6.12}
   local -a current_version=( ${current_version_string#'v'} )
   local -a requirement_version=( ${requirement_version_string} )
   local n diff
@@ -128,16 +131,33 @@ ansible_playbook_run() {
   pushd "${APOLLO_ROOT}"
     get_ansible_inventory
     install_contributed_roles
-    ansible-playbook --inventory-file="${APOLLO_ROOT}/inventory" \
+    ansible-playbook --inventory-file="${APOLLO_ROOT}/${APOLLO_INVENTORY}" \
+    --tags "${ANSIBLE_TAGS:-all}" \
     ${ANSIBLE_LOG} --extra-vars "$( get_apollo_variables  APOLLO_)" \
     ${ANSIBLE_EXARGS:-} \
-    --sudo site.yml
+    ${APOLLO_PLAYBOOK}
   popd
+}
+
+ansible_dcos_install() {
+  export APOLLO_PLAYBOOK='dcos.yml'
+  ansible_playbook_run
+}
+
+ansible_upgrade_mesoscluster() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-mesoscluster.yml'
+  ansible_playbook_run
+}
+
+ansible_upgrade_maintenance() {
+  export APOLLO_PLAYBOOK='rolling-upgrade-maintenance.yml'
+  ansible_playbook_run
 }
 
 install_contributed_roles() {
   pushd "${APOLLO_ROOT}"
     ansible-galaxy install --force -r contrib-plugins/plugins.yml
+    ansible-galaxy install --force -r requirements.yml
   popd
 }
 
@@ -154,18 +174,20 @@ get_terraform_modules() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     # Downloads terraform modules.
     terraform get
+
+    # Make any dependencies
+    if ls -1 .terraform/modules/*/Makefile >/dev/null 2>&1; then
+      for dir in .terraform/modules/*/Makefile;
+      do
+        make -C $(/usr/bin/dirname $dir)
+      done
+    fi
   popd
 }
 
 terraform_apply() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
-    # This variables need to be harcoded as Terraform does not support environment overriding for Mappings at the moment.
-    terraform apply -var "instance_type.master=${TF_VAR_master_size}" \
-      -var "instance_type.slave=${TF_VAR_slave_size}" \
-      -var "atlas_artifact_version.master=${TF_VAR_atlas_artifact_version_master}" \
-      -var "atlas_artifact_version.slave=${TF_VAR_atlas_artifact_version_slave}" \
-      -var "atlas_artifact.master=${TF_VAR_atlas_artifact_master}" \
-      -var "atlas_artifact.slave=${TF_VAR_atlas_artifact_slave}"
+    terraform apply
   popd
 }
 

@@ -1,0 +1,6 @@
+- src: mkaag.coreos-timezone
+  name: coreos_timezone
+  version: v0.1.2
+
+- src: defunctzombie.coreos-bootstrap
+  name: coreos_bootstrap

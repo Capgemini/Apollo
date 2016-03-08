@@ -16,7 +16,6 @@ and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
 
-* [Packer](https://packer.io) for automating the build of the base images
 * [Terraform](https://www.terraform.io/) for provisioning the infrastructure
 * [Apache Mesos](http://mesos.apache.org/) for cluster management, scheduling and resource isolation
 * [Consul](http://consul.io) for service discovery, DNS

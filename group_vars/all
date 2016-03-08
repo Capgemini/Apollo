@@ -1,6 +1,4 @@
 mesos_cluster_name: "Cluster01"
-haproxy_username: "admin"
-haproxy_password: "admin"
 zookeeper_client_port: "2181"
 zookeeper_server_group: zookeeper_servers
 zookeeper_peers_nodes: "
@@ -18,16 +16,18 @@ zookeeper_peers_nodes: "
 	{%- endif -%}
 "
 consul_domain: consul
-proxy_env:
-  http_proxy: ''
-  https_proxy: ''
-  HTTP_PROXY: ''
-  HTTPS_PROXY: ''
 http_proxy: ''
+proxy_env:
+  http_proxy: "{{ http_proxy }}"
+  https_proxy: "{{ http_proxy }}"
+  HTTP_PROXY: "{{ http_proxy }}"
+  HTTPS_PROXY: "{{ http_proxy }}"
+
 prometheus_enabled: true
 cadvisor_enabled: true
 marathon_enabled: true
 datadog_enabled: false
+scope_enabled: false
 docker_host: 'unix:///var/run/weave/weave.sock'
 
 datadog_api_key: "{{ DD_API_KEY }}"
@@ -35,4 +35,5 @@ datadog_config:
   tags: "{{ mesos_cluster_name }}"
   log_level: INFO
 
-
+coreos_timezone: 'Europe/London'
+traefik_network_interface: "eth0"

@@ -2,10 +2,21 @@
 # defaults file for consul
 consul_dc: dc1
 consul_servers_group: consul_servers
+consul_bootstrap_expect: "{{ groups[consul_servers_group] | length }}"
 consul_advertise: "{{ ansible_ssh_host }}"
+consul_config_dir: /etc/consul.d
+consul_data_dir: /var/lib/consul
+consul_atlas_join: false
 consul_bind_addr: "{{ ansible_default_ipv4.address }}"
 consul_retry_join: "{% for host in groups[consul_servers_group] %}\"{{ hostvars[host].ansible_default_ipv4.address }}\"{% if not loop.last %}, {% endif %}{% endfor %}"
-consul_bootstrap_expect: "{{ groups[consul_servers_group] | length }}"
 consul_client_addr: "0.0.0.0"
-consul_atlas_join: false
 consul_node_name: "{{ ansible_hostname }}"
+consul_version: 0.6
+consul_docker_socket: "{{ docker_host }}"
+consul_image: "
+  {%- if inventory_hostname in groups[consul_servers_group] -%}
+    gliderlabs/consul-server:{{ consul_version }}
+  {%- else -%}
+    gliderlabs/consul-agent:{{ consul_version }}
+  {%- endif -%}
+"

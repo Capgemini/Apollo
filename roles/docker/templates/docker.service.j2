@@ -1,0 +1,21 @@
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.com
+After=docker.socket early-docker.target network.target
+Requires=docker.socket early-docker.target
+
+[Service]
+EnvironmentFile=-/run/flannel_docker_opts.env
+{% if http_proxy is defined and http_proxy != '' %}
+Environment="HTTP_PROXY={{ http_proxy }}"
+Environment="NO_PROXY={{ docker_proxy_exceptions }}"
+{% endif %}
+Environment="DOCKER_TMPDIR={{ docker_tmp_dir }}"
+
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+ExecStart=/usr/lib/coreos/dockerd daemon {{ docker_endpoints }} {{ docker_bridge_ip }} {{ docker_storage_config }} {{ docker_dns_config }} {{ docker_registry }} --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
+
+[Install]
+WantedBy=multi-user.target

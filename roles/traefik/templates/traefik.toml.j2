@@ -1,0 +1,12 @@
+port = ":{{ traefik_frontend_port }}"
+graceTimeOut = 10
+logLevel = "{{ traefik_log_level }}"
+
+[web]
+address = ":{{ traefik_webui_port }}"
+
+[marathon]
+endpoint = "{{ traefik_marathon_endpoint }}"
+domain = "{{ traefik_marathon_domain }}"
+watch = true
+networkInterface = "{{ traefik_network_interface }}"

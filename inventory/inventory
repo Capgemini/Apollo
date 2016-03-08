@@ -16,6 +16,9 @@ mesos_masters
 mesos_slaves
 load_balancers
 
+[all:vars]
+ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
+
 [zookeeper_servers:children]
 mesos_masters
 

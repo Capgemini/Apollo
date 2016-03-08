@@ -1,0 +1,13 @@
+---
+traefik_marathon_hostname: marathon.service.{{ consul_domain }}
+traefik_marathon_endpoint: "http://{{ traefik_marathon_hostname }}:8080"
+traefik_marathon_domain: marathon.localhost
+traefik_version: v1.0.alpha.481
+traefik_image: "emilevauge/traefik:{{ traefik_version }}"
+traefik_config_dir: /etc/traefik
+traefik_frontend_port: 80
+traefik_webui_port: 8888
+traefik_log_level: DEBUG
+traefik_consul_dir: /etc/consul.d
+traefik_docker_socket: "{{ docker_host }}"
+traefik_network_interface: "{{ traefik_network_interface }}"

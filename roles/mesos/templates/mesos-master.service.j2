@@ -1,0 +1,30 @@
+[Unit]
+Description=MesosMaster
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/docker kill mesos_master
+ExecStartPre=-/usr/bin/docker rm mesos_master
+ExecStartPre=/usr/bin/docker pull {{ mesos_master_image }}
+ExecStart=/usr/bin/docker run --rm --name mesos_master \
+--net=host \
+-v {{ mesos_master_work_dir }}:{{ mesos_master_work_dir }} \
+-p {{ mesos_master_port }}:{{ mesos_master_port }} \
+-e "MESOS_HOSTNAME={{ mesos_hostname }}" \
+-e "MESOS_IP={{ mesos_ip }}" \
+-e "MESOS_CLUSTER={{ mesos_cluster_name }}" \
+-e "MESOS_ZK=zk://{{ zookeeper_peers_nodes }}/mesos" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
+-e "MESOS_QUORUM={{ mesos_quorum }}" \
+-e "MESOS_WORK_DIR={{ mesos_master_work_dir }}" \
+{{ mesos_master_image }} {{ mesos_master_command }}
+
+ExecStop=/usr/bin/docker stop mesos_master
+
+[Install]
+WantedBy=multi-user.target

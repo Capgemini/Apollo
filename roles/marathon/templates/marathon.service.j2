@@ -1,0 +1,27 @@
+[Unit]
+Description=Marathon
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/docker kill marathon
+ExecStartPre=-/usr/bin/docker rm marathon
+ExecStartPre=/usr/bin/docker pull {{ marathon_image }}
+ExecStart=/usr/bin/docker run --name marathon \
+--memory={{ marathon_container_memory_limit }} \
+--restart={{ marathon_restart_policy }} \
+--net={{ marathon_net }} \
+-p {{ marathon_port }}:{{ marathon_port }} \
+-v {{ marathon_artifact_store_dir }}:/store \
+-e "JAVA_OPTS={{ marathon_java_settings }}" \
+{{ marathon_image }} \
+{{ marathon_command }}
+
+ExecStop=/usr/bin/docker stop marathon
+
+[Install]
+WantedBy=multi-user.target

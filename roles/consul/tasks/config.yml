@@ -1,0 +1,39 @@
+- name: create consul dirs
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ consul_data_dir }}"
+    - "{{ consul_config_dir }}"
+
+- name: configure consul
+  become: yes
+  template:
+    src: consul.json.j2
+    dest: /etc/consul.d/consul.json
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart consul
+  tags:
+    - consul
+
+- name: deploy consul service
+  become: yes
+  become_user: root
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: consul.service.j2
+      dest: /etc/systemd/system/consul.service
+    - src: consul-discovery.service.j2
+      dest: /etc/systemd/system/consul-discovery.service
+  notify:
+    - reload systemd
+    - restart consul
+  tags:
+    - consul

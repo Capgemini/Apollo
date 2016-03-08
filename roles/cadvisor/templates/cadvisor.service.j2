@@ -1,0 +1,28 @@
+[Unit]
+Description=cadvisor
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+EnvironmentFile=-/etc/environment
+Environment="DOCKER_HOST={{ cadvisor_docker_socket }}"
+ExecStartPre=-/usr/bin/docker kill cadvisor
+ExecStartPre=-/usr/bin/docker rm cadvisor
+ExecStartPre=/usr/bin/docker pull {{ cadvisor_image }}
+ExecStart=/usr/bin/docker run --name cadvisor \
+--restart={{ cadvisor_restart_policy }} \
+--net={{ cadvisor_net }} \
+--hostname={{ cadvisor_hostname }} \
+-v /var/lib/docker/:/var/lib/docker:ro \
+-v /:/rootfs:ro \
+-v /var/run:/var/run:rw \
+-v /sys:/sys:ro \
+{{ cadvisor_image }}
+
+ExecStop=/usr/bin/docker stop cadvisor
+
+[Install]
+WantedBy=multi-user.target

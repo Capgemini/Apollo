@@ -69,7 +69,7 @@ galaxy_info:
   #  - 9.1
   #  - 9.1
   #  - 9.2
-  - name: Ubuntu
+  - name: CoreOS
     versions:
   #  - all
   #  - lucid
@@ -80,7 +80,7 @@ galaxy_info:
   #  - quantal
   #  - raring
   #  - saucy
-     - trusty
+  #   - trusty
   #- name: SLES
   #  versions:
   #  - all
@@ -121,6 +121,7 @@ galaxy_info:
   - system
   #- web
 dependencies:
+  - role: handlers
   # List your role dependencies here, one per line. Only
   # dependencies available via galaxy should be listed here.
   # Be sure to remove the '[]' above if you add dependencies

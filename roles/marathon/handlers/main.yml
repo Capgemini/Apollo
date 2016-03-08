@@ -2,3 +2,9 @@
 # handlers file for marathon
 - name: wait for marathon to listen
   command: /usr/local/bin/marathon-wait-for-listen.sh
+
+- name: restart marathon
+  become: yes
+  service:
+    name: marathon
+    state: restarted

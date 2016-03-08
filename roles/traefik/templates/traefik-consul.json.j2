@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "traefik",
+    "tags": [ "http" ],
+    "port": {{ traefik_frontend_port }},
+    "check": {
+        "script": "curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 --connect-timeout 5 --max-time 5 http://localhost:{{ traefik_frontend_port }}/",
+        "timeout": "3s"
+    }
+  }
+}

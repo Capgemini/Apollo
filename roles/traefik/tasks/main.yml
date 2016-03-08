@@ -1,0 +1,57 @@
+---
+- name: create traefik config directory
+  become: yes
+  file:
+    path: "{{ traefik_config_dir }}"
+    state: directory
+    mode: 0755
+  tags:
+    - traefik
+
+- name: configure traefik
+  become: yes
+  template:
+    src: traefik.toml.j2
+    dest: "{{ traefik_config_dir }}/traefik.toml"
+    mode: 0644
+    backup: yes
+  tags:
+    - traefik
+
+- name: install check scripts
+  become: yes
+  copy:
+    src: wait-for-marathon.sh
+    dest: "{{ traefik_config_dir }}"
+    mode: 0755
+  tags:
+    - traefik
+
+- name: deploy traefik service
+  become: yes
+  template:
+    src: traefik.service.j2
+    dest: /etc/systemd/system/traefik.service
+  notify:
+    - restart traefik
+  tags:
+    - traefik
+
+- name: enable traefik
+  become: yes
+  service:
+    name: traefik
+    state: started
+    enabled: yes
+  tags:
+    - traefik
+
+- name: Set traefik consul service definition
+  become: yes
+  template:
+    src: traefik-consul.json.j2
+    dest: "{{ traefik_consul_dir }}/traefik.json"
+  notify:
+    - restart consul
+  tags:
+    - traefik

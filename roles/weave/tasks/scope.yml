@@ -1,18 +1,30 @@
-- name: download weave scope
+- name: download scope
+  become: yes
+  become_user: root
   get_url:
-    url: "{{ weave_scope_url }}"
-    dest: "{{ weave_scope_dest }}"
+    url: "{{ scope_url }}"
+    dest: "{{ scope_bin }}"
     mode: 0755
     validate_certs: no
-  environment: proxy_env
+    force: true
+  environment: "{{ proxy_env }}"
   tags:
-    - weave
+    - scope
 
-- name: upload weave scope template service
+- name: deploy scope service
+  become: yes
+  become_user: root
   template:
-    src: scope.conf.j2
-    dest: "/etc/init/weavescope.conf"
-    mode: 0755
-  sudo: yes
+    src: scope.service.j2
+    dest: /etc/systemd/system/scope.service
   tags:
-    - weave
+    - scope
+
+- name: ensure scope service is running.
+  become: yes
+  service:
+    name: scope
+    state: started
+    enabled: yes
+  tags:
+    - scope
