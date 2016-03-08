@@ -4,6 +4,7 @@ docker_tmp_dir: /var/lib/docker/tmp
 docker_dns_config: "--dns={{ ansible_default_ipv4.address }} --dns=8.8.8.8 --dns-search='service.{{ consul_domain }}'"
 docker_storage_config: --storage-driver=overlay
 docker_endpoints: "-H=tcp://{{ ansible_default_ipv4.address }}:2376 -H=unix:///var/run/docker.sock"
+docker_logs_config: "--log-opt max-size=50m"
 docker_bridge_ip: ''
 docker_proxy_exceptions: ''
 docker_registry: ''

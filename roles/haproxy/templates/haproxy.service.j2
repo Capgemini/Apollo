@@ -1,0 +1,32 @@
+[Unit]
+Description=haproxy
+After=docker.service
+Requires=docker.service
+Requires=consul.service
+Requires=weave.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill haproxy
+ExecStartPre=-/usr/bin/docker rm haproxy
+ExecStartPre=/usr/bin/docker pull {{ haproxy_image }}
+ExecStart=/usr/bin/docker run --rm --net=host --name=haproxy \
+-v "{{ consul_template_dir }}/config:/config" \
+-v "{{ consul_template_dir }}/templates:/templates" \
+-p 80:80 \
+-p 34180:34180 \
+-e "HAPROXY_DOMAIN={{ haproxy_domain }}" \
+-e "CONSUL_TEMPLATE_VERSION={{ consul_template_version }}" \
+-e "CONSUL_LOGLEVEL={{ consul_template_loglevel }}" \
+-e "CONSUL_CONNECT={{ consul_backend }}" \
+-e "CONSUL_CONFIG=/config" \
+-e "SERVICE_NAME=haproxy" \
+{{ haproxy_image }}
+
+ExecStop=/usr/bin/docker stop haproxy
+
+[Install]
+WantedBy=multi-user.target
+

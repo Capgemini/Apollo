@@ -15,7 +15,7 @@ Environment="DOCKER_TMPDIR={{ docker_tmp_dir }}"
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576
-ExecStart=/usr/lib/coreos/dockerd daemon {{ docker_endpoints }} {{ docker_bridge_ip }} {{ docker_storage_config }} {{ docker_dns_config }} {{ docker_registry }} --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
+ExecStart=/usr/lib/coreos/dockerd daemon {{ docker_endpoints }} {{ docker_bridge_ip }} {{ docker_storage_config }} {{ docker_dns_config }} {{ docker_registry }} {{ docker_logs_config }} --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
 
 [Install]
 WantedBy=multi-user.target
