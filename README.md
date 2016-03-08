@@ -90,4 +90,4 @@ Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to fi
 
 * [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
 * [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
-* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+* [Demo: Launching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
