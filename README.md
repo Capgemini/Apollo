@@ -16,7 +16,6 @@ and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
 
-* [Packer](https://packer.io) for automating the build of the base images
 * [Terraform](https://www.terraform.io/) for provisioning the infrastructure
 * [Apache Mesos](http://mesos.apache.org/) for cluster management, scheduling and resource isolation
 * [Consul](http://consul.io) for service discovery, DNS
@@ -91,4 +90,4 @@ Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to fi
 
 * [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
 * [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
-* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+* [Demo: Launching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
