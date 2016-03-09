@@ -61,4 +61,5 @@
         instance_id: "{{ ansible_ec2_instance_id }}"
         state: present 
         wait: yes
+        wait_timeout: 60
       sudo: false 
