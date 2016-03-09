@@ -2,8 +2,8 @@
 traefik_marathon_hostname: marathon.service.{{ consul_domain }}
 traefik_marathon_endpoint: "http://{{ traefik_marathon_hostname }}:8080"
 traefik_marathon_domain: marathon.localhost
-traefik_version: v1.0.alpha.481
-traefik_image: "emilevauge/traefik:{{ traefik_version }}"
+traefik_image_tag: v1.0.alpha.9830086790caf40ce30eb9ed5d317917f8157708
+traefik_image: "containous/traefik:{{ traefik_image_tag }}"
 traefik_config_dir: /etc/traefik
 traefik_frontend_port: 80
 traefik_webui_port: 8888
