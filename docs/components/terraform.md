@@ -4,6 +4,5 @@ We use [Terraform](https://www.terraform.io/) as an infrastructure provisioning 
 
 The general flow is (for example for Amazon) -
 
-- Build base level image using Packer and Amazon plugin for packer to publish the AMI
 - Run a terraform plan to provision the necessary instances in AWS corresponding to the architecture we have chosen (e.g. public cloud / private VPC)
 - Run Ansible on top of those instances to configure them on the fly and start up the necessary services to bring an Apollo cluster up.
