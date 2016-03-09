@@ -25,9 +25,7 @@
     volumes:
     - "/tmp/{{ item }}-config:/config"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
-      SOURCES: "{{ dcos_cli_sources }}"
+      "{{ dcos_cli_container_environment }}"
   tags:
     - "{{ item }}"
   with_items:
@@ -42,8 +40,7 @@
     state: started
     command: "package uninstall {{ item }}"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
+      "{{ dcos_cli_container_environment }}"
   tags:
     - "{{ item }}"
   with_items:

@@ -4,7 +4,19 @@ dcos_cli_image: capgemini/dcos-cli
 dcos_cli_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 dcos_cli_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
 dcos_cli_marathon_url: "http://{{ ansible_ssh_host }}:8080"
+dcos_cli_no_proxy: "{{ ansible_ssh_host }}:8080,{{ ansible_ssh_host }}:5050"
 dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip",]'
+dcos_cli_container_environment:
+  http_proxy: "{{ proxy_env.http_proxy }}"
+  https_proxy: "{{ proxy_env.https_proxy }}"
+  HTTP_PROXY: "{{ proxy_env.HTTP_PROXY }}"
+  HTTPS_PROXY: "{{ proxy_env.HTTPS_PROXY }}"
+  no_proxy: "{{ dcos_cli_no_proxy }}"
+  NO_PROXY: "{{ dcos_cli_no_proxy }}"
+  MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
+  MARATHON_URL: "{{ dcos_cli_marathon_url }}"
+  SOURCES: "{{ dcos_cli_sources }}"
+
 dcos_cli_frameworks_list:
   - cassandra
   - chronos

@@ -3,8 +3,7 @@
 ### Prerequisites
 
 1. You need an Google account. Visit [https://accounts.google.com](https://accounts.google.com) to get started
-2. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
-3. You need to have installed and configured Terraform (>= 0.5.0 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
+3. You need to have installed and configured Terraform (>= 0.6.10 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 4. You will need a VPN client if you want to access the web interfaces for Mesos, Consul and Marathon. We recommend using Tunnelblick. Visit [https://code.google.com/p/tunnelblick/](https://code.google.com/p/tunnelblick/) to download and install.
 5. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 
@@ -31,12 +30,9 @@ As a minimum you will need to set these environment variables -
 
 ```
 APOLLO_PROVIDER=gce
-ATLAS_TOKEN
 TF_VAR_account_file
 TF_VAR_project
 ```
-
-_NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with your [Atlas Account](https://atlas.hashicorp.com/settings/tokens).
 
 #### Turn up the cluster
 Create a new Project using the [Google Developer Console](https://console.developers.google.com/project)
@@ -59,7 +55,7 @@ gcloud compute ssh deploy@apollo-mesos-master-0
 Make sure you add the google ssh key to the ssh-agent so it is available for Ansible to use it:
 
 ```bash
-ssh-add ~/.ssh/google_compute_engine   
+ssh-add ~/.ssh/google_compute_engine
 ```
 
 And:

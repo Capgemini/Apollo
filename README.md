@@ -16,13 +16,12 @@ and scaling of infrastructure and applications.
 
 Apollo is built on top of the following components:
 
-* [Packer](https://packer.io) for automating the build of the base images
 * [Terraform](https://www.terraform.io/) for provisioning the infrastructure
 * [Apache Mesos](http://mesos.apache.org/) for cluster management, scheduling and resource isolation
 * [Consul](http://consul.io) for service discovery, DNS
 * [Docker](http://docker.io) for application container runtimes
 * [Weave](https://github.com/weaveworks/weave) for networking of docker containers
-* [HAProxy](http://www.haproxy.org) for application container load balancing
+* [Traefik](http://traefik.github.io) for application container load balancing
 
 Apollo is:
 
@@ -45,7 +44,7 @@ Apollo can run anywhere!
 However, the majority of initial development is happening on AWS so most of our instructions and scripts are built around that. Stayed tuned for more cloud provider support! If you make it work on other infrastructure please let us know and contribute instructions/code. For more info on cloud
 support see our [roadmap](docs/roadmap.md).
 
-Apollo is in alpha!
+Apollo is in beta!
 
 While the concepts and base architectural components of Apollo are not expected to change drastically, the project is still under heavy development. Expect bugs, design and feature changes as we bring it to a stable, production ready, multi-cloud available thing!
 
@@ -76,19 +75,10 @@ to help you get familiar with the codebase.
 
 If you need any help/mentoring be sure to drop by our [Gitter channel](https://gitter.im/Capgemini/Apollo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)!
 
-**NOTE**
-
-Master branch is currently only be receiving bugfixes and minor changes. We are in the process of moving the platform operating system from Ubuntu to CoreOS.
-Major changes and feature updates will be going into the devel branch.
-
-You can track the latest development changes via the [coreos label](https://github.com/Capgemini/Apollo/labels/coreos)
-
-Once the devel branch has been stabilised on CoreOS we will plan to merge that into master.
-
 ## Keep up to date...
 
 Check out the [Capgemini UK Engineering blog](http://capgemini.github.io/) to find out more about how Apollo works and its new features.
 
 * [Continuously Deploying Apollo](http://capgemini.github.io/open%20source/continuously-deploying-apollo)
 * [How Apollo uses weave](http://capgemini.github.io/devops/how-apollo-uses-weave)
-* [Demo: Lauching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
+* [Demo: Launching Apollo on aws](http://capgemini.github.io/devops/apollo-launch-aws)
