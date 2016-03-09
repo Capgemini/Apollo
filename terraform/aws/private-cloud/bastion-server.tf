@@ -39,13 +39,22 @@ resource "aws_instance" "bastion" {
     user        = "core"
     private_key = "${var.private_key_file}"
   }
-  provisioner "remote-exec" {
-    script = "bastion-bootstrap.sh"
+
+  # Do some early bootstrapping of the CoreOS machines. This will install
+  # python and pip so we can use as the ansible_python_interpreter in our playbooks
+  provisioner "file" {
+    source      = "../../scripts/coreos"
+    destination = "/tmp"
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
+      "sudo chmod -R +x /tmp/coreos",
+      "/tmp/coreos/bootstrap.sh",
+      "~/bin/python /tmp/coreos/get-pip.py",
+      "sudo mv /tmp/coreos/runner ~/bin/pip && sudo chmod 0755 ~/bin/pip",
+      "sudo rm -rf /tmp/coreos",
       /* Initialize open VPN container and server config */
+      "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
       "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
       "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${aws_instance.bastion.public_ip}"
     ]

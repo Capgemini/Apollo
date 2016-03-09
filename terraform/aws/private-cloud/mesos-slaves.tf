@@ -37,6 +37,29 @@ resource "aws_instance" "mesos-slave" {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
   }
+  connection {
+    user                = "core"
+    private_key         = "${var.private_key_file}"
+    bastion_host        = "${aws_instance.bastion.public_ip}"
+    bastion_private_key = "${var.private_key_file}"
+  }
+
+  # Do some early bootstrapping of the CoreOS machines. This will install
+  # python and pip so we can use as the ansible_python_interpreter in our playbooks
+  provisioner "file" {
+    source      = "../../scripts/coreos"
+    destination = "/tmp"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod -R +x /tmp/coreos",
+      "/tmp/coreos/bootstrap.sh",
+      "~/bin/python /tmp/coreos/get-pip.py",
+      "sudo mv /tmp/coreos/runner ~/bin/pip && sudo chmod 0755 ~/bin/pip",
+      "sudo rm -rf /tmp/coreos"
+    ]
+  }
+
   ebs_block_device {
     device_name           = "/dev/xvdb"
     volume_size           = "${var.slave_ebs_volume_size}"
