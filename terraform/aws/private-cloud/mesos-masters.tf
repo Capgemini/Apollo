@@ -37,7 +37,7 @@ resource "aws_instance" "mesos-master" {
   connection {
     user                = "core"
     private_key         = "${var.private_key_file}"
-    bastion_host        = "${aws_instance.bastion.public_ip}"
+    bastion_host        = "${aws_eip.bastion.public_ip}"
     bastion_private_key = "${var.private_key_file}"
   }
 
