@@ -1,0 +1,6 @@
+---
+# defaults file for mesos-consul
+mesos_consul_image_tag: v0.3.2
+mesos_consul_image: "ciscocloud/mesos-consul:{{ mesos_consul_image_tag }}"
+mesos_consul_refresh: "5s"
+mesos_consul_zk: "zk://zookeeper.service.{{ consul_domain }}:2181/mesos"

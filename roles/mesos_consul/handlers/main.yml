@@ -1,0 +1,7 @@
+---
+# handlers file for mesos-consul
+- name: restart mesos_consul
+  become: yes
+  service:
+   name: mesos_consul
+   state: restarted

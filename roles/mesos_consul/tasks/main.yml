@@ -1,0 +1,23 @@
+---
+
+- name: deploy mesos_consul service
+  become: yes
+  become_user: root
+  template:
+    src: mesos_consul.service.j2
+    dest: /etc/systemd/system/mesos_consul.service
+  notify:
+    - reload systemd
+    - restart mesos_consul
+  tags:
+    - mesos_consul
+
+- name: enable mesos_consul
+  become: yes
+  service:
+    name: mesos_consul
+    enabled: yes
+    state: started
+  tags:
+    - mesos_consul
+

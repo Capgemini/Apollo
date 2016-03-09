@@ -1,7 +1,0 @@
----
-# handlers file for registrator
-- name: restart registrator
-  become: yes
-  service:
-   name: registrator
-   state: restarted

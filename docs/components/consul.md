@@ -16,7 +16,7 @@ For a comparison of Consul against other service discovery backends see [https:/
 The main reasons for selecting Consul over the others are -
 
 - DNS API providing lightweight integration with other tools / services
-- Easy integration with Docker via the registrator container. See [https://github.com/gliderlabs/registrator](https://github.com/gliderlabs/registrator)
+- Easy integration with Docker via the mesos-consul container. See [https://github.com/CiscoCloud/mesos-consul](https://github.com/CiscoCloud/mesos-consul)
 - Easy integration with Weave. For more info about weave see [weave](weave.md)
 - Rich key/value storage for use with Docker containers / services
 
