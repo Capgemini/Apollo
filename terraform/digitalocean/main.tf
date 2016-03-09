@@ -24,11 +24,11 @@ module "do-keypair" {
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
   # This will regenerate the discovery URL if the cluster size changes
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 
@@ -37,7 +37,8 @@ resource "template_file" "master_cloud_init" {
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
   }
 }
 
@@ -46,7 +47,8 @@ resource "template_file" "slave_cloud_init" {
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
   }
 }
 

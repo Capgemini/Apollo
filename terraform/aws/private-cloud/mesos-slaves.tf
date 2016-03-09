@@ -15,7 +15,8 @@ resource "template_file" "slave_cloud_init" {
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves + 1}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
   }
 }
 
