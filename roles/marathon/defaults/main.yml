@@ -7,8 +7,8 @@ marathon_restart_policy: 'always'
 marathon_net: 'host'
 marathon_hostname: "{{ ansible_ssh_host }}"
 marathon_port: '8080'
-marathon_container_memory_limit: '512MB'
-marathon_java_settings: '-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError'
+marathon_container_memory_limit: '1280m'
+marathon_java_settings: '-Xmx1024m -Xms1024m -XX:+HeapDumpOnOutOfMemoryError'
 marathon_artifact_store: 'file:///store'
 marathon_artifact_store_dir: '/etc/marathon/store'
 marathon_server_zk_group: marathon_servers
@@ -16,4 +16,5 @@ marathon_rebuild_container: False
 marathon_image: "mesosphere/marathon:v{{ marathon_version }}"
 marathon_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 marathon_zk_peers: "zk://{{ zookeeper_peers_nodes }}/marathon"
-marathon_command: "--artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"
+marathon_logging_level: "warn"
+marathon_command: "--logging_level {{ marathon_logging_level }} --artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"
