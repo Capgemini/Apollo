@@ -8,6 +8,9 @@ APOLLO_PROVIDER=${APOLLO_PROVIDER:-aws}
 APOLLO_LOG=${APOLLO_LOG:-}
 ANSIBLE_LOG=${ANSIBLE_LOG:-}
 
+# Overrides default folder in Terraform.py inventory.
+export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+
 # Some useful colors.
 if [[ -z "${color_start-}" ]]; then
   export color_start="\033["

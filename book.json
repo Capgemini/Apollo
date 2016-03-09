@@ -3,8 +3,11 @@
   "structure": {
     "summary": "docs/README.md"
   },
-  "plugins": ["edit-link", "-search", "github"],
+  "plugins": ["disqus", "edit-link", "-search", "github"],
   "pluginsConfig": {
+    "disqus": {
+      "shortName": "apollo"
+    },
     "edit-link": {
       "base": "https://github.com/Capgemini/apollo/tree/master",
       "label": "Edit This Page"
