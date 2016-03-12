@@ -29,10 +29,6 @@
     - restart weaveproxy
   tags:
     - weave
-  notify:
-    - reload systemd
-    - restart weave service
-    - restart weaveproxy service
 
 - name: ensure weave service is running.
   become: yes
