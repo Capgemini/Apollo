@@ -3,8 +3,7 @@
 export TF_VAR_region=${TF_VAR_region:-lon1}
 export TF_VAR_do_token=${TF_VAR_do_token:?"Need to set TF_VAR_do_token non-empty"}
 
-# Overrides default folder in Terraform.py inventory.
-export TF_VAR_STATE_ROOT="${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
+export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -i ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/id_rsa -q"
 
 export ANSIBLE_SSH_ARGS="-F ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/ssh.config -i ${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}/id_rsa -q"
 
