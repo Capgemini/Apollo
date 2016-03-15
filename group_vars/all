@@ -37,7 +37,7 @@ datadog_checks:
     init_config:
 
       # Timeout on Docker socket connection. You may have to increase it if you have many containers.
-      socket_timeout: 100
+      timeout: 10
 
     instances:
       - url: "unix://var/run/docker.sock"
