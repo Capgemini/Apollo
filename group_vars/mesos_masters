@@ -34,10 +34,32 @@ datadog_checks:
         # The default settings query up to 50 services. So if you have more than
         # this many in your Consul service catalog, you will want to fill in the
         # whitelist
-        #service_whitelist:
-        #  - zookeeper
-        #  - haproxy
-        #  - redis
+        service_whitelist:
+          - zookeeper
+          - weave-6783
+          - marathon
+          - mesos-master
+          - logstash
+          - www
+          - braavos
+          - careers-api
+          - careers-dashboard
+          - catalog
+          - classroom
+          - classroom-content
+          - classroom-content-background-production
+          - classroom-preview
+          - conductor
+          - conductor-api
+          - consul
+          - haproxy
+          - homeone
+          - ossus
+          - registrar
+          - registrar-window
+          - rsstojson
+          - rubot
+          - sarlacc
   mesos_master:
     init_config:
       default_timeout: 10
