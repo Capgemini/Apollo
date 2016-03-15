@@ -18,7 +18,7 @@ datadog_checks:
         # Warning: This feature is broken in some version of Docker (such as 1.2).
         # Test it before running it in production.
         #
-        collect_container_size: true
+        collect_container_size: false
 
         # Collect images stats
         # Number of available active images and intermediate images as gauges. Default: true.
