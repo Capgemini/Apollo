@@ -90,6 +90,14 @@ variable "slave_block_device" {
   }
 }
 
+variable "consul_block_device" {
+  description = "Block device for consul"
+  default = {
+    volume_size = 100
+    iops = 3000
+  }
+}
+
 variable "elasticsearch_block_device" {
   description = "Block device for elasticsearch."
   default = {

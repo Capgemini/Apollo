@@ -21,4 +21,19 @@ resource "aws_instance" "mesos-master" {
     role = "mesos_masters"
     monitoring = "datadog"
   }
+  ebs_block_device {
+    device_name = "/dev/xvdp"
+    volume_type = "io1"
+    volume_size = "${var.consul_block_device.volume_size}"
+    iops = "${var.consul_block_device.iops}"
+    delete_on_termination = true
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkfs -t ext4 /dev/xvdp",
+      "sudo mkdir -p /mnt/consul",
+      "sudo mount /dev/xvdp /mnt/consul",
+      "echo '/dev/xvdp	/mnt/consul	ext4	defaults,nofail,nobootwait	0	2' | sudo tee -a /etc/fstab",
+    ]
+  }
 }
