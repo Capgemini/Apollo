@@ -3,7 +3,7 @@ description "Weave Scope Docker Service"
 start on started docker
 stop on stopping docker
 
-env WEAVESCOPE="{{ weavescope_dest }}"
+env WEAVESCOPE="{{ weavescope_dest }}/scope"
 
 pre-start exec ${WEAVESCOPE} stop
 

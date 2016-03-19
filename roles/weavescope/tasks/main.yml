@@ -8,8 +8,6 @@
   environment: proxy_env
   when: weavescope_enabled | bool
   notify: restart weavescope
-  tags:
-    - weave
 
 - name: upload weave scope template service
   template:
@@ -19,8 +17,6 @@
   sudo: yes
   when: weavescope_enabled | bool
   notify: restart weavescope
-  tags:
-    - weave
 
 - name: ensure weavescope service is running.
   sudo: yes
@@ -29,8 +25,6 @@
     name: weavescope
     state: started
     enabled: yes
-  tags:
-    - weave
 
 - name: set weavscope consul service definition
   sudo: yes
@@ -39,4 +33,4 @@
     src: weavescope-consul.json.j2
     dest: "/etc/consul.d/weavescope.json"
   notify:
-    - reload consul
+    - restart consul
