@@ -1,0 +1,29 @@
+---
+- name: wait for logstash to start up
+  wait_for:
+    host: "{{ logstash_lumberjack_host }}"
+    port: "{{ lumberjack_host_port }}"
+    delay: 10
+  tags:
+    - logstash
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
+- name: ensure lumberjack is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: lumberjack
+    state: started
+    enabled: yes
+  tags:
+    - lumberjack
+
+- name: ensure systemd-journal-upload is running (and enable it at boot)
+  sudo: yes
+  service:
+    name: systemd-journal-upload
+    state: started
+    enabled: yes
+  tags:
+    - logstash

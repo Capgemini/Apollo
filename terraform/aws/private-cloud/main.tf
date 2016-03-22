@@ -54,26 +54,24 @@ module "elb" {
   security_groups = "${module.sg-default.security_group_id}"
   instances       = "${join(\",\", aws_instance.mesos-slave.*.id)}"
   subnets         = "${module.vpc.public_subnets}"
+  vpc_id          = "${aws_vpc.default.id}"
 }
 
 # Generate an etcd URL for the cluster
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
-  # This will regenerate the discovery URL if the cluster size changes
+  # This will regenerate the discovery URL if the cluster size changes, we include the bastion here
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 
 # outputs
 output "bastion.ip" {
   value = "${aws_eip.bastion.public_ip}"
-}
-output "master.1.ip" {
-  value = "${aws_instance.mesos-master.0.private_ip}"
 }
 output "master_ips" {
   value = "${join(",", aws_instance.mesos-master.*.private_ip)}"

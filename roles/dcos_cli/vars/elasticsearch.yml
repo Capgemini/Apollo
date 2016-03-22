@@ -1,0 +1,6 @@
+dcos_cli_app_elasticsearch_enabled: "{{ elk_enabled }}"
+dcos_cli_app_elasticsearch_image: elasticsearch
+dcos_cli_app_elasticsearch_image_tag: 2.2.0
+dcos_cli_app_elasticsearch_mem: 756
+dcos_cli_app_elasticsearch_cpus: 1.0
+dcos_cli_app_elasticsearch_instances: 1

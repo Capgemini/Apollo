@@ -66,17 +66,18 @@ module "elb" {
   security_groups = "${module.sg-default.security_group_id}"
   instances       = "${join(\",\", aws_instance.mesos-slave.*.id)}"
   subnets         = "${module.public_subnet.subnet_ids}"
+  vpc_id          = "${aws_vpc.default.id}"
 }
 
 # Generate an etcd URL for the cluster
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
   # This will regenerate the discovery URL if the cluster size changes
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 

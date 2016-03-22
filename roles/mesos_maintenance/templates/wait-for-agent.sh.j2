@@ -4,6 +4,6 @@ MAX_SECONDS=20
 
 while /bin/true
 do
-  curl -x '' --write-out %{http_code} --silent --output /dev/null "http://{{ ansible_ssh_host }}:5051/slave(1)/health" | grep -q 200 && exit 0 || sleep 1
+  curl -x '' --write-out %{http_code} --silent --output /dev/null "http://{{ ansible_host }}:5051/slave(1)/health" | grep -q 200 && exit 0 || sleep 1
   [[ "$SECONDS" -ge "$MAX_SECONDS" ]] && exit 2
 done

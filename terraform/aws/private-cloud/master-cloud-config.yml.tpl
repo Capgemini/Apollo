@@ -12,9 +12,11 @@ coreos:
     listen-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
     # Discovery is populated by Terraform
     discovery: ${etcd_discovery_url}
+  fleet:
+    metadata: "role=master,region=${region}"
   units:
     - name: etcd2.service
       command: start
   update:
-    reboot-strategy: "reboot"
+    reboot-strategy: best-effort
 manage_etc_hosts: localhost

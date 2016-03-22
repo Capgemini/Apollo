@@ -9,7 +9,7 @@ manage and run containers.
 
 For more information on Docker see [https://www.docker.com](https://www.docker.com)
 
-The reason behind choosing Docker is it allows clear separation between the application/task
+Docker allows a clear separation between the application/task
 and the underlying operating system. As such this gives developers full flexibility
 about what they choose to run on top of Apollo.
 

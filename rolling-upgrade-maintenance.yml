@@ -4,18 +4,18 @@
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
-        port: "{{ ansible_ssh_port }}"
-        host: "{{ ansible_ssh_host }}"
+        port: "{{ ansible_port }}"
+        host: "{{ ansible_host }}"
         delay: 10
         timeout: 90
       delegate_to: "{{ bastion_ip }}"
-      sudo: False
+      become: False
       when: bastion_ip is defined
       tags: ["facts"]
 
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=90"
-      sudo: False
+      local_action: "wait_for port={{ ansible_port }} host={{ ansible_host }} delay=10 timeout=90"
+      become: False
       when: bastion_ip is not defined
       tags: ["facts"]
 

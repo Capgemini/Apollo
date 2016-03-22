@@ -11,9 +11,6 @@
     dest: "/etc/marathon/{{ item.name }}.json"
     mode: 0755
   become: yes
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
   with_items:
     - "{{ dcos_cli_apps_list }}"
 
@@ -29,9 +26,6 @@
       - "/etc/marathon:/config"
     env:
       "{{ dcos_cli_container_environment }}"
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
   with_items:
     - "{{ dcos_cli_apps_list }}"
 
@@ -46,8 +40,5 @@
     command: "marathon {{ item.type }} remove {{ item.name }}"
     env:
       "{{ dcos_cli_container_environment }}"
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
   with_items:
     - "{{ dcos_cli_apps_list }}"

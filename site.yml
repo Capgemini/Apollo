@@ -1,24 +1,27 @@
 ---
 - hosts: all:!role=bastion
-  gather_facts: False
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "PATH=/home/core/bin:$PATH python"
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
-        port: "{{ ansible_ssh_port }}"
-        host: "{{ ansible_ssh_host }}"
+        port: "{{ ansible_port }}"
+        host: "{{ ansible_host }}"
         delay: 10
         timeout: 180
       delegate_to: "{{ bastion_ip }}"
-      sudo: False
+      become: false
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=180"
-      sudo: False
+      local_action: "wait_for port={{ ansible_port }} host={{ ansible_host }} delay=10 timeout=180"
+      become: false
       when: bastion_ip is not defined
 
 - include: playbooks/coreos-bootstrap.yml
 
 - hosts: all:!role=bastion
+  gather_facts: true
   roles:
     - docker
     - weave
@@ -27,6 +30,7 @@
     #- vault
 
 - hosts: all:!role=bastion
+  gather_facts: true
   roles:
     - registrator
     - { role: cadvisor, when: cadvisor_enabled|bool }
@@ -35,6 +39,7 @@
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_masters
+  gather_facts: true
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
@@ -43,14 +48,22 @@
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: mesos_slaves
+  gather_facts: true
   roles:
     - { role: mesos, mesos_install_mode: "slave" }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
 - hosts: load_balancers
+  gather_facts: true
   roles:
     - { role: traefik, tags: ["traefik"] }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+- hosts: log_servers
+  roles:
+    - { role: logstash, when: elk_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
