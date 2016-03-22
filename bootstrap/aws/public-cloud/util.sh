@@ -22,8 +22,9 @@ apollo_down() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     terraform destroy -var "access_key=${TF_VAR_access_key}" \
       -var "key_file=${TF_VAR_key_file}" \
-      -var "region=${TF_VAR_region}" \
-      > ${TF_VAR_etcd_discovery_url_file:-etcd_discovery_url.txt}
+      -var "region=${TF_VAR_region}"
+    > ${TF_VAR_etcd_discovery_url_file:-etcd_discovery_url.txt}
+
   popd
 }
 
