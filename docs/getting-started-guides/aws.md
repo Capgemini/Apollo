@@ -4,8 +4,7 @@
 
 1. You need an AWS account. Visit [http://aws.amazon.com](http://aws.amazon.com) to get started
 2. You need an AWS [instance profile and role](http://docs.aws.amazon.com/IAM/latest/UserGuide/instance-profiles.html) with EC2 full access.
-3. You need an Atlas account. Visit [https://atlas.hashicorp.com](https://atlas.hashicorp.com) to get started.
-4. You need to have installed and configured Terraform (>= 0.5.0 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
+4. You need to have installed and configured Terraform (>= 0.6.10 recommended). Visit [https://www.terraform.io/intro/getting-started/install.html](https://www.terraform.io/intro/getting-started/install.html) to get started.
 5. You will need a VPN client if you want to access the web interfaces for Mesos, Consul and Marathon. We recommend using Tunnelblick. Visit [https://code.google.com/p/tunnelblick/](https://code.google.com/p/tunnelblick/) to download and install.
 6. You need to have [Python](https://www.python.org/) >= 2.7.5 installed along with [pip](https://pip.pypa.io/en/latest/installing.html).
 7. You will need to have created an SSH RSA key pair for accessing your aws intances. You can create it as follows:
@@ -48,10 +47,7 @@ TF_VAR_secret_key
 TF_VAR_key_name="deployer"
 TF_VAR_key_file='~/.ssh/id_rsa_aws.pub'
 TF_VAR_private_key_file='~/.ssh/id_rsa_aws.pem'
-ATLAS_TOKEN
 ```
-
-_NOTE: The value for ATLAS_TOKEN should be set to whatever you generated with your [Atlas Account](https://atlas.hashicorp.com/settings/tokens).
 
 #### Turn up the cluster
 ```

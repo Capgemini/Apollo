@@ -10,10 +10,7 @@
     src: '{{ item.name }}.json.j2'
     dest: "/etc/marathon/{{ item.name }}.json"
     mode: 0755
-  sudo: yes
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
+  become: yes
   with_items:
     - "{{ dcos_cli_apps_list }}"
 
@@ -28,12 +25,7 @@
     volumes:
       - "/etc/marathon:/config"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
-      SOURCES: "{{ dcos_cli_sources }}"
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
+      "{{ dcos_cli_container_environment }}"
   with_items:
     - "{{ dcos_cli_apps_list }}"
 
@@ -47,10 +39,6 @@
     state: started
     command: "marathon {{ item.type }} remove {{ item.name }}"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
-  tags:
-    - "{{ item.name }}"
-    - dcos_cli
+      "{{ dcos_cli_container_environment }}"
   with_items:
     - "{{ dcos_cli_apps_list }}"

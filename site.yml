@@ -1,19 +1,21 @@
 ---
 - hosts: all:!role=bastion
   gather_facts: false
+  vars:
+    ansible_python_interpreter: "PATH=/home/core/bin:$PATH python"
   tasks:
     - name: Wait for ssh port to become available from bastion server.
       wait_for:
-        port: "{{ ansible_ssh_port }}"
-        host: "{{ ansible_ssh_host }}"
+        port: "{{ ansible_port }}"
+        host: "{{ ansible_host }}"
         delay: 10
         timeout: 180
       delegate_to: "{{ bastion_ip }}"
-      sudo: False
+      become: false
       when: bastion_ip is defined
     - name: Wait for port 22 to become available from local server.
-      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=180"
-      sudo: False
+      local_action: "wait_for port={{ ansible_port }} host={{ ansible_host }} delay=10 timeout=180"
+      become: false
       when: bastion_ip is not defined
 
 - include: playbooks/coreos-bootstrap.yml
@@ -22,10 +24,10 @@
   gather_facts: true
   roles:
     - docker
+    - weave
     - consul
     # @todo - fix vault integration with coreOS
     #- vault
-    - weave
 
 - hosts: all:!role=bastion
   gather_facts: true
@@ -59,12 +61,13 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-- include: playbooks/dcos.yml
-
 - hosts: log_servers
   roles:
     - { role: logstash, when: elk_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
+
+# Installing DCOS frameworks and apps from one master.
+- include: dcos.yml
 
 - include: contrib-plugins/playbook.yml

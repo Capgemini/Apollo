@@ -13,8 +13,8 @@ Role Variables
 ```
 dcos_cli_image: capgemini/dcos-cli
 dcos_cli_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
-dcos_cli_mesos_master_url: "http://{{ ansible_ssh_host }}:5050"
-dcos_cli_marathon_url: "http://{{ ansible_ssh_host }}:8080"
+dcos_cli_mesos_master_url: "http://{{ ansible_host }}:5050"
+dcos_cli_marathon_url: "http://{{ ansible_host }}:8080"
 
 frameworks_FRAMEWORK-NAME_enabled: false
 ```

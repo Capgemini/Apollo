@@ -1,10 +1,10 @@
 ---
 # defaults file for prometheus
-prometheus_consul_host: "{{ ansible_ssh_host }}"
+prometheus_consul_host: "{{ ansible_host }}"
 prometheus_config_dir: /etc/prometheus
 prometheus_node_exporter_image: "prom/node-exporter:latest"
 prometheus_node_exporter_port: 9100
-prometheus_node_exporter_hostname: "{{ ansible_ssh_host }}"
+prometheus_node_exporter_hostname: "{{ ansible_host }}"
 prometheus_node_exporter_consul_service_id: "{{ ansible_hostname }}:node-exporter:9100"
 prometheus_consul_dir: /etc/consul.d
 # promdash settings

@@ -1,8 +1,9 @@
 IaaS Provider  | Config. Mgmt | OS     | Networking  | Docs                                                   | Support Level                | Notes
 -------------- | ------------ | ------ | ----------  | ----------------------------------------------------   | ---------------------------- | -----
-AWS            | Ansible       | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/aws.md)       | Project                      | AWS private VPC with NAT gateway server for SSH/VPN
-Vagrant        | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)    | Project                      |
-Digitalocean   | Ansible      | Ubuntu | Weave       | [docs](../../docs/getting-started-guides/digitalocean.md)   | Project                      | Public cloud instances
+AWS            | Ansible       | CoreOS | Weave       | [docs](../../docs/getting-started-guides/aws.md)       | Project                      | AWS private VPC with NAT gateway server for SSH/VPN
+AWS Public Cloud   | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/aws-public.md)   | Project                      | Public cloud instances
+Vagrant        | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)    | Project                      |
+Digitalocean   | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/digitalocean.md)   | Project                      | Public cloud instances
 
 
 Definition of columns:

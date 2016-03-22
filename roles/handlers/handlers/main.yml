@@ -1,12 +1,12 @@
 - name: reload systemd
-  sudo: yes
+  become: yes
   command: systemctl daemon-reload
 
 - name: restart consul
   service:
     name: consul
     state: restarted
-  sudo: yes
+  become: yes
   notify:
     - wait for consul to listen
 
@@ -18,7 +18,7 @@
   service:
    name: docker
    state: restarted
-  sudo: yes
+  become: yes
   notify:
   - wait for weave to listen
 

@@ -11,11 +11,12 @@ module "slave_ami" {
 }
 
 resource "template_file" "slave_cloud_init" {
-  template   = "cloud-config.yml.tpl"
+  template   = "slave-cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
   }
 }
 
@@ -32,5 +33,10 @@ resource "aws_instance" "mesos-slave" {
   tags = {
     Name = "apollo-mesos-slave-${count.index}"
     role = "mesos_slaves"
+  }
+  ebs_block_device {
+    device_name           = "/dev/xvdb"
+    volume_size           = "${var.slave_ebs_volume_size}"
+    delete_on_termination = true
   }
 }

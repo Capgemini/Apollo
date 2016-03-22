@@ -2,7 +2,7 @@
 - include: config.yml
 
 - name: enable consul
-  sudo: yes
+  become: yes
   service:
     name: consul
     enabled: yes
@@ -16,14 +16,3 @@
   wait_for:
     host: "{{ consul_bind_addr }}"
     port: 8500
-
-#- name: enable consul-discovery
-#  sudo: yes
-#  service:
-#    name: consul-discovery
-#    enabled: yes
-#    state: started
-#  notify:
-#    - restart consul systemd
-#  tags:
-#    - consul

@@ -1,0 +1,33 @@
+{
+  "name": "apollo",
+  "private": true,
+  "version": "0.0.1",
+  "description": "An open-source PaaS for cloud native applications",
+  "scripts": {
+    "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:prepare && gitbook build -g capgemini/apollo",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:clean && npm run docs:build && cp CNAME _book && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:capgemini/apollo gh-pages --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/capgemini/apollo.git"
+  },
+  "keywords": [
+    "capgemini",
+    "apollo",
+    "mesos",
+    "docker",
+    "paas",
+    "containers"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/capgemini/apollo/issues"
+  },
+  "homepage": "https://github.com/capgemini/apollo/issues",
+  "dependencies": {},
+  "devDependencies": {
+    "gitbook-cli": "^0.3.4"
+  }
+}

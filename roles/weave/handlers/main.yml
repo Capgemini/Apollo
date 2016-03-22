@@ -1,2 +1,20 @@
 ---
 # handlers file for weave
+- name: restart weave
+  become: yes
+  service:
+    name: weave
+    state: restarted
+  notify:
+    - wait for weave socket
+
+- name: restart weaveproxy
+  become: yes
+  service:
+    name: weaveproxy
+    state: restarted
+
+- name: wait for weave socket
+  wait_for:
+    port: 6783
+    delay: 10

@@ -1,4 +1,4 @@
 ---
 - name: restart traefik
-  sudo: yes
+  become: yes
   command: systemctl restart traefik

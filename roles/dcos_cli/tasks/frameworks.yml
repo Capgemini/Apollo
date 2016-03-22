@@ -1,5 +1,3 @@
----
-# tasks file for frameworks
 - include_vars: "{{ item }}.yml"
   with_items:
     - "{{ dcos_cli_frameworks_list }}"
@@ -11,9 +9,7 @@
     src: "{{ item }}-config.j2"
     dest: "/tmp/{{ item }}-config"
     mode: 0755
-  sudo: yes
-  tags:
-    - "{{ item }}"
+  become: true
   with_items:
     - "{{ dcos_cli_frameworks_list }}"
 
@@ -28,11 +24,7 @@
     volumes:
     - "/tmp/{{ item }}-config:/config"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
-      SOURCES: "{{ dcos_cli_sources }}"
-  tags:
-    - "{{ item }}"
+      "{{ dcos_cli_container_environment }}"
   with_items:
     - "{{ dcos_cli_frameworks_list }}"
 
@@ -45,9 +37,6 @@
     state: started
     command: "package uninstall {{ item }}"
     env:
-      MESOS_MASTER_URL: "{{ dcos_cli_mesos_master_url }}"
-      MARATHON_URL: "{{ dcos_cli_marathon_url }}"
-  tags:
-    - "{{ item }}"
+      "{{ dcos_cli_container_environment }}"
   with_items:
     - "{{ dcos_cli_frameworks_list }}"

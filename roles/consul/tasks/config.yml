@@ -1,5 +1,5 @@
 - name: create consul dirs
-  sudo: yes
+  become: yes
   file:
     path: "{{ item }}"
     state: directory
@@ -9,7 +9,7 @@
     - "{{ consul_config_dir }}"
 
 - name: configure consul
-  sudo: yes
+  become: yes
   template:
     src: consul.json.j2
     dest: /etc/consul.d/consul.json
@@ -22,8 +22,8 @@
     - consul
 
 - name: deploy consul service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"

@@ -11,6 +11,7 @@ variable "masters" { default = "3" }
 variable "master_instance_type" { default = "m3.medium" }
 variable "slaves" { default = "1" }
 variable "slave_instance_type" { default = "m3.medium" }
+variable "slave_ebs_volume_size" { default = "30" }
 variable "bastion_instance_type" { default = "t2.micro" }
 variable "docker_version" { default = "1.9.1-0~trusty" }
 
@@ -60,20 +61,17 @@ module "elb" {
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
-  # This will regenerate the discovery URL if the cluster size changes
+  # This will regenerate the discovery URL if the cluster size changes, we include the bastion here
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 
 # outputs
 output "bastion.ip" {
   value = "${aws_eip.bastion.public_ip}"
-}
-output "master.1.ip" {
-  value = "${aws_instance.mesos-master.0.private_ip}"
 }
 output "master_ips" {
   value = "${join(",", aws_instance.mesos-master.*.private_ip)}"

@@ -36,7 +36,7 @@ ansible_ssh_config() {
     StrictHostKeyChecking  no
     ServerAliveInterval    120
     TCPKeepAlive           yes
-    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config core@$APOLLO_bastion_ip nc %h %p
+    ProxyCommand           ssh -q -A -F $(pwd)/ssh.config core@$APOLLO_bastion_ip ncat %h %p
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         30m
@@ -51,7 +51,8 @@ apollo_down() {
   pushd "${APOLLO_ROOT}/terraform/${APOLLO_PROVIDER}"
     terraform destroy -var "access_key=${TF_VAR_access_key}" \
       -var "key_file=${TF_VAR_key_file}" \
-      -var "region=${TF_VAR_region}"
+      -var "region=${TF_VAR_region}" \
+      > ${TF_VAR_etcd_discovery_url_file:-etcd_discovery_url.txt}
   popd
 }
 

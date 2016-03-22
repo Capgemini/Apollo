@@ -1,7 +1,7 @@
 ---
 # tasks file for docker
 - name: ensure docker config dir exists
-  sudo: yes
+  become: yes
   file:
     path: /root/.docker
     state: directory
@@ -9,7 +9,7 @@
     - docker
 
 - name: setup private docker registry credentials
-  sudo: yes
+  become: yes
   when: private_docker_registry|bool
   template:
     src: config.json.j2
@@ -18,8 +18,8 @@
     - docker
 
 - name: deploy docker service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: docker.service.j2
     dest: /etc/systemd/system/docker.service
@@ -29,14 +29,8 @@
   tags:
     - docker
 
-- name: reload systemd
-  sudo: yes
-  command: systemctl daemon-reload
-  notify:
-    - restart docker
-
 - name: ensure docker is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: docker
     state: started
