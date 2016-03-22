@@ -30,7 +30,6 @@
 
 - hosts: all:!role=bastion
   roles:
-    - registrator
     - { role: cadvisor, when: cadvisor_enabled|bool }
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
@@ -41,6 +40,7 @@
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
     - { role: marathon, when: marathon_enabled|bool }
+    - mesos_consul
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
