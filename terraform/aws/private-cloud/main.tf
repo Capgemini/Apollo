@@ -60,20 +60,17 @@ module "elb" {
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
-  # This will regenerate the discovery URL if the cluster size changes
+  # This will regenerate the discovery URL if the cluster size changes, we include the bastion here
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 
 # outputs
 output "bastion.ip" {
   value = "${aws_eip.bastion.public_ip}"
-}
-output "master.1.ip" {
-  value = "${aws_instance.mesos-master.0.private_ip}"
 }
 output "master_ips" {
   value = "${join(",", aws_instance.mesos-master.*.private_ip)}"

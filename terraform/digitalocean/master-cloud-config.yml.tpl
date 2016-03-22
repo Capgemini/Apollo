@@ -7,6 +7,8 @@ coreos:
     initial-advertise-peer-urls: http://$public_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379
     listen-peer-urls: http://$public_ipv4:2380
+  fleet:
+    metadata: "role=master,region=${region}"
   units:
     - name: etcd2.service
       command: start

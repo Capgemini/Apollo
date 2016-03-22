@@ -95,11 +95,11 @@ resource "tls_locally_signed_cert" "etcd" {
 resource "template_file" "etcd_discovery_url" {
   template = "/dev/null"
   provisioner "local-exec" {
-    command = "curl https://discovery.etcd.io/new?size=${var.masters + var.slaves} > ${var.etcd_discovery_url_file}"
+    command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
   # This will regenerate the discovery URL if the cluster size changes
   vars {
-    size = "${var.masters + var.slaves}"
+    size = "${var.masters}"
   }
 }
 
@@ -108,7 +108,8 @@ resource "template_file" "master_cloud_init" {
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
     etcd_ca            = "${replace(tls_self_signed_cert.ca.cert_pem, \"\n\", \"\\n\")}"
     etcd_cert          = "${replace(tls_locally_signed_cert.etcd.cert_pem, \"\n\", \"\\n\")}"
     etcd_key           = "${replace(tls_private_key.etcd.private_key_pem, \"\n\", \"\\n\")}"
@@ -120,7 +121,8 @@ resource "template_file" "slave_cloud_init" {
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
-    size               = "${var.masters + var.slaves}"
+    size               = "${var.masters}"
+    region             = "${var.region}"
     etcd_ca            = "${replace(tls_self_signed_cert.ca.cert_pem, \"\n\", \"\\n\")}"
     etcd_cert          = "${replace(tls_locally_signed_cert.etcd.cert_pem, \"\n\", \"\\n\")}"
     etcd_key           = "${replace(tls_private_key.etcd.private_key_pem, \"\n\", \"\\n\")}"

@@ -4,7 +4,7 @@ cadvisor_enabled: true
 cadvisor_version: 'latest'
 cadvisor_restart_policy: 'always'
 cadvisor_net: 'bridge'
-cadvisor_hostname: "{{ ansible_ssh_host }}"
+cadvisor_hostname: "{{ ansible_host }}"
 cadvisor_image: "google/cadvisor:{{ cadvisor_version }}"
 cadvisor_consul_dir: /etc/consul.d
 cadvisor_consul_service_id: "{{ ansible_hostname }}:cadvisor:8080"

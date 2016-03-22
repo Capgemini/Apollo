@@ -4,7 +4,7 @@ consul_dir: /etc/consul.d
 mesos_executor_registration_timeout: 10mins
 mesos_cluster_name: "Cluster01"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
-mesos_hostname: "{{ ansible_ssh_host }}"
+mesos_hostname: "{{ ansible_host }}"
 mesos_docker_socket: "/var/run/weave/weave.sock"
 mesos_version: "0.27.1-2.0.226.ubuntu1404"
 

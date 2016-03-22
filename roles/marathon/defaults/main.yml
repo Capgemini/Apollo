@@ -5,7 +5,7 @@ marathon_enabled: true
 marathon_version: '0.15.2'
 marathon_restart_policy: 'always'
 marathon_net: 'host'
-marathon_hostname: "{{ ansible_ssh_host }}"
+marathon_hostname: "{{ ansible_host }}"
 marathon_port: '8080'
 marathon_container_memory_limit: '512MB'
 marathon_java_settings: '-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError'
