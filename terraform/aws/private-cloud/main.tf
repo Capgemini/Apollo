@@ -54,6 +54,7 @@ module "elb" {
   security_groups = "${module.sg-default.security_group_id}"
   instances       = "${join(\",\", aws_instance.mesos-slave.*.id)}"
   subnets         = "${module.vpc.public_subnets}"
+  vpc_id          = "${aws_vpc.default.id}"
 }
 
 # Generate an etcd URL for the cluster

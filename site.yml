@@ -59,4 +59,10 @@
 # Installing DCOS frameworks and apps from one master.
 - include: dcos.yml
 
+- hosts: log_servers
+  roles:
+    - { role: logstash, when: elk_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
 - include: contrib-plugins/playbook.yml
