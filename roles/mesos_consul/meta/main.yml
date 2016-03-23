@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Graham Taylor
+  description:
+  company: Capgemini
+  license: license (MIT)
+  min_ansible_version: 1.2
+  platforms:
+  - name: CoreOS
+    versions:
+     - all
+  categories:
+  - cloud
+  - system
+dependencies:
+  - handlers

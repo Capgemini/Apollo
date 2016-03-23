@@ -26,7 +26,7 @@
     - { role: docker, tags: ["docker"] }
     - { role: weave, tags: ["weave"], meta: "flush_handlers" }
     - { role: consul, tags: ["consul"] }
-    - { role: registrator, tags: ["registrator"] }
+    - { role: mesos_consul, tags: ["mesos_consul"] }
 
 - hosts: mesos_slaves
   serial: "{{ serial | default(1) }}"
@@ -36,6 +36,6 @@
     - { role: docker, tags: ["docker"] }
     - { role: weave, tags: ["weave"] }
     - { role: consul, tags: ["consul"] }
-    - { role: registrator, tags: ["registrator"] }
+    - { role: mesos_consul, tags: ["mesos_consul"] }
     - { role: traefik, tags: ["traefik"] }
     - { role: mesos_maintenance, tags: ["mesos_maintenance"], mesos_maintenance_complete: true }

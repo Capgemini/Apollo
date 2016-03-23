@@ -1,0 +1,22 @@
+[Unit]
+Description=Mesos Consul
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+
+ExecStartPre=-/usr/bin/docker kill mesos_consul
+ExecStartPre=-/usr/bin/docker rm mesos_consul
+ExecStartPre=/usr/bin/docker pull {{ mesos_consul_image }}
+
+ExecStart=/usr/bin/bash -c "/usr/bin/docker run --rm --name mesos_consul \
+{{ mesos_consul_image }} \
+--zk={{ mesos_consul_zk }} --refresh={{ mesos_consul_refresh }}"
+
+ExecStop=/usr/bin/docker stop mesos_consul
+
+[Install]
+WantedBy=multi-user.target
