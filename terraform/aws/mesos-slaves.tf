@@ -1,6 +1,6 @@
 /* Base packer build we use for provisioning slave instances */
 resource "atlas_artifact" "mesos-slave" {
-  name    = "${var.atlas_artifact.slave}"
+  name    = "udacity/mesos-ubuntu-14.04-amd64"
   version = "26"
   type    = "aws.ami"
 }

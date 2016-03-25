@@ -28,6 +28,12 @@ resource "aws_instance" "mesos-master" {
     iops = "${var.consul_block_device.iops}"
     delete_on_termination = true
   }
+  connection {
+    user         = "ubuntu"
+    key_file     = "${var.private_key_file}"
+    bastion_host = "${aws_eip.bastion.public_ip}"
+    agent        = false
+  }
   provisioner "remote-exec" {
     inline = [
       "sudo mkfs -t ext4 /dev/xvdp",
