@@ -1,1 +1,1 @@
-ssh -t "ubuntu@$(terraform output bastion.ip)" 'sudo /bin/sh -c "eval $(sudo weave env); docker run --volumes-from ovpn-data -d --net=host --cap-add=NET_ADMIN gosuri/openvpn"'
+ssh -t "ubuntu@$(terraform output bastion.ip)" 'sudo /bin/sh -c "eval $(sudo weave env); docker run --name=openvpn --volumes-from ovpn-data -d --net=host --cap-add=NET_ADMIN gosuri/openvpn"'
