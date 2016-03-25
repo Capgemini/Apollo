@@ -17,6 +17,10 @@
       when: bastion_ip is not defined
 
 - hosts: all
+  pre_tasks:
+    - name: update apt cache
+      apt:
+        update_cache: yes
   roles:
     - base
 
