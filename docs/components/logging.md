@@ -24,5 +24,6 @@ export APOLLO_salesforce_security_token
 # ELB Logging
 We have enabled the capability for the ELB to log to s3 bucket and then be sucked into logstash. We need to set these to variables for this to work.
 
+export TF_VAR_s3_bucket_name
 export AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY

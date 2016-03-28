@@ -5,19 +5,13 @@ input {
     ssl_certificate => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_certificate_file }}"
     ssl_key         => "{{ logstash_config_dir }}/ssl/{{ lumberjack_ssl_key_file }}"
   }
-  http {
-    port  => 19532
-    type  => journald
-    threads => 10
-    codec => json_lines
-  }
 {% if logstash_s3 %}
   s3 {
-    bucket            => "elb_logs"
+    bucket            => "{{ lookup('env','TF_VAR_s3_bucket_name') }}"
     prefix            => "elb"
     delete            => true
-    region            => "eu-west-1"
-    region_endpoint   => "eu-west-1"
+    region            => "{{ lookup('env','TF_VAR_region') }}"
+    region_endpoint   => "{{ lookup('env','TF_VAR_region') }}"
     access_key_id     => "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
     secret_access_key => "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
   }
