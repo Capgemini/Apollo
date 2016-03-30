@@ -12,8 +12,8 @@ haproxy_rebuild_container: False
 
 consul_template_dir: /mnt/consul-template.d
 consul_template_loglevel: debug
-consul_backend: consul.service.consul:8500
-consul_template_version: 0.10.0
+consul_backend: 127.0.0.1:8500
+consul_template_version: 0.13.0
 
 # Proxy / www
 haproxy_endor_subdomain: www
