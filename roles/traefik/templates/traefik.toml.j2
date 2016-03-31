@@ -1,6 +1,27 @@
-port = ":{{ traefik_frontend_port }}"
+defaultEntryPoints = ["http", "https"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      # certs used as default certs
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/traefik/ssl/ca.pem"
+      keyFile = "/etc/traefik/ssl/ca-key.pem"
 graceTimeOut = 10
 logLevel = "{{ traefik_log_level }}"
+
+[acme]
+email = "test@traefik.io"
+storageFile = "/config/acme.json"
+entryPoint = "https"
+
+[[acme.domains]]
+  main = "apollo.capgeminidigital.com"
+  sans = ["chronos.apollo.capgeminidigital.com"]
 
 [web]
 address = ":{{ traefik_webui_port }}"

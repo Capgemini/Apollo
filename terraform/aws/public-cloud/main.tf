@@ -1,6 +1,8 @@
 variable "access_key" {}
 variable "secret_key" {}
 variable "public_key_file" { default = "~/.ssh/id_rsa_aws.pub" }
+variable "private_key_file" { default = "~/.ssh/id_rsa_aws.pem" }
+variable "organization" { default = "apollo" }
 variable "region" { default = "eu-west-1" }
 variable "availability_zones" { default = "eu-west-1a,eu-west-1b,eu-west-1c" }
 variable "coreos_channel" { default = "stable" }
@@ -32,6 +34,16 @@ module "aws-keypair" {
   source = "../keypair"
 
   public_key_filename = "${var.public_key_file}"
+}
+
+module "ca" {
+  source            = "github.com/Capgemini/tf_tls//ca"
+  organization      = "${var.organization}"
+  ca_count          = "${var.slaves}"
+  ip_addresses_list = "${concat(aws_instance.mesos-slave.*.public_ip)}"
+  ssh_user          = "core"
+  ssh_private_key   = "${file(var.private_key_file)}"
+  target_folder     = "/etc/traefik/ssl"
 }
 
 # internet gateway

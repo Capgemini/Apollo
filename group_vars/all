@@ -30,6 +30,7 @@ marathon_enabled: true
 datadog_enabled: false
 scope_enabled: false
 docker_host: 'unix:///var/run/weave/weave.sock'
+onpremise: false
 
 datadog_api_key: "{{ DD_API_KEY }}"
 datadog_config:

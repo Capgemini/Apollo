@@ -18,6 +18,15 @@
   tags:
     - traefik
 
+- name: Create Lets Encrypt file
+  become: yes
+  file: 
+    path: "/tmp/acme.json"
+    mode: 0644
+    state: touch
+  tags:
+    - traefik
+
 - name: install check scripts
   become: yes
   copy:
@@ -33,9 +42,12 @@
     src: traefik.service.j2
     dest: /etc/systemd/system/traefik.service
   notify:
+    - reload systemd
     - restart traefik
   tags:
     - traefik
+
+- meta: flush_handlers
 
 - name: enable traefik
   become: yes

@@ -2,12 +2,12 @@
 traefik_marathon_hostname: marathon.service.{{ consul_domain }}
 traefik_marathon_endpoint: "http://{{ traefik_marathon_hostname }}:8080"
 traefik_marathon_domain: marathon.localhost
-traefik_image_tag: v1.0.alpha.9830086790caf40ce30eb9ed5d317917f8157708
+traefik_image_tag: v1.0.0-beta.291
 traefik_image: "containous/traefik:{{ traefik_image_tag }}"
 traefik_config_dir: /etc/traefik
-traefik_frontend_port: 80
 traefik_webui_port: 8888
 traefik_log_level: DEBUG
 traefik_consul_dir: /etc/consul.d
+traefik_frontend_port: 80
 traefik_docker_socket: "{{ docker_host }}"
 traefik_network_interface: "{{ traefik_network_interface }}"
