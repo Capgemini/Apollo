@@ -20,7 +20,7 @@
     state: started
     restart_policy: always
     net: host
-    command: "-internal -cleanup -resync=10 {{ registrator_uri }}"
+    command: "-internal -cleanup -resync={{ registrator_resync_seconds }} {{ registrator_uri }}"
     volumes:
     - "{{ registrator_docker_socket }}:/tmp/docker.sock"
   environment: proxy_env

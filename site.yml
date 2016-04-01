@@ -31,8 +31,9 @@
     - dnsmasq
 
 - hosts: all:!bastion
+  serial: 1
   roles:
-    - registrator
+    - { role: registrator, tags: ["registrator"] }
     - cadvisor
     - { role: prometheus, when: prometheus_enabled|bool }
   environment:
