@@ -4,4 +4,4 @@ registrator_image: "udacity/registrator:388bc36"
 registrator_uri: "consul://{{ ansible_default_ipv4.address }}:8500"
 registrator_rebuild_container: False
 registrator_docker_socket: "/var/run/weave/weave.sock"
-registrator_resync_seconds: 120
+registrator_resync_seconds: 300
