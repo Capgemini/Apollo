@@ -1,0 +1,51 @@
+### Description:
+###      rolling-restarts consul servers, safely forcing a raft db (boltdb) recreation
+### Purpose:
+###      When Consul's raft commit time graph spikes or degrades, running this play
+###      can restore normal service (10-15ms commit times)
+### Usage:
+###      make run_playbook PLAYBOOK=reset_consul_servers.yml
+- hosts: consul_servers
+  name: collect leader facts
+  sudo: yes
+  tasks:
+    - name: find leader
+      shell: >
+        curl -s http://localhost:8500/v1/status/leader | sed 's/"\(.*\):.*/\1/'
+      register: leader_ip
+    - set_fact: consul_role={{ "leader" if leader_ip.stdout == ansible_default_ipv4.address else "follower" }}
+    - group_by: key=consul_{{ consul_role }}
+
+# reset leader last
+- hosts: consul_follower:consul_leader
+  name: reset consul servers
+  sudo: yes
+  serial: 1
+  tasks:
+    - name: stop consul server
+      service:
+        name: consul
+        state: stopped
+    - name: delete state
+      shell: >
+        rm -rf /mnt/consul/{{ item }}.bak;
+        mv /mnt/consul/{{ item }} /mnt/consul/{{ item }}.bak;
+      register: running_tasks
+      with_items:
+        - raft
+        - serf
+    - name: reset log file
+      shell: >
+        cat /dev/null > /var/log/upstart/consul.log
+    - name: wait for leadership round if this was previous leader
+      pause:
+        seconds: 15
+      when: consul_role == "leader"
+    - name: start consul server
+      service:
+        name: consul
+        state: started
+    - name: wait until remote snapshot is loaded
+      wait_for:
+        path: /var/log/upstart/consul.log
+        search_regex: "raft: Installed remote snapshot"
