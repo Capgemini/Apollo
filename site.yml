@@ -31,7 +31,6 @@
     - dnsmasq
 
 - hosts: all:!bastion
-  serial: 1
   roles:
     - { role: registrator, tags: ["registrator"] }
     - cadvisor
