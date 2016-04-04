@@ -1,7 +1,7 @@
 ---
 # update_proxy.yml - A playbook for safely rolling out updates to HAProxy
 - hosts: load_balancers
-  serial: 1
+  serial: 3
   environment:
     DOCKER_HOST: "{{ docker_host }}"
   pre_tasks:
