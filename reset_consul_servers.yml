@@ -30,7 +30,6 @@
       shell: >
         rm -rf /mnt/consul/{{ item }}.bak;
         mv /mnt/consul/{{ item }} /mnt/consul/{{ item }}.bak;
-      register: running_tasks
       with_items:
         - raft
         - serf
