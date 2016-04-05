@@ -3,6 +3,7 @@ variable "secret_key" {}
 variable "public_key_file" { default = "~/.ssh/id_rsa_aws.pub" }
 variable "region" { default = "eu-west-1" }
 variable "availability_zones" { default = "eu-west-1a,eu-west-1b,eu-west-1c" }
+variable "public_subnets" { default = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24" }
 variable "coreos_channel" { default = "stable" }
 variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt" }
 variable "masters" { default = "3" }
@@ -47,7 +48,7 @@ module "public_subnet" {
   source = "github.com/terraform-community-modules/tf_aws_public_subnet"
 
   name   = "public"
-  cidrs  = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
+  cidrs  = "${var.public_subnets}"
   azs    = "${var.availability_zones}"
   vpc_id = "${aws_vpc.default.id}"
   igw_id = "${module.igw.igw_id}"

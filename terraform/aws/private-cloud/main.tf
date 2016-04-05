@@ -4,6 +4,8 @@ variable "public_key_file" { default = "~/.ssh/id_rsa_aws.pub" }
 variable "private_key_file" { default = "~/.ssh/id_rsa_aws.pem" }
 variable "region" { default = "eu-west-1" }
 variable "availability_zones" { default = "eu-west-1a,eu-west-1b,eu-west-1c" }
+variable "public_subnets" { default = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24" }
+variable "private_subnets" { default = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24" }
 variable "vpc_cidr_block" { default = "10.0.0.0/16" }
 variable "coreos_channel" { default = "stable" }
 variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt" }
@@ -27,8 +29,8 @@ module "vpc" {
   name                = "default"
 
   cidr                = "${var.vpc_cidr_block}"
-  private_subnets     = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
-  public_subnets      = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
+  private_subnets     = "${var.private_subnets}"
+  public_subnets      = "${var.public_subnets}"
   bastion_instance_id = "${aws_instance.bastion.id}"
 
   azs                 = "${var.availability_zones}"
