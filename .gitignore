@@ -4,6 +4,7 @@
 *.tfstate*
 *.tfvars
 *.tfplan
+site.retry
 packer_cache
 packer/build
 packer/*.pem
