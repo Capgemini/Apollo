@@ -17,18 +17,8 @@
       when: bastion_ip is not defined
 
 - hosts: all
-  tasks:
-    - name: set hostname to local ipv4 address
-      sudo: Yes
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
   roles:
-    - ntp
-    - consul
-    - docker
-    - weave
-    - dnsmasq
+    - base
 
 - hosts: all:!bastion
   roles:

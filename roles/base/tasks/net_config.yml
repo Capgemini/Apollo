@@ -1,0 +1,29 @@
+- name: set hostname to local ipv4 address
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}"
+
+- name: install limits.conf
+  copy:
+    src: etc_security_limits.conf
+    dest: /etc/security/limits.conf
+
+- name: set sysctl params
+  sysctl:
+    sysctl_file: "{{ base_sysctl_network_file }}"
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  with_items: base_sysctl_config
+
+# can't use copy module + content attribute, permissions error on path
+- name: set nf_conntrack hashsize
+  shell: >
+    old_hashsize=$(cat /sys/module/nf_conntrack/parameters/hashsize);
+    new_hashsize={{ base_sysctl_nf_conntrack_hashsize | int }};
+    if [ "$old_hashsize" != "$new_hashsize" ];
+    then
+      echo $new_hashsize > /sys/module/nf_conntrack/parameters/hashsize;
+      echo changed;
+    fi
+  register: set_hashsize
+  changed_when: set_hashsize.stdout == "changed"

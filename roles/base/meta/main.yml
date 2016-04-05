@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Paul Bauer
+  description: Base configurations applied to all hosts
+  company: Udacity
+  license: license (MIT)
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+     - trusty
+  categories:
+  - cloud
+  - system
+dependencies:
+  - role: ntp
+  - role: consul
+  - role: docker
+  - role: weave
+  - role: dnsmasq

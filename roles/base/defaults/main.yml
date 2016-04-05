@@ -1,0 +1,22 @@
+base_sysctl_network_file: /etc/sysctl.d/60-network.conf
+base_sysctl_nf_conntrack_max: 131072
+base_sysctl_nf_conntrack_hashsize: "{{ base_sysctl_nf_conntrack_max / 4 }}"
+base_sysctl_config:
+  - { name: "fs.file-max", value: "100000" }
+  
+  # set ipv4 port range:
+  - { name: "net.ipv4.ip_local_port_range", value: "49152 65535" }
+  
+  # General gigabit tuning:
+  - { name: "net.core.rmem_max", value: "16777216" }
+  - { name: "net.core.wmem_max", value: "16777216" }
+  - { name: "net.ipv4.tcp_rmem", value: "4096 87380 16777216" }
+  - { name: "net.ipv4.tcp_wmem", value: "4096 65536 16777216" }
+  - { name: "net.ipv4.tcp_syncookies", value: "1" }
+
+  # Misc network tuning
+  - { name: "net.netfilter.nf_conntrack_max", value: "{{ base_sysctl_nf_conntrack_max }}" }
+  
+  # This gives the kernel more memory for tcp which you need with many (100k+) open socket connections
+  - { name: "net.ipv4.tcp_mem", value: "50576 64768 98152" }
+  - { name: "net.core.netdev_max_backlog", value: "2500" }

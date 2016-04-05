@@ -1,0 +1,4 @@
+- include: install.yml
+  tags: ["base", "install"]
+- include: net_config.yml
+  tags: ["base", "config"]
