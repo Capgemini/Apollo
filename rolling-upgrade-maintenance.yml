@@ -28,7 +28,7 @@
     - { role: consul, tags: ["consul"] }
     - { role: mesos_consul, tags: ["mesos_consul"] }
 
-- hosts: mesos_slaves
+- hosts: mesos_agents
   serial: "{{ serial | default(1) }}"
 
   roles:

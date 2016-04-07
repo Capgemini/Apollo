@@ -6,7 +6,7 @@ coreos:
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
     discovery: ${etcd_discovery_url}
   fleet:
-    metadata: "role=slave,region=${region}"
+    metadata: "role=agent,region=${region}"
     etcd_servers: "http://localhost:2379"
   locksmith:
     endpoint: "http://localhost:2379"
@@ -36,4 +36,4 @@ write_files:
     permissions: 0644
     content: "${etcd_key}"
 manage_etc_hosts: localhost
-role: mesos_slaves
+role: mesos_agents

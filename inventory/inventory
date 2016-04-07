@@ -1,19 +1,19 @@
 [role=mesos_masters]
 
-[role=mesos_slaves]
+[role=mesos_agents]
 
 [mesos_masters:children]
 role=mesos_masters
 
-[mesos_slaves:children]
-role=mesos_slaves
+[mesos_agents:children]
+role=mesos_agents
 
 [load_balancers:children]
-mesos_slaves
+mesos_agents
 
 [all:children]
 mesos_masters
-mesos_slaves
+mesos_agents
 load_balancers
 
 [all:vars]
@@ -27,7 +27,7 @@ mesos_masters
 
 [weave_servers:children]
 mesos_masters
-mesos_slaves
+mesos_agents
 load_balancers
 
 [marathon_servers:children]

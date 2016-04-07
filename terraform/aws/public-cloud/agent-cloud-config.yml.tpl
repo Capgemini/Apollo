@@ -23,8 +23,8 @@ coreos:
         What=/dev/xvdb
         Where=/var/lib/docker
         Type=ext4
-     - name: docker.service
-       drop-ins:
+    - name: docker.service
+      drop-ins:
         - name: 10-wait-docker.conf
           content: |
             [Unit]
@@ -35,7 +35,7 @@ coreos:
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
     discovery: ${etcd_discovery_url}
   fleet:
-    metadata: "role=slave,region=${region}"
+    metadata: "role=agent,region=${region}"
     public-ip: "$public_ipv4"
     etcd_servers: "http://localhost:2379"
   locksmith:

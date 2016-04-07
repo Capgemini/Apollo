@@ -44,7 +44,7 @@ unset VAGRANT_VAGRANTFILE
 
 _**Note**: When using vagrant-hosts plugin, you will either have to run the above command as sudo or have your hosts file writeable for the user running the command._
 
-Vagrant will set up a 3 node mesos-master cluster and 1 mesos-slave. By default the master nodes will each take up 256MB and 1 CPU. The slave will take 1024MB and 2 CPUs.
+Vagrant will set up a 3 node mesos-master cluster and 1 mesos-agent. By default the master nodes will each take up 256MB and 1 CPU. The agent will take 1024MB and 2 CPUs.
 
 By default the web interfaces should be available on -
 
@@ -66,11 +66,11 @@ To tweak these settings you may modify `vagrant.yml`
 
 You can interact with your Apollo cluster via the normal vagrant commands - `vagrant up` `vagrant halt` `vagrant destroy` etc...
 
-#### Adding more slave machines
+#### Adding more agent machines
 
 Edit `vagrant.yml`
 
-Add a new ip under `slaves.ips:` following the ip´s convention (i.e. 172.31.1.15).
+Add a new ip under `agents.ips:` following the ip´s convention (i.e. 172.31.1.15).
 
 #### Configuration for standalone mode
 

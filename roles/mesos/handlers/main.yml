@@ -6,10 +6,10 @@
     name: mesos-master
     state: started
 
-- name: start mesos slave
+- name: start mesos agent
   become: yes
   service:
-    name: mesos-slave
+    name: mesos-agent
     state: started
 
 - name: restart mesos master
@@ -18,8 +18,8 @@
     name: mesos-master
     state: restarted
 
-- name: restart mesos slave
+- name: restart mesos agent
   become: yes
   service:
-    name: mesos-slave
+    name: mesos-agent
     state: restarted
