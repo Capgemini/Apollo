@@ -19,4 +19,3 @@ consul_template_version: 0.13.0
 haproxy_endor_subdomain: www
 haproxy_gae_subdomain: gae
 
-haproxy_geolocation_txt_url: https://s3-us-west-2.amazonaws.com/udacity-public/geolocation.txt
