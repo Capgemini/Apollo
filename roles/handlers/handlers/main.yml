@@ -19,8 +19,6 @@
    name: docker
    state: restarted
   become: yes
-  notify:
-  - wait for weave to listen
 
 - name: wait for weave to listen
   wait_for:
