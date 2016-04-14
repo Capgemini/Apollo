@@ -37,6 +37,7 @@ ExecStart=/usr/bin/docker run --rm --name mesos_agent \
 -e "MESOS_ISOLATION=cgroups/cpu,cgroups/mem" \
 -e "MESOS_CGROUPS_ROOT=system.slice/mesos-agent.service" \
 -e "MESOS_CGROUPS_HIERARCHY=/sys/fs/cgroup" \
+-e "LIBPROCESS_IP=${COREOS_PRIVATE_IPV4}" \
 {{ mesos_agent_image }}
 
 ExecStop=/usr/bin/docker stop mesos_agent
