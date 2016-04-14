@@ -40,12 +40,13 @@ For a full list of default config options for AWS see `bootstrap/aws/config-defa
 As a minimum you will need to set these environment variables -
 
 ```
-APOLLO_PROVIDER=aws
+APOLLO_PROVIDER=aws/private-cloud
 TF_VAR_user
 TF_VAR_access_key
 TF_VAR_secret_key
 TF_VAR_key_name="deployer"
 TF_VAR_key_file='~/.ssh/id_rsa_aws.pub'
+TF_VAR_public_key_file='~/.ssh/id_rsa_aws.pub'
 TF_VAR_private_key_file='~/.ssh/id_rsa_aws.pem'
 ```
 
@@ -56,7 +57,7 @@ TF_VAR_private_key_file='~/.ssh/id_rsa_aws.pem'
 
 NOTE: The script will provision a new VPC and a 3 node mesos master cluster across all the availability zones in eu-west-1 (Ireland).
 
-It will also create a mesos slave cluster and a Bastion server for accessing the VPC via VPN and SSH.
+It will also create a mesos agent cluster and a Bastion server for accessing the VPC via VPN and SSH.
 
 It will then generate a local SSH config for the Bastion server and the private instances, and run an
 Ansible playbook to provision the cluster.

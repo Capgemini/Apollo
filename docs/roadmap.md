@@ -43,7 +43,7 @@ Features
 - [ ] Distributed File storage (for nodes/services)
 - [ ] Multi-Datacenter
 - [ ] Multi-Cloud
-- [ ] Autoscaling of Mesos slave nodes
+- [ ] Autoscaling of Mesos agent nodes
 
 Security
 --------

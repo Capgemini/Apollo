@@ -10,6 +10,6 @@ output "master.3.ip" {
 output "master_ips" {
    value = "${join(",", google_compute_instance.mesos-master.*.network_interface.0.access_config.0.nat_ip)}"
 }
-output "slave_ips" {
-   value = "${join(",", google_compute_instance.mesos-slave.*.network_interface.0.access_config.0.nat_ip)}"
+output "agent_ips" {
+   value = "${join(",", google_compute_instance.mesos-agent.*.network_interface.0.access_config.0.nat_ip)}"
 }

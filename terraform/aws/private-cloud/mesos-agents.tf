@@ -1,17 +1,17 @@
-module "slave_amitype" {
+module "agent_amitype" {
   source        = "github.com/terraform-community-modules/tf_aws_virttype"
-  instance_type = "${var.slave_instance_type}"
+  instance_type = "${var.agent_instance_type}"
 }
 
-module "slave_ami" {
+module "agent_ami" {
   source   = "github.com/terraform-community-modules/tf_aws_coreos_ami"
   region   = "${var.region}"
   channel  = "${var.coreos_channel}"
-  virttype = "${module.slave_amitype.prefer_hvm}"
+  virttype = "${module.agent_amitype.prefer_hvm}"
 }
 
-resource "template_file" "slave_cloud_init" {
-  template   = "slave-cloud-config.yml.tpl"
+resource "template_file" "agent_cloud_init" {
+  template   = "agent-cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
@@ -21,22 +21,22 @@ resource "template_file" "slave_cloud_init" {
 }
 
 /*
-  @todo This should be changed to be an autoscaling slave with launch config
+  @todo This should be changed to be an autoscaling agent with launch config
  */
-resource "aws_instance" "mesos-slave" {
-  instance_type     = "${var.slave_instance_type}"
-  ami               = "${module.slave_ami.ami_id}"
-  count             = "${var.slaves}"
+resource "aws_instance" "mesos-agent" {
+  instance_type     = "${var.agent_instance_type}"
+  ami               = "${module.agent_ami.ami_id}"
+  count             = "${var.agents}"
   key_name          = "${module.aws-keypair.keypair_name}"
   source_dest_check = false
-  # @todo - fix this as this only allows 3 slaves maximum (due to splittingo on the count variable)
+  # @todo - fix this as this only allows 3 agents maximum (due to splittingo on the count variable)
   subnet_id         = "${element(split(",", module.vpc.private_subnets), count.index)}"
   security_groups   = ["${module.sg-default.security_group_id}"]
   depends_on        = ["aws_instance.bastion", "aws_instance.mesos-master"]
   user_data         = "${template_file.master_cloud_init.rendered}"
   tags = {
-    Name = "apollo-mesos-slave-${count.index}"
-    role = "mesos_slaves"
+    Name = "apollo-mesos-agent-${count.index}"
+    role = "mesos_agents"
   }
   connection {
     user                = "core"
@@ -63,7 +63,7 @@ resource "aws_instance" "mesos-slave" {
 
   ebs_block_device {
     device_name           = "/dev/xvdb"
-    volume_size           = "${var.slave_ebs_volume_size}"
+    volume_size           = "${var.agent_ebs_volume_size}"
     delete_on_termination = true
   }
 }

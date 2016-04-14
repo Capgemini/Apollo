@@ -39,11 +39,12 @@ For a full list of default config options for AWS see `bootstrap/aws-public/conf
 As a minimum you will need to set these environment variables -
 
 ```
-APOLLO_PROVIDER=aws-public
+APOLLO_PROVIDER=aws/public-cloud
 TF_VAR_access_key
 TF_VAR_secret_key
 TF_VAR_key_name="deployer"
 TF_VAR_key_file='~/.ssh/id_rsa_aws.pub'
+TF_VAR_public_key_file='~/.ssh/id_rsa_aws.pub'
 ```
 
 #### Turn up the cluster

@@ -1,0 +1,10 @@
+{
+  "mesos": {
+    "master": "mesos://{{ dcos_cli_zk_master_peers }}"
+  },
+  "spark": {
+    "cpus": {{ dcos_cli_framework_spark_cpus }},
+    "mem": {{ dcos_cli_framework_spark_mem }},
+    "zookeeper": "{{ zookeeper_peers_nodes }}"
+  }
+}

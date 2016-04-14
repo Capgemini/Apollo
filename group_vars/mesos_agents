@@ -14,7 +14,7 @@ datadog_checks:
       - url: http://localhost:8500
         catalog_checks: yes
         new_leader_checks: yes
-  mesos_slave:
+  mesos_agent:
     init_config:
       default_timeout: 10
     instances:

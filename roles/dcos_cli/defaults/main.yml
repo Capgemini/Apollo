@@ -5,7 +5,7 @@ dcos_cli_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 dcos_cli_mesos_master_url: "http://{{ ansible_host }}:5050"
 dcos_cli_marathon_url: "http://{{ ansible_host }}:8080"
 dcos_cli_no_proxy: "{{ ansible_host }}:8080,{{ ansible_host }}:5050"
-dcos_cli_sources: '["https://github.com/Capgemini/universe/archive/version-1.x.zip",]'
+dcos_cli_sources: '["https://github.com/mesosphere/universe/archive/version-1.x.zip", "https://github.com/mesosphere/multiverse/archive/version-1.x.zip"]'
 dcos_cli_container_environment:
   http_proxy: "{{ proxy_env.http_proxy }}"
   https_proxy: "{{ proxy_env.https_proxy }}"
@@ -21,6 +21,7 @@ dcos_cli_frameworks_list:
   - cassandra
   - chronos
   - exhibitor
+  - spark
 
 # Type flag allows you to set up a command which you want to use to run an app.
 # To run one app use "type: app" and to run group of apps use "type: group".

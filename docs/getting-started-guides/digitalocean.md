@@ -50,7 +50,7 @@ TF_VAR_public_key_file=
 /bin/bash bootstrap/apollo-launch.sh
 ```
 
-NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK) by default. It will also create a mesos slave cluster and a SSH key so you can access the droplets.
+NOTE: The script will provision a 3 node mesos master cluster in lon1 (UK) by default. It will also create a mesos agent cluster and a SSH key so you can access the droplets.
 
 
 #### Tearing down the cluster

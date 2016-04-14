@@ -1,7 +1,7 @@
 ---
 consul_dir: /etc/consul.d
 zookeeper_config_dir: /etc/zookeeper/conf
-zookeeper_image: "mesosphere/mesos:0.27.1-2.0.226.ubuntu1404"
+zookeeper_image: "mesosphere/mesos:0.28.0-2.0.16.ubuntu1404"
 zookeeper_client_port: 2181
 zookeeper_leader_connect_port: 2888
 zookeeper_leader_election_port: 3888

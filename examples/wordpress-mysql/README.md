@@ -31,13 +31,13 @@ The service will be accessible through the HAProxy container (on port 80) at ```
 
 ### For cloud instances
 
-If you are running the application in the cloud make sure you have enough compute power in your cluster to handle the web applications and the databases. We have tested running up the following example in AWS on a 5 node cluster (3 master / 2 slave) using ```c3.large``` compute instances, which work well enough for demo purposes.
+If you are running the application in the cloud make sure you have enough compute power in your cluster to handle the web applications and the databases. We have tested running up the following example in AWS on a 5 node cluster (3 master / 2 agent) using ```c3.large``` compute instances, which work well enough for demo purposes.
 
-To access the WordPress site, you will either need to have DNS set up or map either the ELB or the slave instance IP to your ```/etc/hosts``` file. Go grab the IP address and map it to
+To access the WordPress site, you will either need to have DNS set up or map either the ELB or the agent instance IP to your ```/etc/hosts``` file. Go grab the IP address and map it to
 
 
 ```
-SLAVE_IP_HOST wordpress.example.com
+AGENT_IP_HOST wordpress.example.com
 ```
 
 ### For Vagrant only
@@ -48,9 +48,9 @@ If you are deploying this example in the Vagrant environment, simply add the fol
 172.31.1.14 wordpress.example.com
 ```
 
-Where ```172.31.1.14``` is the Slave IP address configured in ```vagrant.yml```
+Where ```172.31.1.14``` is the Agent IP address configured in ```vagrant.yml```
 If you access ```wordpress.example.com``` through your browser that will hit the Haproxy container
-running on the slave machine which will forward the traffic to the WordPress docker container.
+running on the agent machine which will forward the traffic to the WordPress docker container.
 
 ### Installing WordPress
 
