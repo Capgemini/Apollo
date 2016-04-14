@@ -52,13 +52,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   masters_n    = masters_conf['ips'].count
   master_infos = []
 
-  # Mesos slave nodes
-  slaves_conf = conf['slaves']
-  ansible_groups["mesos_slaves"] = []
-  slave_n = slaves_conf['ips'].count
+  # Mesos agent nodes
+  agents_conf = conf['agents']
+  ansible_groups["mesos_agents"] = []
+  agent_n = agents_conf['ips'].count
 
   # etcd discovery token
-  total_instances = slave_n + masters_n
+  total_instances = agent_n + masters_n
   etcd_discovery_token(total_instances)
 
   # Mesos master nodes
@@ -113,18 +113,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Add apollo variables to ansible ones
   ansible_extra_vars.merge!(apollo_vars)
 
-  (1..slave_n).each { |i|
+  (1..agent_n).each { |i|
 
-    ip = slaves_conf['ips'][i - 1]
+    ip = agents_conf['ips'][i - 1]
     node = {
-      :hostname => "slave#{i}",
+      :hostname => "agent#{i}",
       :ip       => ip,
-      :mem      => slaves_conf['mem'],
-      :cpus     => slaves_conf['cpus'],
+      :mem      => agents_conf['mem'],
+      :cpus     => agents_conf['cpus'],
     }
 
     # Add the node to the correct ansible group.
-    ansible_groups["mesos_slaves"].push(node[:hostname])
+    ansible_groups["mesos_agents"].push(node[:hostname])
 
     # Bootstrap the machines for CoreOS first
     if File.exist?(CLOUD_CONFIG_PATH)
@@ -142,9 +142,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.name = 'coreos-mesos-' + node[:hostname]
         vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus] ]
 
-        # We invoke ansible on the last slave with ansible.limit = 'all'
-        # this runs the provisioning across all masters and slaves in parallel.
-        if node[:hostname] == "slave#{slave_n}"
+        # We invoke ansible on the last agent with ansible.limit = 'all'
+        # this runs the provisioning across all masters and agents in parallel.
+        if node[:hostname] == "agent#{agent_n}"
 
           machine.vm.provision :ansible do |ansible|
             ansible.playbook = "site.yml"

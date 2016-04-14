@@ -44,9 +44,9 @@
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-- hosts: mesos_slaves
+- hosts: mesos_agents
   roles:
-    - { role: mesos, mesos_install_mode: "slave" }
+    - { role: mesos, mesos_install_mode: "agent" }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 

@@ -9,11 +9,11 @@ mesos_docker_socket: "/var/run/weave/weave.sock"
 mesos_version: "0.28.0-2.0.16.ubuntu1404"
 
 # Defaults file for mesos-salve
-mesos_slave_port: 5051
+mesos_agent_port: 5051
 mesos_containerizers: "docker,mesos"
 mesos_resources: "ports(*):[31000-32000]"
-mesos_slave_work_dir: "/tmp/mesos"
-mesos_slave_image: "mesosphere/mesos-slave:{{ mesos_version }}"
+mesos_agent_work_dir: "/tmp/mesos"
+mesos_agent_image: "mesosphere/mesos-slave:{{ mesos_version }}"
 
 # Defaults file for mesos-master
 mesos_zookeeper_group: zookeeper_servers

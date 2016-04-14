@@ -44,7 +44,7 @@ We start Docker with:
 DOCKER_OPTS="--bridge=weave --fixed-cidr={{ weave_docker_subnet }}
 ```
 
-We set up the Weave bridge on each slave instance with:
+We set up the Weave bridge on each agent instance with:
 
 ```
 auto weave

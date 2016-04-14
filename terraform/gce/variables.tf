@@ -28,8 +28,8 @@ variable "zone" {
   default     = "europe-west1-b"
 }
 
-variable "slaves" {
-  description = "The number of slaves."
+variable "agents" {
+  description = "The number of agents."
   default     = "1"
 }
 
@@ -41,20 +41,20 @@ variable "masters" {
 variable "instance_type" {
   default = {
     master = "n1-standard-2"
-    slave  = "n1-standard-2"
+    agent  = "n1-standard-2"
   }
 }
 
 variable "atlas_artifact" {
   default = {
     master = "capgemini/apollo-ubuntu-14.04-amd64"
-    slave  = "capgemini/apollo-ubuntu-14.04-amd64"
+    agent  = "capgemini/apollo-ubuntu-14.04-amd64"
   }
 }
 
 variable "atlas_artifact_version" {
   default = {
     master = "1"
-    slave  = "1"
+    agent  = "1"
   }
 }

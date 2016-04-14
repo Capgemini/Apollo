@@ -33,9 +33,9 @@ If you are deploying this example in the Vagrant environment, simply add the fol
 172.31.1.14 springboot.example.com
 ```
 
-Where ```172.31.1.14``` is the Slave IP address configured in ```vagrant.yml```
+Where ```172.31.1.14``` is the Agent IP address configured in ```vagrant.yml```
 If you access ```springboot.example.com``` through your browser that will hit the Haproxy container
-running on the slave machine which will forward the traffic to the Drupal docker container.
+running on the agent machine which will forward the traffic to the Drupal docker container.
 
 ### Removing the apps
 

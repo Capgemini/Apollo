@@ -11,9 +11,9 @@ variable "coreos_channel" { default = "stable" }
 variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt" }
 variable "masters" { default = "3" }
 variable "master_instance_type" { default = "m3.medium" }
-variable "slaves" { default = "1" }
-variable "slave_instance_type" { default = "m3.medium" }
-variable "slave_ebs_volume_size" { default = "30" }
+variable "agents" { default = "1" }
+variable "agent_instance_type" { default = "m3.medium" }
+variable "agent_ebs_volume_size" { default = "30" }
 variable "bastion_instance_type" { default = "t2.micro" }
 variable "docker_version" { default = "1.9.1-0~trusty" }
 
@@ -54,7 +54,7 @@ module "elb" {
   source = "../elb"
 
   security_groups = "${module.sg-default.security_group_id}"
-  instances       = "${join(\",\", aws_instance.mesos-slave.*.id)}"
+  instances       = "${join(\",\", aws_instance.mesos-agent.*.id)}"
   subnets         = "${module.vpc.public_subnets}"
 }
 
@@ -77,8 +77,8 @@ output "bastion.ip" {
 output "master_ips" {
   value = "${join(",", aws_instance.mesos-master.*.private_ip)}"
 }
-output "slave_ips" {
-  value = "${join(",", aws_instance.mesos-slave.*.private_ip)}"
+output "agent_ips" {
+  value = "${join(",", aws_instance.mesos-agent.*.private_ip)}"
 }
 output "vpc_cidr_block_ip" {
  value = "${module.vpc.vpc_cidr_block}"
