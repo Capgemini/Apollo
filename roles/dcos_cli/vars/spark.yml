@@ -1,0 +1,3 @@
+dcos_cli_framework_spark_enabled: "{{ spark_enabled }}"
+dcos_cli_framework_spark_mem: 2048.0
+dcos_cli_framework_spark_cpus: 2
