@@ -1,5 +1,5 @@
 - name: create configuration and ssl directory
-  sudo: yes
+  become: yes
   file:
     path: "{{ item }}"
     state: directory
@@ -12,7 +12,7 @@
     - logstash
 
 - name: configure logstash
-  sudo: yes
+  become: yes
   template:
     src: logstash.conf.j2
     dest: "{{ logstash_config_dir }}/logstash.conf"
@@ -21,8 +21,8 @@
 
 # tasks for running lumberjack
 - name: deploy lumberjack service
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   template:
     src: lumberjack.service.j2
     dest: /etc/systemd/system/lumberjack.service
@@ -30,7 +30,7 @@
     - lumberjack
 
 - name: upload lumberjack config files
-  sudo: yes
+  become: yes
   template:
     src: logstash-forwarder.conf.j2
     dest: "{{ logstash_config_dir }}/lumberjack/logstash-forwarder.conf"
@@ -42,7 +42,7 @@
     src: "{{ item }}"
     dest: "{{ logstash_config_dir }}/ssl/{{ item }}"
     mode: 0644
-  sudo: yes
+  become: yes
   with_items:
     - "{{ lumberjack_ssl_certificate_file }}"
     - "{{ lumberjack_ssl_key_file }}"

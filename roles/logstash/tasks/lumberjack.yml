@@ -8,7 +8,7 @@
     - logstash
 
 - name: ensure lumberjack is running (and enable it at boot)
-  sudo: yes
+  become: yes
   service:
     name: lumberjack
     state: started
