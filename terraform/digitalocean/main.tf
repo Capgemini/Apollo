@@ -2,9 +2,9 @@ variable "do_token" {}
 variable "organization" { default = "apollo" }
 variable "region" { default = "lon1" }
 variable "masters" { default = "3" }
-variable "slaves" { default = "1" }
+variable "agents" { default = "1" }
 variable "master_instance_type" { default = "512mb" }
-variable "slave_instance_type" { default = "512mb" }
+variable "agent_instance_type" { default = "512mb" }
 variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt" }
 variable "coreos_image" { default = "coreos-stable" }
 
@@ -116,8 +116,8 @@ resource "template_file" "master_cloud_init" {
   }
 }
 
-resource "template_file" "slave_cloud_init" {
-  template   = "slave-cloud-config.yml.tpl"
+resource "template_file" "agent_cloud_init" {
+  template   = "agent-cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
@@ -143,15 +143,15 @@ resource "digitalocean_droplet" "mesos-master" {
   ]
 }
 
-# Slaves
-resource "digitalocean_droplet" "mesos-slave" {
+# agents
+resource "digitalocean_droplet" "mesos-agent" {
   image              = "${var.coreos_image}"
   region             = "${var.region}"
-  count              = "${var.slaves}"
-  name               = "apollo-mesos-slave-${count.index}"
-  size               = "${var.slave_instance_type}"
+  count              = "${var.agents}"
+  name               = "apollo-mesos-agent-${count.index}"
+  size               = "${var.agent_instance_type}"
   private_networking = true
-  user_data          = "${template_file.slave_cloud_init.rendered}"
+  user_data          = "${template_file.agent_cloud_init.rendered}"
   ssh_keys = [
     "${digitalocean_ssh_key.default.id}"
   ]
@@ -161,6 +161,6 @@ resource "digitalocean_droplet" "mesos-slave" {
 output "master_ips" {
   value = "${join(",", digitalocean_droplet.mesos-master.*.ipv4_address)}"
 }
-output "slave_ips" {
-  value = "${join(",", digitalocean_droplet.mesos-slave.*.ipv4_address)}"
+output "agent_ips" {
+  value = "${join(",", digitalocean_droplet.mesos-agent.*.ipv4_address)}"
 }

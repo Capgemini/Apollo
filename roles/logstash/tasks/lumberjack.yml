@@ -1,0 +1,17 @@
+---
+- name: wait for logstash to start up
+  wait_for:
+    host: "{{ logstash_lumberjack_host }}"
+    port: "{{ lumberjack_host_port }}"
+    delay: 15
+  tags:
+    - logstash
+
+- name: ensure lumberjack is running (and enable it at boot)
+  become: yes
+  service:
+    name: lumberjack
+    state: started
+    enabled: yes
+  tags:
+    - logstash

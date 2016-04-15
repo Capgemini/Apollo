@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   }
 
   ansible_groups["mesos_masters"] = []
-  ansible_groups["mesos_slaves"]  = []
+  ansible_groups["mesos_agents"]  = []
 
   # Single instance token
   etcd_discovery_token(1)
@@ -80,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Add the node to the correct ansible group.
   ansible_groups["mesos_masters"].push(node['hostname'])
-  ansible_groups["mesos_slaves"].push(node['hostname'])
+  ansible_groups["mesos_agents"].push(node['hostname'])
 
   # Bootstrap the machines for CoreOS first
   if File.exist?(CLOUD_CONFIG_PATH)

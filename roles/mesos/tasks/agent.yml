@@ -1,41 +1,41 @@
 ---
-# Tasks for Slave nodes
-- name: create mesos-slave work directory
+# Tasks for Agent nodes
+- name: create mesos-agent work directory
   file:
-    path: "{{ mesos_slave_work_dir }}"
+    path: "{{ mesos_agent_work_dir }}"
     state: directory
     mode: 0755
   become: yes
   tags:
-    - mesos-slave
+    - mesos-agent
 
-- name: deploy mesos-slave service
+- name: deploy mesos-agent service
   become: yes
   become_user: root
   template:
-    src: mesos-slave.service.j2
-    dest: /etc/systemd/system/mesos-slave.service
+    src: mesos-agent.service.j2
+    dest: /etc/systemd/system/mesos-agent.service
   notify:
     - reload systemd
-    - restart mesos slave
+    - restart mesos agent
   tags:
-    - mesos-slave
+    - mesos-agent
 
-- name: ensure mesos-slave is running (and enable it at boot)
+- name: ensure mesos-agent is running (and enable it at boot)
   become: yes
   service:
-    name: mesos-slave
+    name: mesos-agent
     state: started
     enabled: yes
   tags:
-    - mesos-slave
+    - mesos-agent
 
-- name: run prometheus mesos slave exporter container
+- name: run prometheus mesos agent exporter container
   when: prometheus_enabled|bool
   docker:
     name: mesos-exporter
     image: "{{ prometheus_mesos_exporter_image }}"
-    command: "-exporter.scrape-mode=slave -exporter.url=http://{{ mesos_hostname }}:{{ mesos_slave_port }}"
+    command: "-exporter.scrape-mode=agent -exporter.url=http://{{ mesos_hostname }}:{{ mesos_agent_port }}"
     state: started
     restart_policy: always
     ports:
@@ -43,7 +43,7 @@
   environment: "{{ proxy_env }}"
   tags:
     - prometheus
-    - mesos_slave
+    - mesos_agent
 
 - name: Set mesos-exporter consul service definition
   when: prometheus_enabled|bool
@@ -55,4 +55,4 @@
     - restart consul
   tags:
     - prometheus
-    - mesos_slave
+    - mesos_agent

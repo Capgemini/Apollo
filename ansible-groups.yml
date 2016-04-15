@@ -1,21 +1,24 @@
 ansible_groups:
   "all:children":
     - mesos_masters
-    - mesos_slaves
+    - mesos_agents
     - load_balancers
   "load_balancers:children":
-    - mesos_slaves
+    - mesos_agents
   "zookeeper_servers:children":
     - mesos_masters
   "consul_servers:children":
     - mesos_masters
+  "log_servers:children":
+    - mesos_masters
+    - mesos_agents
   "weave_servers:children":
     - mesos_masters
-    - mesos_slaves
+    - mesos_agents
     - load_balancers
   "marathon_servers":
     - mesos_masters
   "vagrant:children":
     - mesos_masters
-    - mesos_slaves
+    - mesos_agents
     - load_balancers

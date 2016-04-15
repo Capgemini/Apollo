@@ -7,8 +7,6 @@
     name: consul
     state: restarted
   become: yes
-  notify:
-    - wait for consul to listen
 
 - name: wait for consul to listen
   wait_for:
@@ -19,8 +17,6 @@
    name: docker
    state: restarted
   become: yes
-  notify:
-  - wait for weave to listen
 
 - name: wait for weave to listen
   wait_for:

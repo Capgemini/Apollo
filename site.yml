@@ -18,6 +18,7 @@
       become: false
       when: bastion_ip is not defined
 
+
 - include: playbooks/coreos-bootstrap.yml
 
 - hosts: all:!role=bastion
@@ -39,14 +40,14 @@
   roles:
     - zookeeper
     - { role: mesos, mesos_install_mode: "master" }
-    - { role: marathon, when: marathon_enabled|bool }
     - mesos_consul
+    - { role: marathon, when: marathon_enabled|bool }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
-- hosts: mesos_slaves
+- hosts: mesos_agents
   roles:
-    - { role: mesos, mesos_install_mode: "slave" }
+    - { role: mesos, mesos_install_mode: "agent" }
   environment:
     DOCKER_HOST: "{{ docker_host }}"
 
@@ -58,5 +59,11 @@
 
 # Installing DCOS frameworks and apps from one master.
 - include: dcos.yml
+
+- hosts: log_servers
+  roles:
+    - { role: logstash, when: elk_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
 
 - include: contrib-plugins/playbook.yml

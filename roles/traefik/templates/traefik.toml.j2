@@ -3,7 +3,7 @@ defaultEntryPoints = ["http", "https"]
   [entryPoints.http]
   address = ":80"
     [entryPoints.http.redirect]
-    entryPoint = "https"
+      entryPoint = "https"
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
@@ -18,10 +18,10 @@ logLevel = "{{ traefik_log_level }}"
 email = "test@traefik.io"
 storageFile = "/config/acme.json"
 entryPoint = "https"
+onDemand = trues
 
 [[acme.domains]]
-  main = "apollo.capgeminidigital.com"
-  sans = ["chronos.apollo.capgeminidigital.com"]
+  main = "{{ traefik_marathon_domain }}"
 
 [web]
 address = ":{{ traefik_webui_port }}"
