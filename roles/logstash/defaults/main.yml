@@ -1,0 +1,29 @@
+---
+# lumberjack configuration
+lumberjack_enabled: "{{ elk_enabled }}"
+lumberjack_restart_policy: 'always'
+lumberjack_version: latest
+lumberjack_net: 'bridge'
+lumberjack_hostname: "{{ ansible_host }}"
+lumberjack_image: "digitalwonderland/logstash-forwarder:{{ lumberjack_version }}"
+lumberjack_host_port: 5043
+lumberjack_consul_service_id: "{{ ansible_hostname }}:lumberjack:{{ lumberjack_host_port }}"
+lumberjack_ssl_certificate_file: "logstash-forwarder.crt"
+lumberjack_ssl_key_file: "logstash-forwarder.key"
+lumberjack_docker_socket: "{{ docker_host }}"
+
+logstash_config_dir: "/opt/logstash/conf.d"
+logstash_lumberjack_host: "logstash.service.{{ consul_domain }}"
+logstash_output_stdout: false
+logstash_salesforce: false
+logstash_s3: false
+logstash_elasticsearch_output: "elasticsearch.service.{{ consul_domain }}:9200"
+
+dcos_cli_image: capgemini/dcos-cli
+dcos_cli_zk_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
+dcos_cli_mesos_master_url: "http://{{ ansible_host }}:5050"
+dcos_cli_marathon_url: "http://{{ ansible_host }}:8080"
+dcos_cli_sources: '["https://github.com/mesosphere/multiverse/archive/version-1.x.zip"]'
+dcos_cli_apps_list:
+  - { name: logstash, type: app }
+  - { name: kibana, type: app }

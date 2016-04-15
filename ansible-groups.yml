@@ -9,6 +9,9 @@ ansible_groups:
     - mesos_masters
   "consul_servers:children":
     - mesos_masters
+  "log_servers:children":
+    - mesos_masters
+    - mesos_agents
   "weave_servers:children":
     - mesos_masters
     - mesos_agents

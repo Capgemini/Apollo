@@ -19,9 +19,9 @@ ExecStart=/usr/bin/docker run --rm --name mesos_master \
 -e "MESOS_IP={{ mesos_ip }}" \
 -e "MESOS_CLUSTER={{ mesos_cluster_name }}" \
 -e "MESOS_ZK=zk://{{ zookeeper_peers_nodes }}/mesos" \
--e "MESOS_LOG_DIR=/var/log/mesos" \
 -e "MESOS_QUORUM={{ mesos_quorum }}" \
 -e "MESOS_WORK_DIR={{ mesos_master_work_dir }}" \
+-e "MESOS_EXTERNAL_LOG_FILE=/var/log/mesos" \
 -e "LIBPROCESS_IP=${COREOS_PRIVATE_IPV4}" \
 {{ mesos_master_image }} {{ mesos_master_command }}
 

@@ -163,7 +163,7 @@ install_contributed_roles() {
 
 get_ansible_inventory() {
     pushd $APOLLO_ROOT
-    if [ ! inventory/terraform.py ]; then
+    if [ ! -f inventory/terraform.py ]; then
       curl -sS https://raw.githubusercontent.com/Capgemini/terraform.py/1.2/terraform.py -o inventory/terraform.py
       chmod 755 inventory/terraform.py
     fi

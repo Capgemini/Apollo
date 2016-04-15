@@ -1,0 +1,8 @@
+dcos_cli_app_logstash_enabled: "{{ elk_enabled }}"
+dcos_cli_app_logstash_image: logstash
+dcos_cli_app_logstash_image_tag: 2.3.1-1
+dcos_cli_app_logstash_mem: 756
+dcos_cli_app_logstash_cpus: 0.8
+dcos_cli_app_logstash_instances: 1
+dcos_cli_app_logstash_config_dir: '/opt/logstash/conf.d'
+dcos_cli_app_logstash_elasticsearch: elasticsearch.service.{{ consul_domain }}:9200
