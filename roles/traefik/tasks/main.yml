@@ -20,7 +20,7 @@
 
 - name: Create Lets Encrypt file
   become: yes
-  file: 
+  file:
     path: "/tmp/acme.json"
     mode: 0644
     state: touch

@@ -1,14 +1,11 @@
 # Sample plugins playbook.
 - hosts: all:!role=bastion
-
   tasks:
     - name: reload systemd
-      sudo: yes
+      become: yes
       command: systemctl daemon-reload
       when: datadog_enabled|bool
       notify:
         - restart datadog-agent
-
   roles:
     - { role: datadog, when: datadog_enabled|bool }
-
