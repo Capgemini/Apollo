@@ -44,7 +44,8 @@ resource "aws_s3_bucket" "elb" {
   ]
 }
 EOF
-
+  
+  force_destroy = true
   tags {
     Name = "${var.elb_name}"
   }

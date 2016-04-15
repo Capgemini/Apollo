@@ -35,4 +35,4 @@ mesos_masters
 
 [log_servers:children]
 mesos_masters
-mesos_slaves
+mesos_agents
