@@ -4,4 +4,3 @@
 
 - src: defunctzombie.coreos-bootstrap
   name: coreos_bootstrap
-  when: onpremise|bool

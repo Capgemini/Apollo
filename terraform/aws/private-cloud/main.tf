@@ -2,6 +2,7 @@ variable "access_key" {}
 variable "secret_key" {}
 variable "public_key_file" { default = "~/.ssh/id_rsa_aws.pub" }
 variable "private_key_file" { default = "~/.ssh/id_rsa_aws.pem" }
+variable "organization" { default = "apollo" }
 variable "region" { default = "eu-west-1" }
 variable "availability_zones" { default = "eu-west-1a,eu-west-1b,eu-west-1c" }
 variable "public_subnets" { default = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24" }

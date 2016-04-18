@@ -2,6 +2,10 @@ variable "account_file" {
   description = "The gce account file."
   default     = ""
 }
+
+variable "organization" { 
+  default = "apollo" 
+}
  
 variable "project" {
   description = "The gce project."

@@ -21,7 +21,7 @@
 - name: Create Lets Encrypt file
   become: yes
   file:
-    path: "/tmp/acme.json"
+    path: "{{ traefik_config_dir }}/acme.json"
     mode: 0644
     state: touch
   tags:
@@ -46,8 +46,6 @@
     - restart traefik
   tags:
     - traefik
-
-- meta: flush_handlers
 
 - name: enable traefik
   become: yes

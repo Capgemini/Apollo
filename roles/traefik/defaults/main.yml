@@ -5,9 +5,9 @@ traefik_marathon_domain: marathon.localhost
 traefik_image_tag: v1.0.0-beta.440
 traefik_image: "containous/traefik:{{ traefik_image_tag }}"
 traefik_config_dir: /etc/traefik
+traefik_frontend_port: 80
 traefik_webui_port: 8888
 traefik_log_level: DEBUG
 traefik_consul_dir: /etc/consul.d
-traefik_frontend_port: 80
 traefik_docker_socket: "{{ docker_host }}"
 traefik_network_interface: "{{ traefik_network_interface }}"

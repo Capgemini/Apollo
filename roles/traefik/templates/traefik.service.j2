@@ -16,7 +16,7 @@ ExecStartPre=/usr/bin/docker pull {{ traefik_image }}
 ExecStartPre={{ traefik_config_dir }}/wait-for-marathon.sh {{ traefik_marathon_hostname }}
 ExecStart=/usr/bin/docker run --rm --name traefik \
 --net=host \
--v /tmp/acme.json:/config/acme.json \
+-v {{ traefik_config_dir }}/acme.json:/config/acme.json \
 -v /etc/traefik/ssl:/etc/traefik/ssl:ro \
 -v {{ traefik_config_dir }}/traefik.toml:/traefik.toml:ro \
 {{ traefik_image }}

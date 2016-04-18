@@ -5,6 +5,16 @@ resource "atlas_artifact" "mesos-agent" {
   version = "${var.atlas_artifact_version.agent}"
 }
 
+module "traefik-ca" {
+  source            = "github.com/Capgemini/tf_tls//ca"
+  organization      = "${var.organization}"
+  ca_count          = "${var.agents}"
+  ip_addresses_list = "${concat(google_compute_instance.mesos-agent.*.network_interface.0.access_config.0.nat_ip)}"
+  ssh_user          = "core"
+  ssh_private_key   = "${tls_private_key.ssh.private_key_pem}"
+  target_folder     = "/etc/traefik/ssl"
+}
+
 resource "google_compute_instance" "mesos-agent" {
     count        = "${var.agents}"
     name         = "apollo-mesos-agent-${count.index}"

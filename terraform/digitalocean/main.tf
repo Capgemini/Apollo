@@ -17,6 +17,16 @@ resource "tls_private_key" "ssh" {
   algorithm = "RSA"
 }
 
+module "traefik-ca" {
+  source            = "github.com/Capgemini/tf_tls//ca"
+  organization      = "${var.organization}"
+  ca_count          = "${var.agents}"
+  ip_addresses_list = "${concat(digitalocean_droplet.mesos-agent.*.ipv4_address)}"
+  ssh_user          = "core"
+  ssh_private_key   = "${tls_private_key.ssh.private_key_pem}"
+  target_folder     = "/etc/traefik/ssl"
+}
+
 resource "digitalocean_ssh_key" "default" {
   name       = "${var.organization}"
   public_key = "${tls_private_key.ssh.public_key_openssh}"

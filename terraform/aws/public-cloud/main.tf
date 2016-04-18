@@ -37,16 +37,6 @@ module "aws-keypair" {
   public_key_filename = "${var.public_key_file}"
 }
 
-module "ca" {
-  source            = "github.com/Capgemini/tf_tls//ca"
-  organization      = "${var.organization}"
-  ca_count          = "${var.slaves}"
-  ip_addresses_list = "${concat(aws_instance.mesos-slave.*.public_ip)}"
-  ssh_user          = "core"
-  ssh_private_key   = "${file(var.private_key_file)}"
-  target_folder     = "/etc/traefik/ssl"
-}
-
 # internet gateway
 module "igw" {
   source = "github.com/terraform-community-modules/tf_aws_igw"

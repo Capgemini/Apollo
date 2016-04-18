@@ -10,6 +10,16 @@ module "agent_ami" {
   virttype = "${module.agent_amitype.prefer_hvm}"
 }
 
+module "traefik-ca" {
+  source            = "github.com/Capgemini/tf_tls//ca"
+  organization      = "${var.organization}"
+  ca_count          = "${var.agents}"
+  ip_addresses_list = "${concat(aws_instance.mesos-agent.*.private_ip)}"
+  ssh_user          = "core"
+  ssh_private_key   = "${file(var.private_key_file)}"
+  target_folder     = "/etc/traefik/ssl"
+}
+
 resource "template_file" "agent_cloud_init" {
   template   = "agent-cloud-config.yml.tpl"
   depends_on = ["template_file.etcd_discovery_url"]
