@@ -10,7 +10,7 @@ Mesos Frameworks
 - [ ] Kubernetes framework
 - [x] Cassandra framework
 - [ ] Myriad framework
-- [ ] Spark framework
+- [x] Spark framework
 - [ ] Storm framework
 - [ ] Mysos framework
 - [ ] Elastiseach framework
@@ -38,12 +38,13 @@ Features
 - [x] Easier pluggability for frameworks
 - [x] Move all services to Docker containers
 - [x] Monitoring and alerts(nodes/services)
-- [ ] Logging (nodes/services)
+- [x] Logging (nodes/services)
 - [ ] Metrics (nodes/services)
 - [ ] Distributed File storage (for nodes/services)
 - [ ] Multi-Datacenter
 - [ ] Multi-Cloud
 - [ ] Autoscaling of Mesos agent nodes
+- [x] GPU Support
 
 Security
 --------
