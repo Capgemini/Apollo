@@ -33,6 +33,7 @@
     - { src: haproxy.tmpl, dst: 'templates/haproxy.tmpl' }
     - { src: maintenance.tmpl, dst: 'templates/maintenance.tmpl' }
     - { src: blacklist.tmpl, dst: 'templates/blacklist.tmpl' }
+    - { src: 301-redirects.lst, dst: 'etc/haproxy/301-redirects.lst' }
   tags:
     - haproxy
 
@@ -50,6 +51,8 @@
 - name: download geolocation.txt 
   local_action:
     module: s3
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
     bucket: "{{ s3_infrastructure_bucket_private }}"
     object: /etc/haproxy/geolocation.txt
     dest: /tmp/geolocation.txt
@@ -92,6 +95,7 @@
     -e CONSUL_LOGLEVEL="{{ consul_template_loglevel }}"
     -e CONSUL_CONNECT="{{ consul_backend }}"
     -e CONSUL_CONFIG="/config"
+    -e REDIRECTS_FILE=/etc/haproxy/301-redirects.lst
     -e CONSUL_MINWAIT=5s
     -e CONSUL_MAXWAIT=30s
     -e SERVICE_NAME=haproxy

@@ -101,6 +101,10 @@ frontend logger
     capture request header X-Haproxy-ACL len 256
     capture request header X-Unique-ID len 64
 
+    # Check for 301 redirect
+    acl has_redirect hdr(host),map(/etc/haproxy/301-redirects.lst) -m found
+    http-request redirect prefix https://%[hdr(host),map(/etc/haproxy/301-redirects.lst)] code 301 if has_redirect
+
     # Inject X-Berlioz-Country header with two-letter country code (see NI-461)
     http-request set-header X-Berlioz-Country %[req.hdr(X-Forwarded-For,-1),map_ip(/etc/haproxy/geolocation.txt)]
 

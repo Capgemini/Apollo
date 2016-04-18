@@ -1,0 +1,4 @@
+# Mapping of 301 redirects for subdomains
+# <SRC> <TARGET>
+learn.udacity.com classroom.udacity.com
+berlioz-dev.udacity.com hello-test.udacity.com
