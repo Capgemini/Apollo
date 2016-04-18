@@ -9,6 +9,22 @@
   tags:
     - mesos-agent
 
+- name: detect gpu support
+  become: yes
+  command: ls -al | grep -i "nvidia"
+  args:
+    chdir: /dev
+  register: nvidio_drivers
+  tags:
+    - mesos-agent
+
+- name: add gpu support for slave
+  set_fact:
+    mesos_gpu: true
+  when: nvidio_drivers.stdout contains "nvidia0"
+  tags:
+    - mesos-agent
+
 - name: deploy mesos-agent service
   become: yes
   become_user: root
