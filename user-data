@@ -15,6 +15,37 @@ coreos:
     command: start
   - name: fleet.service
     command: start
+  - name: setup-selinux.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Enable SELinux
+      ConditionPathExists=!/var/lib/selinux-has-been-setup
+      Before=early-docker.service
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      ExecStart=/opt/bin/setup-selinux
+      ExecStartPost=/usr/bin/touch /var/lib/selinux-has-been-setup
+write_files:
+- path: /opt/bin/setup-selinux
+  permissions: 0744
+  owner: root
+  content: |
+    #!/usr/bin/env bash
+    set -ex
+    rm /etc/audit/rules.d/80-selinux.rules
+    rm /etc/audit/rules.d/99-default.rules
+    rm /etc/selinux/mcs
+    cp -a /usr/lib/selinux/mcs /etc/selinux
+    rm /var/lib/selinux
+    cp -a /usr/lib/selinux/policy /var/lib/selinux
+    semodule -DB
+    systemctl restart audit-rules
+    cp --remove-destination $(readlink -f /etc/selinux/config) /etc/selinux/config
+    sed -i 's/SELINUX=permissive/SELINUX=enforcing/' /etc/selinux/config
+    setenforce 1
   update:
     reboot-strategy: "reboot"
 manage_etc_hosts: localhost
