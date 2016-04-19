@@ -61,7 +61,7 @@ module "elb" {
 
 # Generate an etcd URL for the cluster
 resource "template_file" "etcd_discovery_url" {
-  template = "/dev/null"
+  template = "${file(/dev/null)}"
   provisioner "local-exec" {
     command = "curl https://discovery.etcd.io/new?size=${var.masters} > ${var.etcd_discovery_url_file}"
   }
