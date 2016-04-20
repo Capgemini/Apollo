@@ -11,17 +11,18 @@
 
 - name: detect gpu support
   become: yes
-  command: ls -al | grep -i "nvidia"
+  shell: "ls -la nvidia0"
   args:
     chdir: /dev
   register: nvidio_drivers
+  failed_when: nvidio_drivers.rc != 0 and "No such file or directory" not in nvidio_drivers.stderr
   tags:
     - mesos-agent
 
 - name: add gpu support for slave
   set_fact:
     mesos_gpu: true
-  when: nvidio_drivers.stdout contains "nvidia0"
+  when: nvidio_drivers.rc == 0
   tags:
     - mesos-agent
 

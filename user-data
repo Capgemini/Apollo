@@ -28,6 +28,8 @@ coreos:
       RemainAfterExit=yes
       ExecStart=/opt/bin/setup-selinux
       ExecStartPost=/usr/bin/touch /var/lib/selinux-has-been-setup
+  update:
+    reboot-strategy: "reboot"
 write_files:
 - path: /opt/bin/setup-selinux
   permissions: 0744
@@ -46,6 +48,4 @@ write_files:
     cp --remove-destination $(readlink -f /etc/selinux/config) /etc/selinux/config
     sed -i 's/SELINUX=permissive/SELINUX=enforcing/' /etc/selinux/config
     setenforce 1
-  update:
-    reboot-strategy: "reboot"
 manage_etc_hosts: localhost
