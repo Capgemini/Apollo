@@ -17,4 +17,19 @@ marathon_image: "mesosphere/marathon:v{{ marathon_version }}"
 marathon_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 marathon_zk_peers: "zk://{{ zookeeper_peers_nodes }}/marathon"
 marathon_logging_level: "warn"
-marathon_command: "--logging_level {{ marathon_logging_level }} --artifact_store {{ marathon_artifact_store }} --hostname {{ marathon_hostname }} --master {{ marathon_master_peers }} --zk {{ marathon_zk_peers }}"
+
+# Rate Limiting, taken from defaults used in Marathon 1.0
+# default is 5 tasks per offer and max 100 tasks launched every 30 seconds.
+marathon_max_tasks_per_offer: 5
+marathon_launch_tokens: 100
+marathon_launch_token_refresh_interval: 30000
+
+marathon_command: >
+                    --zk {{ marathon_zk_peers }}
+                    --master {{ marathon_master_peers }}
+                    --hostname {{ marathon_hostname }}
+                    --artifact_store {{ marathon_artifact_store }}
+                    --logging_level {{ marathon_logging_level }}
+                    --max_tasks_per_offer {{ marathon_max_tasks_per_offer }}
+                    --launch_tokens {{ marathon_launch_tokens }}
+                    --launch_token_refresh_interval {{ marathon_launch_token_refresh_interval }}
