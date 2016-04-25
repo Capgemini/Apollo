@@ -133,7 +133,8 @@ backend logger
 {{range $tag, $services := services | byTag}}{{ if eq $tag "public" }}{{range $services}}
 backend {{.Name}}_backend
 {{range service .Name}}
-   server {{.Node}} {{.Address}}:{{.Port}}{{end}}
+    http-response add-header X-Berlioz-Country %[req.hdr(X-Berlioz-Country)]
+    server {{.Node}} {{.Address}}:{{.Port}}{{end}}
 {{end}}{{end}}{{end}}
 
 # Websocket service backends
