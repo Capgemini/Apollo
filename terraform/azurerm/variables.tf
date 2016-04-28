@@ -38,3 +38,28 @@ variable "storage_container_name" {
     description = "Storage container name" 
     default = "mesosimages-container" 
 } 
+
+variable "instance_type" { 
+	default = { 
+	master = "Standard_A0" 
+	slave  = "Standard_A0" 
+	} 
+} 
+
+variable "bastion_server_computername" { 
+	description = "Username to access server"
+	default = "bastion"
+} 
+
+variable "bastion_server_username" { 
+	description = "Username to access server"
+} 
+
+variable "bastion_server_password" { 
+	description = "Password to access server"
+} 
+  
+variable "masters_count" { 
+	description = "The number of masters." 
+    default = "2" 
+} 
