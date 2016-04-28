@@ -1,3 +1,4 @@
+#Create Subnet
 resource "azurerm_subnet" "subnet" {
     name = "AzureRM_Subnet"
     resource_group_name = "${azurerm_resource_group.resource_group.name}"
