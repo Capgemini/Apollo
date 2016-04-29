@@ -1,7 +1,9 @@
-# Create a network interface for bastion server
+/*
+
+# Create a network interface for master server
 resource "azurerm_network_interface" "master_network_interface" {
     name = "Master_NetworkInterface-${count.index}" 
-	count = "${var.masters_count}"
+	count = "${var.master_count}"
 	location = "${var.region}"
     resource_group_name = "${azurerm_resource_group.resource_group.name}"
     network_security_group_id = "${azurerm_network_security_group.network_security_group.id}"
@@ -15,9 +17,9 @@ resource "azurerm_network_interface" "master_network_interface" {
 }
 
 # Master server
-resource "azurerm_virtual_machine" "master" {
+resource "azurerm_virtual_machine" "mesos_master" {
     name = "apollo-mesos-master-${count.index}"
-	count = "${var.masters_count}"
+	count = "${var.master_count}"
     location = "${var.region}"
 	depends_on = ["azurerm_virtual_machine.bastion"]
     resource_group_name = "${azurerm_resource_group.resource_group.name}"
@@ -25,10 +27,10 @@ resource "azurerm_virtual_machine" "master" {
     vm_size = "${var.instance_type.master}"
 
     storage_image_reference {
-    	publisher = "Canonical"
-		offer = "UbuntuServer"
-		sku = "14.04.2-LTS"
-		version = "latest"
+    	publisher = "${var.atlas_artifact_master.publisher}"
+		offer = "${var.atlas_artifact_master.offer}"
+		sku = "${var.atlas_artifact_master.sku}"
+		version = "${var.atlas_artifact_master.version}"
     }
 
     storage_os_disk {
@@ -49,3 +51,4 @@ resource "azurerm_virtual_machine" "master" {
     }
 }
 
+*/

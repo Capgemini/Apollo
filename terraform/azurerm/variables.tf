@@ -39,6 +39,24 @@ variable "storage_container_name" {
     default = "mesosimages-container" 
 } 
 
+variable "atlas_artifact_master" { 
+	default = { 
+		publisher = ""
+		offer =""
+		"sku" = ""
+		"version" = ""	 
+	}
+} 
+
+variable "atlas_artifact_slave" { 
+	default = { 
+		publisher = ""
+		offer =""
+		"sku" = ""
+		"version" = ""	 
+	}
+} 
+
 variable "instance_type" { 
 	default = { 
 	master = "Standard_A0" 
@@ -59,7 +77,18 @@ variable "bastion_server_password" {
 	description = "Password to access server"
 } 
   
-variable "masters_count" { 
+variable "master_count" { 
 	description = "The number of masters." 
     default = "2" 
 } 
+
+variable "slave_count" { 
+	description = "The number of slaves." 
+    default = "2" 
+} 
+
+variable "docker_version" { 
+	description = "Docker version" 
+	default = "1.9.0-0~trusty" 
+} 
+
