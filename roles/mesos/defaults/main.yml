@@ -6,7 +6,7 @@ mesos_cluster_name: "Cluster01"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_host }}"
 mesos_docker_socket: "/var/run/weave/weave.sock"
-mesos_version: "0.28.0-2.0.16.ubuntu1404"
+mesos_version: "0.28.1"
 
 # Defaults file for mesos-salve
 mesos_agent_port: 5051
