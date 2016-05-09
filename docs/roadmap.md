@@ -28,9 +28,6 @@ Providers
 
 Operating Systems
 -----------------
-- [ ] Ubuntu
-- [ ] CentOS
-- [ ] Fedora
 - [x] CoreOS
 
 Features
@@ -48,6 +45,8 @@ Features
 
 Security
 --------
+- [x] Turn SELinux on to enforce
+- [x] Utilise Docker Audit Toolkit in CI
 - [ ] Manage Linux user accounts with Consul + Vault
 - [ ] ACLs and encrpytion for Consul
 - [ ] Encrypt network traffic with Weave
@@ -55,8 +54,7 @@ Security
 - [ ] Authentication and authorization for Marathon
 - [ ] Application dynamic firewalls (using consul template)
 - [ ] Network and Data encryption with IPsec
-- [x] Utilise Docker Audit Toolkit in CI
-- [ ] Add AppArmor to docker containers
+- [ ] Add AppArmor/Seccomp profiles to docker containers
 
 Demonstrators / Examples
 ------------------------
