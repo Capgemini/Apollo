@@ -48,7 +48,7 @@ variable "atlas_artifact_master" {
 	}
 } 
 
-variable "atlas_artifact_slave" { 
+variable "atlas_artifact_agent" { 
 	default = { 
 		publisher = ""
 		offer =""
@@ -60,7 +60,7 @@ variable "atlas_artifact_slave" {
 variable "instance_type" { 
 	default = { 
 	master = "Standard_A0" 
-	slave  = "Standard_A0" 
+	agent  = "Standard_A0" 
 	} 
 } 
 
@@ -76,15 +76,31 @@ variable "bastion_server_username" {
 variable "bastion_server_password" { 
 	description = "Password to access server"
 } 
+
+variable "master_server_username" { 
+	description = "Username to access master server"
+} 
+
+variable "master_server_password" { 
+	description = "Password to access master server"
+} 
+
+variable "agent_server_username" { 
+	description = "Username to access agent server"
+} 
+
+variable "agent_server_password" { 
+	description = "Password to access agent server"
+} 
   
 variable "master_count" { 
 	description = "The number of masters." 
-    default = "2" 
+    default = "1" 
 } 
 
-variable "slave_count" { 
-	description = "The number of slaves." 
-    default = "2" 
+variable "agent_count" { 
+	description = "The number of agents." 
+    default = "1" 
 } 
 
 variable "docker_version" { 
@@ -92,3 +108,10 @@ variable "docker_version" {
 	default = "1.9.0-0~trusty" 
 } 
 
+variable "ssh_public_key_file" { 
+	description = "Public key required to connect via ssh"
+} 
+
+variable "ssh_private_key_file" { 
+	description = "Public key required to connect via ssh"
+} 

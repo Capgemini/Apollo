@@ -1,5 +1,3 @@
-/*
-
 # Create a network interface for master server
 resource "azurerm_network_interface" "master_network_interface" {
     name = "Master_NetworkInterface-${count.index}" 
@@ -41,14 +39,12 @@ resource "azurerm_virtual_machine" "mesos_master" {
     }
 
     os_profile {
-	computer_name = "Mesos-Master-${count.index}"
-    	admin_username = "${var.bastion_server_username}"
-    	admin_password = "${var.bastion_server_password}"
+		computer_name = "Mesos-Master-${count.index}"
+    	admin_username = "${var.master_server_username}"
+    	admin_password = "${var.master_server_password}"
     }
 
     os_profile_linux_config {
-    disable_password_authentication = false
+		disable_password_authentication = false
     }
 }
-
-*/
