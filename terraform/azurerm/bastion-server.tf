@@ -36,12 +36,47 @@ resource "azurerm_virtual_machine" "bastion" {
     }
 
     os_profile {
-	computer_name = "${var.bastion_server_computername}"
+		computer_name = "${var.bastion_server_computername}"
     	admin_username = "${var.bastion_server_username}"
     	admin_password = "${var.bastion_server_password}"
     }
-
+	
     os_profile_linux_config {
-    disable_password_authentication = false
-    }
+		disable_password_authentication = false
+		
+		/* ssh_keys {
+			path = "/home/${var.bastion_server_username}/.ssh/authorized_keys"
+			key_data = "${file("${var.ssh_public_key_file}")}"
+		} */
+	}
+	
+	provisioner "remote-exec" {
+		
+		connection {
+			host = "${azurerm_public_ip.bastion_publicip.ip_address}"
+			type = "ssh"
+			user = "${var.bastion_server_username}"
+			password = "${var.bastion_server_password}"
+			/* private_key = "${file("${var.ssh_private_key_file}")}" */
+		}
+		
+		inline = [
+				  "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
+				  "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
+				  /* Install docker */
+				  /* Add the repository to your APT sources */
+				  "sudo -E sh -c 'echo deb https://apt.dockerproject.org/repo ubuntu-trusty main > /etc/apt/sources.list.d/docker.list'",
+				  /* Then import the repository key */
+				  "sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D",
+				  "sudo apt-get update",
+				  /* Install docker-engine */
+				  "sudo apt-get install -y docker-engine=${var.docker_version}",
+				  "sudo service docker start",
+				  /* Initialize open vpn data container */
+				  "sudo mkdir -p /etc/openvpn",
+				  "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
+				  /* Generate OpenVPN server config */
+				  "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vn_cidr_block} -u udp://${azurerm_public_ip.bastion_publicip.id}"
+				] 
+	}
 }
