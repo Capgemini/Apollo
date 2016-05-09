@@ -18,6 +18,7 @@ build:
           find terraform/aws/public-cloud/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
           find terraform/digitalocean/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
           find terraform/gce/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
+          find terraform/rackspace/ -type d \( -path .terraform \) -prune -exec sh -c '(cd {} && terraform validate)' ';'
     - script:
         name: syntax-check ansible playbook
         code: |
