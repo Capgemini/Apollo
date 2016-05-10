@@ -4,6 +4,7 @@ AWS            | Ansible       | CoreOS | Weave       | [docs](../../docs/gettin
 AWS Public Cloud   | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/aws-public.md)   | Project                      | Public cloud instances
 Vagrant        | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/vagrant.md)    | Project                      |
 Digitalocean   | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/digitalocean.md)   | Project                      | Public cloud instances
+Rackspace   | Ansible      | CoreOS | Weave       | [docs](../../docs/getting-started-guides/rackspace.md)   | Project                      | Public cloud instances
 
 
 Definition of columns:
