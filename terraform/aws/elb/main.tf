@@ -9,7 +9,7 @@ variable "security_groups" {}
 variable "s3_bucket_name" { default = "apollo-logs" }
 
 resource "aws_s3_bucket" "elb" {
-  bucket = "${var.s3_bucket_name}"
+  bucket = "${var.s3_bucket_name}-${var.vpc_id}"
   acl    = "private"
   policy = <<EOF
 {
@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "elb" {
       "Action": "s3:*",
       "Effect": "Allow",
       "Principal": "*",
-      "Resource": "arn:aws:s3:::${var.s3_bucket_name}/*",
+      "Resource": "arn:aws:s3:::${var.s3_bucket_name}-${var.vpc_id}/*",
       "Condition": {
         "StringEquals": {
           "aws:sourceVpc": "${var.vpc_id}"
@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "elb" {
         "s3:PutObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.s3_bucket_name}/elb/AWSLogs/*",
+      "Resource": "arn:aws:s3:::${var.s3_bucket_name}-${var.vpc_id}/elb/AWSLogs/*",
       "Principal": {
         "AWS": [
           "156460612806"
