@@ -74,6 +74,6 @@ resource "azurerm_virtual_machine" "bastion" {
 				  "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
 				  /* Generate OpenVPN server config */
 				  "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vn_cidr_block} -u udp://${azurerm_public_ip.bastion_publicip.id}"
-				] 
+			] 
 	}
 }

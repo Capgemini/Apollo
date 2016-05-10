@@ -24,27 +24,27 @@ resource "azurerm_virtual_machine" "mesos_agent" {
 	network_interface_ids = ["${element(azurerm_network_interface.agent_network_interface.*.id, count.index)}"] 
 	vm_size = "${var.instance_type.agent}"
 
-    storage_image_reference {
+	storage_image_reference {
 		publisher = "${var.atlas_artifact_agent.publisher}"
 		offer = "${var.atlas_artifact_agent.offer}"
 		sku = "${var.atlas_artifact_agent.sku}"
-		version = "${var.atlas_artifact_agent.version}"
-    }
+		version = "${var.atlas_artifact_agent.version}"	
+	}
+	
+	storage_os_disk {
+        	name = "agentdisk${count.index}"
+        	vhd_uri = "${azurerm_storage_account.storage_account.primary_blob_endpoint}${azurerm_storage_container.storage_container.name}/agentdisk-${count.index}.vhd"
+        	caching = "ReadWrite"
+        	create_option = "FromImage"
+    	}
 
-    storage_os_disk {
-        name = "agentdisk${count.index}"
-        vhd_uri = "${azurerm_storage_account.storage_account.primary_blob_endpoint}${azurerm_storage_container.storage_container.name}/agentdisk-${count.index}.vhd"
-        caching = "ReadWrite"
-        create_option = "FromImage"
-    }
-
-    os_profile {
+    	os_profile {
 		computer_name = "Mesos-Agent-${count.index}"
-    	admin_username = "${var.agent_server_username}"
-    	admin_password = "${var.agent_server_password}"
-    }
+    		admin_username = "${var.agent_server_username}"
+    		admin_password = "${var.agent_server_password}"
+    	}
 
-    os_profile_linux_config {
+    	os_profile_linux_config {
 		disable_password_authentication = false
-    }
+    	}
 }
