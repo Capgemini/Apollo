@@ -64,8 +64,8 @@ TF_VAR_key_name="apollo" (or another name of your choice for the ssh key assigne
 TF_VAR_public_key_file="~/.ssh/id_rsa_rs.pub" (the public ssh key to be uploaded to your Rackspace account and associated with your instances)
 TF_VAR_mesos_masters="3" (The number of Mesos Master nodes)
 TF_VAR_mesos_master_instance_type="general1-4" (The flavour of the Mesos Master instances)
-TF_VAR_mesos_slaves="1" (The number of Mesos Slave nodes)
-TF_VAR_mesos_slave_instance_type="general1-4" (The flavour of the Mesos Slave instances)
+TF_VAR_mesos_agents="1" (The number of Mesos Agent nodes)
+TF_VAR_mesos_agent_instance_type="general1-4" (The flavour of the Mesos Agent instances)
 TF_VAR_etcd_discovery_url_file="etcd_discovery_url.txt" (The name of the temp file which captures the discovery URL for the CoreOS etcd2 cloud config)
 ```
 
@@ -88,7 +88,7 @@ _NOTE: For non-Rackspace Openstack implemenations, networking resources can be c
 
 _NOTE: The script will provision a new environment (in Rackspace public cloud by default) and a 3 node mesos master cluster across all the availability zones in LON (London datacenter).
 
-It will also create a mesos slave cluster.
+It will also create a mesos agent cluster.
 
 It will then generate a dynamic Ansible inventory based on the Terraform state file and run an Ansible playbook to provision the cluster.
 

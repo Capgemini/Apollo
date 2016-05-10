@@ -9,6 +9,7 @@ variable "auth_url"  { default = "https://identity.api.rackspacecloud.com/v2.0"}
 
 # Image ids
 variable "coreos_stable_image" { default = "40155f16-21d4-4ac1-ad65-c409d94b8c7c" } # Defaults to Rackspcace CoreOS stable image id.
+variable "coreos_beta_image" {default = "6045cb80-52ed-4114-bf9a-7f15a36c65dc" } # Defaults to Rackspcace CoreOS beta image id.
 
 # ssh key variables
 variable "key_name"        { default = "apollo" } # The name of the ssh key to associate with Openstack instances.
@@ -27,7 +28,7 @@ variable "private_network_name"  { default = "ServiceNet"} # Default name for th
 variable "mesos_masters"              { default = "3" }
 variable "mesos_master_instance_type" { default = "general1-4" }
 variable "mesos_agents"               { default = "1" }
-variable "mesos_slave_instance_type"  { default = "general1-4" }
+variable "mesos_agent_instance_type"  { default = "general1-4" }
 
 # Etcd variables
 variable "etcd_discovery_url_file" { default = "etcd_discovery_url.txt"}
@@ -95,7 +96,7 @@ module "mesos-masters" {
 module "mesos-agents" {
   source                  = "./modules/mesos_agents"
   region                  = "${var.region}"
-  instance_type           = "${var.mesos_slave_instance_type}"
+  instance_type           = "${var.mesos_agent_instance_type}"
   image_id                = "${var.coreos_stable_image}"
   key_pair                = "${module.keypair.keypair_name}"
   public_network_id       = "${var.public_network_id}"
@@ -116,7 +117,7 @@ module "mesos-agents" {
 output "master_ips" {
   value = "${module.mesos-masters.master_ips}"
 }
-output "slave_ips" {
+output "agent_ips" {
   value = "${module.mesos-agents.agent_ips}"
 }
 # We need this for the open_urls function
