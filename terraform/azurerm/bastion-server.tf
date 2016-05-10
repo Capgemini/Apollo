@@ -42,24 +42,21 @@ resource "azurerm_virtual_machine" "bastion" {
     }
 	
     os_profile_linux_config {
-		disable_password_authentication = false
+		disable_password_authentication = true
 		
-		/* ssh_keys {
+		ssh_keys {
 			path = "/home/${var.bastion_server_username}/.ssh/authorized_keys"
-			key_data = "${file("${var.ssh_public_key_file}")}"
-		} */
+			key_data = "${file("${var.ssh_public_key_file}")}" # openssh format 
+		}
+	}
+	
+	connection {
+		host = "${azurerm_public_ip.bastion_publicip.ip_address}"
+		user = "${var.bastion_server_username}"
+		private_key = "${file("${var.ssh_private_key_file}")}" # openssh format 
 	}
 	
 	provisioner "remote-exec" {
-		
-		connection {
-			host = "${azurerm_public_ip.bastion_publicip.ip_address}"
-			type = "ssh"
-			user = "${var.bastion_server_username}"
-			password = "${var.bastion_server_password}"
-			/* private_key = "${file("${var.ssh_private_key_file}")}" */
-		}
-		
 		inline = [
 				  "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
 				  "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
