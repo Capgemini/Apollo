@@ -30,13 +30,13 @@ variable "subnet_cidr_block" {
 } 
 
 variable "storage_account_name" { 
-    description = "Storage account name" 
-    default = "mesosimages" 
+    	description = "Storage account name" 
+    	default = "mesosimages" 
 } 
 
 variable "storage_container_name" { 
-    description = "Storage container name" 
-    default = "mesosimages-container" 
+    	description = "Storage container name" 
+    	default = "mesosimages-container" 
 } 
 
 variable "atlas_artifact_master" { 
@@ -95,12 +95,12 @@ variable "agent_server_password" {
   
 variable "master_count" { 
 	description = "The number of masters." 
-    default = "1" 
+    	default = "1" 
 } 
 
 variable "agent_count" { 
 	description = "The number of agents." 
-    default = "1" 
+    	default = "1" 
 } 
 
 variable "docker_version" { 
