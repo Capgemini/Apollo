@@ -1,4 +1,4 @@
-box: wercker/python
+box: python:2.7
 no-response-timeout: 15
 build:
   steps:
@@ -6,10 +6,6 @@ build:
         packages: unzip
     - pip-install:
         requirements_file: "requirements-test.txt"
-    - pip-install:
-        requirements_file: ""
-        packages_list: "setuptools"
-        extra_args: "--upgrade"
     - capgemini/ansible-lint:
         name: run ansible-lint against the site.yml playbook
         playbook: site.yml
