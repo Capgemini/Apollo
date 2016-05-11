@@ -1,4 +1,4 @@
-box: wercker/python
+box: python:2.7
 no-response-timeout: 15
 build:
   steps:
