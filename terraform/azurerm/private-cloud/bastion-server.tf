@@ -65,19 +65,10 @@ resource "azurerm_virtual_machine" "bastion" {
   
 	# python and pip so we can use as the ansible_python_interpreter in our playbooks
   
-	provisioner "file" {
-    
-		source = "coreos"
-
-    		destination = "/tmp"
-  
+	provisioner "file" { 
+     		source	= "../../scripts/coreos" 
+		destination = "/tmp" 
 	}
-  
-	
-	# provisioner "file" { 
-     	#	source	= "../../scripts/coreos" 
-	#	destination = "/tmp" 
-	#}
 
 	provisioner "remote-exec" {
     

@@ -69,19 +69,10 @@ resource "azurerm_virtual_machine" "mesos_agent" {
 
 	# Do some early bootstrapping of the CoreOS machines. This will install 
    	# python and pip so we can use as the ansible_python_interpreter in our playbooks 
-   	provisioner "file" {
-    
-		source = "coreos"
-
-    		destination = "/tmp"
-  
-	}
-  
-
-	# provisioner "file" { 
-     	#	source      = "../../scripts/coreos" 
-     	#	destination = "/tmp" 
-   	# } 
+	provisioner "file" { 
+     		source      = "../../scripts/coreos" 
+     		destination = "/tmp" 
+   	} 
 
 	provisioner "remote-exec" { 
 		inline = [ 
