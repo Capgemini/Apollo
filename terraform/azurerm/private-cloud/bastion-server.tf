@@ -22,10 +22,10 @@ resource "azurerm_virtual_machine" "bastion" {
 	vm_size = "${var.instance_type.master}"
 
 	storage_image_reference {
-		publisher = "Canonical"
-		offer = "UbuntuServer"
-		sku = "14.04.2-LTS"
-		version = "latest"
+		publisher = "${var.artifact_bastion.publisher}"
+		offer = "${var.artifact_bastion.offer}"
+		sku = "${var.artifact_bastion.sku}"
+		version = "${var.artifact_bastion.version}"	
 	}
 
 	storage_os_disk {
@@ -50,30 +50,87 @@ resource "azurerm_virtual_machine" "bastion" {
 		}
 	}
 
+	tags { 
+		Name = "apollo-mesos-bastion" 
+     		role = "bastion" 
+	} 
+
 	connection {
 		host = "${azurerm_public_ip.bastion_publicip.ip_address}"
 		user = "${var.bastion_server_username}"
 		private_key = "${file("${var.ssh_private_key_file}")}" # openssh format 
 	}
 
-	provisioner "remote-exec" {
-		inline = [
-				  "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
-				  "echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/forwarding",
-				  /* Install docker */
-				  /* Add the repository to your APT sources */
-				  "sudo -E sh -c 'echo deb https://apt.dockerproject.org/repo ubuntu-trusty main > /etc/apt/sources.list.d/docker.list'",
-				  /* Then import the repository key */
-				  "sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D",
-				  "sudo apt-get update",
-				  /* Install docker-engine */
-				  "sudo apt-get install -y docker-engine=${var.docker_version}",
-				  "sudo service docker start",
-				  /* Initialize open vpn data container */
-				  "sudo mkdir -p /etc/openvpn",
-				  "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
-				  /* Generate OpenVPN server config */
-				  "sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vn_cidr_block} -u udp://${azurerm_public_ip.bastion_publicip.id}"
-			] 
+	# Do some early bootstrapping of the CoreOS machines. This will install
+  
+	# python and pip so we can use as the ansible_python_interpreter in our playbooks
+  
+	provisioner "file" {
+    
+		source = "coreos"
+
+    		destination = "/tmp"
+  
 	}
+  
+	
+	# provisioner "file" { 
+     	#	source	= "../../scripts/coreos" 
+	#	destination = "/tmp" 
+	#}
+
+	provisioner "remote-exec" {
+    
+		inline = [
+      
+			"sudo chmod -R +x /tmp/coreos",
+      
+			"/tmp/coreos/bootstrap.sh",
+      
+			"~/bin/python /tmp/coreos/get-pip.py",
+      
+			"sudo mv /tmp/coreos/runner ~/bin/pip && sudo chmod 0755 ~/bin/pip",
+      
+			"sudo rm -rf /tmp/coreos",
+      
+			# Initialize open VPN container and server config     
+			"sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
+      
+			"sudo docker run --name ovpn-data -v /etc/openvpn busybox",
+      
+			"sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${azurerm_public_ip.bastion_publicip.ip_address}"
+    
+		]
+  
+	} 
+}
+
+# Bastion network interface outputs
+output "bastion_network_interface_id" {
+	value = "${azurerm_network_interface.bastion_network_interface.id}"
+}
+
+output "bastion_network_interface_macaddress" {
+	value = "${azurerm_network_interface.bastion_network_interface.mac_address}"
+}
+
+output "bastion_network_interface_privateipaddress" {
+	value = "${azurerm_network_interface.bastion_network_interface.private_ip_address}"
+}
+
+output "bastion_network_interface_virtualmachineid" {
+	value = "${azurerm_network_interface.bastion_network_interface.virtual_machine_id}"
+}
+
+output "bastion_network_interface_applieddnsservers" {
+	value = "${azurerm_network_interface.bastion_network_interface.applied_dns_servers}"
+}
+
+output "bastion_network_interface_internalfqdn" {
+    value = "${azurerm_network_interface.bastion_network_interface.internal_fqdn}"
+}
+
+# Bastion virtual machine outputs
+output "bastion_virtual_machine_id" {
+	value = "${azurerm_virtual_machine.bastion.id}"
 }

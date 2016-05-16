@@ -19,7 +19,7 @@ variable "region" {
 	default = "North Europe"
 }
 
-variable "vn_cidr_block" { 
+variable "vpc_cidr_block" { 
 	description = "Cidr block for the VN." 
 	default = "10.0.0.0/16"
 } 
@@ -34,26 +34,39 @@ variable "storage_account_name" {
     	default = "mesosimages" 
 } 
 
+variable "storage_account_type" { 
+    	description = "Storage account type" 
+}
+
 variable "storage_container_name" { 
     	description = "Storage container name" 
     	default = "mesosimages-container" 
 } 
 
-variable "atlas_artifact_master" { 
+variable "artifact_bastion" { 
 	default = { 
-		publisher = ""
-		offer =""
-		"sku" = ""
-		"version" = ""	 
+		publisher = "CoreOS"
+		offer ="CoreOS"
+		"sku" = "Stable"
+		"version" = "latest"	 
 	}
 } 
 
-variable "atlas_artifact_agent" { 
+variable "artifact_master" { 
 	default = { 
-		publisher = ""
-		offer =""
-		"sku" = ""
-		"version" = ""	 
+		publisher = "CoreOS"
+		offer ="CoreOS"
+		"sku" = "Stable"
+		"version" = "latest"	 
+	}
+} 
+
+variable "artifact_agent" { 
+	default = { 
+		publisher = "CoreOS"
+		offer ="CoreOS"
+		"sku" = "Stable"
+		"version" = "latest"	 
 	}
 } 
 
