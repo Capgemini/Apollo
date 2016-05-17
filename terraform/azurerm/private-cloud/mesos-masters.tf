@@ -84,8 +84,8 @@ resource "azurerm_virtual_machine" "mesos_master" {
    	# python and pip so we can use as the ansible_python_interpreter in our playbooks 
    	provisioner "file" {
     
-		source      = "../../scripts/coreos" 
-     		destination = "/tmp  
+		source      = "../../scripts/coreos"
+		destination = "/tmp  
 	}
 
 	provisioner "remote-exec" { 
