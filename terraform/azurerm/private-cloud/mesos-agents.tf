@@ -8,9 +8,21 @@ resource "azurerm_network_interface" "agent_network_interface" {
 
 	ip_configuration {
 		name = "agentipconfiguration-${count.index}"
-		subnet_id = "${azurerm_subnet.subnet.id}"
+		subnet_id = "${element(azurerm_subnet.private.*.id, count.index)}"
 		private_ip_address_allocation = "dynamic"
 	}
+}
+
+# User profile template
+resource "template_file" "agent_cloud_init" { 
+	template = "${file("agent-cloud-config.yml.tpl")}" 
+	depends_on = ["template_file.etcd_discovery_url"] 
+	vars { 
+		etcd_discovery_url = "${file(var.etcd_discovery_url_file)}" 
+		size = "${var.master_count}" 
+		vpc_cidr_block = "${var.vpc_cidr_block}" 
+		region = "${var.region}" 
+	} 
 }
 
 # Agent server
@@ -42,6 +54,7 @@ resource "azurerm_virtual_machine" "mesos_agent" {
 		computer_name = "Mesos-Agent-${count.index}"
     		admin_username = "${var.agent_server_username}"
     		admin_password = "${var.agent_server_password}"
+		custom_data = "${base64encode(template_file.agent_cloud_init.rendered)}"
     	}
 
     	os_profile_linux_config {
@@ -69,10 +82,11 @@ resource "azurerm_virtual_machine" "mesos_agent" {
 
 	# Do some early bootstrapping of the CoreOS machines. This will install 
    	# python and pip so we can use as the ansible_python_interpreter in our playbooks 
-	provisioner "file" { 
-     		source      = "../../scripts/coreos" 
-     		destination = "/tmp" 
-   	} 
+   	provisioner "file" {
+    
+		source      = "../../scripts/coreos" 
+     		destination = "/tmp  
+	}
 
 	provisioner "remote-exec" { 
 		inline = [ 

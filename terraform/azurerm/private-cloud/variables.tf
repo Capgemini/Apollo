@@ -24,9 +24,14 @@ variable "vpc_cidr_block" {
 	default = "10.0.0.0/16"
 } 
  
-variable "subnet_cidr_block" { 
+variable "private_subnet_cidr_block" { 
 	description = "CIDR for private subnet" 
-	default     = "10.0.0.0/24"
+	default     = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
+} 
+
+variable "public_subnet_cidr_block" { 
+	description = "CIDR for public subnet" 
+	default     = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
 } 
 
 variable "storage_account_name" { 
@@ -72,6 +77,7 @@ variable "artifact_agent" {
 
 variable "instance_type" { 
 	default = { 
+	bastion = "Standard_A0"
 	master = "Standard_A0" 
 	agent  = "Standard_A0" 
 	} 
@@ -128,3 +134,7 @@ variable "ssh_public_key_file" {
 variable "ssh_private_key_file" { 
 	description = "Public key required to connect via ssh"
 } 
+
+variable "etcd_discovery_url_file" { 
+	default = "etcd_discovery_url.txt" 
+}

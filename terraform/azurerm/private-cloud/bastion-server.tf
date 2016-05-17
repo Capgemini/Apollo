@@ -7,10 +7,22 @@ resource "azurerm_network_interface" "bastion_network_interface" {
 
 	ip_configuration {
 		name = "bastionipconfiguration"
-		subnet_id = "${azurerm_subnet.subnet.id}"
+		subnet_id = "${element(azurerm_subnet.public.*.id, count.index)}"
 		private_ip_address_allocation = "dynamic"
 		public_ip_address_id = "${azurerm_public_ip.bastion_publicip.id}"
 	}
+}
+
+# User profile template
+resource "template_file" "bastion_cloud_init" { 
+	template = "${file("bastion-cloud-config.yml.tpl")}" 
+	depends_on = ["template_file.etcd_discovery_url"] 
+	vars { 
+		etcd_discovery_url = "${file(var.etcd_discovery_url_file)}" 
+		size = "${var.master_count}" 
+		vpc_cidr_block = "${var.vpc_cidr_block}" 
+		region = "${var.region}" 
+	} 
 }
 
 # NAT/VPN server
@@ -19,7 +31,7 @@ resource "azurerm_virtual_machine" "bastion" {
 	location = "${var.region}"
 	resource_group_name = "${azurerm_resource_group.resource_group.name}"
 	network_interface_ids = ["${azurerm_network_interface.bastion_network_interface.id}"]
-	vm_size = "${var.instance_type.master}"
+	vm_size = "${var.instance_type.bastion}"
 
 	storage_image_reference {
 		publisher = "${var.artifact_bastion.publisher}"
@@ -39,6 +51,7 @@ resource "azurerm_virtual_machine" "bastion" {
 		computer_name = "${var.bastion_server_computername}"
 		admin_username = "${var.bastion_server_username}"
 		admin_password = "${var.bastion_server_password}"
+		custom_data = "${base64encode(template_file.bastion_cloud_init.rendered)}"
 	}
 
 	os_profile_linux_config {
@@ -62,10 +75,13 @@ resource "azurerm_virtual_machine" "bastion" {
 	}
 
 	# Do some early bootstrapping of the CoreOS machines. This will install
+  
 	# python and pip so we can use as the ansible_python_interpreter in our playbooks
-	provisioner "file" { 
-     		source	= "../../scripts/coreos" 
-		destination = "/tmp" 
+  
+	provisioner "file" {
+    
+		source      = "../../scripts/coreos" 
+     		destination = "/tmp  
 	}
 
 	provisioner "remote-exec" {

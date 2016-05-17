@@ -8,9 +8,21 @@ resource "azurerm_network_interface" "master_network_interface" {
 
 	ip_configuration {
 		name = "masteripconfiguration-${count.index}"
-		subnet_id = "${azurerm_subnet.subnet.id}"
+		subnet_id = "${element(azurerm_subnet.private.*.id, count.index)}"
 		private_ip_address_allocation = "dynamic"
 	}
+}
+
+# User profile template
+resource "template_file" "master_cloud_init" { 
+	template = "${file("master-cloud-config.yml.tpl")}" 
+	depends_on = ["template_file.etcd_discovery_url"] 
+	vars { 
+		etcd_discovery_url = "${file(var.etcd_discovery_url_file)}" 
+		size = "${var.master_count}" 
+		vpc_cidr_block = "${var.vpc_cidr_block}" 
+		region = "${var.region}" 
+	} 
 }
 
 # Master server
@@ -42,6 +54,7 @@ resource "azurerm_virtual_machine" "mesos_master" {
 		computer_name = "apollo-mesos-master-${count.index}"
 		admin_username = "${var.master_server_username}"
 		admin_password = "${var.master_server_password}"
+		custom_data = "${base64encode(template_file.master_cloud_init.rendered)}"
 	}
 
 	os_profile_linux_config {
@@ -69,12 +82,13 @@ resource "azurerm_virtual_machine" "mesos_master" {
 	
 	# Do some early bootstrapping of the CoreOS machines. This will install 
    	# python and pip so we can use as the ansible_python_interpreter in our playbooks 
-	provisioner "file" { 
-     		source      = "../../scripts/coreos" 
-     		destination = "/tmp" 
-   	} 
+   	provisioner "file" {
+    
+		source      = "../../scripts/coreos" 
+     		destination = "/tmp  
+	}
 
-   	provisioner "remote-exec" { 
+	provisioner "remote-exec" { 
      		inline = [ 
        			"sudo chmod -R +x /tmp/coreos", 
        			"/tmp/coreos/bootstrap.sh", 
