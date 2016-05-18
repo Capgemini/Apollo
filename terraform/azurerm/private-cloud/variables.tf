@@ -35,17 +35,18 @@ variable "public_subnet_cidr_block" {
 } 
 
 variable "storage_account_name" { 
-    	description = "Storage account name" 
-    	default = "mesosimages" 
+	description = "Storage account name" 
+	default = "mesosimages" 
 } 
 
+# I.E. Standard_GRS
 variable "storage_account_type" { 
-    	description = "Storage account type" 
+	description = "Storage account type" 
 }
 
 variable "storage_container_name" { 
-    	description = "Storage container name" 
-    	default = "mesosimages-container" 
+	description = "Storage container name" 
+	default = "mesosimages-container" 
 } 
 
 variable "artifact_bastion" { 
@@ -128,11 +129,11 @@ variable "docker_version" {
 } 
 
 variable "ssh_public_key_file" { 
-	description = "Public key required to connect via ssh"
+	description = "Public key file path required to connect via ssh"
 } 
 
 variable "ssh_private_key_file" { 
-	description = "Public key required to connect via ssh"
+	description = "Public key file path required to connect via ssh"
 } 
 
 variable "etcd_discovery_url_file" { 

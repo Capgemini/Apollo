@@ -70,32 +70,32 @@ resource "azurerm_virtual_machine" "mesos_master" {
      		Name = "apollo-mesos-master-${count.index}" 
      		role = "mesos_masters" 
    	}
-
-   	connection { 
-     		user = "${var.master_server_username}" 
-		host = "${element(azurerm_network_interface.master_network_interface.*.private_ip_address, count.index)}"
-     		private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
-     		bastion_host = "${azurerm_public_ip.bastion_publicip.ip_address}"
-		bastion_user = "${var.bastion_server_username}"
-     		bastion_private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
-	}
 	
+	connection { 
+     	user = "${var.master_server_username}" 
+		host = "${element(azurerm_network_interface.master_network_interface.*.private_ip_address, count.index)}"
+     	private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
+     	bastion_host = "${azurerm_public_ip.bastion_publicip.ip_address}"
+		bastion_user = "${var.bastion_server_username}"
+     	bastion_private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
+	}
+
 	# Do some early bootstrapping of the CoreOS machines. This will install 
    	# python and pip so we can use as the ansible_python_interpreter in our playbooks 
-   	provisioner "file" {
-		source      = "../../scripts/coreos"
-		destination = "/tmp  
-	}
+	provisioner "file" { 
+		source      = "../../scripts/coreos" 
+		destination = "/tmp" 
+	} 
 
 	provisioner "remote-exec" { 
-     		inline = [ 
-       			"sudo chmod -R +x /tmp/coreos", 
-       			"/tmp/coreos/bootstrap.sh", 
-       			"~/bin/python /tmp/coreos/get-pip.py", 
-       			"sudo mv /tmp/coreos/runner ~/bin/pip && sudo chmod 0755 ~/bin/pip", 
-       			"sudo rm -rf /tmp/coreos" 
-     		] 
-   	}
+		inline = [ 
+			"sudo chmod -R +x /tmp/coreos", 
+			"/tmp/coreos/bootstrap.sh", 
+			"~/bin/python /tmp/coreos/get-pip.py", 
+			"sudo mv /tmp/coreos/runner ~/bin/pip && sudo chmod 0755 ~/bin/pip", 
+			"sudo rm -rf /tmp/coreos" 
+		] 
+	}
 }
 
 # Mesos master network interface outputs
