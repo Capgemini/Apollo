@@ -93,7 +93,7 @@ resource "azurerm_virtual_machine" "bastion" {
 			"sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
       		"sudo docker run --name ovpn-data -v /etc/openvpn busybox",
       		"sudo docker run --volumes-from ovpn-data --rm gosuri/openvpn ovpn_genconfig -p ${var.vpc_cidr_block} -u udp://${azurerm_public_ip.bastion_publicip.ip_address}"
-    	]
+		]
 	} 
 }
 

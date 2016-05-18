@@ -67,17 +67,17 @@ resource "azurerm_virtual_machine" "mesos_master" {
 	}
 
 	tags { 
-     		Name = "apollo-mesos-master-${count.index}" 
-     		role = "mesos_masters" 
+		Name = "apollo-mesos-master-${count.index}" 
+		role = "mesos_masters" 
    	}
 	
 	connection { 
-     	user = "${var.master_server_username}" 
+		user = "${var.master_server_username}" 
 		host = "${element(azurerm_network_interface.master_network_interface.*.private_ip_address, count.index)}"
-     	private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
-     	bastion_host = "${azurerm_public_ip.bastion_publicip.ip_address}"
+		private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
+		bastion_host = "${azurerm_public_ip.bastion_publicip.ip_address}"
 		bastion_user = "${var.bastion_server_username}"
-     	bastion_private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
+		bastion_private_key = "${file("${var.ssh_private_key_file}")}" # openssh format
 	}
 
 	# Do some early bootstrapping of the CoreOS machines. This will install 
