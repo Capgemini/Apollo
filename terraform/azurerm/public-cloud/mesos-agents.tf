@@ -65,7 +65,7 @@ resource "azurerm_virtual_machine" "mesos_agent" {
 			path = "/home/${var.agent_server_username}/.ssh/authorized_keys"
 			key_data = "${file("${var.ssh_public_key_file}")}" # openssh format 
 		}
-    }
+	}
 
 	tags = { 
 		Name = "apollo-mesos-agent-${count.index}" 
