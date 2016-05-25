@@ -26,35 +26,35 @@ variable "vpc_cidr_block" {
  
 variable "private_subnet_cidr_block" { 
 	description = "CIDR for private subnet" 
-	default     = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
+	default = "10.0.1.0/24,10.0.2.0/24,10.0.3.0/24"
 } 
 
 variable "public_subnet_cidr_block" { 
 	description = "CIDR for public subnet" 
-	default     = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
+	default = "10.0.101.0/24,10.0.102.0/24,10.0.103.0/24"
 } 
 
 variable "storage_account_name" { 
-	description = "Storage account name" 
-	default = "mesosimages" 
+    description = "Storage account name" 
+    default = "mesosimages" 
 } 
 
 # I.E. Standard_GRS
 variable "storage_account_type" { 
-	description = "Storage account type" 
+    description = "Storage account type" 
 }
 
 variable "storage_container_name" { 
-	description = "Storage container name" 
-	default = "mesosimages-container" 
+    description = "Storage container name" 
+    default = "mesosimages-container" 
 } 
 
 variable "artifact_bastion" { 
 	default = { 
 		publisher = "CoreOS"
 		offer ="CoreOS"
-		"sku" = "Stable"
-		"version" = "latest"	 
+		sku = "Stable"
+		version = "latest"	 
 	}
 } 
 
@@ -62,8 +62,8 @@ variable "artifact_master" {
 	default = { 
 		publisher = "CoreOS"
 		offer ="CoreOS"
-		"sku" = "Stable"
-		"version" = "latest"	 
+		sku = "Stable"
+		version = "latest"	 
 	}
 } 
 
@@ -71,16 +71,16 @@ variable "artifact_agent" {
 	default = { 
 		publisher = "CoreOS"
 		offer ="CoreOS"
-		"sku" = "Stable"
-		"version" = "latest"	 
+		sku = "Stable"
+		version = "latest"	 
 	}
 } 
 
 variable "instance_type" { 
 	default = { 
-	bastion = "Standard_A0"
-	master = "Standard_A0" 
-	agent  = "Standard_A0" 
+		bastion = "Standard_A0"
+		master = "Standard_A0" 
+		agent  = "Standard_A0" 
 	} 
 } 
 
@@ -115,12 +115,12 @@ variable "agent_server_password" {
   
 variable "master_count" { 
 	description = "The number of masters." 
-    	default = "1" 
+	default = "1" 
 } 
 
 variable "agent_count" { 
 	description = "The number of agents." 
-    	default = "1" 
+	default = "1" 
 } 
 
 variable "docker_version" { 

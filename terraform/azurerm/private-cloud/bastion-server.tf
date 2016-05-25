@@ -7,7 +7,7 @@ resource "azurerm_network_interface" "bastion_network_interface" {
 
 	ip_configuration {
 		name = "bastionipconfiguration"
-		subnet_id = "${element(azurerm_subnet.public.*.id, count.index)}"
+		subnet_id = "${element(azurerm_subnet.public.*.id, 0)}"
 		private_ip_address_allocation = "dynamic"
 		public_ip_address_id = "${azurerm_public_ip.bastion_publicip.id}"
 	}
@@ -77,7 +77,7 @@ resource "azurerm_virtual_machine" "bastion" {
 	# Do some early bootstrapping of the CoreOS machines. This will install
 	# python and pip so we can use as the ansible_python_interpreter in our playbooks
 	provisioner "file" { 
-		source	= "../../scripts/coreos" 
+		source	= "coreos" 
 		destination = "/tmp" 
 	}
 
