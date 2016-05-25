@@ -35,18 +35,18 @@ variable "public_subnet_cidr_block" {
 } 
 
 variable "storage_account_name" { 
-    description = "Storage account name" 
-    default = "mesosimages" 
+	description = "Storage account name" 
+	default = "mesosimages" 
 } 
 
 # I.E. Standard_GRS
 variable "storage_account_type" { 
-    description = "Storage account type" 
+	description = "Storage account type" 
 }
 
 variable "storage_container_name" { 
-    description = "Storage container name" 
-    default = "mesosimages-container" 
+	description = "Storage container name" 
+	default = "mesosimages-container" 
 } 
 
 variable "artifact_bastion" { 

@@ -119,7 +119,7 @@ output "bastion_network_interface_applieddnsservers" {
 }
 
 output "bastion_network_interface_internalfqdn" {
-    value = "${azurerm_network_interface.bastion_network_interface.internal_fqdn}"
+	value = "${azurerm_network_interface.bastion_network_interface.internal_fqdn}"
 }
 
 # Bastion virtual machine outputs
