@@ -95,7 +95,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       machine.vm.hostname = node['hostname']
       machine.vm.network :private_network, :ip => node['ip']
 
-      vb.name = 'coreos-mesos-' + node[:hostname]
+      vb.name = 'coreos-mesos-' + node['hostname']
       vb.customize ["modifyvm", :id, "--memory", node['mem'], "--cpus", node['cpus'] ]
 
       machine.vm.provision :ansible do |ansible|
