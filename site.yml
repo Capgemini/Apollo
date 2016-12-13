@@ -21,6 +21,9 @@
 
 - include: playbooks/coreos-bootstrap.yml
 
+- hosts: all
+  tasks: []
+
 - hosts: all:!role=bastion
   roles:
     - docker
