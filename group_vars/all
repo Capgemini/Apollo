@@ -8,7 +8,7 @@ zookeeper_peers_nodes: "
 	    {%- set zookeeper_peers = [] -%}
 	    {%- for host in groups[zookeeper_server_group] -%}
 	      {%- if host not in zookeeper_peers -%}
-	        {%- set current_host = hostvars[host]['ansible_host'] + ':' + zookeeper_client_port -%}
+	        {%- set current_host = hostvars[host]['ansible_ssh_host'] + ':' + zookeeper_client_port -%}
 	        {%- do zookeeper_peers.append(current_host) -%}
 	      {%- endif -%}
 	    {%- endfor -%}
