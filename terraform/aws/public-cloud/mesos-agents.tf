@@ -21,7 +21,7 @@ module "traefik-ca" {
 }
 
 resource "template_file" "agent_cloud_init" {
-  template   = "agent-cloud-config.yml.tpl"
+  template   = "${file("agent-cloud-config.yml.tpl")}"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"

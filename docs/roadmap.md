@@ -10,7 +10,7 @@ Mesos Frameworks
 - [ ] Kubernetes framework
 - [x] Cassandra framework
 - [ ] Myriad framework
-- [ ] Spark framework
+- [x] Spark framework
 - [ ] Storm framework
 - [ ] Mysos framework
 - [ ] Elastiseach framework
@@ -28,9 +28,6 @@ Providers
 
 Operating Systems
 -----------------
-- [ ] Ubuntu
-- [ ] CentOS
-- [ ] Fedora
 - [x] CoreOS
 
 Features
@@ -38,15 +35,18 @@ Features
 - [x] Easier pluggability for frameworks
 - [x] Move all services to Docker containers
 - [x] Monitoring and alerts(nodes/services)
-- [ ] Logging (nodes/services)
+- [x] Logging (nodes/services)
 - [ ] Metrics (nodes/services)
 - [ ] Distributed File storage (for nodes/services)
 - [ ] Multi-Datacenter
 - [ ] Multi-Cloud
 - [ ] Autoscaling of Mesos agent nodes
+- [x] GPU Support
 
 Security
 --------
+- [x] Turn SELinux on to enforce
+- [x] Utilise Docker Audit Toolkit in CI
 - [ ] Manage Linux user accounts with Consul + Vault
 - [ ] ACLs and encrpytion for Consul
 - [ ] Encrypt network traffic with Weave
@@ -54,8 +54,7 @@ Security
 - [ ] Authentication and authorization for Marathon
 - [ ] Application dynamic firewalls (using consul template)
 - [ ] Network and Data encryption with IPsec
-- [x] Utilise Docker Audit Toolkit in CI
-- [ ] Add AppArmor to docker containers
+- [ ] Add AppArmor/Seccomp profiles to docker containers
 
 Demonstrators / Examples
 ------------------------

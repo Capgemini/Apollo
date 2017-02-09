@@ -11,7 +11,7 @@ module "master_ami" {
 }
 
 resource "template_file" "master_cloud_init" {
-  template   = "master-cloud-config.yml.tpl"
+  template   = "${file("master-cloud-config.yml.tpl")}"
   depends_on = ["template_file.etcd_discovery_url"]
   vars {
     etcd_discovery_url = "${file(var.etcd_discovery_url_file)}"
